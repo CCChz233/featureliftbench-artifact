@@ -1,0 +1,287 @@
+{
+  "task_id": "click__option_parser__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "cli",
+    "parser",
+    "context",
+    "errors",
+    "pure-python"
+  ],
+  "source": {
+    "name": "click",
+    "url": "https://github.com/pallets/click",
+    "commit": "8.1.7-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "Command line option parsing and invocation",
+    "description": "Extract Click's core command, option, argument, type conversion, and testing runner behavior.",
+    "source_entrypoints": [
+      "click.command",
+      "click.group",
+      "click.option",
+      "click.argument",
+      "click.Choice",
+      "click.IntRange",
+      "click.echo",
+      "click.UsageError",
+      "click.testing.CliRunner"
+    ],
+    "included_behaviors": [
+      "decorate functions as commands and groups",
+      "parse options, flags, choices, defaults, integer ranges, and positional arguments",
+      "invoke commands through CliRunner and capture output, exit code, and exceptions",
+      "support nested groups and context object passing",
+      "render useful usage/error output for invalid options and bad values"
+    ],
+    "excluded_behaviors": [
+      "shell completion integration",
+      "terminal color/style platform integrations beyond basic echo",
+      "documentation and release tooling"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "framework_coupling",
+      "config_environment_coupling",
+      "global_state_registry_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "CLI behavior is coupled to command decorators, context stacks, parameter parsing, terminal output, and testing runner state.",
+    "signals": [
+      "command/group decorator framework",
+      "context and invocation state",
+      "CliRunner environment isolation"
+    ],
+    "primary": "framework_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted as click; from featurelifted.testing import CliRunner",
+    "callable": "featurelifted.command",
+    "signature": "command(*args, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "click"
+    ],
+    "forbidden_imports": [
+      "click"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Command line option parsing and invocation",
+    "summary": "Extract a task-scoped subset of `click` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.testing",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.testing.CliRunner",
+            "kind": "class",
+            "signature": "(charset: str = 'utf-8', env: Optional[Mapping[str, Optional[str]]] = None, echo_stdin: bool = False, mix_stderr: bool = True) -> None",
+            "members": [
+              {
+                "path": "featurelifted.testing.CliRunner.invoke",
+                "kind": "method",
+                "signature": "(self, cli: 'BaseCommand', args: Union[Sequence[str], str, NoneType] = None, input: Union[str, bytes, IO[Any], NoneType] = None, env: Optional[Mapping[str, Optional[str]]] = None, catch_exceptions: bool = True, color: bool = False, **extra: Any) -> Result"
+              },
+              {
+                "path": "featurelifted.testing.CliRunner.isolated_filesystem",
+                "kind": "method",
+                "signature": "(self, temp_dir: Union[str, ForwardRef('os.PathLike[str]'), NoneType] = None) -> Iterator[str]"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: decorate functions as commands and groups. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: parse options, flags, choices, defaults, integer ranges, and positional arguments. Required observable cases include command options arguments and choice errors; group context flags range and defaults."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: invoke commands through CliRunner and capture output, exit code, and exceptions. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: support nested groups and context object passing. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: render useful usage/error output for invalid options and bad values. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.testing`, `featurelifted.testing.CliRunner`, `featurelifted.testing.CliRunner.invoke`, `featurelifted.testing.CliRunner.isolated_filesystem` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "click.command",
+      "click.group",
+      "click.option",
+      "click.argument",
+      "click.Choice",
+      "click.IntRange",
+      "click.echo",
+      "click.UsageError",
+      "click.testing.CliRunner"
+    ],
+    "exclusions": [
+      "shell completion integration",
+      "terminal color/style platform integrations beyond basic echo",
+      "documentation and release tooling"
+    ],
+    "forbidden": {
+      "imports": [
+        "click"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: click."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: decorate functions as commands and groups. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse options, flags, choices, defaults, integer ranges, and positional arguments. Required observable cases include command options arguments and choice errors; group context flags range and defaults."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: invoke commands through CliRunner and capture output, exit code, and exceptions. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support nested groups and context object passing. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: render useful usage/error output for invalid options and bad values. Required observable cases include usage errors prompts and isolated filesystem."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.testing`, `featurelifted.testing.CliRunner`, `featurelifted.testing.CliRunner.invoke`, `featurelifted.testing.CliRunner.isolated_filesystem` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: click"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_command_options_arguments_and_choice_errors",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_group_context_flags_range_and_defaults",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_usage_errors_prompts_and_isolated_filesystem",
+        "behavior_ids": [
+          "B003",
+          "B005",
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.testing",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.testing.CliRunner",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.testing.CliRunner.invoke",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_group_context_flags_range_and_defaults",
+          "hidden_tests/test_hidden_behavior.py::test_usage_errors_prompts_and_isolated_filesystem"
+        ]
+      },
+      {
+        "path": "featurelifted.testing.CliRunner.isolated_filesystem",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_usage_errors_prompts_and_isolated_filesystem"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "6e51beddc358118d06cfab4c88a899c7aefb158de3ad90bc80108fa259dad9b7",
+  "generated_task_hash": "b7aa66ce1fcd7ee3d78f6fe7bd0665aacd42cd1ce3ffed5d0586cf15a5145706"
+}

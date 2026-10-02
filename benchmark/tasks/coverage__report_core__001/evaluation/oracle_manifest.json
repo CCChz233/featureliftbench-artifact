@@ -1,0 +1,17 @@
+{
+  "source_files": [
+    "coverage/env.py",
+    "coverage/exceptions.py",
+    "coverage/types.py",
+    "coverage/misc.py",
+    "coverage/files.py",
+    "coverage/version.py",
+    "coverage/results.py",
+    "coverage/plugin.py",
+    "coverage/report_core.py",
+    "coverage/xmlreport.py",
+    "coverage/config.py",
+    "coverage/tomlconfig.py"
+  ],
+  "notes": "XML report writer closure with Analysis, FileReporter, and CoverageConfig report options."
+}

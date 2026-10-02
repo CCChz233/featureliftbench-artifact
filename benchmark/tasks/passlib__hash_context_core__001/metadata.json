@@ -1,0 +1,254 @@
+{
+  "task_id": "passlib__hash_context_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "passlib",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "passlib",
+    "url": "https://foss.heptapod.net/python-libs/passlib",
+    "commit": "1.7.4-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "CryptContext hash and verify",
+    "description": "Extract passlib CryptContext multi-scheme hashing and verification without importing passlib.",
+    "source_entrypoints": [
+      "passlib.context.CryptContext",
+      "passlib.context.LazyCryptContext",
+      "passlib.registry.get_crypt_handler",
+      "passlib.handlers.pbkdf2"
+    ],
+    "included_behaviors": [
+      "CryptContext hash and verify for pbkdf2_sha256",
+      "scheme options like default_rounds and deprecated schemes",
+      "needs_update and identify handlers"
+    ],
+    "excluded_behaviors": [
+      "apache htpasswd helpers and TOTP",
+      "django extension and host-specific handlers",
+      "original passlib import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "global_state_registry_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "CryptContext couples handler registry, scheme option coercion, and multi-scheme verification policy.",
+    "signals": [
+      "handler registry and scheme deprecation",
+      "context policy for rounds and identify",
+      "pbkdf2_sha256 handler wiring"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import CryptContext",
+    "callable": "featurelifted.CryptContext",
+    "signature": "CryptContext(schemes=None, **kw)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "passlib"
+    ],
+    "forbidden_imports": [
+      "passlib"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "CryptContext hash and verify",
+    "summary": "Extract a task-scoped subset of `passlib` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.CryptContext",
+        "kind": "class",
+        "signature": "(schemes=None, policy=<object object>, _autoload=True, **kwds)",
+        "members": [
+          {
+            "path": "featurelifted.CryptContext.hash",
+            "kind": "method",
+            "signature": "(self, secret, scheme=None, category=None, **kwds)"
+          },
+          {
+            "path": "featurelifted.CryptContext.identify",
+            "kind": "method",
+            "signature": "(self, hash, category=None, resolve=False, required=False, unconfigured=False)"
+          },
+          {
+            "path": "featurelifted.CryptContext.verify",
+            "kind": "method",
+            "signature": "(self, secret, hash, scheme=None, category=None, **kwds)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: CryptContext hash and verify for pbkdf2_sha256. Required observable cases include hash and verify pbkdf2; context hash includes rounds; context verify and update roundtrip."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: scheme options like default_rounds and deprecated schemes. Required observable cases include context verify and update roundtrip."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: needs_update and identify handlers. Required observable cases include context verify and update roundtrip."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.CryptContext`, `featurelifted.CryptContext.hash`, `featurelifted.CryptContext.identify`, `featurelifted.CryptContext.verify` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "passlib.context.CryptContext",
+      "passlib.context.LazyCryptContext",
+      "passlib.registry.get_crypt_handler",
+      "passlib.handlers.pbkdf2"
+    ],
+    "exclusions": [
+      "apache htpasswd helpers and TOTP",
+      "django extension and host-specific handlers",
+      "original passlib import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "passlib"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: passlib."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: CryptContext hash and verify for pbkdf2_sha256. Required observable cases include hash and verify pbkdf2; context hash includes rounds; context verify and update roundtrip."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: scheme options like default_rounds and deprecated schemes. Required observable cases include context verify and update roundtrip."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: needs_update and identify handlers. Required observable cases include context verify and update roundtrip."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.CryptContext`, `featurelifted.CryptContext.hash`, `featurelifted.CryptContext.identify`, `featurelifted.CryptContext.verify` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: passlib"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_hash_and_verify_pbkdf2",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_context_hash_includes_rounds",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_context_verify_and_update_roundtrip",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.CryptContext",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CryptContext.hash",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_context_hash_includes_rounds",
+          "hidden_tests/test_hidden_behavior.py::test_context_verify_and_update_roundtrip"
+        ]
+      },
+      {
+        "path": "featurelifted.CryptContext.identify",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_context_hash_includes_rounds"
+        ]
+      },
+      {
+        "path": "featurelifted.CryptContext.verify",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_context_verify_and_update_roundtrip"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "850b3f98471dba9b5c03eb9c43706760140f0f7aaaeb5d7021950b8c7547a7e4",
+  "generated_task_hash": "69255e143848d8c9a0883d7f0561acbadc74fdafd30380fd9734079fdb3bd94b"
+}

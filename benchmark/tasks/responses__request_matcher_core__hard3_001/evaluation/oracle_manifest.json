@@ -1,0 +1,25 @@
+{
+  "source_package_name": "responses",
+  "runtime_dependencies": [
+    "requests"
+  ],
+  "required_source_files": [
+    "repo/responses/matchers.py",
+    "repo/responses/registries.py",
+    "repo/responses/__init__.py"
+  ],
+  "target_api": [
+    "featurelifted.MockResponseRegistry",
+    "featurelifted.MockResponse",
+    "featurelifted.query_string_matcher",
+    "featurelifted.header_matcher"
+  ],
+  "forbidden_imports": [
+    "responses"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "responses/"
+  ],
+  "notes": "Offline matcher/registry subset using requests.PreparedRequest."
+}

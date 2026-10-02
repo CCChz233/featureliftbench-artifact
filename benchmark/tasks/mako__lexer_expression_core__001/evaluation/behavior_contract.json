@@ -1,0 +1,169 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_percent_escape_in_template",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_unclosed_tag_raises_syntax",
+      "public_clause_ids": [
+        "B001",
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_python_fragment_for_loop",
+      "public_clause_ids": [
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_expression_filter_escapes",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_elif_partial_control_identifiers",
+      "public_clause_ids": [
+        "B002",
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_partial_control_raises_compile",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_mako_import_surface",
+      "public_clause_ids": [
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: lex template source into parsetree nodes (text, expression, control, tags). Required observable cases include parse text and expression; def tag parses; percent escape in template; unclosed tag raises syntax; expression filter escapes; invalid partial control raises compile."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: parse ${...} expressions and % control lines. Required observable cases include parse text and expression; parse control line; def tag parses; expression filter escapes; elif partial control identifiers; invalid partial control raises compile."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: analyze Python fragments for declared and undeclared identifiers. Required observable cases include python code undeclared; python fragment for loop; elif partial control identifiers."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: report SyntaxException and CompileException with line positions. Required observable cases include unclosed tag raises syntax."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The package exposes the required task API paths `featurelifted.Lexer`, `featurelifted.Lexer.parse`, `featurelifted.parsetree`, `featurelifted.parsetree.ControlLine`, `featurelifted.parsetree.DefTag`, `featurelifted.parsetree.Expression`, `featurelifted.parsetree.TemplateNode`, `featurelifted.parsetree.Text`, `featurelifted.PythonCode`, `featurelifted.PythonCode.declared_identifiers`, `featurelifted.PythonCode.undeclared_identifiers`, `featurelifted.PythonFragment`, and 4 listed members with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "the submitted package does not import forbidden upstream packages: mako"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_text_and_expression",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_control_line",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_python_code_undeclared",
+      "public_clause_ids": [
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_def_tag_parses",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 0,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "parser_state_coupling",
+    "framework_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "69bd7a3d97c618f76b4e47724265526e17441c3315ea2e93d57689cde1b48b76",
+  "task_id": "mako__lexer_expression_core__001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

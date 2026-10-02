@@ -1,0 +1,21 @@
+{
+  "source_package_name": "transitions",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/transitions/__init__.py",
+    "repo/transitions/core.py"
+  ],
+  "target_api": [
+    "featurelifted.Machine",
+    "featurelifted.MachineError",
+    "featurelifted.EventData"
+  ],
+  "forbidden_imports": [
+    "transitions"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "transitions/"
+  ],
+  "notes": "Synchronous state machine core only."
+}

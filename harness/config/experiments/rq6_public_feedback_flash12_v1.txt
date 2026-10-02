@@ -1,0 +1,21 @@
+# RQ6 Public-feedback Flash-12. Not a Python-200 main-table slice.
+# Source: Flash Main-200 primary_outcomes in
+# artifacts/research_analysis/current_results/python200_cross_model_main_20260818.json
+# Intersection of local (0812) and API suites at the same failure stage.
+# Same-day Main control must be re-run; do not pair against the weeks-old 145/200 suite.
+
+# public_failure (build pass, public fail, hidden fail)
+alembic__revision_map_core__hard3_001
+flask__route_dispatch_core__001
+filelock__reentrant_lock_core__001
+decorator__signature_preserving_core__001
+click__lazy_command_core__hard3_001
+yamale__schema_validate_core__hard3_001
+
+# hidden_failure (build pass, public pass, hidden fail)
+bleach__sanitize_core__001
+parse__format_parser_core__001
+pygments__lexer_core__001
+python_decouple__config_repository_core__001
+schema__nested_validate_core__hard3_001
+wheel__metadata_normalize_core__hard3_001

@@ -1,0 +1,474 @@
+{
+  "task_id": "mako__lexer_expression_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "template-engine",
+    "functional-discriminator",
+    "parser_state_coupling",
+    "multi-module"
+  ],
+  "source": {
+    "name": "mako",
+    "url": "https://github.com/sqlalchemy/mako",
+    "commit": "d58a9208fd62a816e9609a35be55aa6d3c5b14e7",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Mako template lexer and expression parse core",
+    "description": "Extract Mako template lexing into a parse tree plus Python expression/control fragment analysis without original mako import or template runtime rendering.",
+    "source_entrypoints": [
+      "mako.lexer.Lexer",
+      "mako.lexer.Lexer.parse",
+      "mako.parsetree",
+      "mako.ast.PythonCode",
+      "mako.ast.PythonFragment",
+      "mako.ast.FunctionDecl",
+      "mako.pyparser.parse"
+    ],
+    "included_behaviors": [
+      "lex template source into parsetree nodes (text, expression, control, tags)",
+      "parse ${...} expressions and % control lines",
+      "analyze Python fragments for declared and undeclared identifiers",
+      "report SyntaxException and CompileException with line positions"
+    ],
+    "excluded_behaviors": [
+      "template compilation, codegen, and runtime rendering",
+      "TemplateLookup, caching, and filesystem loading",
+      "CLI, extensions, babel/beaker plugins",
+      "original mako import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Mako lexer couples nested tag/control stacks, parsetree node construction, and AST-based Python fragment analysis shared with codegen paths.",
+    "signals": [
+      "lexer tag and control_line stacks with ternary elif/except handling",
+      "parsetree nodes invoke ast.PythonFragment for partial control lines",
+      "pyparser FindIdentifiers walks _ast_util parse trees for identifier sets",
+      "expression nodes merge filter escape builtins with code undeclared sets"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Lexer, parsetree, PythonCode, PythonFragment, SyntaxException, CompileException",
+    "callable": "featurelifted.Lexer.parse",
+    "signature": "Lexer(text: str, filename: str | None = None).parse() -> parsetree.TemplateNode"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "MarkupSafe"
+    ],
+    "forbidden_dependencies": [
+      "mako"
+    ],
+    "forbidden_imports": [
+      "mako"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "scoring_reference": {
+    "oracle_loc": 2782,
+    "oracle_bytes": 206035,
+    "oracle_dependency_count": 0,
+    "copy_all_loc": 6137,
+    "copy_all_bytes": 253525
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Mako template lexer and expression parse core",
+    "summary": "Extract a task-scoped subset of `mako` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Lexer",
+        "kind": "class",
+        "signature": "(text, filename=None, input_encoding=None, preprocessor=None)",
+        "members": [
+          {
+            "path": "featurelifted.Lexer.parse",
+            "kind": "method",
+            "signature": "(self)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.parsetree.ControlLine",
+            "kind": "class",
+            "signature": "(keyword, isend, text, **kwargs)"
+          },
+          {
+            "path": "featurelifted.parsetree.DefTag",
+            "kind": "class",
+            "signature": "(keyword, attributes, **kwargs)"
+          },
+          {
+            "path": "featurelifted.parsetree.Expression",
+            "kind": "class",
+            "signature": "(text, escapes, **kwargs)"
+          },
+          {
+            "path": "featurelifted.parsetree.TemplateNode",
+            "kind": "class",
+            "signature": "(filename)"
+          },
+          {
+            "path": "featurelifted.parsetree.Text",
+            "kind": "class",
+            "signature": "(content, **kwargs)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.PythonCode",
+        "kind": "class",
+        "signature": "(code, **exception_kwargs)",
+        "members": [
+          {
+            "path": "featurelifted.PythonCode.declared_identifiers",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.PythonCode.undeclared_identifiers",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.PythonFragment",
+        "kind": "class",
+        "signature": "(code, **exception_kwargs)",
+        "members": [
+          {
+            "path": "featurelifted.PythonFragment.declared_identifiers",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.PythonFragment.undeclared_identifiers",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.SyntaxException",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.CompileException",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: lex template source into parsetree nodes (text, expression, control, tags). Required observable cases include parse text and expression; def tag parses; percent escape in template; unclosed tag raises syntax; expression filter escapes; invalid partial control raises compile."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: parse ${...} expressions and % control lines. Required observable cases include parse text and expression; parse control line; def tag parses; expression filter escapes; elif partial control identifiers; invalid partial control raises compile."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: analyze Python fragments for declared and undeclared identifiers. Required observable cases include python code undeclared; python fragment for loop; elif partial control identifiers."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: report SyntaxException and CompileException with line positions. Required observable cases include unclosed tag raises syntax."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Lexer`, `featurelifted.Lexer.parse`, `featurelifted.parsetree`, `featurelifted.parsetree.ControlLine`, `featurelifted.parsetree.DefTag`, `featurelifted.parsetree.Expression`, `featurelifted.parsetree.TemplateNode`, `featurelifted.parsetree.Text`, `featurelifted.PythonCode`, `featurelifted.PythonCode.declared_identifiers`, `featurelifted.PythonCode.undeclared_identifiers`, `featurelifted.PythonFragment`, and 4 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "mako.lexer.Lexer",
+      "mako.lexer.Lexer.parse",
+      "mako.parsetree",
+      "mako.ast.PythonCode",
+      "mako.ast.PythonFragment",
+      "mako.ast.FunctionDecl",
+      "mako.pyparser.parse"
+    ],
+    "exclusions": [
+      "template compilation, codegen, and runtime rendering",
+      "TemplateLookup, caching, and filesystem loading",
+      "CLI, extensions, babel/beaker plugins",
+      "original mako import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "mako"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: mako."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: lex template source into parsetree nodes (text, expression, control, tags). Required observable cases include parse text and expression; def tag parses; percent escape in template; unclosed tag raises syntax; expression filter escapes; invalid partial control raises compile."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse ${...} expressions and % control lines. Required observable cases include parse text and expression; parse control line; def tag parses; expression filter escapes; elif partial control identifiers; invalid partial control raises compile."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: analyze Python fragments for declared and undeclared identifiers. Required observable cases include python code undeclared; python fragment for loop; elif partial control identifiers."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: report SyntaxException and CompileException with line positions. Required observable cases include unclosed tag raises syntax."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Lexer`, `featurelifted.Lexer.parse`, `featurelifted.parsetree`, `featurelifted.parsetree.ControlLine`, `featurelifted.parsetree.DefTag`, `featurelifted.parsetree.Expression`, `featurelifted.parsetree.TemplateNode`, `featurelifted.parsetree.Text`, `featurelifted.PythonCode`, `featurelifted.PythonCode.declared_identifiers`, `featurelifted.PythonCode.undeclared_identifiers`, `featurelifted.PythonFragment`, and 4 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: mako"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_text_and_expression",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_control_line",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_python_code_undeclared",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_def_tag_parses",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_percent_escape_in_template",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unclosed_tag_raises_syntax",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_python_fragment_for_loop",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_expression_filter_escapes",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_elif_partial_control_identifiers",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_partial_control_raises_compile",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_mako_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Lexer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Lexer.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_expression_filter_escapes",
+          "hidden_tests/test_hidden_behavior.py::test_percent_escape_in_template",
+          "hidden_tests/test_hidden_behavior.py::test_unclosed_tag_raises_syntax"
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree.ControlLine",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree.DefTag",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree.Expression",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree.TemplateNode",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsetree.Text",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonCode",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonCode.declared_identifiers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonCode.undeclared_identifiers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonFragment",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonFragment.declared_identifiers",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_python_fragment_for_loop"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonFragment.undeclared_identifiers",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_elif_partial_control_identifiers",
+          "hidden_tests/test_hidden_behavior.py::test_python_fragment_for_loop"
+        ]
+      },
+      {
+        "path": "featurelifted.SyntaxException",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CompileException",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "8edee980c3ec1eb19bc05a08d3a82415046f59bed29dfa7761125581ff2d69da",
+  "generated_task_hash": "69bd7a3d97c618f76b4e47724265526e17441c3315ea2e93d57689cde1b48b76"
+}

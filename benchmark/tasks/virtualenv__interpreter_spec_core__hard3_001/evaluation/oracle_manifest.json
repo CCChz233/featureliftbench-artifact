@@ -1,0 +1,21 @@
+{
+  "source_package_name": "virtualenv",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/virtualenv/discovery/py_info.py",
+    "repo/src/virtualenv/discovery/discover.py"
+  ],
+  "target_api": [
+    "featurelifted.parse_spec",
+    "featurelifted.match_version",
+    "featurelifted.discover_paths"
+  ],
+  "forbidden_imports": [
+    "virtualenv"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "virtualenv/"
+  ],
+  "notes": "Interpreter spec parser without environment creation."
+}

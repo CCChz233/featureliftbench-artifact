@@ -1,0 +1,237 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Rules, truthiness, and variable path resolution interact across operator dispatch.",
+    "level": "high",
+    "primary": "parser_state_coupling",
+    "signals": [
+      "short-circuit and/or",
+      "nested var paths",
+      "numeric coercion"
+    ],
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "json_logic"
+    ],
+    "forbidden_imports": [
+      "json_logic"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "json_logic/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract jsonLogic evaluator.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime"
+    ],
+    "included_behaviors": [
+      "jsonLogic evaluation",
+      "var paths",
+      "short-circuit and/or"
+    ],
+    "name": "JSON logic evaluator with variable resolution",
+    "source_entrypoints": [
+      "json_logic.jsonLogic"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "jsonLogic",
+    "import": "from featurelifted import jsonLogic",
+    "package": "featurelifted",
+    "signature": "jsonLogic(rules, data=None)"
+  },
+  "source": {
+    "commit": "5fda9125eab4178f8f81c7779291940e31e87bab",
+    "license": "MIT",
+    "name": "json_logic",
+    "url": "https://github.com/nadirizr/json-logic-py.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "rule / policy engine",
+    "parser_state_coupling"
+  ],
+  "task_id": "json_logic__evaluator_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "JSON logic evaluator with variable resolution",
+    "summary": "Extract a task-scoped subset of `json_logic` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.jsonLogic",
+        "kind": "function",
+        "signature": "(tests, data=None)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When jsonLogic evaluates supported arithmetic, comparison, conditional, collection, and boolean rules, it returns the corresponding JSON-compatible result."
+      },
+      {
+        "id": "B002",
+        "text": "When a var rule uses dotted paths or a default, jsonLogic resolves nested data and returns the default for missing paths."
+      },
+      {
+        "id": "B003",
+        "text": "When and/or rules are evaluated, operands short-circuit in order and return the same operand-style result as the upstream semantics."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.jsonLogic` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "json_logic.jsonLogic"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "json_logic"
+      ],
+      "paths": [
+        "repo/",
+        "json_logic/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: json_logic."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When jsonLogic evaluates supported arithmetic, comparison, conditional, collection, and boolean rules, it returns the corresponding JSON-compatible result."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When a var rule uses dotted paths or a default, jsonLogic resolves nested data and returns the default for missing paths."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When and/or rules are evaluated, operands short-circuit in order and return the same operand-style result as the upstream semantics."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.jsonLogic` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: json_logic"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_simple_comparison_and_var",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_numeric_plus",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_if_operator",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_short_circuit_and",
+        "behavior_ids": [
+          "B003",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_nested_var_path_and_missing",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_or_short_circuit",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.jsonLogic",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "0b9bc7ba723f9b2b5c7f8efabdfd8467715516d267110b07d6d8c59f236be028",
+  "generated_task_hash": "448102bec84208aed89ee688929f56a6472750fdaeede1fa56870be67811e585"
+}

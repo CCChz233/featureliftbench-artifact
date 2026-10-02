@@ -1,0 +1,344 @@
+{
+  "task_id": "lark__visitor_transform_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "data_model_coupling",
+    "parser",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "lark",
+    "url": "https://github.com/lark-parser/lark",
+    "commit": "1.2.2",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Parse tree visitor and transformer",
+    "description": "Extract Lark parse-tree Visitor, Transformer, v_args, and Discard semantics with supporting parse core as a standalone package.",
+    "source_entrypoints": [
+      "lark.visitors.Transformer",
+      "lark.visitors.Visitor",
+      "lark.visitors.v_args",
+      "lark.visitors.Discard",
+      "lark.Lark.parse",
+      "lark.Tree"
+    ],
+    "included_behaviors": [
+      "walk trees with Visitor callbacks",
+      "transform trees bottom-up with Transformer",
+      "decorate transformer methods with v_args inline and tree modes",
+      "discard nodes using Discard sentinel",
+      "parse grammars needed to produce trees for transformation"
+    ],
+    "excluded_behaviors": [
+      "standalone compiler tools and CLI",
+      "tree reconstruction and template utilities",
+      "original project tests and documentation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Visitor and transformer behavior is tightly coupled to Tree structure, Token leaves, grammar-driven rule names, and parser construction internals.",
+    "signals": [
+      "Tree child list shape drives dispatch",
+      "Transformer method naming conventions",
+      "v_args metadata on callbacks",
+      "parser and grammar closure required to build input trees"
+    ],
+    "primary": "data_model_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Lark, Tree, Transformer, Visitor, v_args, Discard",
+    "callable": "featurelifted.Transformer",
+    "signature": "Transformer.transform(tree: Tree) -> Any"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "lark"
+    ],
+    "forbidden_imports": [
+      "lark"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Parse tree visitor and transformer",
+    "summary": "Extract a task-scoped subset of `lark` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Lark",
+        "kind": "class",
+        "signature": "(grammar: 'Union[Grammar, str, IO[str]]', **options) -> None",
+        "members": [
+          {
+            "path": "featurelifted.Lark.parse",
+            "kind": "method",
+            "signature": "(self, text: str, start: Optional[str] = None, on_error: 'Optional[Callable[[UnexpectedInput], bool]]' = None) -> 'ParseTree'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Tree",
+        "kind": "class",
+        "signature": "(data: str, children: 'List[Branch[_Leaf_T]]', meta: Optional[Meta] = None) -> None"
+      },
+      {
+        "path": "featurelifted.Transformer",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Transformer.transform",
+            "kind": "method",
+            "signature": "(self, tree: Tree[~_Leaf_T]) -> ~_Return_T"
+          }
+        ],
+        "signature": "(visit_tokens: bool = True) -> None"
+      },
+      {
+        "path": "featurelifted.Visitor",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.v_args",
+        "kind": "function",
+        "signature": "(inline: bool = False, meta: bool = False, tree: bool = False, wrapper: Optional[Callable] = None) -> Callable[[Union[Callable[..., ~_Return_T], type]], Union[Callable[..., ~_Return_T], type]]"
+      },
+      {
+        "path": "featurelifted.Discard",
+        "kind": "object"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: walk trees with Visitor callbacks. Required observable cases include visitor walks tree nodes."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: transform trees bottom-up with Transformer. Required observable cases include transformer evaluates expression; v args inline transform; visitor walks tree nodes."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: decorate transformer methods with v_args inline and tree modes. Required observable cases include transformer evaluates expression; v args inline transform; v args tree mode."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: discard nodes using Discard sentinel. Required observable cases include discard removes nodes."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: parse grammars needed to produce trees for transformation. Required observable cases include visitor walks tree nodes."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Lark`, `featurelifted.Lark.parse`, `featurelifted.Tree`, `featurelifted.Transformer`, `featurelifted.Transformer.transform`, `featurelifted.Visitor`, `featurelifted.v_args`, `featurelifted.Discard` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "lark.visitors.Transformer",
+      "lark.visitors.Visitor",
+      "lark.visitors.v_args",
+      "lark.visitors.Discard",
+      "lark.Lark.parse",
+      "lark.Tree"
+    ],
+    "exclusions": [
+      "standalone compiler tools and CLI",
+      "tree reconstruction and template utilities",
+      "original project tests and documentation"
+    ],
+    "forbidden": {
+      "imports": [
+        "lark"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: lark."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: walk trees with Visitor callbacks. Required observable cases include visitor walks tree nodes."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: transform trees bottom-up with Transformer. Required observable cases include transformer evaluates expression; v args inline transform; visitor walks tree nodes."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: decorate transformer methods with v_args inline and tree modes. Required observable cases include transformer evaluates expression; v args inline transform; v args tree mode."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: discard nodes using Discard sentinel. Required observable cases include discard removes nodes."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse grammars needed to produce trees for transformation. Required observable cases include visitor walks tree nodes."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Lark`, `featurelifted.Lark.parse`, `featurelifted.Tree`, `featurelifted.Transformer`, `featurelifted.Transformer.transform`, `featurelifted.Visitor`, `featurelifted.v_args`, `featurelifted.Discard` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: lark"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_visitor_public.py::test_transformer_evaluates_expression",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_visitor_public.py::test_v_args_inline_transform",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_visitor_hidden.py::test_discard_removes_nodes",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_visitor_hidden.py::test_visitor_walks_tree_nodes",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_visitor_hidden.py::test_v_args_tree_mode",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Lark",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Lark.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_visitor_hidden.py::test_discard_removes_nodes",
+          "hidden_tests/test_visitor_hidden.py::test_v_args_tree_mode",
+          "hidden_tests/test_visitor_hidden.py::test_visitor_walks_tree_nodes"
+        ]
+      },
+      {
+        "path": "featurelifted.Tree",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Transformer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Transformer.transform",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Visitor",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.v_args",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Discard",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "9a9d1b818d6584763f2a07054add6701c4a645fb5337cb6fafabdd79ce30d808",
+  "generated_task_hash": "0161c656dc7830d0e333cc30c05bea78e3f5d4e5e6eeea1444115e205dc5f755"
+}

@@ -1,0 +1,10 @@
+{
+  "source_package_name": "dotenv",
+  "required_source_files": [
+    "src/dotenv/parser.py",
+    "src/dotenv/variables.py",
+    "src/dotenv/main.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle copies parser, variables, and main modules; excludes CLI and IPython helpers."
+}

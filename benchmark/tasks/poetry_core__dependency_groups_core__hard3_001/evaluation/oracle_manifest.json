@@ -1,0 +1,24 @@
+{
+  "source_package_name": "poetry_core",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/poetry/core/packages/dependency_group.py",
+    "repo/src/poetry/core/factory.py"
+  ],
+  "target_api": [
+    "featurelifted.parse_project_dependencies",
+    "featurelifted.resolve_group",
+    "featurelifted.DependencyGroup",
+    "featurelifted.DependencySpec"
+  ],
+  "forbidden_imports": [
+    "poetry",
+    "poetry_core"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "poetry/",
+    "poetry_core/"
+  ],
+  "notes": "Dependency group resolver subset without build backend."
+}

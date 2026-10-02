@@ -1,0 +1,145 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_default_filter_with_boolean",
+      "public_clause_ids": [
+        "B003",
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_defined_test_in_template",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_filters_module_required_for_join",
+      "public_clause_ids": [
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_tests_module_required_for_even",
+      "public_clause_ids": [
+        "B004",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: apply built-in filters in templates and via call_filter. Required observable cases include capitalize filter in template; call filter directly; defined test in template."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: evaluate built-in tests in templates and via call_test. Required observable cases include defined test in template."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: support common filters: capitalize, default, length, join, map, select. Required observable cases include capitalize filter in template; default filter with boolean; filters module required for join."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: support common tests: defined, undefined, even, odd, number, string. Required observable cases include tests module required for even."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The extracted feature must support this observable behavior: default filter honors boolean true to treat falsey values as missing. Required observable cases include default filter with boolean."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The extracted feature must support this observable behavior: runtime Undefined and filters/tests registries must be available for call_filter/call_test. Required observable cases include call filter directly; tests module required for even."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "The package exposes the required task API paths `featurelifted.Environment`, `featurelifted.Environment.call_filter`, `featurelifted.Environment.call_test`, `featurelifted.Environment.from_string`, `featurelifted.filters`, `featurelifted.filters.FILTERS`, `featurelifted.tests`, `featurelifted.tests.TESTS`, `featurelifted.runtime`, `featurelifted.runtime.Undefined` with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B008",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B008",
+      "text": "the submitted package does not import forbidden upstream packages: jinja2, jinja"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_api.py::test_capitalize_filter_in_template",
+      "public_clause_ids": [
+        "B001",
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_call_filter_directly",
+      "public_clause_ids": [
+        "B001",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 0,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "framework_coupling",
+    "implicit_dependency_coupling",
+    "data_model_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "15f7e7bca898e6a6c60477c289e69a2a7fad2fbe954adfe1d7a3ecff7c15b469",
+  "task_id": "jinja2__filters_tests_core__001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

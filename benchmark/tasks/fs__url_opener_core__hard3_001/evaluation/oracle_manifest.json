@@ -1,0 +1,20 @@
+{
+  "source_package_name": "fs",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/fs/opener/parse.py",
+    "repo/fs/opener/registry.py"
+  ],
+  "target_api": [
+    "featurelifted.parse_fs_url",
+    "featurelifted.FSOpenerRegistry"
+  ],
+  "forbidden_imports": [
+    "fs"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "fs/"
+  ],
+  "notes": "FS URL opener subset without real backends."
+}

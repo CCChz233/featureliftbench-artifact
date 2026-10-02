@@ -1,0 +1,19 @@
+{
+  "source_package_name": "cattrs",
+  "required_source_files": [
+    "cattrs/_compat.py",
+    "cattrs/_generics.py",
+    "cattrs/converters.py",
+    "cattrs/disambiguators.py",
+    "cattrs/dispatch.py",
+    "cattrs/errors.py",
+    "cattrs/fns.py",
+    "cattrs/gen/__init__.py",
+    "cattrs/gen/_consts.py",
+    "cattrs/gen/_shared.py",
+    "cattrs/gen/_generics.py",
+    "cattrs/gen/_lc.py",
+    "cattrs/gen/typeddicts.py"
+  ],
+  "notes": "Oracle copies the structure/unstructure core without preconf codecs, strategies registries, or GenConverter. Copy-all baseline includes the full cattrs package tree under repo/cattrs/."
+}

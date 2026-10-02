@@ -1,0 +1,8 @@
+{
+  "source_package_name": "xmltodict",
+  "required_source_files": [
+    "xmltodict.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle splits single-file xmltodict.py into exceptions, sax_handler, validation, parse, and unparse modules; omits streaming CLI and comment processing."
+}

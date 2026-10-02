@@ -1,0 +1,22 @@
+{
+  "source_package_name": "sphinx",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/sphinx/registry.py",
+    "repo/sphinx/extension.py",
+    "repo/sphinx/errors.py"
+  ],
+  "target_api": [
+    "featurelifted.ComponentRegistry",
+    "featurelifted.ExtensionMetadata",
+    "featurelifted.ExtensionError"
+  ],
+  "forbidden_imports": [
+    "sphinx"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "sphinx/"
+  ],
+  "notes": "Registry/setup subset without builders or application startup."
+}

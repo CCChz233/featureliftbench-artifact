@@ -1,0 +1,364 @@
+{
+  "task_id": "voluptuous__schema_validate_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "voluptuous",
+    "validation",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "voluptuous",
+    "url": "https://github.com/alecthomas/voluptuous",
+    "commit": "87825d6dbdab8830fcc6d559ecb3b88bdf68af6d",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "Schema validation core",
+    "description": "Extract Voluptuous Schema declaration, Required/Optional markers, composed validators, and error aggregation without original voluptuous import.",
+    "source_entrypoints": [
+      "voluptuous.Schema",
+      "voluptuous.Required",
+      "voluptuous.Optional",
+      "voluptuous.validators.All",
+      "voluptuous.validators.Any",
+      "voluptuous.validators.In",
+      "voluptuous.validators.Coerce",
+      "voluptuous.error.MultipleInvalid"
+    ],
+    "included_behaviors": [
+      "declare Schema with Required and Optional markers",
+      "validate dict payloads with type and nested schema matching",
+      "compose All, Any, and In validators with Coerce",
+      "aggregate validation failures as MultipleInvalid with error paths"
+    ],
+    "excluded_behaviors": [
+      "humanize_error and CLI helpers",
+      "Email, Url, File, and other heavyweight validators",
+      "original voluptuous import at runtime",
+      "upstream packaging and bin scripts"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling",
+      "framework_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Voluptuous couples schema compilation, marker semantics, sub-validator composition, and Invalid path aggregation.",
+    "signals": [
+      "Schema._compile builds callable validators from dict/list graphs",
+      "Required/Optional markers drive key presence and defaults",
+      "All/Any compile sub-schemas via __voluptuous_compile__",
+      "MultipleInvalid collects nested Invalid paths"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Schema, Required, Optional, All, Any, In, Coerce, Invalid, MultipleInvalid, SchemaError",
+    "callable": "featurelifted.Schema",
+    "signature": "Schema(schema, required=False, extra=PREVENT_EXTRA)(data)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "voluptuous"
+    ],
+    "forbidden_imports": [
+      "voluptuous"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Schema validation core",
+    "summary": "Extract a task-scoped subset of `voluptuous` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Schema",
+        "kind": "class",
+        "signature": "(schema: 'Schemable', required: 'bool' = False, extra: 'int' = 0) -> 'None'"
+      },
+      {
+        "path": "featurelifted.Required",
+        "kind": "class",
+        "signature": "(schema: 'Schemable', msg: 'typing.Optional[str]' = None, default: 'typing.Any' = ..., description: 'typing.Any | None' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.Optional",
+        "kind": "class",
+        "signature": "(schema: 'Schemable', msg: 'typing.Optional[str]' = None, default: 'typing.Any' = ..., description: 'typing.Any | None' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.All",
+        "kind": "class",
+        "signature": "(*validators, msg=None, required=False, discriminant=None, **kwargs) -> 'None'"
+      },
+      {
+        "path": "featurelifted.Any",
+        "kind": "class",
+        "signature": "(*validators, msg=None, required=False, discriminant=None, **kwargs) -> 'None'"
+      },
+      {
+        "path": "featurelifted.In",
+        "kind": "class",
+        "signature": "(container: 'typing.Container | typing.Iterable', msg: 'typing.Optional[str]' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.Coerce",
+        "kind": "class",
+        "signature": "(type: 'typing.Union[type, typing.Callable]', msg: 'typing.Optional[str]' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.Invalid",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.MultipleInvalid",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.SchemaError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: declare Schema with Required and Optional markers. Required observable cases include schema required field; optional missing key; nested schema validation."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: validate dict payloads with type and nested schema matching. Required observable cases include basic type validation; nested schema validation."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: compose All, Any, and In validators with Coerce. Required observable cases include all any in and coerce."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: aggregate validation failures as MultipleInvalid with error paths. Required observable cases include basic type validation; multiple invalid error paths."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Schema`, `featurelifted.Required`, `featurelifted.Optional`, `featurelifted.All`, `featurelifted.Any`, `featurelifted.In`, `featurelifted.Coerce`, `featurelifted.Invalid`, `featurelifted.MultipleInvalid`, `featurelifted.SchemaError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "voluptuous.Schema",
+      "voluptuous.Required",
+      "voluptuous.Optional",
+      "voluptuous.validators.All",
+      "voluptuous.validators.Any",
+      "voluptuous.validators.In",
+      "voluptuous.validators.Coerce",
+      "voluptuous.error.MultipleInvalid"
+    ],
+    "exclusions": [
+      "humanize_error and CLI helpers",
+      "Email, Url, File, and other heavyweight validators",
+      "original voluptuous import at runtime",
+      "upstream packaging and bin scripts"
+    ],
+    "forbidden": {
+      "imports": [
+        "voluptuous"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: voluptuous."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: declare Schema with Required and Optional markers. Required observable cases include schema required field; optional missing key; nested schema validation."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate dict payloads with type and nested schema matching. Required observable cases include basic type validation; nested schema validation."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: compose All, Any, and In validators with Coerce. Required observable cases include all any in and coerce."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: aggregate validation failures as MultipleInvalid with error paths. Required observable cases include basic type validation; multiple invalid error paths."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Schema`, `featurelifted.Required`, `featurelifted.Optional`, `featurelifted.All`, `featurelifted.Any`, `featurelifted.In`, `featurelifted.Coerce`, `featurelifted.Invalid`, `featurelifted.MultipleInvalid`, `featurelifted.SchemaError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: voluptuous"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_schema_required_field",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_optional_missing_key",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_basic_type_validation",
+        "behavior_ids": [
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_schema_validation",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_all_any_in_and_coerce",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_multiple_invalid_error_paths",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_voluptuous_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Schema",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Required",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Optional",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.All",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Any",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.In",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Coerce",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Invalid",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MultipleInvalid",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SchemaError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "e2e4bc06d000be39f126c64844394b79edfc446b964d07a08a913ae00417bd0b",
+  "generated_task_hash": "9d97e7343b4531501d3857831774531da5387a98beef26f23c32e1ae8d2093eb"
+}

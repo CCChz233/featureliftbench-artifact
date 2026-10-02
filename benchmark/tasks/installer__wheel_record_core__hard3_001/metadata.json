@@ -1,0 +1,248 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Wheel RECORD parsing, dist-info detection, and script name planning interact across archive metadata helpers.",
+    "level": "high",
+    "primary": "resource_coupling",
+    "signals": [
+      "multiple dist-info error",
+      "RECORD path normalization",
+      "entry point script names",
+      "missing hash/size columns"
+    ],
+    "types": [
+      "resource_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "installer"
+    ],
+    "forbidden_imports": [
+      "installer"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "installer/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped parse_wheel_record find_dist_info into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "filesystem install destinations",
+      "subprocess"
+    ],
+    "included_behaviors": [
+      "RECORD CSV parsing",
+      "dist-info discovery",
+      "script name extraction"
+    ],
+    "name": "parse_wheel_record find_dist_info",
+    "source_entrypoints": [
+      "installer.records.parse_record_file"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "parse_wheel_record",
+    "import": "from featurelifted import parse_wheel_record, find_dist_info, script_name",
+    "package": "featurelifted",
+    "signature": "parse_wheel_record(content: str)"
+  },
+  "source": {
+    "commit": "c18863d235a9d927f48d1831cbf738b0274ac59e",
+    "license": "MIT",
+    "name": "installer",
+    "url": "https://github.com/pypa/installer.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "metadata extraction / package discovery",
+    "resource_coupling"
+  ],
+  "task_id": "installer__wheel_record_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "parse_wheel_record find_dist_info",
+    "summary": "Extract a task-scoped subset of `installer` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse_wheel_record",
+        "kind": "function",
+        "signature": "(content: 'str') -> 'list[tuple[str, str | None, int | None]]'"
+      },
+      {
+        "path": "featurelifted.find_dist_info",
+        "kind": "function",
+        "signature": "(names: 'list[str]') -> 'str | None'"
+      },
+      {
+        "path": "featurelifted.script_name",
+        "kind": "function",
+        "signature": "(entry_point: 'str') -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`parse_wheel_record` parses CSV RECORD rows into `(path, digest, size)` tuples."
+      },
+      {
+        "id": "B002",
+        "text": "`find_dist_info` locates a unique `.dist-info` directory among archive names."
+      },
+      {
+        "id": "B003",
+        "text": "`script_name` derives console script names from entry point targets."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.parse_wheel_record`, `featurelifted.find_dist_info`, `featurelifted.script_name` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "installer.records.parse_record_file"
+    ],
+    "exclusions": [
+      "network access",
+      "filesystem install destinations",
+      "subprocess"
+    ],
+    "forbidden": {
+      "imports": [
+        "installer"
+      ],
+      "paths": [
+        "repo/",
+        "installer/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: installer."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`parse_wheel_record` parses CSV RECORD rows into `(path, digest, size)` tuples."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`find_dist_info` locates a unique `.dist-info` directory among archive names."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`script_name` derives console script names from entry point targets."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse_wheel_record`, `featurelifted.find_dist_info`, `featurelifted.script_name` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: installer"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_parse_wheel_record_row",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_find_dist_info_unique",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_multiple_dist_info_raises",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_script_name_from_entry_point",
+        "behavior_ids": [
+          "B003",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse_wheel_record",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.find_dist_info",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.script_name",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "6bc26841eb46908852e53b1b569709739b541e85ea7d508fcb5eb0ee9b52a967",
+  "generated_task_hash": "462ca94140fd51797ef1147b49833f9e4e8e693d4f4b1d5963bc6d718795d5a8"
+}

@@ -1,0 +1,275 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Requires extension import, setup return metadata, registry mutation, and warning/error semantics.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "parallel safety metadata returned from setup",
+      "duplicate directives raise ExtensionError without override",
+      "extension setup errors wrapped as ExtensionError",
+      "role override order honors override flag"
+    ],
+    "types": [
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "sphinx"
+    ],
+    "forbidden_imports": [
+      "sphinx"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "sphinx/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped directive/role registry and extension setup loader into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "builder pipeline",
+      "full application startup"
+    ],
+    "included_behaviors": [
+      "directive/role registry",
+      "extension setup loader",
+      "duplicate registration errors"
+    ],
+    "name": "Directive/role registry and extension setup loader",
+    "source_entrypoints": [
+      "sphinx.registry.SphinxComponentRegistry"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "ComponentRegistry",
+    "import": "from featurelifted import ComponentRegistry, ExtensionMetadata, ExtensionError",
+    "package": "featurelifted",
+    "signature": "ComponentRegistry()"
+  },
+  "source": {
+    "commit": "c1b618c559e6de70e5198ed6876f5b9fab88face",
+    "license": "BSD-2-Clause",
+    "name": "sphinx",
+    "url": "https://github.com/sphinx-doc/sphinx.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "copy-heavy trap tasks",
+    "framework_coupling"
+  ],
+  "task_id": "sphinx__extension_registry_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Directive/role registry and extension setup loader",
+    "summary": "Extract a task-scoped subset of `sphinx` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.ComponentRegistry",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.ComponentRegistry.add_directive",
+            "kind": "method",
+            "signature": "(self, name: 'str', directive: 'Any', override: 'bool' = False) -> 'None'"
+          },
+          {
+            "path": "featurelifted.ComponentRegistry.directives",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.ComponentRegistry.load_extension",
+            "kind": "method",
+            "signature": "(self, name: 'str', setup: \"Callable[['ComponentRegistry'], ExtensionMetadata]\") -> 'ExtensionMetadata'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionMetadata",
+        "kind": "class",
+        "signature": "(version: 'str' = '1.0', parallel_read_safe: 'bool' = True, parallel_write_safe: 'bool' = True) -> None"
+      },
+      {
+        "path": "featurelifted.ExtensionError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`add_directive` and `add_role` register components; duplicates raise `ExtensionError` unless `override=True`."
+      },
+      {
+        "id": "B002",
+        "text": "`load_extension` invokes a setup callable, records the extension, and returns `ExtensionMetadata`."
+      },
+      {
+        "id": "B003",
+        "text": "Setup failures are wrapped in `ExtensionError`."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.ComponentRegistry`, `featurelifted.ComponentRegistry.add_directive`, `featurelifted.ComponentRegistry.directives`, `featurelifted.ComponentRegistry.load_extension`, `featurelifted.ExtensionMetadata`, `featurelifted.ExtensionError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "sphinx.registry.SphinxComponentRegistry"
+    ],
+    "exclusions": [
+      "network access",
+      "builder pipeline",
+      "full application startup"
+    ],
+    "forbidden": {
+      "imports": [
+        "sphinx"
+      ],
+      "paths": [
+        "repo/",
+        "sphinx/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: sphinx."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`add_directive` and `add_role` register components; duplicates raise `ExtensionError` unless `override=True`."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`load_extension` invokes a setup callable, records the extension, and returns `ExtensionMetadata`."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Setup failures are wrapped in `ExtensionError`."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.ComponentRegistry`, `featurelifted.ComponentRegistry.add_directive`, `featurelifted.ComponentRegistry.directives`, `featurelifted.ComponentRegistry.load_extension`, `featurelifted.ExtensionMetadata`, `featurelifted.ExtensionError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: sphinx"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_load_extension_registers_metadata",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_duplicate_directive_requires_override",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_setup_errors_are_wrapped",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.ComponentRegistry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ComponentRegistry.add_directive",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_duplicate_directive_requires_override"
+        ]
+      },
+      {
+        "path": "featurelifted.ComponentRegistry.directives",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_duplicate_directive_requires_override"
+        ]
+      },
+      {
+        "path": "featurelifted.ComponentRegistry.load_extension",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_setup_errors_are_wrapped"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionMetadata",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "c01cea25608024019173e9c1844949ef931554322154a1526af8c808b58d9d7c",
+  "generated_task_hash": "a2e8079b575cb65f9cc9e6c6308e0307b096fb238904eafbe8bfcef5ef82f748"
+}

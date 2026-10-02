@@ -1,0 +1,17 @@
+{
+  "source_package_name": "arrow",
+  "required_source_files": [
+    "arrow/parser.py",
+    "arrow/formatter.py",
+    "arrow/arrow.py",
+    "arrow/factory.py",
+    "arrow/api.py",
+    "arrow/constants.py",
+    "arrow/util.py",
+    "arrow/locales.py"
+  ],
+  "runtime_dependencies": [
+    "python-dateutil"
+  ],
+  "notes": "Oracle uses English-only trimmed locales; repo ships full locales.py for copy-all penalty."
+}

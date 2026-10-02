@@ -1,0 +1,18 @@
+{
+  "source_package_name": "yarl",
+  "required_source_files": [
+    "yarl/_parse.py",
+    "yarl/_path.py",
+    "yarl/_query.py",
+    "yarl/_quoters.py",
+    "yarl/_quoting.py",
+    "yarl/_quoting_py.py",
+    "yarl/_url.py"
+  ],
+  "runtime_dependencies": [
+    "idna",
+    "multidict",
+    "propcache"
+  ],
+  "notes": "Oracle copies the yarl URL model package (pure-Python quoting). Repo snapshot includes upstream tests for copy-all extraction calibration."
+}

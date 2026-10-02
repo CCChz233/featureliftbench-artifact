@@ -1,0 +1,17 @@
+{
+  "source_package_name": "rfc3986",
+  "required_source_files": [
+    "rfc3986/uri.py",
+    "rfc3986/parseresult.py",
+    "rfc3986/api.py",
+    "rfc3986/misc.py",
+    "rfc3986/normalizers.py",
+    "rfc3986/_mixin.py",
+    "rfc3986/compat.py",
+    "rfc3986/exceptions.py",
+    "rfc3986/abnf_regexp.py",
+    "rfc3986/builder.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle is parse/build/normalize core; repo includes validators/iri for copy-all penalty."
+}

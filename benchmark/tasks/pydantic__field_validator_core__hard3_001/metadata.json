@@ -1,0 +1,242 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Decorators, class namespace inspection, validator order, and error wrappers require dynamic runtime behavior.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "before validators run first",
+      "after validators run post-init",
+      "inherited validators from bases",
+      "ValidationError aggregates field errors"
+    ],
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "pydantic"
+    ],
+    "forbidden_imports": [
+      "pydantic"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "pydantic/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped field_validator before/after into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "full pydantic v2 type system",
+      "JSON schema export"
+    ],
+    "included_behaviors": [
+      "field_validator decorator",
+      "before/after modes",
+      "ValidationError aggregation"
+    ],
+    "name": "field_validator before/after",
+    "source_entrypoints": [
+      "pydantic.functional_validators.field_validator"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "field_validator",
+    "import": "from featurelifted import field_validator, BaseModel, ValidationError",
+    "package": "featurelifted",
+    "signature": "field_validator(*fields, mode='after')"
+  },
+  "source": {
+    "commit": "652a61ce4f9d7d76eaada31535807a485ece0e21",
+    "license": "MIT",
+    "name": "pydantic",
+    "url": "https://github.com/pydantic/pydantic.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "data_model_coupling"
+  ],
+  "task_id": "pydantic__field_validator_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "field_validator before/after",
+    "summary": "Extract a task-scoped subset of `pydantic` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.field_validator",
+        "kind": "function",
+        "signature": "(*fields: 'str', mode: 'str' = 'after')"
+      },
+      {
+        "path": "featurelifted.BaseModel",
+        "kind": "class",
+        "signature": "(**data: 'Any') -> 'None'"
+      },
+      {
+        "path": "featurelifted.ValidationError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`@field_validator` registers before/after validators on model classes."
+      },
+      {
+        "id": "B002",
+        "text": "Before validators transform incoming values; after validators run on initialized attributes."
+      },
+      {
+        "id": "B003",
+        "text": "ValidationError carries structured field errors as an errors list of dicts, and errors[0][\"field\"] names the failing field."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.field_validator`, `featurelifted.BaseModel`, `featurelifted.ValidationError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pydantic.functional_validators.field_validator"
+    ],
+    "exclusions": [
+      "network access",
+      "full pydantic v2 type system",
+      "JSON schema export"
+    ],
+    "forbidden": {
+      "imports": [
+        "pydantic"
+      ],
+      "paths": [
+        "repo/",
+        "pydantic/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: pydantic."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`@field_validator` registers before/after validators on model classes."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Before validators transform incoming values; after validators run on initialized attributes."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "ValidationError carries structured field errors as an errors list of dicts, and errors[0][\"field\"] names the failing field."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.field_validator`, `featurelifted.BaseModel`, `featurelifted.ValidationError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pydantic"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_after_validator_strips",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_before_validator_normalizes",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_validation_error_on_after_failure",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.field_validator",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.BaseModel",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ValidationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "32cf1ee097e5e8c2be3b6f969730d621ca2d24dd716e635ec5ea39d48d2364ce",
+  "generated_task_hash": "fcfcd34ae03f4a5359bbe16ffa68e9894beaf11a28e7e23a89c69d8d300a78a0"
+}

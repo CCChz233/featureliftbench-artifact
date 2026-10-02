@@ -1,0 +1,350 @@
+{
+  "task_id": "python_dotenv__env_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "python-dotenv",
+    "functional-discriminator",
+    "config_environment_coupling",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "python-dotenv",
+    "url": "https://github.com/theskumar/python-dotenv",
+    "commit": "751f8c148222e58aa173c83c4e5e6cfccb2cc124",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "Dotenv parse and set_key core",
+    "description": "Extract .env file parsing with quote/escape handling, POSIX variable expansion, and set_key file mutation without importing dotenv.",
+    "source_entrypoints": [
+      "dotenv.dotenv_values",
+      "dotenv.set_key",
+      "dotenv.get_key",
+      "dotenv.parser.parse_stream",
+      "dotenv.variables.parse_variables",
+      "dotenv.main.DotEnv"
+    ],
+    "included_behaviors": [
+      "parse key=value pairs from stream with export prefix and comments",
+      "single- and double-quoted values with escape sequences",
+      "UTF-8 BOM stripping at file start",
+      "POSIX ${VAR} and ${VAR:-default} variable interpolation",
+      "set_key creates or updates keys with auto-quoting"
+    ],
+    "excluded_behaviors": [
+      "CLI and IPython extension entrypoints",
+      "load_dotenv os.environ side effects in hidden tests",
+      "upstream test suite and docs",
+      "original dotenv import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "Dotenv parsing couples regex-driven lexer state, quote escape tables, ordered variable resolution against prior bindings, and atomic file rewrite for set_key.",
+    "signals": [
+      "parse_stream Reader position tracks multiline quoted values",
+      "resolve_variables merges os.environ with parsed order",
+      "parse_variables splits ${name:-default} atoms",
+      "set_key rewrites file preserving unrelated lines and newlines"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import dotenv_values, set_key, get_key",
+    "callable": "featurelifted.dotenv_values",
+    "signature": "dotenv_values(stream=..., interpolate=True, encoding='utf-8')"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "python-dotenv",
+      "dotenv"
+    ],
+    "forbidden_imports": [
+      "dotenv"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Dotenv parse and set_key core",
+    "summary": "Extract a task-scoped subset of `dotenv` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.dotenv_values",
+        "kind": "function",
+        "signature": "(dotenv_path: Union[str, ForwardRef('os.PathLike[str]'), NoneType] = None, stream: Optional[IO[str]] = None, verbose: bool = False, interpolate: bool = True, encoding: Optional[str] = 'utf-8') -> Dict[str, Optional[str]]"
+      },
+      {
+        "path": "featurelifted.set_key",
+        "kind": "function",
+        "signature": "(dotenv_path: Union[str, ForwardRef('os.PathLike[str]')], key_to_set: str, value_to_set: str, quote_mode: str = 'always', export: bool = False, encoding: Optional[str] = 'utf-8', follow_symlinks: bool = False) -> Tuple[Optional[bool], str, str]"
+      },
+      {
+        "path": "featurelifted.get_key",
+        "kind": "function",
+        "signature": "(dotenv_path: Union[str, ForwardRef('os.PathLike[str]')], key_to_get: str, encoding: Optional[str] = 'utf-8') -> Optional[str]"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse key=value pairs from stream with export prefix and comments. Required observable cases include dotenv values simple pairs; dotenv values export prefix; inline comment after whitespace; key without value is none."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: single- and double-quoted values with escape sequences. Required observable cases include dotenv values quoted value; double quote escape sequences; single quote escape only backslash and quote."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: UTF-8 BOM stripping at file start. Required observable cases include utf8 bom stripped."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: POSIX ${VAR} and ${VAR:-default} variable interpolation. Required observable cases include variable interpolation chain; variable default when missing."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: set_key creates or updates keys with auto-quoting. Required observable cases include set key creates file; set key updates existing; set key quotes special characters; set key appends without trailing newline."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.dotenv_values`, `featurelifted.set_key`, `featurelifted.get_key` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "dotenv.dotenv_values",
+      "dotenv.set_key",
+      "dotenv.get_key",
+      "dotenv.parser.parse_stream",
+      "dotenv.variables.parse_variables",
+      "dotenv.main.DotEnv"
+    ],
+    "exclusions": [
+      "CLI and IPython extension entrypoints",
+      "load_dotenv os.environ side effects in hidden tests",
+      "upstream test suite and docs",
+      "original dotenv import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "dotenv"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: dotenv."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse key=value pairs from stream with export prefix and comments. Required observable cases include dotenv values simple pairs; dotenv values export prefix; inline comment after whitespace; key without value is none."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: single- and double-quoted values with escape sequences. Required observable cases include dotenv values quoted value; double quote escape sequences; single quote escape only backslash and quote."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: UTF-8 BOM stripping at file start. Required observable cases include utf8 bom stripped."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: POSIX ${VAR} and ${VAR:-default} variable interpolation. Required observable cases include variable interpolation chain; variable default when missing."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: set_key creates or updates keys with auto-quoting. Required observable cases include set key creates file; set key updates existing; set key quotes special characters; set key appends without trailing newline."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.dotenv_values`, `featurelifted.set_key`, `featurelifted.get_key` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: dotenv"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dotenv_values_simple_pairs",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dotenv_values_quoted_value",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dotenv_values_export_prefix",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_set_key_creates_file",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_set_key_updates_existing",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_double_quote_escape_sequences",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_single_quote_escape_only_backslash_and_quote",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_utf8_bom_stripped",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_inline_comment_after_whitespace",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_key_without_value_is_none",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_variable_interpolation_chain",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_variable_default_when_missing",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_set_key_quotes_special_characters",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_set_key_appends_without_trailing_newline",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_dotenv_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.dotenv_values",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.set_key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.get_key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "564cec12eb385ab6577efa1e1ee8e00d16272c7c154605f189579c89ff778182",
+  "generated_task_hash": "0a1669ae8f6bec1e0fbc7e0cd738051620e57211bb6d4eeaf12df8d6e0566d76"
+}

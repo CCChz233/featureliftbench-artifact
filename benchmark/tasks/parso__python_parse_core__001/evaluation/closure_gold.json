@@ -1,0 +1,729 @@
+{
+  "annotation_scope": {
+    "behavioral": "linked_to_public_behavior_ids",
+    "file": "complete_ai_assisted_reference_closure",
+    "runtime": "unresolved",
+    "symbol": "unresolved"
+  },
+  "audit": {
+    "limitation": "File completeness is provisional reference-closure completeness. Symbol, runtime-state, replaceability, and semantic minimality remain unresolved until independent human review and executable necessity probes.",
+    "manifest_file_count": 26,
+    "selection_source": "oracle_manifest.required_source_files",
+    "static_candidate_count": 21,
+    "static_candidates_not_in_reference_closure": [
+      "repo/parso/python/diff.py",
+      "repo/parso/python/pep8.py"
+    ]
+  },
+  "closure_variants": [
+    {
+      "requirements": [
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_001",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_002",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/_compatibility.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_003",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/cache.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_004",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/file_io.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_005",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/grammar.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_006",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/normalizer.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_007",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/parser.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_008",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/pgen2/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_009",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/pgen2/generator.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_010",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/pgen2/grammar_parser.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_011",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_012",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/errors.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_013",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar310.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_014",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar311.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_015",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar312.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_016",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar36.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_017",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar37.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_018",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar38.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_019",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/grammar39.txt"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_020",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/parser.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_021",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/prefix.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_022",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/token.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_023",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/tokenize.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_024",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/python/tree.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_025",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/tree.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_026",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/parso/utils.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        }
+      ],
+      "variant_id": "reference_source_closure"
+    }
+  ],
+  "entrypoints": [
+    "parso.parse",
+    "parso.load_grammar",
+    "parso.Grammar.parse"
+  ],
+  "gold_completeness": {
+    "adapter": "unresolved",
+    "file": "complete",
+    "resource": "unresolved",
+    "runtime_state": "unresolved",
+    "symbol": "unresolved",
+    "third_party": "unresolved"
+  },
+  "review": {
+    "adjudicator": "",
+    "disagreements": [
+      "repo/parso/python/diff.py",
+      "repo/parso/python/pep8.py"
+    ],
+    "formal_human_double_review_pending": true,
+    "reviewer_1": "codex_manifest_normalization_pass",
+    "reviewer_1_type": "ai_assisted_author",
+    "reviewer_2": "codex_static_entrypoint_closure_pass",
+    "reviewer_2_type": "ai_assisted_second_pass_not_independent_human",
+    "status": "ai_assisted_reviewed"
+  },
+  "schema_version": "featureliftbench.closure_gold.v1",
+  "task_id": "parso__python_parse_core__001"
+}

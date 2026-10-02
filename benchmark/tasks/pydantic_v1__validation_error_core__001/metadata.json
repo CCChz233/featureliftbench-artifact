@@ -1,0 +1,379 @@
+{
+  "task_id": "pydantic_v1__validation_error_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "validation",
+    "hard-first",
+    "functional-discriminator",
+    "framework_coupling"
+  ],
+  "source": {
+    "name": "pydantic",
+    "url": "https://github.com/pydantic/pydantic",
+    "commit": "5ebcdc13b83fba5da34ad9b0f008f7b4faf89396",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "BaseModel validation and structured ValidationError core",
+    "description": "Extract Pydantic v1 BaseModel field parsing, validator/root_validator hooks, model Config, and ValidationError error trees without JSON Schema, networks, or settings machinery.",
+    "source_entrypoints": [
+      "pydantic.BaseModel",
+      "pydantic.ValidationError",
+      "pydantic.validator",
+      "pydantic.root_validator",
+      "pydantic.Field",
+      "pydantic.config.Extra",
+      "pydantic.error_wrappers.ValidationError.errors"
+    ],
+    "included_behaviors": [
+      "declare BaseModel subclasses and parse dict input",
+      "field validators with pre/each_item semantics",
+      "root_validator whole-model checks",
+      "Config.extra forbid for unknown keys",
+      "ValidationError.errors() with loc/type/msg for nested models"
+    ],
+    "excluded_behaviors": [
+      "JSON Schema generation and schema_json",
+      "network/email/DSN types and BaseSettings",
+      "dataclasses bridge, validate_arguments, mypy plugin",
+      "original pydantic package import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "framework_coupling",
+      "global_state_registry_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "framework_coupling",
+    "description": "Model validation couples metaclass field setup, validator registries, config inheritance, nested model graphs, and ValidationError flattening.",
+    "signals": [
+      "ModelMetaclass builds fields and validator groups at class creation",
+      "nested BaseModel errors require loc prefix merging",
+      "root_validator error locations differ from field validators",
+      "Config.extra changes validation behavior"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import BaseModel, Field, ValidationError, validator, root_validator, Extra",
+    "callable": "featurelifted.BaseModel.parse_obj",
+    "signature": "BaseModel.parse_obj(obj)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "typing_extensions"
+    ],
+    "forbidden_dependencies": [
+      "pydantic"
+    ],
+    "forbidden_imports": [
+      "pydantic"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "BaseModel validation and structured ValidationError core",
+    "summary": "Extract a task-scoped subset of `pydantic` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.BaseModel",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.BaseModel.parse_obj",
+            "kind": "method",
+            "signature": "(obj: Any) -> 'Model'"
+          }
+        ],
+        "signature": "() -> None"
+      },
+      {
+        "path": "featurelifted.Field",
+        "kind": "function",
+        "signature": "(default: Any = PydanticUndefined, *, default_factory: Optional[Callable[[], Any]] = None, alias: Optional[str] = None, title: Optional[str] = None, description: Optional[str] = None, exclude: Union[ForwardRef('AbstractSetIntStr'), ForwardRef('MappingIntStrAny'), Any, NoneType] = None, include: Union[ForwardRef('AbstractSetIntStr'), ForwardRef('MappingIntStrAny'), Any, NoneType] = None, const: Optional[bool] = None, gt: Optional[float] = None, ge: Optional[float] = None, lt: Optional[float] = None, le: Optional[float] = None, multiple_of: Optional[float] = None, allow_inf_nan: Optional[bool] = None, max_digits: Optional[int] = None, decimal_places: Optional[int] = None, min_items: Optional[int] = None, max_items: Optional[int] = None, unique_items: Optional[bool] = None, min_length: Optional[int] = None, max_length: Optional[int] = None, allow_mutation: bool = True, regex: Optional[str] = None, discriminator: Optional[str] = None, repr: bool = True, **extra: Any) -> Any"
+      },
+      {
+        "path": "featurelifted.ValidationError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.validator",
+        "kind": "function",
+        "signature": "(*fields: str, pre: bool = False, each_item: bool = False, always: bool = False, check_fields: bool = True, whole: Optional[bool] = None, allow_reuse: bool = False) -> Callable[[Callable[..., Any]], ForwardRef('AnyClassMethod')]"
+      },
+      {
+        "path": "featurelifted.root_validator",
+        "kind": "function",
+        "signature": "(_func: Optional[Callable[..., Any]] = None, *, pre: bool = False, allow_reuse: bool = False, skip_on_failure: bool = False) -> Union[ForwardRef('AnyClassMethod'), Callable[[Callable[..., Any]], ForwardRef('AnyClassMethod')]]"
+      },
+      {
+        "path": "featurelifted.Extra",
+        "kind": "class",
+        "signature": "(*values)",
+        "members": [
+          {
+            "path": "featurelifted.Extra.forbid",
+            "kind": "attribute"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: declare BaseModel subclasses and parse dict input. Required observable cases include simple model parses fields; missing required field raises; parse obj classmethod; validator pre runs before type check."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: field validators with pre/each_item semantics. Required observable cases include field validator runs; validator pre runs before type check."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: root_validator whole-model checks. Required observable cases include root validator rejects invalid combo."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: Config.extra forbid for unknown keys. Required observable cases include extra forbid rejects unknown keys."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: ValidationError.errors() with loc/type/msg for nested models. Required observable cases include missing required field raises; nested validation error loc paths; multiple errors collected."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.BaseModel`, `featurelifted.BaseModel.parse_obj`, `featurelifted.Field`, `featurelifted.ValidationError`, `featurelifted.validator`, `featurelifted.root_validator`, `featurelifted.Extra`, `featurelifted.Extra.forbid` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pydantic.BaseModel",
+      "pydantic.ValidationError",
+      "pydantic.validator",
+      "pydantic.root_validator",
+      "pydantic.Field",
+      "pydantic.config.Extra",
+      "pydantic.error_wrappers.ValidationError.errors"
+    ],
+    "exclusions": [
+      "JSON Schema generation and schema_json",
+      "network/email/DSN types and BaseSettings",
+      "dataclasses bridge, validate_arguments, mypy plugin",
+      "original pydantic package import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "pydantic"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: pydantic."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: declare BaseModel subclasses and parse dict input. Required observable cases include simple model parses fields; missing required field raises; parse obj classmethod; validator pre runs before type check."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: field validators with pre/each_item semantics. Required observable cases include field validator runs; validator pre runs before type check."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: root_validator whole-model checks. Required observable cases include root validator rejects invalid combo."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Config.extra forbid for unknown keys. Required observable cases include extra forbid rejects unknown keys."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ValidationError.errors() with loc/type/msg for nested models. Required observable cases include missing required field raises; nested validation error loc paths; multiple errors collected."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.BaseModel`, `featurelifted.BaseModel.parse_obj`, `featurelifted.Field`, `featurelifted.ValidationError`, `featurelifted.validator`, `featurelifted.root_validator`, `featurelifted.Extra`, `featurelifted.Extra.forbid` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pydantic"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_simple_model_parses_fields",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_missing_required_field_raises",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_field_validator_runs",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_obj_classmethod",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_validation_error_loc_paths",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_extra_forbid_rejects_unknown_keys",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_root_validator_rejects_invalid_combo",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validator_pre_runs_before_type_check",
+        "behavior_ids": [
+          "B002",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_multiple_errors_collected",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_pydantic_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.BaseModel",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.BaseModel.parse_obj",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Field",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ValidationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validator",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.root_validator",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Extra",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Extra.forbid",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_extra_forbid_rejects_unknown_keys",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "a109fe71fae1220db654a06b0b048fd71ba9f7f1729f717856f5b7ae4f8634c7",
+  "generated_task_hash": "b3e97494471768edb46c87805781900435c76f21f438f119b09dc67e206ea8cd"
+}

@@ -1,0 +1,386 @@
+{
+  "task_id": "configobj__roundtrip_config_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "config",
+    "hard-first",
+    "functional-discriminator",
+    "config_environment_coupling"
+  ],
+  "source": {
+    "name": "configobj",
+    "url": "https://github.com/DiffSK/configobj",
+    "commit": "b7707c94c0317b8f89b704a01525a68eb6c72521",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "INI-like config round-trip and configspec validation",
+    "description": "Extract ConfigObj parsing/writing with comment preservation and Validator configspec checks without original configobj import.",
+    "source_entrypoints": [
+      "configobj.ConfigObj",
+      "configobj.validate.Validator",
+      "configobj.flatten_errors",
+      "configobj.get_extra_values"
+    ],
+    "included_behaviors": [
+      "parse INI-like config from strings with nested sections",
+      "write configs preserving comments and key order metadata",
+      "validate values against configspec via Validator",
+      "report validation failures with flatten_errors",
+      "detect duplicate sections and parse errors"
+    ],
+    "excluded_behaviors": [
+      "original configobj import at runtime",
+      "project tests and packaging"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "config_environment_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "ConfigObj couples line parsing, ordered section trees, interpolation engines, and configspec validation.",
+    "signals": [
+      "Section/ConfigObj ordered dict semantics",
+      "write() round-trip comment handling",
+      "Validator type coercion and bounds checks",
+      "configspec-driven validate() traversal"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import ConfigObj, DuplicateError, flatten_errors, get_extra_values; from featurelifted.validate import Validator, VdtValueTooSmallError",
+    "callable": "featurelifted.ConfigObj",
+    "signature": "ConfigObj(infile=None, ...)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "configobj"
+    ],
+    "forbidden_imports": [
+      "configobj"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "INI-like config round-trip and configspec validation",
+    "summary": "Extract a task-scoped subset of `configobj` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.ConfigObj",
+        "kind": "class",
+        "signature": "(infile=None, options=None, configspec=None, encoding=None, interpolation=True, raise_errors=False, list_values=True, create_empty=False, file_error=False, stringify=True, indent_type=None, default_encoding=None, unrepr=False, write_empty_values=False, _inspec=False)",
+        "members": [
+          {
+            "path": "featurelifted.ConfigObj.validate",
+            "kind": "method",
+            "signature": "(self, validator, preserve_errors=False, copy=False, section=None)"
+          },
+          {
+            "path": "featurelifted.ConfigObj.write",
+            "kind": "method",
+            "signature": "(self, outfile=None, section=None)"
+          },
+          {
+            "path": "featurelifted.ConfigObj.__getitem__",
+            "kind": "method",
+            "signature": "(self, key)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.DuplicateError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.flatten_errors",
+        "kind": "function",
+        "signature": "(cfg, res, levels=None, results=None)"
+      },
+      {
+        "path": "featurelifted.get_extra_values",
+        "kind": "function",
+        "signature": "(conf, _prepend=())"
+      },
+      {
+        "path": "featurelifted.validate",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.validate.Validator",
+            "kind": "class",
+            "signature": "(functions=None)"
+          },
+          {
+            "path": "featurelifted.validate.VdtValueTooSmallError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse INI-like config from strings with nested sections. Required observable cases include parse sections and values; no configobj import surface."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: write configs preserving comments and key order metadata. Required observable cases include write roundtrip keys; scalar order metadata; comment preserved on write."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: validate values against configspec via Validator. Required observable cases include configspec validation failure flattened; get extra values from configspec."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: report validation failures with flatten_errors. Required observable cases include configspec validation failure flattened."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: detect duplicate sections and parse errors. Required observable cases include parse sections and values; duplicate section raises."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.ConfigObj`, `featurelifted.ConfigObj.validate`, `featurelifted.ConfigObj.write`, `featurelifted.ConfigObj.__getitem__`, `featurelifted.DuplicateError`, `featurelifted.flatten_errors`, `featurelifted.get_extra_values`, `featurelifted.validate`, `featurelifted.validate.Validator`, `featurelifted.validate.VdtValueTooSmallError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "configobj.ConfigObj",
+      "configobj.validate.Validator",
+      "configobj.flatten_errors",
+      "configobj.get_extra_values"
+    ],
+    "exclusions": [
+      "original configobj import at runtime",
+      "project tests and packaging"
+    ],
+    "forbidden": {
+      "imports": [
+        "configobj"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: configobj."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse INI-like config from strings with nested sections. Required observable cases include parse sections and values; no configobj import surface."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: write configs preserving comments and key order metadata. Required observable cases include write roundtrip keys; scalar order metadata; comment preserved on write."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate values against configspec via Validator. Required observable cases include configspec validation failure flattened; get extra values from configspec."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: report validation failures with flatten_errors. Required observable cases include configspec validation failure flattened."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: detect duplicate sections and parse errors. Required observable cases include parse sections and values; duplicate section raises."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.ConfigObj`, `featurelifted.ConfigObj.validate`, `featurelifted.ConfigObj.write`, `featurelifted.ConfigObj.__getitem__`, `featurelifted.DuplicateError`, `featurelifted.flatten_errors`, `featurelifted.get_extra_values`, `featurelifted.validate`, `featurelifted.validate.Validator`, `featurelifted.validate.VdtValueTooSmallError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: configobj"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_sections_and_values",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_write_roundtrip_keys",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_scalar_order_metadata",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_comment_preserved_on_write",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_configspec_validation_failure_flattened",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_duplicate_section_raises",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_get_extra_values_from_configspec",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_configparser_interpolation_resolves",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_configobj_import_surface",
+        "behavior_ids": [
+          "B007",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.ConfigObj",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ConfigObj.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_configspec_validation_failure_flattened",
+          "hidden_tests/test_hidden_behavior.py::test_get_extra_values_from_configspec"
+        ]
+      },
+      {
+        "path": "featurelifted.ConfigObj.write",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_comment_preserved_on_write"
+        ]
+      },
+      {
+        "path": "featurelifted.DuplicateError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.flatten_errors",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.get_extra_values",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate.Validator",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate.VdtValueTooSmallError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ConfigObj.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_comment_preserved_on_write",
+          "hidden_tests/test_hidden_behavior.py::test_configparser_interpolation_resolves",
+          "hidden_tests/test_hidden_behavior.py::test_configspec_validation_failure_flattened",
+          "hidden_tests/test_hidden_behavior.py::test_duplicate_section_raises",
+          "hidden_tests/test_hidden_behavior.py::test_get_extra_values_from_configspec",
+          "hidden_tests/test_hidden_behavior.py::test_no_configobj_import_surface",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "cc7734f65e461c32ef940a2af6ffc38cb2c17ed0350c443dffe552fa5277750b",
+  "generated_task_hash": "1267dde0edb6df24564af4a820a31a29d59ca67608a36fe097deba316d9e8e9a"
+}

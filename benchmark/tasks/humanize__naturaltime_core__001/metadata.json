@@ -1,0 +1,316 @@
+{
+  "task_id": "humanize__naturaltime_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "humanize",
+    "naturaltime",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "humanize",
+    "url": "https://github.com/python-humanize/humanize",
+    "commit": "4.15.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Humanize natural time and delta formatting",
+    "description": "Extract humanize naturaltime/naturaldelta/naturaldate helpers without importing humanize.",
+    "source_entrypoints": [
+      "humanize.time.naturaltime",
+      "humanize.time.naturaldelta",
+      "humanize.time.naturaldate",
+      "humanize.time.naturalday",
+      "humanize.time.precisedelta"
+    ],
+    "included_behaviors": [
+      "naturaltime relative phrasing with when=",
+      "naturaldelta month/year granularity",
+      "precisedelta suppress and minimum_unit",
+      "naturaldate and naturalday phrasing"
+    ],
+    "excluded_behaviors": [
+      "filesize/lists/number formatting beyond time deps",
+      "non-English locale packs",
+      "original humanize import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Time humanization couples timedelta quantization, i18n gettext wrappers, and intcomma year formatting.",
+    "signals": [
+      "naturaltime tense derives from when= anchor",
+      "precisedelta suppress/minimum_unit alter unit ladder",
+      "naturaldelta months toggles year/month buckets",
+      "naturaldate switches format past ~5 months"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import naturaltime, naturaldelta, naturaldate, naturalday, precisedelta",
+    "callable": "featurelifted.naturaltime",
+    "signature": "naturaltime(value, future=False, months=True, minimum_unit='seconds', when=None) -> str"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "humanize"
+    ],
+    "forbidden_imports": [
+      "humanize"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Humanize natural time and delta formatting",
+    "summary": "Extract a task-scoped subset of `humanize` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.naturaltime",
+        "kind": "function",
+        "signature": "(value: 'dt.datetime | dt.timedelta | float', future: 'bool' = False, months: 'bool' = True, minimum_unit: 'str' = 'seconds', when: 'dt.datetime | None' = None) -> 'str'"
+      },
+      {
+        "path": "featurelifted.naturaldelta",
+        "kind": "function",
+        "signature": "(value: 'dt.timedelta | float', months: 'bool' = True, minimum_unit: 'str' = 'seconds') -> 'str'"
+      },
+      {
+        "path": "featurelifted.naturaldate",
+        "kind": "function",
+        "signature": "(value: 'dt.date | dt.datetime') -> 'str'"
+      },
+      {
+        "path": "featurelifted.naturalday",
+        "kind": "function",
+        "signature": "(value: 'dt.date | dt.datetime', format: 'str' = '%b %d') -> 'str'"
+      },
+      {
+        "path": "featurelifted.precisedelta",
+        "kind": "function",
+        "signature": "(value: 'dt.timedelta | float | None', minimum_unit: 'str' = 'seconds', suppress: 'Iterable[str]' = (), format: 'str' = '%0.2f') -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: naturaltime relative phrasing with when=. Required observable cases include naturaltime past with when; naturaltime future with when; naturaltime two hour past."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: naturaldelta month/year granularity. Required observable cases include naturaldelta hours; naturaldate distant year; naturaldelta long month granularity."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: precisedelta suppress and minimum_unit. Required observable cases include precisedelta suppress days."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: naturaldate and naturalday phrasing. Required observable cases include naturaldate distant year; naturalday today label."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.naturaltime`, `featurelifted.naturaldelta`, `featurelifted.naturaldate`, `featurelifted.naturalday`, `featurelifted.precisedelta` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "humanize.time.naturaltime",
+      "humanize.time.naturaldelta",
+      "humanize.time.naturaldate",
+      "humanize.time.naturalday",
+      "humanize.time.precisedelta"
+    ],
+    "exclusions": [
+      "filesize/lists/number formatting beyond time deps",
+      "non-English locale packs",
+      "original humanize import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "humanize"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: humanize."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: naturaltime relative phrasing with when=. Required observable cases include naturaltime past with when; naturaltime future with when; naturaltime two hour past."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: naturaldelta month/year granularity. Required observable cases include naturaldelta hours; naturaldate distant year; naturaldelta long month granularity."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: precisedelta suppress and minimum_unit. Required observable cases include precisedelta suppress days."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: naturaldate and naturalday phrasing. Required observable cases include naturaldate distant year; naturalday today label."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.naturaltime`, `featurelifted.naturaldelta`, `featurelifted.naturaldate`, `featurelifted.naturalday`, `featurelifted.precisedelta` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: humanize"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_naturaltime_past_with_when",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_naturaldelta_hours",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_naturaldate_distant_year",
+        "behavior_ids": [
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_naturaltime_future_with_when",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_precisedelta_suppress_days",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_naturaldelta_long_month_granularity",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_naturalday_today_label",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_naturaltime_two_hour_past",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_humanize_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.naturaltime",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.naturaldelta",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.naturaldate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.naturalday",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.precisedelta",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "00a219854dadc4fd399cb391aa232b3e52dfe6caadb19ddf61d1b251dadd3e97",
+  "generated_task_hash": "b50f7ceff64e5e51f13445d496c1fba12c97614dded0002a48f9c5216c4937b6"
+}

@@ -1,0 +1,5 @@
+{
+  "source_package_name": "dynaconf",
+  "required_source_files": [],
+  "notes": "Oracle copies merge core, loaders, and minimal vendor (box/toml); excludes contrib/cli/typed."
+}

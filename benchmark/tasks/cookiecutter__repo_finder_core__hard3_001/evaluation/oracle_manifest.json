@@ -1,0 +1,20 @@
+{
+  "source_package_name": "cookiecutter",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/cookiecutter/repository.py",
+    "repo/cookiecutter/config.py"
+  ],
+  "target_api": [
+    "featurelifted.RepoFinder",
+    "featurelifted.safe_join"
+  ],
+  "forbidden_imports": [
+    "cookiecutter"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "cookiecutter/"
+  ],
+  "notes": "Repository finder subset without git/network."
+}

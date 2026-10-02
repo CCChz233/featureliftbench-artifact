@@ -1,0 +1,10 @@
+{
+  "source_package_name": "configobj",
+  "required_source_files": [
+    "configobj/__init__.py",
+    "configobj/validate.py",
+    "configobj/_version.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle splits __init__.py into core/errors/interpolation modules plus validate.py."
+}

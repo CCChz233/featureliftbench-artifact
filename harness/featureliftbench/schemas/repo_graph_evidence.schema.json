@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://featureliftbench.local/schemas/repo_graph_evidence.schema.json",
+  "title": "FeatureLiftBench Repository Graph Runtime Evidence",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "evidence_id",
+    "kind",
+    "probe_type",
+    "evidence_class",
+    "status",
+    "result_summary",
+    "result_hash",
+    "submission_revision",
+    "snapshot_id",
+    "environment_scope_hash",
+    "freshness"
+  ],
+  "properties": {
+    "schema_version": {"const": "featureliftbench.repo_graph.evidence.v1"},
+    "evidence_id": {"type": "string", "pattern": "^evidence_[0-9]{4,}$"},
+    "kind": {"type": "string"},
+    "probe_type": {"type": "string"},
+    "evidence_class": {
+      "enum": ["static", "runtime", "public_test", "clean_install", "api_probe", "resource_probe"]
+    },
+    "status": {"enum": ["supports", "contradicts", "inconclusive", "failed"]},
+    "input_summary": {"type": "string"},
+    "result_summary": {"type": "string"},
+    "result_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "command_hash": {"type": "string"},
+    "claim_ids": {"type": "array", "items": {"type": "string"}},
+    "affected_symbols": {"type": "array", "items": {"type": "string"}},
+    "submission_revision": {"type": "integer", "minimum": 0},
+    "snapshot_id": {"type": "string"},
+    "environment_scope_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "freshness": {"const": "fresh"}
+  }
+}

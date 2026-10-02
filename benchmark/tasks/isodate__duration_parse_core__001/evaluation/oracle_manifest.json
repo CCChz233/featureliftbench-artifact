@@ -1,0 +1,16 @@
+{
+  "source_package_name": "isodate",
+        "required_source_files": [
+            "isodate/duration.py",
+            "isodate/isoduration.py",
+            "isodate/isoerror.py",
+            "isodate/isodatetime.py",
+            "isodate/isodates.py",
+            "isodate/isotime.py",
+            "isodate/isostrf.py",
+            "isodate/isotzinfo.py",
+            "isodate/tzinfo.py"
+        ],
+  "runtime_dependencies": [],
+  "notes": "Oracle is duration parse/format chain; repo includes tz/time helpers for copy-all penalty."
+}

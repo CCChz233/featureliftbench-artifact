@@ -1,0 +1,8 @@
+{
+  "source_package_name": "jsonpointer",
+  "required_source_files": [
+    "jsonpointer.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle splits jsonpointer.py into _escape, _errors, and _pointer modules."
+}

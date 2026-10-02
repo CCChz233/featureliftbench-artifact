@@ -1,0 +1,21 @@
+{
+  "source_package_name": "pydantic",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/pydantic/functional_validators.py",
+    "repo/pydantic/main.py"
+  ],
+  "target_api": [
+    "featurelifted.field_validator",
+    "featurelifted.BaseModel",
+    "featurelifted.ValidationError"
+  ],
+  "forbidden_imports": [
+    "pydantic"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "pydantic/"
+  ],
+  "notes": "Field validator subset without full pydantic runtime."
+}

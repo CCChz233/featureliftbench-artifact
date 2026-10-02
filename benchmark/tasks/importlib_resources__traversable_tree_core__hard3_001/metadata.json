@@ -1,0 +1,373 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Resource access depends on package anchor resolution, Traversable path semantics, nested resource traversal, and text/binary mode behavior.",
+    "level": "high",
+    "primary": "resource_coupling",
+    "signals": [
+      "files(anchor) resolves module objects and string module names.",
+      "joinpath accepts multiple segments and slash-separated nested paths.",
+      "read_text and read_binary preserve text encoding and byte payload behavior.",
+      "parent traversal must be rejected to avoid path leakage."
+    ],
+    "types": [
+      "resource_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "importlib_resources"
+    ],
+    "forbidden_imports": [
+      "importlib_resources"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "importlib_resources/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a Traversable package resource tree and text/binary readers without importing importlib_resources.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "zip importer adapters",
+      "as_file temporary extraction",
+      "deprecated contents/path helpers"
+    ],
+    "included_behaviors": [
+      "module object and string anchor resolution",
+      "filesystem-backed Traversable root",
+      "MemoryTraversable test tree",
+      "iterdir, is_file, is_dir, name, open, read_bytes, read_text",
+      "joinpath and / traversal",
+      "read_text and read_binary helpers",
+      "TraversalError for parent traversal and missing resources"
+    ],
+    "name": "Traversable resource tree and text/binary reader",
+    "source_entrypoints": [
+      "importlib_resources.files",
+      "importlib_resources.read_text",
+      "importlib_resources.read_binary",
+      "importlib_resources.abc.Traversable"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "files",
+    "import": "from featurelifted import TraversalError, files, read_binary, read_text",
+    "package": "featurelifted",
+    "signature": "files(anchor) -> Traversable"
+  },
+  "source": {
+    "commit": "1d554758b0cb1a030bf3acb131a276da8a3ebb1e",
+    "license": "Apache-2.0",
+    "license_source": "repo/pyproject.toml",
+    "name": "importlib_resources",
+    "url": "https://github.com/python/importlib_resources.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "path/resource resolver",
+    "resource_coupling"
+  ],
+  "task_id": "importlib_resources__traversable_tree_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Traversable resource tree and text/binary reader",
+    "summary": "Extract a task-scoped subset of `importlib_resources` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.TraversalError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.files",
+        "kind": "function",
+        "signature": "(anchor: 'types.ModuleType | str | MemoryTraversable') -> 'FileTraversable | MemoryTraversable'"
+      },
+      {
+        "path": "featurelifted.read_binary",
+        "kind": "function",
+        "signature": "(anchor: 'types.ModuleType | str | MemoryTraversable', resource: 'str') -> 'bytes'"
+      },
+      {
+        "path": "featurelifted.read_text",
+        "kind": "function",
+        "signature": "(anchor: 'types.ModuleType | str | MemoryTraversable', resource: 'str', encoding: 'str' = 'utf-8', errors: 'str' = 'strict') -> 'str'"
+      },
+      {
+        "path": "featurelifted.MemoryTraversable",
+        "kind": "class",
+        "signature": "(name: 'str', children: \"dict[str, 'MemoryTraversable'] | None\" = None, data: 'bytes | None' = None) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.MemoryTraversable.directory",
+            "kind": "method",
+            "signature": "(name: 'str', entries: 'dict[str, Any]') -> \"'MemoryTraversable'\""
+          },
+          {
+            "path": "featurelifted.MemoryTraversable.joinpath",
+            "kind": "method",
+            "signature": "(self, *descendants: 'Any') -> \"'MemoryTraversable'\""
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When files receives a module object or importable module-name string, it resolves the same package anchor."
+      },
+      {
+        "id": "B002",
+        "text": "For filesystem packages, files returns a Traversable rooted at the package directory with stable child names."
+      },
+      {
+        "id": "B003",
+        "text": "For in-memory package trees, MemoryTraversable exposes the same directory, file, open, and read operations as filesystem-backed traversables."
+      },
+      {
+        "id": "B004",
+        "text": "Traversable nodes report name, is_file, and is_dir and implement iterdir, open, read_bytes, and read_text consistently."
+      },
+      {
+        "id": "B005",
+        "text": "joinpath and the slash operator traverse child resources while preventing escape above the package root."
+      },
+      {
+        "id": "B006",
+        "text": "read_text honors the requested encoding and read_binary returns the resource bytes unchanged."
+      },
+      {
+        "id": "B007",
+        "text": "Parent traversal and missing-resource reads raise TraversalError instead of accessing paths outside the declared resource tree."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.TraversalError`, `featurelifted.files`, `featurelifted.read_binary`, `featurelifted.read_text`, `featurelifted.MemoryTraversable`, `featurelifted.MemoryTraversable.directory`, `featurelifted.MemoryTraversable.joinpath` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "importlib_resources.files",
+      "importlib_resources.read_text",
+      "importlib_resources.read_binary",
+      "importlib_resources.abc.Traversable"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "zip importer adapters",
+      "as_file temporary extraction",
+      "deprecated contents/path helpers"
+    ],
+    "forbidden": {
+      "imports": [
+        "importlib_resources"
+      ],
+      "paths": [
+        "repo/",
+        "importlib_resources/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: importlib_resources."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When files receives a module object or importable module-name string, it resolves the same package anchor."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "For filesystem packages, files returns a Traversable rooted at the package directory with stable child names."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "For in-memory package trees, MemoryTraversable exposes the same directory, file, open, and read operations as filesystem-backed traversables."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "Traversable nodes report name, is_file, and is_dir and implement iterdir, open, read_bytes, and read_text consistently."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "joinpath and the slash operator traverse child resources while preventing escape above the package root."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "read_text honors the requested encoding and read_binary returns the resource bytes unchanged."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "Parent traversal and missing-resource reads raise TraversalError instead of accessing paths outside the declared resource tree."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.TraversalError`, `featurelifted.files`, `featurelifted.read_binary`, `featurelifted.read_text`, `featurelifted.MemoryTraversable`, `featurelifted.MemoryTraversable.directory`, `featurelifted.MemoryTraversable.joinpath` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: importlib_resources"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_files_returns_traversable_for_package",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_read_text_and_binary_from_string_anchor",
+        "behavior_ids": [
+          "B001",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_nested_joinpath_accepts_multiple_segments",
+        "behavior_ids": [
+          "B004",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_text_encoding_and_binary_open_are_preserved",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B003",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_parent_traversal_is_rejected",
+        "behavior_ids": [
+          "B005",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_memory_traversable_matches_filesystem_contract",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_missing_resource_raises_traversal_error",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.TraversalError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.files",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.read_binary",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.read_text",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryTraversable",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryTraversable.directory",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_memory_traversable_matches_filesystem_contract"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryTraversable.joinpath",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_text_encoding_and_binary_open_are_preserved"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "fcb3aed20db88b8d243807e7dea483c804166365877f5b86b7f9087fa8c8cc3b",
+  "generated_task_hash": "15c639f04298cb58666a9fbd706d2496df8962296e7ea54118f7a7f20deb9813"
+}

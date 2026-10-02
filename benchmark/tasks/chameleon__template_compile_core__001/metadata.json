@@ -1,0 +1,271 @@
+{
+  "task_id": "chameleon__template_compile_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "chameleon",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "chameleon",
+    "url": "https://github.com/malthe/chameleon",
+    "commit": "4.6.0-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "ZPT template compile and render",
+    "description": "Extract Chameleon PageTemplate compile/render with TAL/TALES without importing chameleon.",
+    "source_entrypoints": [
+      "chameleon.zpt.template.PageTemplate",
+      "chameleon.compiler.ExpressionEngine",
+      "chameleon.tal",
+      "chameleon.tales",
+      "chameleon.exc.TemplateError"
+    ],
+    "included_behaviors": [
+      "compile and render PageTemplate from source strings",
+      "TAL attributes content/repeat/condition",
+      "TALES path and python expressions",
+      "macro define/use via metal namespace"
+    ],
+    "excluded_behaviors": [
+      "filesystem PageTemplateFile loader and auto_reload",
+      "i18n translation catalogs beyond defaults",
+      "benchmark utilities and legacy loader paths",
+      "original chameleon import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "ZPT compile couples tokenization, TAL/TALES expression engines, and codegen into renderable programs.",
+    "signals": [
+      "TAL repeat and condition compilation",
+      "TALES expression parser for path/python/string forms",
+      "macro metal:define-slot/use-slot wiring"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import TemplateError; from featurelifted.zpt.template import PageTemplate",
+    "callable": "featurelifted.zpt.template.PageTemplate",
+    "signature": "PageTemplate(source: str, **config)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "chameleon"
+    ],
+    "forbidden_imports": [
+      "chameleon"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "ZPT template compile and render",
+    "summary": "Extract a task-scoped subset of `chameleon` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.TemplateError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.zpt.template",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.zpt.template.PageTemplate",
+            "kind": "class",
+            "signature": "(body: 'bytes | str', **config: 'Unpack[PageTemplateConfig]')"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: compile and render PageTemplate from source strings. Required observable cases include render tal content; render python expression; tal replace marker."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: TAL attributes content/repeat/condition. Required observable cases include render tal content; tal repeat and condition; tal attributes replace; tal replace marker."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: TALES path and python expressions. Required observable cases include render python expression; tal replace marker."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: macro define/use via metal namespace. Required observable cases include tal replace marker."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.TemplateError`, `featurelifted.zpt.template`, `featurelifted.zpt.template.PageTemplate` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "chameleon.zpt.template.PageTemplate",
+      "chameleon.compiler.ExpressionEngine",
+      "chameleon.tal",
+      "chameleon.tales",
+      "chameleon.exc.TemplateError"
+    ],
+    "exclusions": [
+      "filesystem PageTemplateFile loader and auto_reload",
+      "i18n translation catalogs beyond defaults",
+      "benchmark utilities and legacy loader paths",
+      "original chameleon import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "chameleon"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: chameleon."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: compile and render PageTemplate from source strings. Required observable cases include render tal content; render python expression; tal replace marker."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: TAL attributes content/repeat/condition. Required observable cases include render tal content; tal repeat and condition; tal attributes replace; tal replace marker."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: TALES path and python expressions. Required observable cases include render python expression; tal replace marker."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: macro define/use via metal namespace. Required observable cases include tal replace marker."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.TemplateError`, `featurelifted.zpt.template`, `featurelifted.zpt.template.PageTemplate` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: chameleon"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_render_tal_content",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_render_python_expression",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_tal_repeat_and_condition",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_tal_attributes_replace",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_tal_replace_marker",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.TemplateError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.zpt.template",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.zpt.template.PageTemplate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "6f5f39d1d349a30281506b4ebec31a8ef4c85b83c0184f3efc6106b22a53e7a3",
+  "generated_task_hash": "602db4482d59b1f2b8c4242b7f84e1c80128ffdc8aca0ae96db0fb1ea7d22438"
+}

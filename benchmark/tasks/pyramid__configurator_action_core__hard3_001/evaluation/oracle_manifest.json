@@ -1,0 +1,20 @@
+{
+  "source_package_name": "pyramid",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/pyramid/config/actions.py",
+    "repo/src/pyramid/exceptions.py"
+  ],
+  "target_api": [
+    "featurelifted.ActionRegistry",
+    "featurelifted.ConfigurationConflictError"
+  ],
+  "forbidden_imports": [
+    "pyramid"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "pyramid/"
+  ],
+  "notes": "Action registry subset without WSGI startup."
+}

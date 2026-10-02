@@ -1,0 +1,9 @@
+{
+  "notes": "Entrypoints are maintainer-private provenance and are never Agent-visible in Main.",
+  "required_source_files": [
+    "parse.parse",
+    "parse.compile",
+    "parse.Parser",
+    "parse.Result"
+  ]
+}

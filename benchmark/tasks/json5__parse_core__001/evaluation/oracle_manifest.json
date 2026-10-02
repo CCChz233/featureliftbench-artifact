@@ -1,0 +1,10 @@
+{
+  "source_package_name": "json5",
+  "required_source_files": [
+    "json5/__init__.py",
+    "json5/lib.py",
+    "json5/parser.py",
+    "json5/version.py"
+  ],
+  "notes": "JSON5 loads/parser closure only. dump/dumps and CLI modules excluded."
+}

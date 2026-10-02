@@ -1,0 +1,352 @@
+{
+  "task_id": "rich__markup_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "parser_state_coupling",
+    "pure-python"
+  ],
+  "source": {
+    "name": "rich",
+    "url": "https://github.com/Textualize/rich",
+    "commit": "13.7.1-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Console markup parsing",
+    "description": "Extract Rich console markup rendering into Text spans, including escaping, nested styles, links, and error handling.",
+    "source_entrypoints": [
+      "rich.markup.render",
+      "rich.markup.escape",
+      "rich.text.Text.from_markup",
+      "rich.errors.MarkupError"
+    ],
+    "included_behaviors": [
+      "render markup tags into Text with style spans",
+      "escape square brackets for literal markup",
+      "support nested/open/close tags and link metadata",
+      "raise MarkupError on mismatched closing tags"
+    ],
+    "excluded_behaviors": [
+      "full Console rendering pipeline and terminal detection",
+      "progress bars, tables, and layout renderables",
+      "syntax highlighting and live displays"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "implicit_dependency_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Markup parsing maintains style stacks, span lists, and emoji normalization while building Text objects.",
+    "signals": [
+      "tag open/close stack with implicit close",
+      "style span accumulation on Text",
+      "escaped bracket handling"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted.markup import render, escape; from featurelifted.text import Text; from featurelifted.errors import MarkupError",
+    "callable": "featurelifted.markup.render",
+    "signature": "render(markup: str, style: str | Style = '', emoji: bool = True) -> Text"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "rich"
+    ],
+    "forbidden_imports": [
+      "rich"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Console markup parsing",
+    "summary": "Extract a task-scoped subset of `rich` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.errors",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.errors.MarkupError",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.markup",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.markup.escape",
+            "kind": "function",
+            "signature": "(markup: str, _escape: Callable[[Callable[[Match[str]], str], str], str] = <built-in method sub of re.Pattern object>) -> str"
+          },
+          {
+            "path": "featurelifted.markup.render",
+            "kind": "function",
+            "signature": "(markup: str, style: Union[str, Style] = '', emoji: bool = True, emoji_variant: Optional[Literal['emoji', 'text']] = None) -> Text"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.text",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.text.Text",
+            "kind": "class",
+            "signature": "(text: str = '', style: Union[str, Style] = '', *, justify: Optional[ForwardRef('JustifyMethod')] = None, overflow: Optional[ForwardRef('OverflowMethod')] = None, no_wrap: Optional[bool] = None, end: str = '\\n', tab_size: Optional[int] = None, spans: Optional[List[Span]] = None) -> None",
+            "members": [
+              {
+                "path": "featurelifted.text.Text.from_markup",
+                "kind": "method",
+                "signature": "(text: str, *, style: Union[str, Style] = '', emoji: bool = True, emoji_variant: Optional[Literal['emoji', 'text']] = None, justify: Optional[ForwardRef('JustifyMethod')] = None, overflow: Optional[ForwardRef('OverflowMethod')] = None, end: str = '\\n') -> 'Text'"
+              },
+              {
+                "path": "featurelifted.text.Text.markup",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.text.Text.plain",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.text.Text.spans",
+                "kind": "attribute"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: render markup tags into Text with style spans. Required observable cases include render escape and from markup; nested styles and implicit close; markup errors and escaped brackets; meta link handler and repr."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: escape square brackets for literal markup. Required observable cases include render escape and from markup; markup errors and escaped brackets."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: support nested/open/close tags and link metadata. Required observable cases include nested styles and implicit close; meta link handler and repr."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: raise MarkupError on mismatched closing tags. Required observable cases include nested styles and implicit close."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.errors`, `featurelifted.errors.MarkupError`, `featurelifted.markup`, `featurelifted.markup.escape`, `featurelifted.markup.render`, `featurelifted.text`, `featurelifted.text.Text`, `featurelifted.text.Text.from_markup`, `featurelifted.text.Text.markup`, `featurelifted.text.Text.plain`, `featurelifted.text.Text.spans` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "rich.markup.render",
+      "rich.markup.escape",
+      "rich.text.Text.from_markup",
+      "rich.errors.MarkupError"
+    ],
+    "exclusions": [
+      "full Console rendering pipeline and terminal detection",
+      "progress bars, tables, and layout renderables",
+      "syntax highlighting and live displays"
+    ],
+    "forbidden": {
+      "imports": [
+        "rich"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: rich."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: render markup tags into Text with style spans. Required observable cases include render escape and from markup; nested styles and implicit close; markup errors and escaped brackets; meta link handler and repr."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: escape square brackets for literal markup. Required observable cases include render escape and from markup; markup errors and escaped brackets."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support nested/open/close tags and link metadata. Required observable cases include nested styles and implicit close; meta link handler and repr."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise MarkupError on mismatched closing tags. Required observable cases include nested styles and implicit close."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.errors`, `featurelifted.errors.MarkupError`, `featurelifted.markup`, `featurelifted.markup.escape`, `featurelifted.markup.render`, `featurelifted.text`, `featurelifted.text.Text`, `featurelifted.text.Text.from_markup`, `featurelifted.text.Text.markup`, `featurelifted.text.Text.plain`, `featurelifted.text.Text.spans` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: rich"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_render_escape_and_from_markup",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_styles_and_implicit_close",
+        "behavior_ids": [
+          "B001",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_markup_errors_and_escaped_brackets",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_meta_link_handler_and_repr",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.errors",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.errors.MarkupError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.markup",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.markup.escape",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.markup.render",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.text",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.text.Text",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.text.Text.from_markup",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_meta_link_handler_and_repr"
+        ]
+      },
+      {
+        "path": "featurelifted.text.Text.markup",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_meta_link_handler_and_repr"
+        ]
+      },
+      {
+        "path": "featurelifted.text.Text.plain",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_markup_errors_and_escaped_brackets",
+          "hidden_tests/test_hidden_behavior.py::test_meta_link_handler_and_repr",
+          "hidden_tests/test_hidden_behavior.py::test_nested_styles_and_implicit_close"
+        ]
+      },
+      {
+        "path": "featurelifted.text.Text.spans",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_meta_link_handler_and_repr",
+          "hidden_tests/test_hidden_behavior.py::test_nested_styles_and_implicit_close"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "80f41a77164798926238835f30365620349d193256e0c9e62fc93a4c3d38a0ec",
+  "generated_task_hash": "cff4788f7b14ffc3ebe6c4b52cdaed6e0692bc8e711815e25e060a58a3f191c2"
+}

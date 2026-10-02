@@ -1,0 +1,329 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "environment, path resolver, platform state",
+    "level": "high",
+    "primary": "config_environment_coupling",
+    "signals": [
+      "Jupyter path precedence depends on environment variables, platform, sys.prefix, and user site paths.",
+      "The surrounding upstream repo contains unrelated CLI, migration, application, and troubleshooting modules."
+    ],
+    "types": [
+      "config_environment_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "jupyter_core",
+      "platformdirs"
+    ],
+    "forbidden_imports": [
+      "jupyter_core",
+      "platformdirs"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "jupyter_core/paths.py"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract deterministic Jupyter config/data/runtime path resolution without importing jupyter_core or platformdirs.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "filesystem ownership probing",
+      "platformdirs integration",
+      "Jupyter CLI, migration, application, and troubleshoot modules"
+    ],
+    "included_behaviors": [
+      "JUPYTER_CONFIG_PATH and JUPYTER_PATH precedence",
+      "JUPYTER_CONFIG_DIR, JUPYTER_DATA_DIR, and JUPYTER_RUNTIME_DIR overrides",
+      "Linux, macOS, and Windows path defaults",
+      "JUPYTER_NO_CONFIG isolated config behavior",
+      "JUPYTER_PREFER_ENV_PATH ordering"
+    ],
+    "name": "Jupyter config/data/runtime path resolution",
+    "source_entrypoints": [
+      "jupyter_core.paths.jupyter_config_dir",
+      "jupyter_core.paths.jupyter_data_dir",
+      "jupyter_core.paths.jupyter_runtime_dir",
+      "jupyter_core.paths.jupyter_path",
+      "jupyter_core.paths.jupyter_config_path"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "jupyter_config_path",
+    "import": "from featurelifted import jupyter_config_dir, jupyter_config_path, jupyter_data_dir, jupyter_path, jupyter_runtime_dir",
+    "package": "featurelifted",
+    "signature": "jupyter_config_path(env=None, home=None, platform='linux', sys_prefix='/usr', user_site_base=None, enable_user_site=True) -> list[str]"
+  },
+  "source": {
+    "commit": "ad6b4aea233a9634ffcd6ad553ecd63129ab5f6e",
+    "license": "BSD-3-Clause",
+    "name": "jupyter_core",
+    "tag": "v5.8.1",
+    "url": "https://github.com/jupyter/jupyter_core"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "path/resource resolver",
+    "config_environment_coupling"
+  ],
+  "task_id": "jupyter_core__paths_resolver_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Jupyter config/data/runtime path resolution",
+    "summary": "Extract a task-scoped subset of `jupyter_core` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.jupyter_config_dir",
+        "kind": "function",
+        "signature": "(env: 'Mapping[str, str] | None' = None, home: 'str | None' = None, platform: 'str' = 'linux') -> 'str'"
+      },
+      {
+        "path": "featurelifted.jupyter_config_path",
+        "kind": "function",
+        "signature": "(env: 'Mapping[str, str] | None' = None, home: 'str | None' = None, platform: 'str' = 'linux', sys_prefix: 'str' = '/usr', user_site_base: 'str | None' = None, enable_user_site: 'bool' = True) -> 'list[str]'"
+      },
+      {
+        "path": "featurelifted.jupyter_data_dir",
+        "kind": "function",
+        "signature": "(env: 'Mapping[str, str] | None' = None, home: 'str | None' = None, platform: 'str' = 'linux') -> 'str'"
+      },
+      {
+        "path": "featurelifted.jupyter_path",
+        "kind": "function",
+        "signature": "(*subdirs: 'str', env: 'Mapping[str, str] | None' = None, home: 'str | None' = None, platform: 'str' = 'linux', sys_prefix: 'str' = '/usr', user_site_base: 'str | None' = None, enable_user_site: 'bool' = True) -> 'list[str]'"
+      },
+      {
+        "path": "featurelifted.jupyter_runtime_dir",
+        "kind": "function",
+        "signature": "(env: 'Mapping[str, str] | None' = None, home: 'str | None' = None, platform: 'str' = 'linux') -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When JUPYTER_CONFIG_PATH or JUPYTER_PATH is set, its entries are ordered ahead of the applicable default search paths."
+      },
+      {
+        "id": "B002",
+        "text": "When JUPYTER_CONFIG_DIR, JUPYTER_DATA_DIR, or JUPYTER_RUNTIME_DIR is set, the corresponding resolver returns that explicit directory."
+      },
+      {
+        "id": "B003",
+        "text": "Without overrides, the path resolvers return deterministic Linux, macOS, and Windows user and system defaults for the selected platform."
+      },
+      {
+        "id": "B004",
+        "text": "When JUPYTER_NO_CONFIG is enabled, normal user and environment config paths are suppressed according to isolated-config behavior."
+      },
+      {
+        "id": "B005",
+        "text": "When JUPYTER_PREFER_ENV_PATH changes preference, environment-level paths move before or after user paths without dropping either group."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.jupyter_config_dir`, `featurelifted.jupyter_config_path`, `featurelifted.jupyter_data_dir`, `featurelifted.jupyter_path`, `featurelifted.jupyter_runtime_dir` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "jupyter_core.paths.jupyter_config_dir",
+      "jupyter_core.paths.jupyter_data_dir",
+      "jupyter_core.paths.jupyter_runtime_dir",
+      "jupyter_core.paths.jupyter_path",
+      "jupyter_core.paths.jupyter_config_path"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "filesystem ownership probing",
+      "platformdirs integration",
+      "Jupyter CLI, migration, application, and troubleshoot modules"
+    ],
+    "forbidden": {
+      "imports": [
+        "jupyter_core",
+        "platformdirs"
+      ],
+      "paths": [
+        "repo/",
+        "jupyter_core/paths.py"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: jupyter_core, platformdirs."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When JUPYTER_CONFIG_PATH or JUPYTER_PATH is set, its entries are ordered ahead of the applicable default search paths."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When JUPYTER_CONFIG_DIR, JUPYTER_DATA_DIR, or JUPYTER_RUNTIME_DIR is set, the corresponding resolver returns that explicit directory."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Without overrides, the path resolvers return deterministic Linux, macOS, and Windows user and system defaults for the selected platform."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When JUPYTER_NO_CONFIG is enabled, normal user and environment config paths are suppressed according to isolated-config behavior."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "When JUPYTER_PREFER_ENV_PATH changes preference, environment-level paths move before or after user paths without dropping either group."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.jupyter_config_dir`, `featurelifted.jupyter_config_path`, `featurelifted.jupyter_data_dir`, `featurelifted.jupyter_path`, `featurelifted.jupyter_runtime_dir` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: jupyter_core, platformdirs"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_config_env_path_precedes_user_path",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_data_path_adds_requested_subdir",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_data_dir_platform_defaults",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_hidden_runtime_dir_env_override_and_xdg_fallback",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_hidden_prefer_environment_over_user_changes_order",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_hidden_no_config_uses_clean_config_dir_only",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_hidden_windows_path_separator_and_programdata_default",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.jupyter_config_dir",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jupyter_config_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jupyter_data_dir",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jupyter_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jupyter_runtime_dir",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "ef92ca805f736b459aa8b999cf9af2ffdba02758da184c5bf789d58d36a17ba4",
+  "generated_task_hash": "1c330d5c1426ba06598367a43835d8265016110042f418d7ee0768076df7d593"
+}

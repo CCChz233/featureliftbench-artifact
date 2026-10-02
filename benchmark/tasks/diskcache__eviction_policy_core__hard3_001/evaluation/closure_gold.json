@@ -1,0 +1,70 @@
+{
+  "annotation_scope": {
+    "behavioral": "linked_to_public_behavior_ids",
+    "file": "complete_ai_assisted_reference_closure",
+    "runtime": "unresolved",
+    "symbol": "unresolved"
+  },
+  "audit": {
+    "limitation": "File completeness is provisional reference-closure completeness. Symbol, runtime-state, replaceability, and semantic minimality remain unresolved until independent human review and executable necessity probes.",
+    "manifest_file_count": 1,
+    "selection_source": "oracle_manifest.required_source_files",
+    "static_candidate_count": 1,
+    "static_candidates_not_in_reference_closure": []
+  },
+  "closure_variants": [
+    {
+      "requirements": [
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_001",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/diskcache/core.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        }
+      ],
+      "variant_id": "reference_source_closure"
+    }
+  ],
+  "entrypoints": [
+    "diskcache.core.EvictionPolicyPlanner"
+  ],
+  "gold_completeness": {
+    "adapter": "unresolved",
+    "file": "complete",
+    "resource": "unresolved",
+    "runtime_state": "unresolved",
+    "symbol": "unresolved",
+    "third_party": "unresolved"
+  },
+  "review": {
+    "adjudicator": "",
+    "disagreements": [],
+    "formal_human_double_review_pending": true,
+    "reviewer_1": "codex_manifest_normalization_pass",
+    "reviewer_1_type": "ai_assisted_author",
+    "reviewer_2": "codex_static_entrypoint_closure_pass",
+    "reviewer_2_type": "ai_assisted_second_pass_not_independent_human",
+    "status": "ai_assisted_reviewed"
+  },
+  "schema_version": "featureliftbench.closure_gold.v1",
+  "task_id": "diskcache__eviction_policy_core__hard3_001"
+}

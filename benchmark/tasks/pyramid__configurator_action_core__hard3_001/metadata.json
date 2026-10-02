@@ -1,0 +1,287 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Action ordering, discriminators, conflict detection, and introspection state require multiple interacting helpers.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "conflict with same discriminator",
+      "order ties execute in registration order after sort",
+      "introspection categories filter committed actions",
+      "None discriminator never conflicts"
+    ],
+    "types": [
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "pyramid"
+    ],
+    "forbidden_imports": [
+      "pyramid"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "pyramid/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped configurator action conflict resolver into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "WSGI server",
+      "full web framework startup"
+    ],
+    "included_behaviors": [
+      "action registration",
+      "conflict detection",
+      "ordered commit",
+      "introspection"
+    ],
+    "name": "Configurator action conflict resolver",
+    "source_entrypoints": [
+      "pyramid.config.actions.ActionConfiguratorMixin"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "ActionRegistry",
+    "import": "from featurelifted import ActionRegistry, ConfigurationConflictError",
+    "package": "featurelifted",
+    "signature": "ActionRegistry()"
+  },
+  "source": {
+    "commit": "5b13e4a61b479be17c1d97ab504154595813a8f8",
+    "license": "BSD-2-Clause",
+    "name": "pyramid",
+    "url": "https://github.com/Pylons/pyramid.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "stateful runtime behavior",
+    "framework_coupling"
+  ],
+  "task_id": "pyramid__configurator_action_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Configurator action conflict resolver",
+    "summary": "Extract a task-scoped subset of `pyramid` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.ActionRegistry",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.ActionRegistry.commit",
+            "kind": "method",
+            "signature": "(self) -> 'list[Any]'"
+          },
+          {
+            "path": "featurelifted.ActionRegistry.introspect",
+            "kind": "method",
+            "signature": "(self, category: 'str | None' = None) -> 'list[Action]'"
+          },
+          {
+            "path": "featurelifted.ActionRegistry.register",
+            "kind": "method",
+            "signature": "(self, discriminator: 'Any', callable: 'Callable[..., Any] | None' = None, order: 'int' = 0, args=(), kw=None, category: 'str | None' = None) -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.ConfigurationConflictError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`register` queues actions with discriminators and order values."
+      },
+      {
+        "id": "B002",
+        "text": "`commit` executes actions in order; duplicate discriminators raise `ConfigurationConflictError`."
+      },
+      {
+        "id": "B003",
+        "text": "None discriminators never conflict, and commit() returns the list of callable results in registration order rather than the queued action records."
+      },
+      {
+        "id": "B004",
+        "text": "`introspect(category=...)` filters committed actions."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.ActionRegistry`, `featurelifted.ActionRegistry.commit`, `featurelifted.ActionRegistry.introspect`, `featurelifted.ActionRegistry.register`, `featurelifted.ConfigurationConflictError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pyramid.config.actions.ActionConfiguratorMixin"
+    ],
+    "exclusions": [
+      "network access",
+      "WSGI server",
+      "full web framework startup"
+    ],
+    "forbidden": {
+      "imports": [
+        "pyramid"
+      ],
+      "paths": [
+        "repo/",
+        "pyramid/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: pyramid."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`register` queues actions with discriminators and order values."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`commit` executes actions in order; duplicate discriminators raise `ConfigurationConflictError`."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "None discriminators never conflict, and commit() returns the list of callable results in registration order rather than the queued action records."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "`introspect(category=...)` filters committed actions."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.ActionRegistry`, `featurelifted.ActionRegistry.commit`, `featurelifted.ActionRegistry.introspect`, `featurelifted.ActionRegistry.register`, `featurelifted.ConfigurationConflictError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pyramid"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_action_registry_executes_in_order",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_duplicate_discriminator_raises",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_none_discriminator_never_conflicts",
+        "behavior_ids": [
+          "B002",
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_introspect_category_filter",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.ActionRegistry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ActionRegistry.commit",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_duplicate_discriminator_raises",
+          "hidden_tests/test_hidden_contract.py::test_introspect_category_filter",
+          "hidden_tests/test_hidden_contract.py::test_none_discriminator_never_conflicts"
+        ]
+      },
+      {
+        "path": "featurelifted.ActionRegistry.introspect",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_introspect_category_filter"
+        ]
+      },
+      {
+        "path": "featurelifted.ActionRegistry.register",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_duplicate_discriminator_raises",
+          "hidden_tests/test_hidden_contract.py::test_introspect_category_filter",
+          "hidden_tests/test_hidden_contract.py::test_none_discriminator_never_conflicts"
+        ]
+      },
+      {
+        "path": "featurelifted.ConfigurationConflictError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "0ed828d608ffca303439bd8b85f0b43d2b35aab5b0ce5df3b539607362d045db",
+  "generated_task_hash": "2a90d2030da6e5b8eb594a9b69fdafb504ca36f3471d7487a0dde8161ea13678"
+}

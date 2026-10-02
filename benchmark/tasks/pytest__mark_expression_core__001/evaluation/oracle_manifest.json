@@ -1,0 +1,6 @@
+{
+  "source_files": [
+    "src/_pytest/mark/expression.py"
+  ],
+  "notes": "Standalone mark expression module only."
+}

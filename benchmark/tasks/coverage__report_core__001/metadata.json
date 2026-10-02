@@ -1,0 +1,361 @@
+{
+  "task_id": "coverage__report_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "config_environment_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "coveragepy",
+    "url": "https://github.com/coveragepy/coveragepy",
+    "commit": "f0dcf65f47120d9f74f6777134d3b8e92515ce6f",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Cobertura XML report writer",
+    "description": "Extract coverage.py XML report generation (XmlReporter) and supporting analysis types as a standalone package.",
+    "source_entrypoints": [
+      "coverage.xmlreport.XmlReporter",
+      "coverage.xmlreport.XmlReporter.report",
+      "coverage.xmlreport.rate",
+      "coverage.results.Analysis"
+    ],
+    "included_behaviors": [
+      "emit Cobertura-compatible XML with coverage, packages, and classes",
+      "serialize line and branch hit information from Analysis objects",
+      "honor xml_package_depth and skip_empty config options",
+      "compute line-rate and branch-rate attributes"
+    ],
+    "excluded_behaviors": [
+      "coverage data collection and measurement",
+      "HTML/JSON/LCOV report writers",
+      "configuration file discovery beyond CoverageConfig fields",
+      "plugin loading and CLI entrypoints",
+      "original project tests and docs"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "framework_coupling",
+      "data_model_coupling"
+    ],
+    "description": "XML reporting couples CoverageConfig report options, Analysis results, FileReporter metadata, and DOM serialization.",
+    "signals": [
+      "xml_package_depth truncates package names from relative paths",
+      "skip_empty omits zero-statement files from output",
+      "branch arcs encoded in line elements when data.has_arcs()"
+    ],
+    "primary": "config_environment_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Analysis, CoverageConfig, XmlReporter, rate, serialize_xml",
+    "callable": "featurelifted.XmlReporter.report",
+    "signature": "XmlReporter(coverage).report(morfs, outfile=None) -> float"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "coverage"
+    ],
+    "forbidden_imports": [
+      "coverage"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Cobertura XML report writer",
+    "summary": "Extract a task-scoped subset of `coverage` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Analysis",
+        "kind": "class",
+        "signature": "(precision: 'int', filename: 'str', has_arcs: 'bool', statements: 'set[TLineNo]', excluded: 'set[TLineNo]', executed: 'set[TLineNo]', arc_possibilities_set: 'set[TArc]', arcs_executed_set: 'set[TArc]', exit_counts: 'dict[TLineNo, int]', no_branch: 'set[TLineNo]') -> None"
+      },
+      {
+        "path": "featurelifted.CoverageConfig",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.CoverageConfig.skip_empty",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.CoverageConfig.xml_package_depth",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.XmlReporter",
+        "kind": "class",
+        "signature": "(coverage: 'Coverage') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.XmlReporter.report",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.XmlReporter.packages",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.XmlReporter.xml_file",
+            "kind": "method",
+            "signature": "(self, fr: 'FileReporter', analysis: 'Analysis', has_arcs: 'bool') -> 'None'"
+          },
+          {
+            "path": "featurelifted.XmlReporter.xml_out",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.rate",
+        "kind": "function",
+        "signature": "(hit: 'int', num: 'int') -> 'str'"
+      },
+      {
+        "path": "featurelifted.serialize_xml",
+        "kind": "function",
+        "signature": "(dom: 'xml.dom.minidom.Document') -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: emit Cobertura-compatible XML with coverage, packages, and classes. Required observable cases include xml file emits line elements; serialize xml produces coverage root."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: serialize line and branch hit information from Analysis objects. Required observable cases include xml file emits line elements; xml package depth truncates package name."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: honor xml_package_depth and skip_empty config options. Required observable cases include xml package depth truncates package name; skip empty omits zero statement files."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: compute line-rate and branch-rate attributes. Required observable cases include rate handles zero and fraction; xml package depth truncates package name."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Analysis`, `featurelifted.CoverageConfig`, `featurelifted.CoverageConfig.skip_empty`, `featurelifted.CoverageConfig.xml_package_depth`, `featurelifted.XmlReporter`, `featurelifted.XmlReporter.report`, `featurelifted.XmlReporter.packages`, `featurelifted.XmlReporter.xml_file`, `featurelifted.XmlReporter.xml_out`, `featurelifted.rate`, `featurelifted.serialize_xml` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "coverage.xmlreport.XmlReporter",
+      "coverage.xmlreport.XmlReporter.report",
+      "coverage.xmlreport.rate",
+      "coverage.results.Analysis"
+    ],
+    "exclusions": [
+      "coverage data collection and measurement",
+      "HTML/JSON/LCOV report writers",
+      "configuration file discovery beyond CoverageConfig fields",
+      "plugin loading and CLI entrypoints",
+      "original project tests and docs"
+    ],
+    "forbidden": {
+      "imports": [
+        "coverage"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: coverage."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: emit Cobertura-compatible XML with coverage, packages, and classes. Required observable cases include xml file emits line elements; serialize xml produces coverage root."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: serialize line and branch hit information from Analysis objects. Required observable cases include xml file emits line elements; xml package depth truncates package name."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: honor xml_package_depth and skip_empty config options. Required observable cases include xml package depth truncates package name; skip empty omits zero statement files."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: compute line-rate and branch-rate attributes. Required observable cases include rate handles zero and fraction; xml package depth truncates package name."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Analysis`, `featurelifted.CoverageConfig`, `featurelifted.CoverageConfig.skip_empty`, `featurelifted.CoverageConfig.xml_package_depth`, `featurelifted.XmlReporter`, `featurelifted.XmlReporter.report`, `featurelifted.XmlReporter.packages`, `featurelifted.XmlReporter.xml_file`, `featurelifted.XmlReporter.xml_out`, `featurelifted.rate`, `featurelifted.serialize_xml` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: coverage"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_rate_handles_zero_and_fraction",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_xml_file_emits_line_elements",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_xml_package_depth_truncates_package_name",
+        "behavior_ids": [
+          "B003",
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_skip_empty_omits_zero_statement_files",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_serialize_xml_produces_coverage_root",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Analysis",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CoverageConfig",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CoverageConfig.skip_empty",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_skip_empty_omits_zero_statement_files"
+        ]
+      },
+      {
+        "path": "featurelifted.CoverageConfig.xml_package_depth",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_xml_package_depth_truncates_package_name"
+        ]
+      },
+      {
+        "path": "featurelifted.XmlReporter",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.XmlReporter.report",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.XmlReporter.packages",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_skip_empty_omits_zero_statement_files",
+          "hidden_tests/test_hidden_behavior.py::test_xml_package_depth_truncates_package_name"
+        ]
+      },
+      {
+        "path": "featurelifted.XmlReporter.xml_file",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_skip_empty_omits_zero_statement_files",
+          "hidden_tests/test_hidden_behavior.py::test_xml_package_depth_truncates_package_name"
+        ]
+      },
+      {
+        "path": "featurelifted.XmlReporter.xml_out",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_skip_empty_omits_zero_statement_files",
+          "hidden_tests/test_hidden_behavior.py::test_xml_package_depth_truncates_package_name"
+        ]
+      },
+      {
+        "path": "featurelifted.rate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.serialize_xml",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "d8b17b5991291ae2c42d8840eca36cff4b5c21c13eaa419c231d4fd5c2a245f1",
+  "generated_task_hash": "1d4f29c82c072b6ba0bab36de047b61f232bb823d261101b08d29c07e6ee9c92"
+}

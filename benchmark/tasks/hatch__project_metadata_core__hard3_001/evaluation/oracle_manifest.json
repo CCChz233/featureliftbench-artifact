@@ -1,0 +1,21 @@
+{
+  "source_package_name": "hatch",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/backend/src/hatchling/metadata/core.py"
+  ],
+  "target_api": [
+    "featurelifted.normalize_project_metadata",
+    "featurelifted.select_environment"
+  ],
+  "forbidden_imports": [
+    "hatch",
+    "hatchling"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "hatch/",
+    "hatchling/"
+  ],
+  "notes": "Hatchling metadata subset without build runner."
+}

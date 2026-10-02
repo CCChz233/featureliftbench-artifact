@@ -1,0 +1,20 @@
+{
+  "source_package_name": "fsspec",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/fsspec/core.py",
+    "repo/fsspec/registry.py"
+  ],
+  "target_api": [
+    "featurelifted.ProtocolRegistry",
+    "featurelifted.url_to_fs"
+  ],
+  "forbidden_imports": [
+    "fsspec"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "fsspec/"
+  ],
+  "notes": "URL chain resolver without filesystem implementations."
+}

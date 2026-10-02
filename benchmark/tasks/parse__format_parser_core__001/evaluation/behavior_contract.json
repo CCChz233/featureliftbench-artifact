@@ -1,0 +1,100 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_full_match_and_case_policy",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_word_and_default_boundaries",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: literal and escaped-brace matching. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: named and positional capture fields. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: integer, float, word, and default string conversions. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: case-sensitive option and full-string matching. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The package exposes the required task API paths `featurelifted.Parser`, `featurelifted.Result`, `featurelifted.compile`, `featurelifted.parse` with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The submitted package does not import forbidden upstream packages: parse."
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_named_and_typed_fields",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_positional_and_escaped_braces",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    }
+  ],
+  "review": {
+    "independent_human_review_required": false,
+    "model_results_consulted": false,
+    "reviewer_type": "maintainer_author"
+  },
+  "review_status": "maintainer_reviewed",
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "task_id": "parse__format_parser_core__001",
+  "spec_sha256": "a7943213f61fb8874342c7369cd739c2125d89fb8e0d394cf1cb1cea29f22a12"
+}

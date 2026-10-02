@@ -1,0 +1,10 @@
+{
+  "source_package_name": "cachetools",
+  "required_source_files": [
+    "src/cachetools/__init__.py",
+    "src/cachetools/keys.py",
+    "src/cachetools/_cached.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle copies cache eviction core modules; excludes async, func decorators, cachedmethod, benchmarks, and docs."
+}

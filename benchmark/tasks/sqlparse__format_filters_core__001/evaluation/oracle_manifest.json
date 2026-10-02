@@ -1,0 +1,24 @@
+{
+  "source_files": [
+    "sqlparse/__init__.py",
+    "sqlparse/exceptions.py",
+    "sqlparse/keywords.py",
+    "sqlparse/lexer.py",
+    "sqlparse/sql.py",
+    "sqlparse/tokens.py",
+    "sqlparse/utils.py",
+    "sqlparse/engine/__init__.py",
+    "sqlparse/engine/grouping.py",
+    "sqlparse/engine/statement_splitter.py",
+    "sqlparse/engine/filter_stack.py",
+    "sqlparse/formatter.py",
+    "sqlparse/filters/__init__.py",
+    "sqlparse/filters/aligned_indent.py",
+    "sqlparse/filters/others.py",
+    "sqlparse/filters/output.py",
+    "sqlparse/filters/reindent.py",
+    "sqlparse/filters/right_margin.py",
+    "sqlparse/filters/tokens.py"
+  ],
+  "notes": "Format and filter-stack closure. CLI, tests, docs, and packaging metadata are excluded."
+}

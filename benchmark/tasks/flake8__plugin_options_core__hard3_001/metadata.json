@@ -1,0 +1,267 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Entry point discovery, option manager state, plugin parameters, and checker classification must be preserved.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "local plugin options register in OptionManager",
+      "select precedence enables only matching code prefixes",
+      "ignore disables matching plugins",
+      "tree/logical/physical checker grouping"
+    ],
+    "types": [
+      "framework_coupling",
+      "config_environment_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "flake8"
+    ],
+    "forbidden_imports": [
+      "flake8"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "flake8/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped plugin option registration and checker selection into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "file linting",
+      "CLI application"
+    ],
+    "included_behaviors": [
+      "plugin option registration",
+      "checker classification",
+      "select/ignore filtering"
+    ],
+    "name": "Plugin option registration and checker selection",
+    "source_entrypoints": [
+      "flake8.options.manager.OptionManager",
+      "flake8.plugins.finder.Plugins"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "OptionManager",
+    "import": "from featurelifted import OptionManager, PluginSpec, classify_plugins, apply_select_ignore",
+    "package": "featurelifted",
+    "signature": "OptionManager()"
+  },
+  "source": {
+    "commit": "bb943328eff3518ee193adbddffdfe15e239c3f7",
+    "license": "MIT",
+    "name": "flake8",
+    "url": "https://github.com/PyCQA/flake8.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "framework_coupling"
+  ],
+  "task_id": "flake8__plugin_options_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Plugin option registration and checker selection",
+    "summary": "Extract a task-scoped subset of `flake8` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.OptionManager",
+        "kind": "class",
+        "signature": "() -> 'None'"
+      },
+      {
+        "path": "featurelifted.PluginSpec",
+        "kind": "class",
+        "signature": "(name: 'str', codes: 'list[str]', checker_type: 'str', options: 'list[OptionSpec]' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.classify_plugins",
+        "kind": "function",
+        "signature": "(plugins: 'list[PluginSpec]') -> 'Plugins'"
+      },
+      {
+        "path": "featurelifted.apply_select_ignore",
+        "kind": "function",
+        "signature": "(plugins: 'Plugins', select: 'set[str] | None', ignore: 'set[str] | None') -> 'Plugins'"
+      },
+      {
+        "path": "featurelifted.OptionSpec",
+        "kind": "class",
+        "signature": "(dest: 'str', parse_from_config: 'bool' = False, default: 'Any' = None) -> None"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "Register per-plugin options in `OptionManager`."
+      },
+      {
+        "id": "B002",
+        "text": "Classify plugins into tree, logical_line, and physical_line checker groups."
+      },
+      {
+        "id": "B003",
+        "text": "`apply_select_ignore` enables plugins whose codes intersect `select` and not `ignore`; when `select` is empty, ignore disables matching plugins."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.OptionManager`, `featurelifted.PluginSpec`, `featurelifted.classify_plugins`, `featurelifted.apply_select_ignore`, `featurelifted.OptionSpec` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "flake8.options.manager.OptionManager",
+      "flake8.plugins.finder.Plugins"
+    ],
+    "exclusions": [
+      "network access",
+      "file linting",
+      "CLI application"
+    ],
+    "forbidden": {
+      "imports": [
+        "flake8"
+      ],
+      "paths": [
+        "repo/",
+        "flake8/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: flake8."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "Register per-plugin options in `OptionManager`."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Classify plugins into tree, logical_line, and physical_line checker groups."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`apply_select_ignore` enables plugins whose codes intersect `select` and not `ignore`; when `select` is empty, ignore disables matching plugins."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.OptionManager`, `featurelifted.PluginSpec`, `featurelifted.classify_plugins`, `featurelifted.apply_select_ignore`, `featurelifted.OptionSpec` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: flake8"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_option_manager_registers_plugin_options",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_classify_plugins_groups_checkers",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_select_and_ignore_precedence",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.OptionManager",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PluginSpec",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.classify_plugins",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.apply_select_ignore",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.OptionSpec",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "630f21d0e861d4f33fe122deb92e84a6c03eb9e24cc89c248970fbca6a37e2f0",
+  "generated_task_hash": "cfd0fed9af61eec0a8f1c2dee461c7eec8dcf502abf0474d4fe52e5ce47b1a2c"
+}

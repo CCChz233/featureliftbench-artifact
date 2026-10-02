@@ -1,0 +1,19 @@
+{
+  "source_package_name": "readme_renderer",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/readme_renderer/__init__.py",
+    "repo/readme_renderer/markdown.py"
+  ],
+  "target_api": [
+    "featurelifted.render_readme"
+  ],
+  "forbidden_imports": [
+    "readme_renderer"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "readme_renderer/"
+  ],
+  "notes": "Content-type renderer selector without full docutils stack."
+}

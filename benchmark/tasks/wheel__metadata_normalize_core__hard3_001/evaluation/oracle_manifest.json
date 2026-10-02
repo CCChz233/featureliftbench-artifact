@@ -1,0 +1,20 @@
+{
+  "source_package_name": "wheel",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/wheel/_metadata.py",
+    "repo/src/wheel/wheelfile.py"
+  ],
+  "target_api": [
+    "featurelifted.safe_name",
+    "featurelifted.parse_wheel_filename"
+  ],
+  "forbidden_imports": [
+    "wheel"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "wheel/"
+  ],
+  "notes": "Metadata normalization subset without wheel packer."
+}

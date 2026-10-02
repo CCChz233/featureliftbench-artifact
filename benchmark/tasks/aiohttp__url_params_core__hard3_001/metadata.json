@@ -1,0 +1,299 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Requires query normalization and case-insensitive header handling without network client runtime.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "repeated query params",
+      "case-insensitive header lookup",
+      "invalid header names rejected",
+      "existing query preserved"
+    ],
+    "types": [
+      "data_model_coupling",
+      "third_party_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "aiohttp"
+    ],
+    "forbidden_imports": [
+      "aiohttp"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "aiohttp/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped build_url normalize_headers into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "client/server runtime",
+      "async I/O"
+    ],
+    "included_behaviors": [
+      "URL query merging",
+      "CIMultiDict headers",
+      "header validation"
+    ],
+    "name": "build_url normalize_headers",
+    "source_entrypoints": [
+      "aiohttp.helpers.strip_auth_from_url"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "build_url",
+    "import": "from featurelifted import build_url, normalize_headers, CIMultiDict, InvalidHeaderName",
+    "package": "featurelifted",
+    "signature": "build_url(base: str, params: list[tuple[str, str]])"
+  },
+  "source": {
+    "commit": "649887ca860437e610fc4af5c8363a9be6f19681",
+    "license": "Apache-2.0",
+    "name": "aiohttp",
+    "url": "https://github.com/aio-libs/aiohttp.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "third-party dependency coupling",
+    "data_model_coupling"
+  ],
+  "task_id": "aiohttp__url_params_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "build_url normalize_headers",
+    "summary": "Extract a task-scoped subset of `aiohttp` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.build_url",
+        "kind": "function",
+        "signature": "(base: 'str', params: 'list[tuple[str, str]]') -> 'str'"
+      },
+      {
+        "path": "featurelifted.normalize_headers",
+        "kind": "function",
+        "signature": "(headers: 'dict[str, str]') -> 'CIMultiDict'"
+      },
+      {
+        "path": "featurelifted.CIMultiDict",
+        "kind": "class",
+        "signature": "(*args, **kwargs) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.CIMultiDict.getall",
+            "kind": "method",
+            "signature": "(self, key: 'str') -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.CIMultiDict.__getitem__",
+            "kind": "method",
+            "signature": "(self, key: 'str') -> 'str'"
+          },
+          {
+            "path": "featurelifted.CIMultiDict.__setitem__",
+            "kind": "method",
+            "signature": "(self, key: 'str', value: 'str') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidHeaderName",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`build_url` merges query parameters into a base URL."
+      },
+      {
+        "id": "B002",
+        "text": "`normalize_headers` returns a case-insensitive `CIMultiDict`."
+      },
+      {
+        "id": "B003",
+        "text": "Invalid header names raise `InvalidHeaderName`."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.build_url`, `featurelifted.normalize_headers`, `featurelifted.CIMultiDict`, `featurelifted.CIMultiDict.getall`, `featurelifted.CIMultiDict.__getitem__`, `featurelifted.CIMultiDict.__setitem__`, `featurelifted.InvalidHeaderName` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "aiohttp.helpers.strip_auth_from_url"
+    ],
+    "exclusions": [
+      "network access",
+      "client/server runtime",
+      "async I/O"
+    ],
+    "forbidden": {
+      "imports": [
+        "aiohttp"
+      ],
+      "paths": [
+        "repo/",
+        "aiohttp/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: aiohttp."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`build_url` merges query parameters into a base URL."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`normalize_headers` returns a case-insensitive `CIMultiDict`."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Invalid header names raise `InvalidHeaderName`."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.build_url`, `featurelifted.normalize_headers`, `featurelifted.CIMultiDict`, `featurelifted.CIMultiDict.getall`, `featurelifted.CIMultiDict.__getitem__`, `featurelifted.CIMultiDict.__setitem__`, `featurelifted.InvalidHeaderName` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: aiohttp"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_build_url_appends_query",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_build_url_preserves_existing_query",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_ci_multidict_case_insensitive",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_header_name_raises",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.build_url",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.normalize_headers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CIMultiDict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CIMultiDict.getall",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_ci_multidict_case_insensitive"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidHeaderName",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CIMultiDict.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_build_url_preserves_existing_query",
+          "hidden_tests/test_hidden_contract.py::test_ci_multidict_case_insensitive",
+          "hidden_tests/test_hidden_contract.py::test_invalid_header_name_raises",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CIMultiDict.__setitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_build_url_preserves_existing_query",
+          "hidden_tests/test_hidden_contract.py::test_ci_multidict_case_insensitive",
+          "hidden_tests/test_hidden_contract.py::test_invalid_header_name_raises",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 6,
+  "spec_hash": "6571a09deb13827c8284a2533669ceb4baaf62d85d8dc6a4ed2373a750c7da44",
+  "generated_task_hash": "6c0a6ef33e7c35b85d95898de7d848f14d5c4fe4b6f60f67aab5d6572474ba7d"
+}

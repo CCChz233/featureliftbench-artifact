@@ -1,0 +1,271 @@
+{
+  "task_id": "pydantic_settings__env_source_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "pydantic_settings",
+    "hard-first",
+    "functional-discriminator",
+    "config_environment_coupling"
+  ],
+  "source": {
+    "name": "pydantic-settings",
+    "url": "https://github.com/pydantic/pydantic-settings",
+    "commit": "2.14.2-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Environment settings source",
+    "description": "Extract pydantic-settings BaseSettings env source with nested delimiter parsing without importing pydantic_settings.",
+    "source_entrypoints": [
+      "pydantic_settings.BaseSettings",
+      "pydantic_settings.sources.EnvSettingsSource",
+      "pydantic_settings.sources.utils.parse_env_vars",
+      "pydantic_settings.SettingsConfigDict"
+    ],
+    "included_behaviors": [
+      "BaseSettings loads fields from os.environ with env_prefix",
+      "nested models via env_nested_delimiter",
+      "json/complex field parsing and case_sensitive option",
+      "env_ignore_empty and env_parse_none_str"
+    ],
+    "excluded_behaviors": [
+      "dotenv, yaml/toml/json file sources and cloud secret providers",
+      "CLI settings source and subcommand parsing",
+      "original pydantic_settings import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "data_model_coupling",
+      "framework_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "Env source couples pydantic field metadata, nested delimiter expansion, and complex JSON env values.",
+    "signals": [
+      "env_nested_delimiter builds nested dicts",
+      "complex fields parsed via pydantic TypeAdapter",
+      "case_sensitive env key matching"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import BaseSettings, SettingsConfigDict, SettingsError",
+    "callable": "featurelifted.BaseSettings",
+    "signature": "class Settings(BaseSettings): ..."
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "annotated-types",
+      "pydantic",
+      "pydantic-core",
+      "typing-extensions",
+      "typing-inspection"
+    ],
+    "forbidden_dependencies": [
+      "pydantic_settings"
+    ],
+    "forbidden_imports": [
+      "pydantic_settings"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Environment settings source",
+    "summary": "Extract a task-scoped subset of `pydantic_settings` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.BaseSettings",
+        "kind": "class",
+        "signature": "(_case_sensitive: 'bool | None' = None, _nested_model_default_partial_update: 'bool | None' = None, _env_prefix: 'str | None' = None, _env_prefix_target: 'EnvPrefixTarget | None' = None, _env_file: 'DotenvType | None' = PosixPath('.'), _env_file_encoding: 'str | None' = None, _env_ignore_empty: 'bool | None' = None, _env_nested_delimiter: 'str | None' = None, _env_nested_max_split: 'int | None' = None, _env_parse_none_str: 'str | None' = None, _env_parse_enums: 'bool | None' = None, _cli_prog_name: 'str | None' = None, _cli_parse_args: 'bool | list[str] | tuple[str, ...] | None' = None, _cli_settings_source: 'CliSettingsSource[Any] | None' = None, _cli_parse_none_str: 'str | None' = None, _cli_hide_none_type: 'bool | None' = None, _cli_avoid_json: 'bool | None' = None, _cli_enforce_required: 'bool | None' = None, _cli_use_class_docs_for_groups: 'bool | None' = None, _cli_exit_on_error: 'bool | None' = None, _cli_prefix: 'str | None' = None, _cli_flag_prefix_char: 'str | None' = None, _cli_implicit_flags: \"bool | Literal['dual', 'toggle'] | None\" = None, _cli_ignore_unknown_args: 'bool | None' = None, _cli_kebab_case: \"bool | Literal['all', 'no_enums'] | None\" = None, _cli_shortcuts: 'Mapping[str, str | list[str]] | None' = None, _secrets_dir: 'PathType | None' = None, _build_sources: 'tuple[tuple[PydanticBaseSettingsSource, ...], dict[str, Any]] | None' = None) -> None"
+      },
+      {
+        "path": "featurelifted.SettingsConfigDict",
+        "kind": "class",
+        "signature": "(*args, **kwargs)"
+      },
+      {
+        "path": "featurelifted.SettingsError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: BaseSettings loads fields from os.environ with env_prefix. Required observable cases include env prefix and nested; parse none str."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: nested models via env_nested_delimiter. Required observable cases include env prefix and nested; parse none str."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: json/complex field parsing and case_sensitive option. Required observable cases include json list env; case sensitive env."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: env_ignore_empty and env_parse_none_str. Required observable cases include json list env; ignore empty env; parse none str."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.BaseSettings`, `featurelifted.SettingsConfigDict`, `featurelifted.SettingsError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pydantic_settings.BaseSettings",
+      "pydantic_settings.sources.EnvSettingsSource",
+      "pydantic_settings.sources.utils.parse_env_vars",
+      "pydantic_settings.SettingsConfigDict"
+    ],
+    "exclusions": [
+      "dotenv, yaml/toml/json file sources and cloud secret providers",
+      "CLI settings source and subcommand parsing",
+      "original pydantic_settings import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "pydantic_settings"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: pydantic_settings."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: BaseSettings loads fields from os.environ with env_prefix. Required observable cases include env prefix and nested; parse none str."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: nested models via env_nested_delimiter. Required observable cases include env prefix and nested; parse none str."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: json/complex field parsing and case_sensitive option. Required observable cases include json list env; case sensitive env."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: env_ignore_empty and env_parse_none_str. Required observable cases include json list env; ignore empty env; parse none str."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.BaseSettings`, `featurelifted.SettingsConfigDict`, `featurelifted.SettingsError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pydantic_settings"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_env_prefix_and_nested",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_json_list_env",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_case_sensitive_env",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_ignore_empty_env",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_none_str",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.BaseSettings",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SettingsConfigDict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SettingsError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "6473b4beee0e671a06dae753afb96fcd9181ac8c563e6094698fdafd99a530cb",
+  "generated_task_hash": "94c5c7b0260598894f7f0d039b72489d44808bf8d940adcbd7f15879c776bf22"
+}

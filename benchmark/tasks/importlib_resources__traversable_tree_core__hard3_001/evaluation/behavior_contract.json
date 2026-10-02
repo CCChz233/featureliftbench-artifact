@@ -1,0 +1,159 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_nested_joinpath_accepts_multiple_segments",
+      "public_clause_ids": [
+        "B004",
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_text_encoding_and_binary_open_are_preserved",
+      "public_clause_ids": [
+        "B004",
+        "B001",
+        "B003",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_parent_traversal_is_rejected",
+      "public_clause_ids": [
+        "B005",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_memory_traversable_matches_filesystem_contract",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_missing_resource_raises_traversal_error",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "When files receives a module object or importable module-name string, it resolves the same package anchor."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "For filesystem packages, files returns a Traversable rooted at the package directory with stable child names."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "For in-memory package trees, MemoryTraversable exposes the same directory, file, open, and read operations as filesystem-backed traversables."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "Traversable nodes report name, is_file, and is_dir and implement iterdir, open, read_bytes, and read_text consistently."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "joinpath and the slash operator traverse child resources while preventing escape above the package root."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "read_text honors the requested encoding and read_binary returns the resource bytes unchanged."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "Parent traversal and missing-resource reads raise TraversalError instead of accessing paths outside the declared resource tree."
+    },
+    {
+      "behavior_id": "B008",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B008",
+      "text": "The package exposes the required task API paths `featurelifted.TraversalError`, `featurelifted.files`, `featurelifted.read_binary`, `featurelifted.read_text`, `featurelifted.MemoryTraversable`, `featurelifted.MemoryTraversable.directory`, `featurelifted.MemoryTraversable.joinpath` with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B009",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B009",
+      "text": "the submitted package does not import forbidden upstream packages: importlib_resources"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_files_returns_traversable_for_package",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_read_text_and_binary_from_string_anchor",
+      "public_clause_ids": [
+        "B001",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 5,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "resource_coupling",
+    "data_model_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "15c639f04298cb58666a9fbd706d2496df8962296e7ea54118f7a7f20deb9813",
+  "task_id": "importlib_resources__traversable_tree_core__hard3_001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

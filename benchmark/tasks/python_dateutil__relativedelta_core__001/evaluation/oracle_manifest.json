@@ -1,0 +1,9 @@
+{
+  "source_package_name": "dateutil",
+  "required_source_files": [
+    "dateutil/_common.py",
+    "dateutil/relativedelta.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle closure is relativedelta stack only; repo snapshot includes full dateutil package for extraction denominator."
+}

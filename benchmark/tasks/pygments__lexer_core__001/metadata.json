@@ -1,0 +1,437 @@
+{
+  "task_id": "pygments__lexer_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "parser_state_coupling",
+    "lexer",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "pygments",
+    "url": "https://github.com/pygments/pygments",
+    "commit": "2.15.1",
+    "license": "BSD-2-Clause"
+  },
+  "feature": {
+    "name": "Regex lexer core",
+    "description": "Extract Pygments lexer infrastructure and Python lexer tokenization as a standalone package.",
+    "source_entrypoints": [
+      "pygments.lex",
+      "pygments.lexer.Lexer",
+      "pygments.lexer.RegexLexer",
+      "pygments.lexers.get_lexer_by_name",
+      "pygments.lexers.python.PythonLexer",
+      "pygments.token"
+    ],
+    "included_behaviors": [
+      "tokenize Python source with PythonLexer and lex()",
+      "resolve lexers by alias with get_lexer_by_name",
+      "emit Token types for keywords, strings, comments, numbers, operators, and names",
+      "honor lexer options such as stripall and ensurenl",
+      "support modeline and encoding helpers used by lexer lookup"
+    ],
+    "excluded_behaviors": [
+      "HTML, LaTeX, terminal, and other formatters",
+      "command-line pygmentize tool",
+      "hundreds of non-Python language lexers",
+      "original project tests and documentation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Lexer tokenization couples regex state machines, token types, filter hooks, plugin lookup, and lexer registry state across multiple modules.",
+    "signals": [
+      "RegexLexer state stack and rule matching",
+      "token type hierarchy shared with filters",
+      "lexer cache and alias mapping in lexers package",
+      "encoding and modeline side channels"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import lex, get_lexer_by_name, PythonLexer; from featurelifted import token",
+    "callable": "featurelifted.lex",
+    "signature": "lex(code: str, lexer: Lexer) -> Iterable[tuple[token._TokenType, str]]"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "pygments"
+    ],
+    "forbidden_imports": [
+      "pygments"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Regex lexer core",
+    "summary": "Extract a task-scoped subset of `pygments` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.lex",
+        "kind": "function",
+        "signature": "(code, lexer)"
+      },
+      {
+        "path": "featurelifted.get_lexer_by_name",
+        "kind": "function",
+        "signature": "(_alias, **options)"
+      },
+      {
+        "path": "featurelifted.PythonLexer",
+        "kind": "class",
+        "signature": "(*args, **kwds)"
+      },
+      {
+        "path": "featurelifted.token",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.token.Comment",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.Keyword",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.Literal",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.Name",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.Number",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.Operator",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.String",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.token.Text",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.token.Comment.Single",
+        "kind": "attribute"
+      },
+      {
+        "path": "featurelifted.token.Literal.String",
+        "kind": "attribute"
+      },
+      {
+        "path": "featurelifted.token.Name.Function",
+        "kind": "attribute"
+      },
+      {
+        "path": "featurelifted.token.Number.Integer",
+        "kind": "attribute"
+      },
+      {
+        "path": "featurelifted.token.String.Double",
+        "kind": "attribute"
+      },
+      {
+        "path": "featurelifted.token.Literal.String.Single",
+        "kind": "attribute"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: tokenize Python source with PythonLexer and lex(). Required observable cases include python lexer keywords and names; get lexer by name returns python lexer; triple quoted string and operator tokens."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: resolve lexers by alias with get_lexer_by_name. Required observable cases include get lexer by name returns python lexer; triple quoted string and operator tokens."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: emit Token types for keywords, strings, comments, numbers, operators, and names. Required observable cases include string and comment tokens are distinct; triple quoted string and operator tokens."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: honor lexer options such as stripall and ensurenl. Required observable cases include stripall option removes whitespace tokens."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: support modeline and encoding helpers used by lexer lookup. Required observable cases include triple quoted string and operator tokens."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.lex`, `featurelifted.get_lexer_by_name`, `featurelifted.PythonLexer`, `featurelifted.token`, `featurelifted.token.Comment`, `featurelifted.token.Keyword`, `featurelifted.token.Literal`, `featurelifted.token.Name`, `featurelifted.token.Number`, `featurelifted.token.Operator`, `featurelifted.token.String`, `featurelifted.token.Text`, and 6 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pygments.lex",
+      "pygments.lexer.Lexer",
+      "pygments.lexer.RegexLexer",
+      "pygments.lexers.get_lexer_by_name",
+      "pygments.lexers.python.PythonLexer",
+      "pygments.token"
+    ],
+    "exclusions": [
+      "HTML, LaTeX, terminal, and other formatters",
+      "command-line pygmentize tool",
+      "hundreds of non-Python language lexers",
+      "original project tests and documentation"
+    ],
+    "forbidden": {
+      "imports": [
+        "pygments"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: pygments."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: tokenize Python source with PythonLexer and lex(). Required observable cases include python lexer keywords and names; get lexer by name returns python lexer; triple quoted string and operator tokens."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve lexers by alias with get_lexer_by_name. Required observable cases include get lexer by name returns python lexer; triple quoted string and operator tokens."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: emit Token types for keywords, strings, comments, numbers, operators, and names. Required observable cases include string and comment tokens are distinct; triple quoted string and operator tokens."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: honor lexer options such as stripall and ensurenl. Required observable cases include stripall option removes whitespace tokens."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support modeline and encoding helpers used by lexer lookup. Required observable cases include triple quoted string and operator tokens."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.lex`, `featurelifted.get_lexer_by_name`, `featurelifted.PythonLexer`, `featurelifted.token`, `featurelifted.token.Comment`, `featurelifted.token.Keyword`, `featurelifted.token.Literal`, `featurelifted.token.Name`, `featurelifted.token.Number`, `featurelifted.token.Operator`, `featurelifted.token.String`, `featurelifted.token.Text`, and 6 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pygments"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_lexer_public.py::test_python_lexer_keywords_and_names",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_lexer_public.py::test_get_lexer_by_name_returns_python_lexer",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_lexer_hidden.py::test_string_and_comment_tokens_are_distinct",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_lexer_hidden.py::test_stripall_option_removes_whitespace_tokens",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_lexer_hidden.py::test_triple_quoted_string_and_operator_tokens",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.lex",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.get_lexer_by_name",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PythonLexer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Comment",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Keyword",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Literal",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Name",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Number",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Operator",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.String",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Text",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Comment.Single",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Literal.String",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Name.Function",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Number.Integer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.String.Double",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.token.Literal.String.Single",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "c8eaee5e6bd3682f63e169420475763ee5d19d34fb311422c5a9664065bb45da",
+  "generated_task_hash": "c4fdaccadc5570f33e6ea3799947030607185b23abde5da89388ae5f57b36744"
+}

@@ -1,0 +1,364 @@
+{
+  "task_id": "networkx__dag_topo_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "graph",
+    "dag",
+    "topological-sort",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "networkx",
+    "url": "https://github.com/networkx/networkx",
+    "commit": "3.3-curated-dag-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "DAG topological sorting",
+    "description": "Extract NetworkX directed-acyclic-graph topological sort APIs as a standalone package.",
+    "source_entrypoints": [
+      "networkx.DiGraph",
+      "networkx.topological_sort",
+      "networkx.lexicographical_topological_sort",
+      "networkx.topological_generations",
+      "networkx.is_directed_acyclic_graph",
+      "networkx.NetworkXError",
+      "networkx.NetworkXUnfeasible"
+    ],
+    "included_behaviors": [
+      "construct directed graphs and add edges",
+      "yield nodes in topological sort order for DAGs",
+      "yield lexicographically stable topological orderings",
+      "yield topological generations (Kahn layers)",
+      "detect directed acyclic graphs",
+      "raise NetworkXError for undirected graphs and NetworkXUnfeasible for cycles"
+    ],
+    "excluded_behaviors": [
+      "full NetworkX algorithm suite and drawing backends",
+      "SciPy/NumPy graph backends",
+      "original project tests and documentation",
+      "graph I/O formats and generators beyond empty_graph helper"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Topological ordering depends on DiGraph adjacency views, indegree bookkeeping, and exception types across multiple class modules.",
+    "signals": [
+      "DiGraph succ/pred views and edge mutation",
+      "topological_generations indegree map state",
+      "graph class hierarchy shared with convert helpers"
+    ],
+    "primary": "data_model_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import DiGraph, Graph, topological_sort, topological_generations, lexicographical_topological_sort, is_directed_acyclic_graph; from featurelifted.exception import NetworkXError, NetworkXUnfeasible",
+    "callable": "featurelifted.topological_sort",
+    "signature": "topological_sort(G: DiGraph)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "networkx"
+    ],
+    "forbidden_imports": [
+      "networkx"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "DAG topological sorting",
+    "summary": "Extract a task-scoped subset of `networkx` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.DiGraph",
+        "kind": "class",
+        "signature": "(incoming_graph_data=None, **attr)"
+      },
+      {
+        "path": "featurelifted.Graph",
+        "kind": "class",
+        "signature": "(incoming_graph_data=None, **attr)"
+      },
+      {
+        "path": "featurelifted.topological_sort",
+        "kind": "function",
+        "signature": "(G, *, backend=None, **backend_kwargs)"
+      },
+      {
+        "path": "featurelifted.topological_generations",
+        "kind": "function",
+        "signature": "(G, *, backend=None, **backend_kwargs)"
+      },
+      {
+        "path": "featurelifted.lexicographical_topological_sort",
+        "kind": "function",
+        "signature": "(G, key=None, *, backend=None, **backend_kwargs)"
+      },
+      {
+        "path": "featurelifted.is_directed_acyclic_graph",
+        "kind": "function",
+        "signature": "(G, *, backend=None, **backend_kwargs)"
+      },
+      {
+        "path": "featurelifted.exception",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exception.NetworkXError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exception.NetworkXUnfeasible",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: construct directed graphs and add edges. Required observable cases include undirected graph raises networkx error."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: yield nodes in topological sort order for DAGs. Required observable cases include topological sort linear dag; topological sort parallel roots; lexicographical topological sort is stable."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: yield lexicographically stable topological orderings. Required observable cases include lexicographical topological sort is stable."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: yield topological generations (Kahn layers). Required observable cases include topological generations layers."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: detect directed acyclic graphs. Required observable cases include undirected graph raises networkx error."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: raise NetworkXError for undirected graphs and NetworkXUnfeasible for cycles. Required observable cases include cycle raises networkx unfeasible; undirected graph raises networkx error."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.DiGraph`, `featurelifted.Graph`, `featurelifted.topological_sort`, `featurelifted.topological_generations`, `featurelifted.lexicographical_topological_sort`, `featurelifted.is_directed_acyclic_graph`, `featurelifted.exception`, `featurelifted.exception.NetworkXError`, `featurelifted.exception.NetworkXUnfeasible` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "networkx.DiGraph",
+      "networkx.topological_sort",
+      "networkx.lexicographical_topological_sort",
+      "networkx.topological_generations",
+      "networkx.is_directed_acyclic_graph",
+      "networkx.NetworkXError",
+      "networkx.NetworkXUnfeasible"
+    ],
+    "exclusions": [
+      "full NetworkX algorithm suite and drawing backends",
+      "SciPy/NumPy graph backends",
+      "original project tests and documentation",
+      "graph I/O formats and generators beyond empty_graph helper"
+    ],
+    "forbidden": {
+      "imports": [
+        "networkx"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: networkx."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: construct directed graphs and add edges. Required observable cases include undirected graph raises networkx error."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: yield nodes in topological sort order for DAGs. Required observable cases include topological sort linear dag; topological sort parallel roots; lexicographical topological sort is stable."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: yield lexicographically stable topological orderings. Required observable cases include lexicographical topological sort is stable."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: yield topological generations (Kahn layers). Required observable cases include topological generations layers."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: detect directed acyclic graphs. Required observable cases include undirected graph raises networkx error."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise NetworkXError for undirected graphs and NetworkXUnfeasible for cycles. Required observable cases include cycle raises networkx unfeasible; undirected graph raises networkx error."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.DiGraph`, `featurelifted.Graph`, `featurelifted.topological_sort`, `featurelifted.topological_generations`, `featurelifted.lexicographical_topological_sort`, `featurelifted.is_directed_acyclic_graph`, `featurelifted.exception`, `featurelifted.exception.NetworkXError`, `featurelifted.exception.NetworkXUnfeasible` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: networkx"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_topological_sort_linear_dag",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_topological_sort_parallel_roots",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_lexicographical_topological_sort_is_stable",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_topological_generations_layers",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_cycle_raises_networkx_unfeasible",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_undirected_graph_raises_networkx_error",
+        "behavior_ids": [
+          "B006",
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.DiGraph",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Graph",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.topological_sort",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.topological_generations",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.lexicographical_topological_sort",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.is_directed_acyclic_graph",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exception",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exception.NetworkXError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exception.NetworkXUnfeasible",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "3867da5f0e32459bfe61a7115a4ba6683e1787adcbbf9064a652cecf23d0dffe",
+  "generated_task_hash": "2c158486f57620f8653c76c7c39624fd592f7aeda01aa81330ba0670b851b2b1"
+}

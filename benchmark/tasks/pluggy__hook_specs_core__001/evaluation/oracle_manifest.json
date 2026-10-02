@@ -1,0 +1,13 @@
+{
+  "source_package_name": "pluggy",
+  "required_source_files": [
+    "pluggy/__init__.py",
+    "pluggy/_version.py",
+    "pluggy/_tracing.py",
+    "pluggy/_result.py",
+    "pluggy/_callers.py",
+    "pluggy/_hooks.py",
+    "pluggy/_manager.py"
+  ],
+  "notes": "Full pluggy core package for hookspec validation task."
+}

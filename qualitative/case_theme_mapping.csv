@@ -1,0 +1,47 @@
+case_id,task_id,theme,rationale
+SE001,json_logic__evaluator_core__hard3_001,C,Eager operand evaluation precedes operator dispatch in both source and submission; short-circuiting requires destination adaptation.
+SE002,pytest__marker_registry_core__hard3_001,O,Exception-family difference; no supported cross-component relationship identified.
+SE003,sqlparse__parse_split_core__001,O,Statement object exists but a queried member is absent; retain interface-completion case outside relationship themes.
+SE004,platformdirs__app_dirs_core__hard3_001,A,Explicit platform selection reaches host-dependent path joining.
+SE005,decorator__signature_preserving_core__001,O,Argument binding matches the inspected upstream path; no specific changed relationship established.
+SE006,dateutil__zone_resolver_core__hard3_001,O,Zone loading exists but a queried result attribute is absent; no supported relationship theme.
+SE007,aiohttp__url_params_core__hard3_001,O,Header mutation omits name validation; the evidence does not establish a shared-representation break.
+SE008,multidict__multidict_mutation_core__hard3_001,O,Duplicate lookup/removal policies differ in the witness; no supported A-C relationship.
+SE009,readme_renderer__content_type_core__hard3_001,O,Renderer output discrepancy does not establish a relationship mechanism.
+SE010,redis__resp_parser_core__001,O,Parser exists but a connection hook is absent; do not infer an incremental-buffer mechanism from that witness.
+SE011,responses__request_matcher_core__hard3_001,O,Call-history scope differs for unmatched attempts; no supported A-C mechanism.
+SE012,cerberus__schema_validate_core__001,B,Grouped child errors are produced but the formatter lacks compatible group-aware consumption.
+SE013,cookiecutter__repo_finder_core__hard3_001,O,Abbreviation expansion has an argument-encoding mismatch; no established producer-consumer representation break.
+SE014,license_expression__policy_core__hard3_001,O,Diagnostic wording differs; no established cross-component mechanism.
+SE015,importlib_resources__traversable_tree_core__hard3_001,C,An ordinary filesystem resource object lacks the destination traversal restriction.
+SE016,filelock__reentrant_lock_core__001,C,Unlocking retains the file as upstream does; destination cleanup requires an additional operation. This is not a recommendation to unlink locks generally.
+SE017,sortedcontainers__sorted_list_core__001,O,SortedList is implemented but count is missing; API omission is not evidence of one of the relationship themes.
+SE018,pytest__skipif_eval_core__001,O,Exception hierarchy differs; no established relationship theme.
+SE019,itsdangerous__timed_serializer_core__001,O,Injected time is treated as callable; an input-representation mismatch alone does not prove a retained ambient assumption.
+SE020,apscheduler__cron_trigger_core__hard3_001,A,Construction-time default start bound constrains a later explicitly supplied current time.
+SE021,keyring__backend_select_core__hard3_001,O,Backend name lookup differs for classes and instances; keep case-specific rather than infer shared-representation failure.
+SE022,faker__provider_core__001,O,Provider facade lacks a queried delegate; no relationship theme established.
+SE023,pygments__lexer_core__001,O,Whitespace option interpretation differs; no relationship theme established.
+SE024,pytest__ini_markers_core__001,O,Local trimming contradicts description-whitespace preservation; not a cross-component relationship.
+SE025,tabulate__table_format_core__001,O,Registry exposes a smaller listing; no supported A-C relationship.
+SE026,alembic__revision_map_core__hard3_001,O,Symbolic identifier resolution collides with a revision identifier; keep case-specific.
+SE027,requests_cache__cache_key_core__hard3_001,B,"URL normalization can bypass query sorting before hashing, so the consumer receives a noncanonical representation."
+SE028,bleach__sanitize_core__001,O,"The recorded failure concerns source-import text in a docstring; artifact constraint, not runtime behavioral mechanism."
+SE029,mkdocs__plugin_config_core__hard3_001,O,Registry key convention and event registration differ; supporting destination encoding is insufficiently explicit for a firm B assignment.
+SE030,poetry_core__dependency_groups_core__hard3_001,O,Project dependency handling omits a path; input scope does not establish one of A-C.
+SE031,scrapy__item_loader_core__hard3_001,O,"Processor receives a list while expecting a scalar; source relationship remains unresolved, so do not use it to establish B recurrence."
+SE032,sqlparse__format_filters_core__001,O,Comment stripping and indentation produce a formatting difference; pipeline existence alone does not prove representation incompatibility.
+SE033,jinja2__lexer_parser_core__001,O,Template AST exists but a queried member is absent; retain outside relationship themes.
+SE034,installer__wheel_record_core__hard3_001,O,Ambiguous-directory handling differs; no established A-C mechanism.
+SE035,jupyter_core__paths_resolver_core__hard3_001,A,Explicit target platform still uses host Path.resolve for directory construction.
+SE036,yamale__schema_validate_core__hard3_001,O,Schema expression form differs; no established A-C relationship.
+SE037,click__lazy_command_core__hard3_001,O,Lazy command collection exists but queried invoke is absent; no relationship mechanism established.
+SE038,tox__factor_expression_core__hard3_001,O,Factor discovery retains an input-context expectation; relation to the destination is insufficiently resolved for A.
+SE039,distlib__wheel_metadata_core__hard3_001,O,Empty-field representation differs locally; not sufficient evidence of a producer-consumer break.
+SE040,python_decouple__config_repository_core__001,C,The inspected upstream and submitted parser lack the destination combination of quoted values and inline comment handling.
+SE041,sqlalchemy__event_dispatch_core__hard3_001,C,"Destination listen accepts an arbitrary (target, identifier) pair on EventTarget; the copied registrar lookup only accepts a predeclared event."
+SE042,wheel__metadata_normalize_core__hard3_001,C,"The contract return is a list of section pairs; the inspected upstream function yields a generator, and the submission copies that generator."
+SE043,isort__settings_resolver_core__hard3_001,B,"The config parser stores profile='black' as a field, but resolve_settings expands profile defaults only from an explicit argument, so the black profile dictionary is not consumed."
+SE044,astroid__nodes_core__001,O,"Node classes were copied, but the package does not export parse. That is a missing entry, not a supported A-C relationship."
+SE045,typer__command_parser_core__001,O,echo is implemented in core.py and omitted from the package facade. A missing attribute is not an A-C relationship.
+SE046,jupyter_server__extension_config_core__hard3_001,O,"recursive_update is present, and ExtensionConfigStore has disable and enabled, but enable is absent. An omitted method is not an A-C relationship."

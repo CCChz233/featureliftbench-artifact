@@ -1,0 +1,490 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Backend behavior depends on runtime discovery, priority filtering, environment override selection, and chained fallback semantics.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "Negative priority backends are excluded from automatic selection.",
+      "PYTHON_KEYRING_BACKEND can override priority selection.",
+      "ChainerBackend should skip failing backends and continue to viable backends.",
+      "Credential lookup can recover a username when backend storage supports it."
+    ],
+    "types": [
+      "framework_coupling",
+      "third_party_dependency_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "keyring"
+    ],
+    "forbidden_imports": [
+      "keyring"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "keyring/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract task-scoped keyring backend discovery, priority sorting, and failover behavior.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "macOS Keychain",
+      "Windows credential vault",
+      "SecretService",
+      "KWallet",
+      "CLI and config file writes"
+    ],
+    "included_behaviors": [
+      "Backend base API",
+      "MemoryBackend for deterministic storage",
+      "FailBackend",
+      "ErrorBackend for failure-path tests",
+      "ChainerBackend priority sorting and fallback",
+      "select_backend priority selection",
+      "PYTHON_KEYRING_BACKEND override",
+      "Credential and password set/delete errors"
+    ],
+    "name": "Backend discovery, priority sorting, and failover selection",
+    "source_entrypoints": [
+      "keyring.backend.KeyringBackend",
+      "keyring.core.get_keyring",
+      "keyring.core.load_env",
+      "keyring.core._detect_backend",
+      "keyring.backends.chainer.ChainerBackend",
+      "keyring.backends.fail.Keyring"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "select_backend",
+    "import": "from featurelifted import ChainerBackend, MemoryBackend, select_backend",
+    "package": "featurelifted",
+    "signature": "select_backend(backends, env=None) -> Backend"
+  },
+  "source": {
+    "commit": "7603e7cadc254b4c6e3fc2b2f0916a005e78087d",
+    "license": "MIT",
+    "license_source": "repo/pyproject.toml",
+    "name": "keyring",
+    "url": "https://github.com/jaraco/keyring.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "framework_coupling"
+  ],
+  "task_id": "keyring__backend_select_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Backend discovery, priority sorting, and failover selection",
+    "summary": "Extract a task-scoped subset of `keyring` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.ChainerBackend",
+        "kind": "class",
+        "signature": "(backends: 'list[Backend] | tuple[Backend, ...]') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.ChainerBackend.get_password",
+            "kind": "method",
+            "signature": "(self, service: 'str', username: 'str') -> 'str | None'"
+          },
+          {
+            "path": "featurelifted.ChainerBackend.set_password",
+            "kind": "method",
+            "signature": "(self, service: 'str', username: 'str', password: 'str') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryBackend",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.MemoryBackend.get_credential",
+            "kind": "method",
+            "signature": "(self, service: 'str', username: 'str | None' = None) -> 'Credential | None'"
+          },
+          {
+            "path": "featurelifted.MemoryBackend.get_password",
+            "kind": "method",
+            "signature": "(self, service: 'str', username: 'str') -> 'str | None'"
+          },
+          {
+            "path": "featurelifted.MemoryBackend.set_password",
+            "kind": "method",
+            "signature": "(self, service: 'str', username: 'str', password: 'str') -> 'None'"
+          }
+        ],
+        "signature": "(label: 'str', priority: 'float' = 1.0, data: 'dict[tuple[str, str], str]' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.select_backend",
+        "kind": "function",
+        "signature": "(backends: 'list[Any] | tuple[Any, ...]', env: 'dict[str, str] | None' = None) -> 'Backend'"
+      },
+      {
+        "path": "featurelifted.Backend",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.BackendNotFound",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.Credential",
+        "kind": "class",
+        "signature": "(username: 'str', password: 'str') -> None"
+      },
+      {
+        "path": "featurelifted.ErrorBackend",
+        "kind": "class",
+        "signature": "(label: 'str' = 'error', priority: 'float' = 1.0, error: 'Exception' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.FailBackend",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.PasswordDeleteError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.PasswordSetError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "Backend implementations expose priority and the declared password and credential operations used by selection and chaining."
+      },
+      {
+        "id": "B002",
+        "text": "MemoryBackend stores deterministic credentials and can discover a stored username when get_credential is called without one."
+      },
+      {
+        "id": "B003",
+        "text": "When no viable backend exists, selection returns FailBackend and its password operations fail through the declared error API."
+      },
+      {
+        "id": "B004",
+        "text": "ErrorBackend raises its configured failure so ChainerBackend fallback paths can be observed."
+      },
+      {
+        "id": "B005",
+        "text": "ChainerBackend sorts viable backends by descending priority, skips backend failures, and returns the first successful password result."
+      },
+      {
+        "id": "B006",
+        "text": "select_backend chooses the highest-priority non-negative viable backend and falls back to FailBackend when none qualifies."
+      },
+      {
+        "id": "B007",
+        "text": "When PYTHON_KEYRING_BACKEND is provided, select_backend matches the requested backend name or class and raises BackendNotFound if it is unavailable."
+      },
+      {
+        "id": "B008",
+        "text": "Credential values and password set/delete failures use the declared Credential, PasswordSetError, and PasswordDeleteError types."
+      },
+      {
+        "id": "B009",
+        "text": "The package exposes the required task API paths `featurelifted.ChainerBackend`, `featurelifted.ChainerBackend.get_password`, `featurelifted.ChainerBackend.set_password`, `featurelifted.MemoryBackend`, `featurelifted.MemoryBackend.get_credential`, `featurelifted.MemoryBackend.get_password`, `featurelifted.MemoryBackend.set_password`, `featurelifted.select_backend`, `featurelifted.Backend`, `featurelifted.BackendNotFound`, `featurelifted.Credential`, `featurelifted.ErrorBackend`, and 3 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "keyring.backend.KeyringBackend",
+      "keyring.core.get_keyring",
+      "keyring.core.load_env",
+      "keyring.core._detect_backend",
+      "keyring.backends.chainer.ChainerBackend",
+      "keyring.backends.fail.Keyring"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "macOS Keychain",
+      "Windows credential vault",
+      "SecretService",
+      "KWallet",
+      "CLI and config file writes"
+    ],
+    "forbidden": {
+      "imports": [
+        "keyring"
+      ],
+      "paths": [
+        "repo/",
+        "keyring/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B010",
+      "text": "the submitted package does not import forbidden upstream packages: keyring."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "Backend implementations expose priority and the declared password and credential operations used by selection and chaining."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "MemoryBackend stores deterministic credentials and can discover a stored username when get_credential is called without one."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When no viable backend exists, selection returns FailBackend and its password operations fail through the declared error API."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "ErrorBackend raises its configured failure so ChainerBackend fallback paths can be observed."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "ChainerBackend sorts viable backends by descending priority, skips backend failures, and returns the first successful password result."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "select_backend chooses the highest-priority non-negative viable backend and falls back to FailBackend when none qualifies."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "When PYTHON_KEYRING_BACKEND is provided, select_backend matches the requested backend name or class and raises BackendNotFound if it is unavailable."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "included_behavior",
+        "text": "Credential values and password set/delete failures use the declared Credential, PasswordSetError, and PasswordDeleteError types."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.ChainerBackend`, `featurelifted.ChainerBackend.get_password`, `featurelifted.ChainerBackend.set_password`, `featurelifted.MemoryBackend`, `featurelifted.MemoryBackend.get_credential`, `featurelifted.MemoryBackend.get_password`, `featurelifted.MemoryBackend.set_password`, `featurelifted.select_backend`, `featurelifted.Backend`, `featurelifted.BackendNotFound`, `featurelifted.Credential`, `featurelifted.ErrorBackend`, and 3 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B010",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: keyring"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_select_highest_priority_backend",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_env_override_selects_named_backend",
+        "behavior_ids": [
+          "B006",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_chainer_get_password_uses_first_backend_with_value",
+        "behavior_ids": [
+          "B006",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_negative_priority_is_excluded_and_fail_backend_is_default",
+        "behavior_ids": [
+          "B006",
+          "B001",
+          "B002",
+          "B003",
+          "B005",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_chainer_skips_backend_errors_on_get_password",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_chainer_set_password_falls_back_after_failure",
+        "behavior_ids": [
+          "B004",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_chainer_set_password_raises_when_all_backends_fail",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_get_credential_can_discover_username",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.ChainerBackend",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ChainerBackend.get_password",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_chainer_skips_backend_errors_on_get_password"
+        ]
+      },
+      {
+        "path": "featurelifted.ChainerBackend.set_password",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_chainer_set_password_falls_back_after_failure",
+          "hidden_tests/test_hidden_contract.py::test_chainer_set_password_raises_when_all_backends_fail"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryBackend",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryBackend.get_credential",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_get_credential_can_discover_username"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryBackend.get_password",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_chainer_set_password_falls_back_after_failure"
+        ]
+      },
+      {
+        "path": "featurelifted.MemoryBackend.set_password",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_chainer_skips_backend_errors_on_get_password",
+          "hidden_tests/test_hidden_contract.py::test_get_credential_can_discover_username"
+        ]
+      },
+      {
+        "path": "featurelifted.select_backend",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Backend",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.BackendNotFound",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Credential",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ErrorBackend",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FailBackend",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PasswordDeleteError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PasswordSetError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "145dd1d6dd73670951f79db1297dff338a1dab289e58bf6aeae42fef8a6115c2",
+  "generated_task_hash": "34293e10d17c1e5884ce6c0bb5da78387d5b5a2775235817ab2c1265a5659985"
+}

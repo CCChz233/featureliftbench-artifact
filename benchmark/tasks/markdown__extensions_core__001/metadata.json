@@ -1,0 +1,253 @@
+{
+  "task_id": "markdown__extensions_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "markdown",
+    "extensions",
+    "hard-first",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "Markdown",
+    "url": "https://github.com/Python-Markdown/markdown",
+    "commit": "3.7-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "Markdown tables and footnotes extensions",
+    "description": "Extract python-markdown core with tables and footnotes extensions.",
+    "source_entrypoints": [
+      "markdown.markdown",
+      "markdown.extensions.tables.TableExtension",
+      "markdown.extensions.footnotes.FootnoteExtension"
+    ],
+    "included_behaviors": [
+      "pipe table rendering",
+      "footnote reference and backlink HTML",
+      "extension registration on Markdown class"
+    ],
+    "excluded_behaviors": [
+      "unrelated extensions",
+      "CLI __main__",
+      "original markdown import"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "framework_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Extensions hook block/tree processors and share Markdown instance registry state.",
+    "signals": [
+      "TableProcessor block regex",
+      "FootnoteExtension footnote order",
+      "build_block_parser registration"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import markdown, Markdown",
+    "callable": "featurelifted.markdown",
+    "signature": "markdown(text, extensions=None, extension_configs=None) -> str"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "markdown"
+    ],
+    "forbidden_imports": [
+      "markdown"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Markdown tables and footnotes extensions",
+    "summary": "Extract a task-scoped subset of `markdown` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.markdown",
+        "kind": "function",
+        "signature": "(text, **kwargs)"
+      },
+      {
+        "path": "featurelifted.Markdown",
+        "kind": "class",
+        "signature": "(**kwargs)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: pipe table rendering. Required observable cases include simple table; table header align; table row span."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: footnote reference and backlink HTML. Required observable cases include basic footnote; footnote backlink; multiple footnotes order."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: extension registration on Markdown class. Required observable cases include table row span."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.markdown`, `featurelifted.Markdown` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "markdown.markdown",
+      "markdown.extensions.tables.TableExtension",
+      "markdown.extensions.footnotes.FootnoteExtension"
+    ],
+    "exclusions": [
+      "unrelated extensions",
+      "CLI __main__",
+      "original markdown import"
+    ],
+    "forbidden": {
+      "imports": [
+        "markdown"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: markdown."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: pipe table rendering. Required observable cases include simple table; table header align; table row span."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: footnote reference and backlink HTML. Required observable cases include basic footnote; footnote backlink; multiple footnotes order."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: extension registration on Markdown class. Required observable cases include table row span."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.markdown`, `featurelifted.Markdown` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: markdown"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_simple_table",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_basic_footnote",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_table_header_align",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_footnote_backlink",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_table_row_span",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_multiple_footnotes_order",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_markdown_import_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.markdown",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Markdown",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "3a090b25d5185b7e78d7218eeb5e72de84dd8dc0aed0b75c612c991c0b793f42",
+  "generated_task_hash": "9c8cf5e73366573230ad2868747d652ddfd41283e8791ed26a1eb99239e7ae87"
+}

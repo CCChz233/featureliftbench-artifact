@@ -1,0 +1,22 @@
+{
+  "source_package_name": "markdown",
+  "required_source_files": [
+    "markdown/__init__.py",
+    "markdown/__meta__.py",
+    "markdown/blockparser.py",
+    "markdown/blockprocessors.py",
+    "markdown/core.py",
+    "markdown/extensions/__init__.py",
+    "markdown/extensions/tables.py",
+    "markdown/extensions/footnotes.py",
+    "markdown/htmlparser.py",
+    "markdown/inlinepatterns.py",
+    "markdown/postprocessors.py",
+    "markdown/preprocessors.py",
+    "markdown/serializers.py",
+    "markdown/treeprocessors.py",
+    "markdown/util.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Core markdown pipeline plus tables/footnotes extensions."
+}

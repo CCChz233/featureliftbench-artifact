@@ -1,0 +1,86 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "obligation-guided.pilot30.1",
+  "display_name": "Obligation-Guided Feature Lifting",
+  "ablation_arm": "obligation_guided",
+  "method_label": "obligation_guided",
+  "cli_flag": "--obligation-guided",
+  "environment_flag": "FEATURELIFTBENCH_OBLIGATION_GUIDED=1",
+  "description": "Harness writes a frozen public-contract obligation ledger from metadata.public_spec (required_api + Bxxx). Agent fills repo_evidence.path and implementation.path, then coverage-audits before finish. Same 128k Main envelope, 120 steps, No-Hint, LLM-summary/token condenser, no 2M cap. Hidden and public_tests stay unmounted. Not self-test, not Spec-adversarial, not Pre-submit NL checklist, not CCG finish intercept. Screening only; numbers do not enter the Python-150/200 main table. Do not stack Entrypoint-Hint, Public-feedback, TFL, audit, CCG, verification-aware, artifact-aware, recency, or spec-adversarial.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_llm_summary",
+    "openhands_deepseek_v4_flash_obligation_guided",
+    "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+    "openhands_deepseek_v4_flash_vllm_local_obligation_guided"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only (obligation_ledger.json)",
+    "evaluator_feedback_to_agent": false,
+    "source_entrypoints_in_workspace": false
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "token",
+    "mount_public_tests": false,
+    "expose_source_hints": false,
+    "obligation_guided": true
+  },
+  "contrasts": [
+    {
+      "profile": "openhands_deepseek_v4_flash_llm_summary",
+      "obligation_guided": false,
+      "role": "same-day Main control (API)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_obligation_guided",
+      "obligation_guided": true,
+      "role": "Obligation-Guided treatment (API)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+      "obligation_guided": false,
+      "role": "same-day Main control (local vLLM)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_obligation_guided",
+      "obligation_guided": true,
+      "role": "Obligation-Guided treatment (local vLLM)"
+    }
+  ],
+  "process_metrics": [
+    "ledger_present",
+    "rows_repo_cited",
+    "rows_implementation_cited",
+    "rows_both_cited",
+    "coverage_complete",
+    "finished_with_gaps",
+    "invented_row_ids"
+  ],
+  "screening": {
+    "slice": "Flash Python-150 artifact-fail pilot-30 (15 public + 15 hidden)",
+    "task_list": "harness/config/experiments/obligation_guided_pilot30_v1.txt",
+    "seed": "obligation-guided-pilot30-v1",
+    "readout": "functional_gate rescue vs archived or same-day Main. Kill if rescue <= 3/30. Expand only if rescue >= 8/30 and at least one behavior_drift row flips.",
+    "kill_if": "Functional 0→1 rescue is <= 3/30",
+    "keep_if": "Functional 0→1 rescue is >= 8/30 and not only contract_api_completion",
+    "do_not": [
+      "Python-150 full suite",
+      "Python-200",
+      "stack Entrypoint-Hint",
+      "stack Public-feedback",
+      "stack Spec-adversarial stubs or checkers",
+      "CCG finish intercept"
+    ],
+    "default_endpoint": "api"
+  }
+}

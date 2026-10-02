@@ -1,0 +1,173 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_branch_labels_resolve_and_multiple_heads_raise",
+      "public_clause_ids": [
+        "B004",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_branch_label_propagates_to_branch_head",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_dependencies_affect_ancestors_without_removing_versioned_head",
+      "public_clause_ids": [
+        "B003",
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_missing_down_revision_raises",
+      "public_clause_ids": [
+        "B007",
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_cycle_detection_raises",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_head_symbol_and_base_symbol_resolution",
+      "public_clause_ids": [
+        "B003",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "When Revision objects are created, scalar and iterable down revisions, branch labels, and dependencies are normalized without losing their distinct graph roles."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "When RevisionMap is built from explicit revisions, it links versioned parents, dependency edges, and branch labels into a queryable graph."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "For linear, branched, and merged revision graphs, RevisionMap reports the versioned bases and heads that have no versioned parent or child."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "When a branch label is assigned, branch-label lookup resolves that revision and propagates the label to eligible descendants."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "When ancestors are requested, dependency revisions are included only when dependency-aware traversal is enabled."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "When symbolic identifiers such as head or base are requested, RevisionMap resolves them and rejects ambiguous heads."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "Missing revisions, multiple-head requests, and revision cycles raise the declared explicit graph errors."
+    },
+    {
+      "behavior_id": "B008",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B008",
+      "text": "The package exposes the required task API paths `featurelifted.Revision`, `featurelifted.RevisionMap`, `featurelifted.RevisionMap.heads`, `featurelifted.RevisionMap.bases`, `featurelifted.RevisionMap.branch_labels`, `featurelifted.RevisionMap.get_revision`, `featurelifted.RevisionMap.get_revisions`, `featurelifted.RevisionMap.get_heads`, `featurelifted.RevisionMap.get_current_head`, `featurelifted.RevisionMap.ancestors`, `featurelifted.RevisionMap.iterate_revisions`, `featurelifted.CycleDetected`, and 2 listed members with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B009",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B009",
+      "text": "the submitted package does not import forbidden upstream packages: alembic, sqlalchemy"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_heads_for_linear_revision_map",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_merge_revision_removes_branch_heads",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_iterate_revisions_walks_down_revision_chain",
+      "public_clause_ids": [
+        "B001",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 0,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "data_model_coupling",
+    "parser_state_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "94c4376622e6a88110ddcd4dfc731a058ea996fc1850e98a4639d81599c3b937",
+  "task_id": "alembic__revision_map_core__hard3_001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

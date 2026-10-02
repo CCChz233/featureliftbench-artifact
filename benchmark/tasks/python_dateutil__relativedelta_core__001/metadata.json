@@ -1,0 +1,400 @@
+{
+  "task_id": "python_dateutil__relativedelta_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "date-arithmetic",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling",
+    "multi-task-repo"
+  ],
+  "source": {
+    "name": "python-dateutil",
+    "url": "https://github.com/dateutil/dateutil",
+    "commit": "1ae807774053c071acc9e7d3d27778fba0a7773e",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "relativedelta arithmetic core",
+    "description": "Extract python-dateutil relativedelta relative/absolute date arithmetic, normalization, and weekday helpers for naive datetime/date without rrule, parser, or timezone machinery.",
+    "source_entrypoints": [
+      "dateutil.relativedelta.relativedelta",
+      "dateutil.relativedelta.weekday",
+      "dateutil._common.weekday"
+    ],
+    "included_behaviors": [
+      "relativedelta construction with relative and absolute fields",
+      "datetime/date addition and subtraction with month/year rollover",
+      "weekday nth helpers MO..SU with setpos semantics",
+      "normalized() for fractional day/hour cascading",
+      "relativedelta(dt1, dt2) difference mode",
+      "yearday/nlyearday and leapdays adjustments"
+    ],
+    "excluded_behaviors": [
+      "dateutil.rrule, rrulestr, rruleset",
+      "dateutil.parser and general string date parsing",
+      "dateutil.tz, zoneinfo, tzwin",
+      "original dateutil package import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Relative date arithmetic couples absolute vs relative field ordering, month-end clamping, weekday setpos jumps, fractional normalization cascades, and two-date diff iteration.",
+    "signals": [
+      "absolute day/month/year replace before relative add",
+      "weekday MO(n) jumps after day replacement",
+      "normalized() cascades fractional units through _fix",
+      "diff mode iterates months until timedelta remainder fits"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import relativedelta, MO, TU, WE, TH, FR, SA, SU",
+    "callable": "featurelifted.relativedelta",
+    "signature": "relativedelta(dt1=None, dt2=None, years=0, months=0, days=0, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "python-dateutil",
+      "dateutil"
+    ],
+    "forbidden_imports": [
+      "dateutil"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "relativedelta arithmetic core",
+    "summary": "Extract a task-scoped subset of `dateutil` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.relativedelta",
+        "kind": "module"
+      },
+      {
+        "path": "featurelifted.MO",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.TU",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.WE",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.TH",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.FR",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.SA",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.SU",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.MO.weekday",
+        "kind": "attribute"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: relativedelta construction with relative and absolute fields. Required observable cases include absolute day replacement; subtract relativedelta."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: datetime/date addition and subtraction with month/year rollover. Required observable cases include add months to datetime; relativedelta diff months; last friday of month; yearday sets month day; non integer years months rejected."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: weekday nth helpers MO..SU with setpos semantics. Required observable cases include weekday constant identity; weekday nth first monday."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: normalized() for fractional day/hour cascading. Required observable cases include add days and hours; absolute day replacement; normalized fractional days."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: relativedelta(dt1, dt2) difference mode. Required observable cases include relativedelta diff months; subtract relativedelta."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: yearday/nlyearday and leapdays adjustments. Required observable cases include yearday sets month day; leapdays post february."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.relativedelta`, `featurelifted.MO`, `featurelifted.TU`, `featurelifted.WE`, `featurelifted.TH`, `featurelifted.FR`, `featurelifted.SA`, `featurelifted.SU`, `featurelifted.MO.weekday` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "dateutil.relativedelta.relativedelta",
+      "dateutil.relativedelta.weekday",
+      "dateutil._common.weekday"
+    ],
+    "exclusions": [
+      "dateutil.rrule, rrulestr, rruleset",
+      "dateutil.parser and general string date parsing",
+      "dateutil.tz, zoneinfo, tzwin",
+      "original dateutil package import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "dateutil"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: dateutil."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: relativedelta construction with relative and absolute fields. Required observable cases include absolute day replacement; subtract relativedelta."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: datetime/date addition and subtraction with month/year rollover. Required observable cases include add months to datetime; relativedelta diff months; last friday of month; yearday sets month day; non integer years months rejected."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: weekday nth helpers MO..SU with setpos semantics. Required observable cases include weekday constant identity; weekday nth first monday."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: normalized() for fractional day/hour cascading. Required observable cases include add days and hours; absolute day replacement; normalized fractional days."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: relativedelta(dt1, dt2) difference mode. Required observable cases include relativedelta diff months; subtract relativedelta."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: yearday/nlyearday and leapdays adjustments. Required observable cases include yearday sets month day; leapdays post february."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.relativedelta`, `featurelifted.MO`, `featurelifted.TU`, `featurelifted.WE`, `featurelifted.TH`, `featurelifted.FR`, `featurelifted.SA`, `featurelifted.SU`, `featurelifted.MO.weekday` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: dateutil"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_add_months_to_datetime",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_add_days_and_hours",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_weekday_constant_identity",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_absolute_day_replacement",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_normalized_fractional_days",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_weekday_nth_first_monday",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_relativedelta_diff_months",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_last_friday_of_month",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_yearday_sets_month_day",
+        "behavior_ids": [
+          "B002",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_leapdays_post_february",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_subtract_relativedelta",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_dateutil_import_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_non_integer_years_months_rejected",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.relativedelta",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MO",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TU",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.WE",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TH",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FR",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SA",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SU",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MO.weekday",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "d8d7ef3ca5b30b21d4912f9f6cd0089149f783286e330728eafebecf16b5fd5d",
+  "generated_task_hash": "91bef39ef76c64de8bc9ebd924cb227bbcee34099bdda120db676117e261c233"
+}

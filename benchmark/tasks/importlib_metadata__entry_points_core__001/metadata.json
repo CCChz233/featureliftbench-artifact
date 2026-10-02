@@ -1,0 +1,370 @@
+{
+  "task_id": "importlib_metadata__entry_points_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "config_environment_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "importlib_metadata",
+    "url": "https://github.com/python/importlib_metadata",
+    "commit": "7.0.1-installed-snapshot",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Entry point discovery and selection",
+    "description": "Extract importlib_metadata entry point parsing, EntryPoints selection, and PathDistribution metadata reading.",
+    "source_entrypoints": [
+      "importlib_metadata.entry_points",
+      "importlib_metadata.EntryPoint",
+      "importlib_metadata.EntryPoints",
+      "importlib_metadata.PathDistribution",
+      "importlib_metadata.Sectioned"
+    ],
+    "included_behaviors": [
+      "parse entry point definitions from metadata",
+      "select entry points by group and name",
+      "load entry point targets",
+      "read entry points from PathDistribution metadata directories",
+      "parse INI-style sectioned entry point config"
+    ],
+    "excluded_behaviors": [
+      "full distribution discovery across sys.path",
+      "package file listing and requirements resolution",
+      "original project tests and CLI"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "data_model_coupling",
+      "third_party_dependency_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "Entry points couple metadata file formats, distribution objects, and environment scanning.",
+    "signals": [
+      "metadata INI section parsing",
+      "PathDistribution filesystem layout",
+      "EntryPoints selection API"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import EntryPoint, EntryPoints, PathDistribution, Sectioned",
+    "callable": "featurelifted.EntryPoints.select",
+    "signature": "EntryPoints.select(**params) -> EntryPoints"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "importlib_metadata",
+      "importlib-metadata"
+    ],
+    "forbidden_imports": [
+      "importlib_metadata"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Entry point discovery and selection",
+    "summary": "Extract a task-scoped subset of `importlib_metadata` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.EntryPoint",
+        "kind": "class",
+        "signature": "(name: 'str', value: 'str', group: 'str') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.EntryPoint.name",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.EntryPoint.value",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.EntryPoint.attr",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.EntryPoint.module",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoints",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.EntryPoints.select",
+            "kind": "method",
+            "signature": "(self, **params)"
+          },
+          {
+            "path": "featurelifted.EntryPoints.__getitem__",
+            "kind": "method",
+            "signature": "(self, name: 'str') -> 'EntryPoint'"
+          }
+        ],
+        "signature": "(iterable=(), /)"
+      },
+      {
+        "path": "featurelifted.PathDistribution",
+        "kind": "class",
+        "signature": "(path: 'SimplePath') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.PathDistribution.entry_points",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Sectioned",
+        "kind": "class",
+        "signature": "()",
+        "members": [
+          {
+            "path": "featurelifted.Sectioned.section_pairs",
+            "kind": "method",
+            "signature": "(text)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse entry point definitions from metadata. Required observable cases include path distribution entry points."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: select entry points by group and name. Required observable cases include entry point value parsing and selection; path distribution entry points."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: load entry point targets. Required observable cases include path distribution entry points."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: read entry points from PathDistribution metadata directories. Required observable cases include path distribution entry points."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: parse INI-style sectioned entry point config. Required observable cases include entry point value parsing and selection; sectioned entry point config; path distribution entry points."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.EntryPoint`, `featurelifted.EntryPoint.name`, `featurelifted.EntryPoint.value`, `featurelifted.EntryPoint.attr`, `featurelifted.EntryPoint.module`, `featurelifted.EntryPoints`, `featurelifted.EntryPoints.select`, `featurelifted.EntryPoints.__getitem__`, `featurelifted.PathDistribution`, `featurelifted.PathDistribution.entry_points`, `featurelifted.Sectioned`, `featurelifted.Sectioned.section_pairs` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "importlib_metadata.entry_points",
+      "importlib_metadata.EntryPoint",
+      "importlib_metadata.EntryPoints",
+      "importlib_metadata.PathDistribution",
+      "importlib_metadata.Sectioned"
+    ],
+    "exclusions": [
+      "full distribution discovery across sys.path",
+      "package file listing and requirements resolution",
+      "original project tests and CLI"
+    ],
+    "forbidden": {
+      "imports": [
+        "importlib_metadata"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: importlib_metadata."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse entry point definitions from metadata. Required observable cases include path distribution entry points."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: select entry points by group and name. Required observable cases include entry point value parsing and selection; path distribution entry points."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: load entry point targets. Required observable cases include path distribution entry points."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: read entry points from PathDistribution metadata directories. Required observable cases include path distribution entry points."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse INI-style sectioned entry point config. Required observable cases include entry point value parsing and selection; sectioned entry point config; path distribution entry points."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.EntryPoint`, `featurelifted.EntryPoint.name`, `featurelifted.EntryPoint.value`, `featurelifted.EntryPoint.attr`, `featurelifted.EntryPoint.module`, `featurelifted.EntryPoints`, `featurelifted.EntryPoints.select`, `featurelifted.EntryPoints.__getitem__`, `featurelifted.PathDistribution`, `featurelifted.PathDistribution.entry_points`, `featurelifted.Sectioned`, `featurelifted.Sectioned.section_pairs` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: importlib_metadata"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_entry_point_value_parsing_and_selection",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_sectioned_entry_point_config",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_path_distribution_entry_points",
+        "behavior_ids": [
+          "B002",
+          "B004",
+          "B001",
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.EntryPoint",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoint.name",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_distribution_entry_points"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoint.value",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_distribution_entry_points"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoint.attr",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoint.module",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoints",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoints.select",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_distribution_entry_points"
+        ]
+      },
+      {
+        "path": "featurelifted.PathDistribution",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PathDistribution.entry_points",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_distribution_entry_points"
+        ]
+      },
+      {
+        "path": "featurelifted.Sectioned",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Sectioned.section_pairs",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EntryPoints.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_distribution_entry_points",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "a3c62d2b8d1c4674b813715b6dc4c3a09cc878191b085191d9fcd25186f1f1d9",
+  "generated_task_hash": "4fda617bd467567512dcdeb60cf45e8f3a5d174c33d37a71b1a3887f7e2f0dfb"
+}

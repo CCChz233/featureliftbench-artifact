@@ -1,0 +1,81 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "spec-adversarial-self-test.hidden4.1",
+  "display_name": "Spec-grounded adversarial self-test",
+  "ablation_arm": "spec_adversarial_self_test",
+  "method_label": "spec_adversarial_self_test",
+  "cli_flag": "--spec-adversarial-self-test",
+  "environment_flag": "FEATURELIFTBENCH_SPEC_ADVERSARIAL_SELF_TEST=1",
+  "description": "Harness builds an executable contract matrix from metadata.public_spec. Agent fills per-behavior scenario stubs and optionally dual-runs a discovered upstream oracle. Same 128k Main envelope, 120 steps, No-Hint, LLM-summary/token condenser, no 2M cap. Hidden and public_tests stay unmounted. Not self-reflection, not Public-feedback, not pre-submit NL audit, not TFL. Process metrics only (no finish intercept). Screening only; numbers do not enter the Python-200 main table. Do not stack Entrypoint-Hint, Public-feedback, TFL, audit, CCG, verification-aware, artifact-aware, or recency.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_llm_summary",
+    "openhands_deepseek_v4_flash_spec_adversarial",
+    "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+    "openhands_deepseek_v4_flash_vllm_local_spec_adversarial"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only (contract_matrix.json + scenario stubs)",
+    "evaluator_feedback_to_agent": false,
+    "source_entrypoints_in_workspace": false
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "token",
+    "mount_public_tests": false,
+    "expose_source_hints": false,
+    "spec_adversarial_self_test": true
+  },
+  "contrasts": [
+    {
+      "profile": "openhands_deepseek_v4_flash_llm_summary",
+      "spec_adversarial_self_test": false,
+      "role": "same-day Main control (API)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_spec_adversarial",
+      "spec_adversarial_self_test": true,
+      "role": "Spec-adversarial treatment (API)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+      "spec_adversarial_self_test": false,
+      "role": "same-day Main control (local vLLM)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_spec_adversarial",
+      "spec_adversarial_self_test": true,
+      "role": "Spec-adversarial treatment (local vLLM)"
+    }
+  ],
+  "process_metrics": [
+    "contract_check_ran",
+    "rows_all_green",
+    "oracle_import_used",
+    "finished_while_red"
+  ],
+  "screening": {
+    "slice": "Hidden-4",
+    "task_list": "harness/config/experiments/spec_adversarial_hidden4_v1.txt",
+    "readout": "functional_gate plus Hidden 0→1 vs same-day Main. Kill if 0/4 Hidden flips. Keep investigating if ≥2/4. Still not a main-table row.",
+    "kill_if": "Hidden 0→1 is 0/4 vs same-day Main",
+    "keep_if": "Hidden 0→1 is ≥2/4 with public_tests still unmounted",
+    "do_not": [
+      "Distill-24",
+      "Python-200",
+      "stack Entrypoint-Hint",
+      "stack Public-feedback"
+    ],
+    "default_endpoint": "api_if_local_vllm_down",
+    "local_api_base": "http://172.17.0.1:8000/v1"
+  }
+}

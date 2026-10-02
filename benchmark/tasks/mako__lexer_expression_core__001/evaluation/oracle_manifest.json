@@ -1,0 +1,19 @@
+{
+  "source_package_name": "mako",
+  "required_source_files": [
+    "mako/exceptions.py",
+    "mako/compat.py",
+    "mako/util.py",
+    "mako/_ast_util.py",
+    "mako/pyparser.py",
+    "mako/ast.py",
+    "mako/filters.py",
+    "mako/pygen.py",
+    "mako/parsetree.py",
+    "mako/lexer.py"
+  ],
+  "runtime_dependencies": [
+    "MarkupSafe"
+  ],
+  "notes": "Oracle copies lexer/parsetree/ast/pyparser closure only; excludes template, codegen, runtime, lookup, cache, and ext plugins."
+}

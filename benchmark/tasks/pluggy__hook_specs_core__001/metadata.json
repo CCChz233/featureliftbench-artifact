@@ -1,0 +1,359 @@
+{
+  "task_id": "pluggy__hook_specs_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "plugin",
+    "hooks",
+    "validation",
+    "pure-python",
+    "stateful"
+  ],
+  "source": {
+    "name": "pluggy",
+    "url": "https://github.com/pytest-dev/pluggy",
+    "commit": "1.0.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Hook specification validation and discovery",
+    "description": "Extract pluggy hook specification declaration, validation, and pending-hook checks as a standalone package.",
+    "source_entrypoints": [
+      "pluggy.PluginManager",
+      "pluggy.HookspecMarker",
+      "pluggy.HookimplMarker",
+      "pluggy.PluginValidationError",
+      "pluggy.PluginManager.check_pending",
+      "pluggy.PluginManager.add_hookspecs"
+    ],
+    "included_behaviors": [
+      "declare hook specifications with HookspecMarker including firstresult and historic flags",
+      "reject hook implementations with unknown arguments during registration",
+      "reject hookwrapper implementations that are not generator functions",
+      "reject historic hookwrapper combinations via PluginValidationError",
+      "check_pending raises for unknown non-optional hook implementations",
+      "support optionalhook implementations for undeclared hooks",
+      "replay historic hook calls for plugins registered after the first dispatch"
+    ],
+    "excluded_behaviors": [
+      "pytest integration and setuptools entry point loading",
+      "project packaging metadata",
+      "development tests and release tooling"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "framework_coupling",
+      "global_state_registry_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Hook specification validation is coupled to plugin registration state, historic replay buffers, and caller ordering metadata.",
+    "signals": [
+      "plugin manager registry and hook caller specs",
+      "_verify_hook argument matching against hookspec signatures",
+      "historic hook replay on late plugin registration"
+    ],
+    "primary": "framework_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import PluginManager, HookspecMarker, HookimplMarker, PluginValidationError",
+    "callable": "featurelifted.PluginManager.check_pending",
+    "signature": "PluginManager.check_pending() -> None"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "pluggy"
+    ],
+    "forbidden_imports": [
+      "pluggy"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Hook specification validation and discovery",
+    "summary": "Extract a task-scoped subset of `pluggy` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.PluginManager",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.PluginManager.check_pending",
+            "kind": "method",
+            "signature": "(self)"
+          },
+          {
+            "path": "featurelifted.PluginManager.add_hookspecs",
+            "kind": "method",
+            "signature": "(self, module_or_class)"
+          },
+          {
+            "path": "featurelifted.PluginManager.hook",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.PluginManager.register",
+            "kind": "method",
+            "signature": "(self, plugin, name=None)"
+          }
+        ],
+        "signature": "(project_name)"
+      },
+      {
+        "path": "featurelifted.HookspecMarker",
+        "kind": "class",
+        "signature": "(project_name)"
+      },
+      {
+        "path": "featurelifted.HookimplMarker",
+        "kind": "class",
+        "signature": "(project_name)"
+      },
+      {
+        "path": "featurelifted.PluginValidationError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: declare hook specifications with HookspecMarker including firstresult and historic flags. Required observable cases include hookwrapper must be generator."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: reject hook implementations with unknown arguments during registration. Required observable cases include unknown hook argument rejected; hookwrapper must be generator."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: reject hookwrapper implementations that are not generator functions. Required observable cases include hookwrapper must be generator."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: reject historic hookwrapper combinations via PluginValidationError. Required observable cases include historic hookwrapper combination rejected."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: check_pending raises for unknown non-optional hook implementations. Required observable cases include check pending requires optional for unknown hooks; hookwrapper must be generator."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: support optionalhook implementations for undeclared hooks. Required observable cases include hookwrapper must be generator."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: replay historic hook calls for plugins registered after the first dispatch. Required observable cases include historic hook replays for late registration."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.PluginManager`, `featurelifted.PluginManager.check_pending`, `featurelifted.PluginManager.add_hookspecs`, `featurelifted.PluginManager.hook`, `featurelifted.PluginManager.register`, `featurelifted.HookspecMarker`, `featurelifted.HookimplMarker`, `featurelifted.PluginValidationError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pluggy.PluginManager",
+      "pluggy.HookspecMarker",
+      "pluggy.HookimplMarker",
+      "pluggy.PluginValidationError",
+      "pluggy.PluginManager.check_pending",
+      "pluggy.PluginManager.add_hookspecs"
+    ],
+    "exclusions": [
+      "pytest integration and setuptools entry point loading",
+      "project packaging metadata",
+      "development tests and release tooling"
+    ],
+    "forbidden": {
+      "imports": [
+        "pluggy"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: pluggy."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: declare hook specifications with HookspecMarker including firstresult and historic flags. Required observable cases include hookwrapper must be generator."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject hook implementations with unknown arguments during registration. Required observable cases include unknown hook argument rejected; hookwrapper must be generator."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject hookwrapper implementations that are not generator functions. Required observable cases include hookwrapper must be generator."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject historic hookwrapper combinations via PluginValidationError. Required observable cases include historic hookwrapper combination rejected."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: check_pending raises for unknown non-optional hook implementations. Required observable cases include check pending requires optional for unknown hooks; hookwrapper must be generator."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support optionalhook implementations for undeclared hooks. Required observable cases include hookwrapper must be generator."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: replay historic hook calls for plugins registered after the first dispatch. Required observable cases include historic hook replays for late registration."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.PluginManager`, `featurelifted.PluginManager.check_pending`, `featurelifted.PluginManager.add_hookspecs`, `featurelifted.PluginManager.hook`, `featurelifted.PluginManager.register`, `featurelifted.HookspecMarker`, `featurelifted.HookimplMarker`, `featurelifted.PluginValidationError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pluggy"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_unknown_hook_argument_rejected",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_check_pending_requires_optional_for_unknown_hooks",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_historic_hook_replays_for_late_registration",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hookwrapper_must_be_generator",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B002",
+          "B005",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_historic_hookwrapper_combination_rejected",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.PluginManager",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PluginManager.check_pending",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PluginManager.add_hookspecs",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_historic_hook_replays_for_late_registration",
+          "hidden_tests/test_hidden_behavior.py::test_historic_hookwrapper_combination_rejected",
+          "hidden_tests/test_hidden_behavior.py::test_hookwrapper_must_be_generator"
+        ]
+      },
+      {
+        "path": "featurelifted.PluginManager.hook",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_historic_hook_replays_for_late_registration"
+        ]
+      },
+      {
+        "path": "featurelifted.PluginManager.register",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_historic_hook_replays_for_late_registration",
+          "hidden_tests/test_hidden_behavior.py::test_historic_hookwrapper_combination_rejected",
+          "hidden_tests/test_hidden_behavior.py::test_hookwrapper_must_be_generator"
+        ]
+      },
+      {
+        "path": "featurelifted.HookspecMarker",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.HookimplMarker",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PluginValidationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "17ac94a090dba4d724be03be064ae6b53e0a8337e51c5e14554a51e14b0ea9c9",
+  "generated_task_hash": "b7f011b7b37b1b162062d89cc1d97b2d83cb63cf6cfaa400ebd7e4956e448df1"
+}

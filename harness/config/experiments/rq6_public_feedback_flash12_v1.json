@@ -1,0 +1,30 @@
+{
+  "slice_id": "rq6-public-feedback-flash12-v1",
+  "role": "RQ6 information ablation, not a Python-200 main-table slice",
+  "model": "DeepSeek-V4-Flash",
+  "source_snapshot": "artifacts/research_analysis/current_results/python200_cross_model_main_20260818.json",
+  "source_suites": {
+    "local": "experiments/python/openhands/deepseek-v4-flash/python200-deepseek-v4-flash-vllm-local-0812-001",
+    "api": "experiments/python/openhands/deepseek-v4-flash/external50-deepseek-v4-flash-0805-main-001"
+  },
+  "selection": "Intersection of local and API Flash Main-200 primary_outcomes at the same failure stage.",
+  "paired_control": "Same-day Main on these 12 tasks. Do not use the weeks-old 145/200 suite as the n=12 control.",
+  "cohorts": {
+    "public_failure": [
+      "alembic__revision_map_core__hard3_001",
+      "flask__route_dispatch_core__001",
+      "filelock__reentrant_lock_core__001",
+      "decorator__signature_preserving_core__001",
+      "click__lazy_command_core__hard3_001",
+      "yamale__schema_validate_core__hard3_001"
+    ],
+    "hidden_failure": [
+      "bleach__sanitize_core__001",
+      "parse__format_parser_core__001",
+      "pygments__lexer_core__001",
+      "python_decouple__config_repository_core__001",
+      "schema__nested_validate_core__hard3_001",
+      "wheel__metadata_normalize_core__hard3_001"
+    ]
+  }
+}

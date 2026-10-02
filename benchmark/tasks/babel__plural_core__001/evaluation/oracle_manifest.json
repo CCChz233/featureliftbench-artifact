@@ -1,0 +1,17 @@
+{
+  "source_package_name": "babel",
+  "required_source_files": [
+    "babel/__init__.py",
+    "babel/core.py",
+    "babel/plural.py",
+    "babel/localedata.py",
+    "babel/global.dat",
+    "babel/locale-data/root.dat",
+    "babel/locale-data/en.dat",
+    "babel/locale-data/ru.dat",
+    "babel/locale-data/fr.dat",
+    "babel/locale-data/ja.dat",
+    "babel/locale-data/pl.dat"
+  ],
+  "notes": "Plural subset with core/localedata/plural and six locale-data files."
+}

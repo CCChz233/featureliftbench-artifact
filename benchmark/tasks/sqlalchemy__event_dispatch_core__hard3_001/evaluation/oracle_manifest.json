@@ -1,0 +1,23 @@
+{
+  "source_package_name": "sqlalchemy",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/lib/sqlalchemy/event/api.py",
+    "repo/lib/sqlalchemy/event/registry.py",
+    "repo/lib/sqlalchemy/event/base.py"
+  ],
+  "target_api": [
+    "featurelifted.listen",
+    "featurelifted.remove",
+    "featurelifted.dispatch",
+    "featurelifted.EventTarget"
+  ],
+  "forbidden_imports": [
+    "sqlalchemy"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "sqlalchemy/"
+  ],
+  "notes": "Event dispatch subset without ORM/engine/database access."
+}

@@ -1,0 +1,327 @@
+{
+  "task_id": "werkzeug__routing_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "framework_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "werkzeug",
+    "url": "https://github.com/pallets/werkzeug",
+    "commit": "3.0.3-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "URL routing map and adapter",
+    "description": "Extract Werkzeug URL routing: Map, Rule, converters, match, and build.",
+    "source_entrypoints": [
+      "werkzeug.routing.Map",
+      "werkzeug.routing.Rule",
+      "werkzeug.routing.MapAdapter",
+      "werkzeug.routing.Subdomain",
+      "werkzeug.routing.Submount"
+    ],
+    "included_behaviors": [
+      "define URL rules with converters and HTTP methods",
+      "match paths to endpoints with argument extraction",
+      "build URLs from endpoints and arguments",
+      "subdomain and submount rule factories",
+      "redirect and alias redirect exceptions on match"
+    ],
+    "excluded_behaviors": [
+      "WSGI request/response wrappers",
+      "development server and middleware",
+      "form parsing and file uploads",
+      "original project tests and CLI"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "framework_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "framework_coupling",
+    "description": "Routing couples rule factories, converters, host binding, and WSGI host helpers.",
+    "signals": [
+      "Map/MapAdapter framework objects",
+      "converter registry and validation",
+      "subdomain and mount prefix composition"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted.routing import Map, Rule, MapAdapter, Subdomain, Submount; from featurelifted.routing.exceptions import RequestRedirect",
+    "callable": "featurelifted.routing.Map",
+    "signature": "Map(rules=None, default_subdomain='', **options)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "werkzeug"
+    ],
+    "forbidden_imports": [
+      "werkzeug"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "URL routing map and adapter",
+    "summary": "Extract a task-scoped subset of `werkzeug` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.routing",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.routing.Map",
+            "kind": "class",
+            "signature": "(rules: 't.Iterable[RuleFactory] | None' = None, default_subdomain: 'str' = '', strict_slashes: 'bool' = True, merge_slashes: 'bool' = True, redirect_defaults: 'bool' = True, converters: 't.Mapping[str, type[BaseConverter]] | None' = None, sort_parameters: 'bool' = False, sort_key: 't.Callable[[t.Any], t.Any] | None' = None, host_matching: 'bool' = False) -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.routing.Map.bind",
+                "kind": "method",
+                "signature": "(self, server_name: 'str', script_name: 'str | None' = None, subdomain: 'str | None' = None, url_scheme: 'str' = 'http', default_method: 'str' = 'GET', path_info: 'str | None' = None, query_args: 't.Mapping[str, t.Any] | str | None' = None) -> 'MapAdapter'"
+              }
+            ]
+          },
+          {
+            "path": "featurelifted.routing.Rule",
+            "kind": "class",
+            "signature": "(string: 'str', defaults: 't.Mapping[str, t.Any] | None' = None, subdomain: 'str | None' = None, methods: 't.Iterable[str] | None' = None, build_only: 'bool' = False, endpoint: 't.Any | None' = None, strict_slashes: 'bool | None' = None, merge_slashes: 'bool | None' = None, redirect_to: 'str | t.Callable[..., str] | None' = None, alias: 'bool' = False, host: 'str | None' = None, websocket: 'bool' = False) -> 'None'"
+          },
+          {
+            "path": "featurelifted.routing.Subdomain",
+            "kind": "class",
+            "signature": "(subdomain: 'str', rules: 't.Iterable[RuleFactory]') -> 'None'"
+          },
+          {
+            "path": "featurelifted.routing.Submount",
+            "kind": "class",
+            "signature": "(path: 'str', rules: 't.Iterable[RuleFactory]') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.routing.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.routing.exceptions.RequestRedirect",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: define URL rules with converters and HTTP methods. Required observable cases include subdomain and submount routing."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: match paths to endpoints with argument extraction. Required observable cases include match and build simple rules; subdomain and submount routing."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: build URLs from endpoints and arguments. Required observable cases include match and build simple rules; subdomain and submount routing."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: subdomain and submount rule factories. Required observable cases include subdomain and submount routing."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: redirect and alias redirect exceptions on match. Required observable cases include strict slashes redirect."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.routing`, `featurelifted.routing.Map`, `featurelifted.routing.Map.bind`, `featurelifted.routing.Rule`, `featurelifted.routing.Subdomain`, `featurelifted.routing.Submount`, `featurelifted.routing.exceptions`, `featurelifted.routing.exceptions.RequestRedirect` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "werkzeug.routing.Map",
+      "werkzeug.routing.Rule",
+      "werkzeug.routing.MapAdapter",
+      "werkzeug.routing.Subdomain",
+      "werkzeug.routing.Submount"
+    ],
+    "exclusions": [
+      "WSGI request/response wrappers",
+      "development server and middleware",
+      "form parsing and file uploads",
+      "original project tests and CLI"
+    ],
+    "forbidden": {
+      "imports": [
+        "werkzeug"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: werkzeug."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: define URL rules with converters and HTTP methods. Required observable cases include subdomain and submount routing."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: match paths to endpoints with argument extraction. Required observable cases include match and build simple rules; subdomain and submount routing."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: build URLs from endpoints and arguments. Required observable cases include match and build simple rules; subdomain and submount routing."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: subdomain and submount rule factories. Required observable cases include subdomain and submount routing."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: redirect and alias redirect exceptions on match. Required observable cases include strict slashes redirect."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.routing`, `featurelifted.routing.Map`, `featurelifted.routing.Map.bind`, `featurelifted.routing.Rule`, `featurelifted.routing.Subdomain`, `featurelifted.routing.Submount`, `featurelifted.routing.exceptions`, `featurelifted.routing.exceptions.RequestRedirect` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: werkzeug"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_match_and_build_simple_rules",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_subdomain_and_submount_routing",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_strict_slashes_redirect",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.routing",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.Map",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.Map.bind",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_strict_slashes_redirect",
+          "hidden_tests/test_hidden_behavior.py::test_subdomain_and_submount_routing"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.Rule",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.Subdomain",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.Submount",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.routing.exceptions.RequestRedirect",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "a6265ae005d3514a9bfb3c0ef4e17f87b1b76e5134d2a22b71613c2444689c9b",
+  "generated_task_hash": "d12d18859ab0fe302b81a4a3f6314fec5d1b8f8d0fc075da6addaffc00f08173"
+}

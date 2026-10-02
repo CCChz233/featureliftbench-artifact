@@ -1,0 +1,20 @@
+{
+  "source_package_name": "returns",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/returns/result.py"
+  ],
+  "target_api": [
+    "featurelifted.Success",
+    "featurelifted.Failure",
+    "featurelifted.safe"
+  ],
+  "forbidden_imports": [
+    "returns"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "returns/"
+  ],
+  "notes": "Result pipeline subset without other containers."
+}

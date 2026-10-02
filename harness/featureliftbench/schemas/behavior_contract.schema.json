@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeatureLiftBench private behavior contract",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "spec_sha256",
+    "spec_authored_from",
+    "public_clauses",
+    "public_test_mappings",
+    "hidden_test_mappings",
+    "review_status"
+  ],
+  "properties": {
+    "schema_version": { "const": "featureliftbench.behavior_contract.v1" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "spec_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "spec_authored_from": { "type": "array", "items": { "type": "string" } },
+    "public_clauses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["behavior_id", "text", "spec_anchor"],
+        "properties": {
+          "behavior_id": { "type": "string", "pattern": "^B[0-9]{3}$" },
+          "text": { "type": "string", "minLength": 1 },
+          "spec_anchor": { "type": "string", "minLength": 1 },
+          "clause_kind": {
+            "enum": ["included_behavior", "api_surface", "isolation_constraint"]
+          }
+        }
+      }
+    },
+    "public_test_mappings": { "$ref": "#/$defs/test_mappings" },
+    "hidden_test_mappings": { "$ref": "#/$defs/test_mappings" },
+    "risk_tags": { "type": "array", "items": { "type": "string" } },
+    "unmapped_public_test_nodeids": { "type": "array", "items": { "type": "string" } },
+    "unmapped_hidden_test_nodeids": { "type": "array", "items": { "type": "string" } },
+    "review_status": {
+      "enum": [
+        "auto_assigned", "needs_review", "ai_assisted_reviewed",
+        "author_reviewed", "double_reviewed", "adjudicated"
+      ]
+    },
+    "review": { "type": "object" }
+  },
+  "$defs": {
+    "test_mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["nodeid", "public_clause_ids", "mapping_method"],
+        "properties": {
+          "nodeid": { "type": "string", "minLength": 1 },
+          "public_clause_ids": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^B[0-9]{3}$" }
+          },
+          "mapping_method": {
+            "enum": ["token_similarity", "ai_assisted", "manual", "unmapped"]
+          }
+        }
+      }
+    }
+  }
+}

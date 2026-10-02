@@ -1,0 +1,21 @@
+{
+  "source_package_name": "pydantic",
+  "required_source_files": [
+    "pydantic/version.py",
+    "pydantic/errors.py",
+    "pydantic/utils.py",
+    "pydantic/typing.py",
+    "pydantic/json.py",
+    "pydantic/datetime_parse.py",
+    "pydantic/config.py",
+    "pydantic/error_wrappers.py",
+    "pydantic/validators.py",
+    "pydantic/types.py",
+    "pydantic/class_validators.py",
+    "pydantic/fields.py",
+    "pydantic/annotated_types.py",
+    "pydantic/parse.py",
+    "pydantic/main.py"
+  ],
+  "notes": "Validation core closure without schema.py, networks.py, env_settings.py, dataclasses.py, mypy.py, tools.py, or generics.py."
+}

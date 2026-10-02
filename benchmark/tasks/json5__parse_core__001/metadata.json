@@ -1,0 +1,259 @@
+{
+  "task_id": "json5__parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "parser",
+    "json5",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "json5",
+    "url": "https://github.com/dpranke/pyjson5",
+    "commit": "0.9.25-installed-snapshot",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "JSON5 parse and loads",
+    "description": "Extract json5's parser-driven loads API as a standalone package.",
+    "source_entrypoints": [
+      "json5.loads",
+      "json5.load",
+      "json5.parser.Parser"
+    ],
+    "included_behaviors": [
+      "parse JSON5 objects, arrays, strings, numbers, booleans, and null",
+      "support unquoted keys, single-quoted strings, trailing commas, and comments",
+      "support hexadecimal and leading-plus numeric literals",
+      "raise ValueError with line/column context for malformed input",
+      "optional duplicate-key rejection via allow_duplicate_keys=False"
+    ],
+    "excluded_behaviors": [
+      "json5 dump/dumps serialization",
+      "CLI tool and arg_parser modules",
+      "original project tests and documentation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "JSON5 parsing depends on recursive-descent parser state, scope stack, memoization cache, and lib.py value materialization.",
+    "signals": [
+      "Parser position/errpos/failed flags",
+      "_scopes stack and _cache memoization",
+      "loads bridges Parser output into Python values"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import loads, load",
+    "callable": "featurelifted.loads",
+    "signature": "loads(s: str, *, allow_duplicate_keys: bool = True) -> object"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "json5"
+    ],
+    "forbidden_imports": [
+      "json5"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "JSON5 parse and loads",
+    "summary": "Extract a task-scoped subset of `json5` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.loads",
+        "kind": "function",
+        "signature": "(s, encoding=None, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, allow_duplicate_keys=True)"
+      },
+      {
+        "path": "featurelifted.load",
+        "kind": "function",
+        "signature": "(fp, encoding=None, cls=None, object_hook=None, parse_float=None, parse_int=None, parse_constant=None, object_pairs_hook=None, allow_duplicate_keys=True)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse JSON5 objects, arrays, strings, numbers, booleans, and null. Required observable cases include malformed input reports position."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: support unquoted keys, single-quoted strings, trailing commas, and comments. Required observable cases include loads parses unquoted keys and trailing comma; loads supports line comments; malformed input reports position."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: support hexadecimal and leading-plus numeric literals. Required observable cases include hex and plus numeric literals."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: raise ValueError with line/column context for malformed input. Required observable cases include malformed input reports position."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: optional duplicate-key rejection via allow_duplicate_keys=False. Required observable cases include duplicate keys rejected when disabled."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.loads`, `featurelifted.load` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "json5.loads",
+      "json5.load",
+      "json5.parser.Parser"
+    ],
+    "exclusions": [
+      "json5 dump/dumps serialization",
+      "CLI tool and arg_parser modules",
+      "original project tests and documentation"
+    ],
+    "forbidden": {
+      "imports": [
+        "json5"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: json5."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse JSON5 objects, arrays, strings, numbers, booleans, and null. Required observable cases include malformed input reports position."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support unquoted keys, single-quoted strings, trailing commas, and comments. Required observable cases include loads parses unquoted keys and trailing comma; loads supports line comments; malformed input reports position."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support hexadecimal and leading-plus numeric literals. Required observable cases include hex and plus numeric literals."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise ValueError with line/column context for malformed input. Required observable cases include malformed input reports position."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: optional duplicate-key rejection via allow_duplicate_keys=False. Required observable cases include duplicate keys rejected when disabled."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.loads`, `featurelifted.load` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: json5"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_loads_parses_unquoted_keys_and_trailing_comma",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_loads_supports_line_comments",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hex_and_plus_numeric_literals",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_duplicate_keys_rejected_when_disabled",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_malformed_input_reports_position",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.loads",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.load",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "778f145d6d1242f741b34d42d6f12b86808e78d96f7d854451b47b459a549f10",
+  "generated_task_hash": "9520160bfa1c49249f8a66c683e05e1c98578f70d3ec55efe63f7ad3eca6b527"
+}

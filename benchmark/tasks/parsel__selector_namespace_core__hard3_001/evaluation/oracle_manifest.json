@@ -1,0 +1,21 @@
+{
+  "source_package_name": "parsel",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/parsel/selector.py",
+    "repo/parsel/utils.py"
+  ],
+  "target_api": [
+    "featurelifted.Selector",
+    "featurelifted.FakeElement",
+    "featurelifted.extract_text"
+  ],
+  "forbidden_imports": [
+    "parsel"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "parsel/"
+  ],
+  "notes": "Selector namespace subset without lxml/cssselect."
+}

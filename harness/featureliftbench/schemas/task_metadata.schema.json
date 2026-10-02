@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeatureLiftBench task metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "language",
+    "source",
+    "feature",
+    "entanglement",
+    "output",
+    "environment",
+    "tests"
+  ],
+  "properties": {
+    "task_id": { "type": "string", "minLength": 1 },
+    "language": { "type": "string", "enum": ["python", "go"] },
+    "difficulty": {
+      "type": "string",
+      "enum": ["easy", "medium", "hard"]
+    },
+    "split_role": {
+      "type": "string",
+      "enum": ["mechanism_challenging"]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "url", "commit", "license"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "minLength": 1 },
+        "commit": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "module_path": { "type": "string", "minLength": 1 }
+      }
+    },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "description",
+        "source_entrypoints",
+        "included_behaviors",
+        "excluded_behaviors"
+      ],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 },
+        "source_entrypoints": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "included_behaviors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "excluded_behaviors": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "entanglement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["level", "types", "description", "signals"],
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "types": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": [
+              "framework_coupling",
+              "config_environment_coupling",
+              "concurrency_coupling",
+              "global_state_registry_coupling",
+              "resource_coupling",
+              "implicit_dependency_coupling",
+              "parser_state_coupling",
+              "data_model_coupling",
+              "reflection_tag_coupling",
+              "third_party_dependency_coupling",
+              "legacy_vibe_clutter"
+            ]
+          }
+        },
+        "primary": {
+          "type": "string",
+          "enum": [
+            "framework_coupling",
+            "config_environment_coupling",
+            "concurrency_coupling",
+            "parser_state_coupling",
+            "resource_coupling",
+            "data_model_coupling",
+            "reflection_tag_coupling",
+            "third_party_dependency_coupling",
+            "legacy_vibe_clutter"
+          ]
+        },
+        "description": { "type": "string", "minLength": 1 },
+        "signals": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "module": { "type": "string", "minLength": 1 },
+        "package": { "type": "string", "minLength": 1 },
+        "import": { "type": "string", "minLength": 1 },
+        "callable": { "type": "string", "minLength": 1 },
+        "signature": { "type": "string", "minLength": 1 },
+        "symbols": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "python": { "type": "string", "minLength": 1 },
+        "go": { "type": "string", "minLength": 1 },
+        "network": { "type": "boolean" },
+        "timeout_seconds": { "type": "integer", "minimum": 1 },
+        "dependency_lock": { "type": "string", "minLength": 1 },
+        "allowed_dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden_dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowed_modules": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden_modules": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden_imports": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public", "hidden", "command"],
+      "properties": {
+        "public": { "type": "string", "minLength": 1 },
+        "hidden": { "type": "string", "minLength": 1 },
+        "command": { "type": "string", "minLength": 1 }
+      }
+    },
+    "concurrency": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "race_test": { "type": "boolean" },
+        "stress_count": { "type": "integer", "minimum": 1 },
+        "timeout_seconds": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "scoring_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "copy_all_bytes",
+        "copy_all_loc",
+        "oracle_bytes",
+        "oracle_loc",
+        "oracle_dependency_count"
+      ],
+      "properties": {
+        "copy_all_bytes": { "type": "number", "minimum": 0 },
+        "copy_all_loc": { "type": "number", "minimum": 0 },
+        "oracle_bytes": { "type": "number", "minimum": 0 },
+        "oracle_loc": { "type": "number", "minimum": 0 },
+        "oracle_dependency_count": { "type": "number", "minimum": 0 }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "language": { "const": "python" } } },
+      "then": {
+        "properties": {
+          "output": {
+            "required": ["package", "import", "callable", "signature"]
+          },
+          "environment": {
+            "required": [
+              "python",
+              "network",
+              "timeout_seconds",
+              "dependency_lock",
+              "allowed_dependencies",
+              "forbidden_dependencies",
+              "forbidden_imports"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "language": { "const": "go" } } },
+      "then": {
+        "properties": {
+          "source": {
+            "required": ["name", "url", "commit", "license", "module_path"]
+          },
+          "output": {
+            "required": ["module", "package", "import", "symbols"]
+          },
+          "environment": {
+            "required": [
+              "go",
+              "network",
+              "timeout_seconds",
+              "allowed_modules",
+              "forbidden_modules",
+              "forbidden_imports"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

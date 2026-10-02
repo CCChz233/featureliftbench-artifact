@@ -1,0 +1,202 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_iso_week_calendar_date",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_duration_weeks_component",
+      "public_clause_ids": [
+        "B001",
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_duration_full_components",
+      "public_clause_ids": [
+        "B001",
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_format_literal_brackets",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_fixed_offset_without_colon",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_common_day_first",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_subsecond_truncation",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_duration_years_months_not_float",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_invalid_iso_raises",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_pendulum_import_surface",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B006"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: parse ISO8601 dates, datetimes with Z or numeric offsets, and durations. Required observable cases include parse iso date; parse iso datetime zulu; parse iso duration; parse iso week calendar date; parse duration weeks component; parse duration full components; parse fixed offset without colon; parse subsecond truncation; parse invalid iso raises."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: parse common YYYY-MM-DD and HH:mm:ss combinations. Required observable cases include parse common day first; parse subsecond truncation; parse invalid iso raises."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: construct DateTime and Duration instances. Required observable cases include parse subsecond truncation."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: format datetimes with Pendulum tokens (YYYY, MM, DD, HH, mm, ss, Z). Required observable cases include datetime format tokens; format literal brackets."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The extracted feature must support this observable behavior: duration component properties (years, months, weeks, days, hours, minutes, seconds). Required observable cases include duration constructor and total seconds; parse duration weeks component; parse duration full components; duration years months not float."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The package exposes the required task API paths `featurelifted.UTC`, `featurelifted.Date`, `featurelifted.Date.day`, `featurelifted.Date.hour`, `featurelifted.Date.minute`, `featurelifted.Date.month`, `featurelifted.Date.year`, `featurelifted.DateTime`, `featurelifted.DateTime.hour`, `featurelifted.DateTime.microsecond`, `featurelifted.DateTime.minute`, `featurelifted.DateTime.offset`, and 15 listed members with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "the submitted package does not import forbidden upstream packages: pendulum"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_iso_date",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_iso_datetime_zulu",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_datetime_format_tokens",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_duration_constructor_and_total_seconds",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_iso_duration",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 0,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "parser_state_coupling",
+    "data_model_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "807ffee91ba7d5847e7ca7c556b1f57e8f99ffc90bed9a1c55ca2c5959eb63cd",
+  "task_id": "pendulum__parse_format_core__001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

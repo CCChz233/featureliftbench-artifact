@@ -1,0 +1,21 @@
+{
+  "source_package_name": "marshmallow",
+  "required_source_files": [
+    "marshmallow/__init__.py",
+    "marshmallow/class_registry.py",
+    "marshmallow/constants.py",
+    "marshmallow/decorators.py",
+    "marshmallow/error_store.py",
+    "marshmallow/exceptions.py",
+    "marshmallow/experimental/__init__.py",
+    "marshmallow/experimental/context.py",
+    "marshmallow/fields.py",
+    "marshmallow/orderedset.py",
+    "marshmallow/py.typed",
+    "marshmallow/schema.py",
+    "marshmallow/types.py",
+    "marshmallow/utils.py",
+    "marshmallow/validate.py"
+  ],
+  "notes": "Full marshmallow runtime package (pure Python)."
+}

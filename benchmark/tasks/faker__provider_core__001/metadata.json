@@ -1,0 +1,282 @@
+{
+  "task_id": "faker__provider_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "resource_coupling",
+    "pure-python"
+  ],
+  "source": {
+    "name": "Faker",
+    "url": "https://github.com/joke2k/faker",
+    "commit": "40.23.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Single-locale Faker providers",
+    "description": "Extract Faker factory and Generator wiring for en_US person, address, and phone_number providers with embedded locale data.",
+    "source_entrypoints": [
+      "faker.proxy.Faker",
+      "faker.factory.Factory.create",
+      "faker.providers.person.en_US",
+      "faker.providers.address.en_US",
+      "faker.providers.phone_number.en_US"
+    ],
+    "included_behaviors": [
+      "construct Faker with locale en_US and default person/address/phone providers",
+      "generate deterministic fake names, addresses, and phone numbers with seed_instance",
+      "resolve localized provider modules and locale resource data"
+    ],
+    "excluded_behaviors": [
+      "multi-locale weighting and proxy locale switching",
+      "CLI, pytest plugin, and documentation",
+      "providers beyond person, address, and phone_number"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "resource_coupling",
+      "implicit_dependency_coupling",
+      "global_state_registry_coupling"
+    ],
+    "primary": "resource_coupling",
+    "description": "Provider methods depend on locale-specific data tables loaded through dynamic provider discovery and import paths.",
+    "signals": [
+      "locale-scoped provider modules with embedded name/address lists",
+      "factory provider registration and weighted sampling",
+      "generator locale configuration"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Faker",
+    "callable": "featurelifted.Faker",
+    "signature": "Faker(locale: str = 'en_US', providers: list[str] | None = None, **config)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "faker"
+    ],
+    "forbidden_imports": [
+      "faker"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Single-locale Faker providers",
+    "summary": "Extract a task-scoped subset of `faker` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Faker",
+        "kind": "class",
+        "signature": "(locale: 'str | Sequence[str] | dict[str, int | float] | None' = None, providers: 'list[str] | None' = None, generator: 'Generator | None' = None, includes: 'list[str] | None' = None, use_weighting: 'bool' = True, **config: 'Any') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Faker.address",
+            "kind": "method",
+            "signature": "() -> str",
+            "runtime_bound": true
+          },
+          {
+            "path": "featurelifted.Faker.first_name",
+            "kind": "method",
+            "signature": "() -> str",
+            "runtime_bound": true
+          },
+          {
+            "path": "featurelifted.Faker.last_name",
+            "kind": "method",
+            "signature": "() -> str",
+            "runtime_bound": true
+          },
+          {
+            "path": "featurelifted.Faker.phone_number",
+            "kind": "method",
+            "signature": "() -> str",
+            "runtime_bound": true
+          },
+          {
+            "path": "featurelifted.Faker.seed_instance",
+            "kind": "method",
+            "signature": "(self, seed: 'SeedType | None' = None) -> 'None'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: construct Faker with locale en_US and default person/address/phone providers. Required observable cases include en us person address and phone are seeded; only en us locale and provider formats; address contains city state zip pattern."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: generate deterministic fake names, addresses, and phone numbers with seed_instance. Required observable cases include only en us locale and provider formats."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: resolve localized provider modules and locale resource data. Required observable cases include only en us locale and provider formats."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.Faker`, `featurelifted.Faker.address`, `featurelifted.Faker.first_name`, `featurelifted.Faker.last_name`, `featurelifted.Faker.phone_number`, `featurelifted.Faker.seed_instance` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "faker.proxy.Faker",
+      "faker.factory.Factory.create",
+      "faker.providers.person.en_US",
+      "faker.providers.address.en_US",
+      "faker.providers.phone_number.en_US"
+    ],
+    "exclusions": [
+      "multi-locale weighting and proxy locale switching",
+      "CLI, pytest plugin, and documentation",
+      "providers beyond person, address, and phone_number"
+    ],
+    "forbidden": {
+      "imports": [
+        "faker"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: faker."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: construct Faker with locale en_US and default person/address/phone providers. Required observable cases include en us person address and phone are seeded; only en us locale and provider formats; address contains city state zip pattern."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: generate deterministic fake names, addresses, and phone numbers with seed_instance. Required observable cases include only en us locale and provider formats."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve localized provider modules and locale resource data. Required observable cases include only en us locale and provider formats."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Faker`, `featurelifted.Faker.address`, `featurelifted.Faker.first_name`, `featurelifted.Faker.last_name`, `featurelifted.Faker.phone_number`, `featurelifted.Faker.seed_instance` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: faker"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_en_us_person_address_and_phone_are_seeded",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_only_en_us_locale_and_provider_formats",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_address_contains_city_state_zip_pattern",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Faker",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Faker.address",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_address_contains_city_state_zip_pattern"
+        ]
+      },
+      {
+        "path": "featurelifted.Faker.first_name",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_only_en_us_locale_and_provider_formats"
+        ]
+      },
+      {
+        "path": "featurelifted.Faker.last_name",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_only_en_us_locale_and_provider_formats"
+        ]
+      },
+      {
+        "path": "featurelifted.Faker.phone_number",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_only_en_us_locale_and_provider_formats"
+        ]
+      },
+      {
+        "path": "featurelifted.Faker.seed_instance",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_address_contains_city_state_zip_pattern",
+          "hidden_tests/test_hidden_behavior.py::test_only_en_us_locale_and_provider_formats"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "e70336d592f2e89c98d2e87991d5027d00f26a9732db4cca3644eec4545b0346",
+  "generated_task_hash": "883636a3b740b4b63d1d2276ae032c5e26b232016f6004929182b3970ceeecef"
+}

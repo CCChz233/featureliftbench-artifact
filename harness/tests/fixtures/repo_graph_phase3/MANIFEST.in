@@ -1,0 +1,2 @@
+include pkg/settings.toml
+recursive-include pkg/data *.json

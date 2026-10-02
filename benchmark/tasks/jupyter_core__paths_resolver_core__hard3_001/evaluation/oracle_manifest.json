@@ -1,0 +1,8 @@
+{
+  "notes": "Materialized compact oracle for the selected Jupyter path resolver behavior.",
+  "required_source_files": [
+    "reference_solution/featurelifted/__init__.py"
+  ],
+  "runtime_dependencies": [],
+  "source_package_name": "jupyter_core"
+}

@@ -1,0 +1,8 @@
+{
+  "source_package_name": "boltons",
+  "required_source_files": [
+    "boltons/iterutils.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle is iterutils.py only; curated repo includes sibling boltons modules for copy-all penalty."
+}

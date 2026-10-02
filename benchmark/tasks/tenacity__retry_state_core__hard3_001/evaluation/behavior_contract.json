@@ -1,0 +1,173 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_wait_chain_requires_at_least_one_strategy",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_wait_chain_uses_last_strategy_after_exhaustion",
+      "public_clause_ids": [
+        "B007",
+        "B001",
+        "B002",
+        "B003",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_before_sleep_observes_retry_state",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_reraise_surfaces_last_exception",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_strategy_composition_and_exponential_wait",
+      "public_clause_ids": [
+        "B005",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B009"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "Retrying repeatedly calls the function while the retry predicate requests another attempt and stops when the function succeeds or a stop policy triggers."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "Track a `RetryCallState` with `attempt_number`, `outcome`, `idle_for`, `upcoming_sleep`, and `seconds_since_start`."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "When retries are exhausted, Retrying calls retry_error_callback if configured, reraises the final exception when requested, or raises RetryError."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "retry_if_exception_type retries matching exceptions and retry_if_result retries matching returned results."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "Retry predicates composed with | or & apply retry-any or retry-all semantics in operand order."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "stop_after_attempt, stop_after_delay, and stop_before_delay stop according to attempt count and elapsed or upcoming delay boundaries."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "wait_fixed, wait_none, wait_chain, wait_combine, and wait_exponential compute deterministic upcoming sleep durations; an empty wait_chain raises ValueError."
+    },
+    {
+      "behavior_id": "B008",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B008",
+      "text": "before_sleep receives the updated retry state before idle_for is incremented, and retry_error_callback receives the exhausted state. At before_sleep, attempt_number is the attempt that just finished and has not yet been incremented for the next attempt."
+    },
+    {
+      "behavior_id": "B009",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B009",
+      "text": "The package exposes the required task API paths `featurelifted.Retrying`, `featurelifted.RetryError`, `featurelifted.retry_if_exception_type`, `featurelifted.retry_if_result`, `featurelifted.stop_after_attempt`, `featurelifted.wait_fixed`, `featurelifted.wait_chain`, `featurelifted.wait_exponential`, `featurelifted.RetryCallState`, `featurelifted.stop_after_delay`, `featurelifted.stop_before_delay`, `featurelifted.wait_combine`, and 1 listed members with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B010",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B010",
+      "text": "the submitted package does not import forbidden upstream packages: tenacity"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_retry_exception_until_success_without_real_sleep",
+      "public_clause_ids": [
+        "B004",
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_retry_result_predicate",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_retry_error_when_stop_is_reached",
+      "public_clause_ids": [
+        "B004",
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 3,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "data_model_coupling",
+    "parser_state_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "ab12bf10fb55dc55d2c1e9e9e9def57c812d8114d07e0cad6237335fc4600e79",
+  "task_id": "tenacity__retry_state_core__hard3_001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

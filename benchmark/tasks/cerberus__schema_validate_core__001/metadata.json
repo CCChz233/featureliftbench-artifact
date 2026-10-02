@@ -1,0 +1,336 @@
+{
+  "task_id": "cerberus__schema_validate_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "cerberus",
+    "validation",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "cerberus",
+    "url": "https://github.com/pyeve/cerberus",
+    "commit": "f2221c5a901bbf8618efb694ef9364bd0882ac9a",
+    "license": "ISC"
+  },
+  "feature": {
+    "name": "Schema validation core",
+    "description": "Extract Cerberus Validator with nested schema rules, type coercion, and structured error aggregation without original cerberus import.",
+    "source_entrypoints": [
+      "cerberus.Validator",
+      "cerberus.Validator.validate",
+      "cerberus.Validator.normalized",
+      "cerberus.Validator.document",
+      "cerberus.Validator.errors",
+      "cerberus.schema.DefinitionSchema",
+      "cerberus.errors.ValidationError",
+      "cerberus.errors.BasicErrorHandler"
+    ],
+    "included_behaviors": [
+      "validate dict documents against nested schema definitions",
+      "enforce required fields and type rules on nested mappings and lists",
+      "coerce field values during validation and reflect coerced document",
+      "aggregate nested validation failures into structured error trees"
+    ],
+    "excluded_behaviors": [
+      "schema_registry and rules_set_registry named schema indirection",
+      "normalization rename/default pipelines beyond coerce in tests",
+      "benchmarks, upstream tests, docs, and packaging metadata",
+      "original cerberus import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling",
+      "framework_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Cerberus couples schema compilation, rule dispatch, nested document walking, coercion side effects, and error-tree rewriting across validator, schema, and errors modules.",
+    "signals": [
+      "DefinitionSchema expands and validates rule graphs before Validator runs",
+      "Validator walks nested mappings/lists with document_path crumbs",
+      "coerce rule mutates document values during validation",
+      "BasicErrorHandler rewrites nested ValidationError trees into v.errors"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Validator, DocumentError, SchemaError",
+    "callable": "featurelifted.Validator",
+    "signature": "Validator(schema=None, allow_unknown=False, require_all=False)(document)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "cerberus"
+    ],
+    "forbidden_imports": [
+      "cerberus"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Schema validation core",
+    "summary": "Extract a task-scoped subset of `cerberus` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Validator",
+        "kind": "class",
+        "signature": "(*args, **kwargs)",
+        "members": [
+          {
+            "path": "featurelifted.Validator.document",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Validator.errors",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Validator.validate",
+            "kind": "method",
+            "signature": "(self, document, schema=None, update=False, normalize=True)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.DocumentError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.SchemaError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: validate dict documents against nested schema definitions. Required observable cases include validate returns bool; nested schema validation; coerce updates document; deep nested schema and coerce combo."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: enforce required fields and type rules on nested mappings and lists. Required observable cases include required field rejects missing; type rule rejects wrong type; nested list error paths."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: coerce field values during validation and reflect coerced document. Required observable cases include coerce updates document."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: aggregate nested validation failures into structured error trees. Required observable cases include nested schema validation; nested list error paths."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Validator`, `featurelifted.Validator.document`, `featurelifted.Validator.errors`, `featurelifted.Validator.validate`, `featurelifted.DocumentError`, `featurelifted.SchemaError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "cerberus.Validator",
+      "cerberus.Validator.validate",
+      "cerberus.Validator.normalized",
+      "cerberus.Validator.document",
+      "cerberus.Validator.errors",
+      "cerberus.schema.DefinitionSchema",
+      "cerberus.errors.ValidationError",
+      "cerberus.errors.BasicErrorHandler"
+    ],
+    "exclusions": [
+      "schema_registry and rules_set_registry named schema indirection",
+      "normalization rename/default pipelines beyond coerce in tests",
+      "benchmarks, upstream tests, docs, and packaging metadata",
+      "original cerberus import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "cerberus"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: cerberus."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate dict documents against nested schema definitions. Required observable cases include validate returns bool; nested schema validation; coerce updates document; deep nested schema and coerce combo."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: enforce required fields and type rules on nested mappings and lists. Required observable cases include required field rejects missing; type rule rejects wrong type; nested list error paths."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: coerce field values during validation and reflect coerced document. Required observable cases include coerce updates document."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: aggregate nested validation failures into structured error trees. Required observable cases include nested schema validation; nested list error paths."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Validator`, `featurelifted.Validator.document`, `featurelifted.Validator.errors`, `featurelifted.Validator.validate`, `featurelifted.DocumentError`, `featurelifted.SchemaError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: cerberus"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_required_field_rejects_missing",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_type_rule_rejects_wrong_type",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_validate_returns_bool",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_schema_validation",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_coerce_updates_document",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_list_error_paths",
+        "behavior_ids": [
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_deep_nested_schema_and_coerce_combo",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_cerberus_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Validator",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Validator.document",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_coerce_updates_document",
+          "hidden_tests/test_hidden_behavior.py::test_deep_nested_schema_and_coerce_combo"
+        ]
+      },
+      {
+        "path": "featurelifted.Validator.errors",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_coerce_updates_document",
+          "hidden_tests/test_hidden_behavior.py::test_deep_nested_schema_and_coerce_combo",
+          "hidden_tests/test_hidden_behavior.py::test_nested_list_error_paths",
+          "hidden_tests/test_hidden_behavior.py::test_nested_schema_validation"
+        ]
+      },
+      {
+        "path": "featurelifted.Validator.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_coerce_updates_document",
+          "hidden_tests/test_hidden_behavior.py::test_deep_nested_schema_and_coerce_combo",
+          "hidden_tests/test_hidden_behavior.py::test_nested_list_error_paths",
+          "hidden_tests/test_hidden_behavior.py::test_nested_schema_validation"
+        ]
+      },
+      {
+        "path": "featurelifted.DocumentError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SchemaError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "1e38f64f35897a8b59a92dab00941922c9c57b81490a7188c12affcb36e54afe",
+  "generated_task_hash": "ded910c7ec601e3200b8dce7ec0db4e827504fdcf3d50db94c20fed0f60c4580"
+}

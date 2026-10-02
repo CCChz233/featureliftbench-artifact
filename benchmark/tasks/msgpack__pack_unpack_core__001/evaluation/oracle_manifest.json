@@ -1,0 +1,11 @@
+{
+  "source_package_name": "msgpack",
+  "required_source_files": [
+    "msgpack/__init__.py",
+    "msgpack/exceptions.py",
+    "msgpack/ext.py",
+    "msgpack/fallback.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle uses pure-Python fallback only (no Cython). fallback.py is split into codec.py, unpacker.py, and packer.py for module probes; Cython .pyx and headers are excluded."
+}

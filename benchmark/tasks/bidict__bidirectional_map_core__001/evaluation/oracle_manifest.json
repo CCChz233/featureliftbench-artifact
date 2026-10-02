@@ -1,0 +1,18 @@
+{
+  "source_package_name": "bidict",
+  "required_source_files": [
+    "bidict/__init__.py",
+    "bidict/_abc.py",
+    "bidict/_base.py",
+    "bidict/_bidict.py",
+    "bidict/_dup.py",
+    "bidict/_exc.py",
+    "bidict/_frozen.py",
+    "bidict/_iter.py",
+    "bidict/_orderedbase.py",
+    "bidict/_orderedbidict.py",
+    "bidict/_typing.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle copies the bidict runtime package; excludes upstream tests and docs."
+}

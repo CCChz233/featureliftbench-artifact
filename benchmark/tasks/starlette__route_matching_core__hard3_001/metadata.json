@@ -1,0 +1,327 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Routing depends on path convertors, mount prefixes, URL building, and ASGI-ish data structures.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "mounted routes match under prefix",
+      "URL reversing via url_path_for",
+      "typed path params via convertors",
+      "method mismatch returns no match"
+    ],
+    "types": [
+      "framework_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "starlette"
+    ],
+    "forbidden_imports": [
+      "starlette"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "starlette/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped route matching and url path convertor registry into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "ASGI server",
+      "middleware/testclient"
+    ],
+    "included_behaviors": [
+      "path compile/match",
+      "convertor registry",
+      "mount prefix matching",
+      "url reversing"
+    ],
+    "name": "Route matching and URL path convertor registry",
+    "source_entrypoints": [
+      "starlette.routing.Route",
+      "starlette.routing.Router"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Router",
+    "import": "from featurelifted import compile_path, Route, Mount, Router, Match",
+    "package": "featurelifted",
+    "signature": "Router(routes=None)"
+  },
+  "source": {
+    "commit": "5174d4c8358a6f06aa8056bafd14c2272dab8dd1",
+    "license": "BSD-3-Clause",
+    "name": "starlette",
+    "url": "https://github.com/encode/starlette.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "third-party dependency coupling",
+    "framework_coupling"
+  ],
+  "task_id": "starlette__route_matching_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Route matching and URL path convertor registry",
+    "summary": "Extract a task-scoped subset of `starlette` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.compile_path",
+        "kind": "function",
+        "signature": "(path: 'str') -> 'tuple[Pattern[str], str, dict[str, Convertor]]'"
+      },
+      {
+        "path": "featurelifted.Route",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Route.matches",
+            "kind": "method",
+            "signature": "(self, path: 'str', method: 'str') -> 'tuple[Match, dict[str, Any]]'"
+          }
+        ],
+        "signature": "(name: 'str', path: 'str', methods: 'list[str]' = <factory>, endpoint: 'Callable[..., Any] | None' = None) -> None"
+      },
+      {
+        "path": "featurelifted.Mount",
+        "kind": "class",
+        "signature": "(path: 'str', routes: 'list[Route]' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.Router",
+        "kind": "class",
+        "signature": "(routes: 'list[Route | Mount] | None' = None) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Router.match",
+            "kind": "method",
+            "signature": "(self, path: 'str', method: 'str' = 'GET') -> 'tuple[Route | None, dict[str, Any]]'"
+          },
+          {
+            "path": "featurelifted.Router.url_path_for",
+            "kind": "method",
+            "signature": "(self, route_name: 'str', **path_params: 'Any') -> 'str'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Match",
+        "kind": "class",
+        "signature": "(*values)",
+        "members": [
+          {
+            "path": "featurelifted.Match.NONE",
+            "kind": "attribute"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "compile_path builds a matching regex and parameter convertors, and Route distinguishes full, partial, and non-matches for the request path."
+      },
+      {
+        "id": "B002",
+        "text": "compile_path resolves registered convertors for typed path parameters and rejects unknown convertor names."
+      },
+      {
+        "id": "B003",
+        "text": "`Mount` matches child routes under a path prefix."
+      },
+      {
+        "id": "B004",
+        "text": "When url_path_for is called on Route, Mount, or Router, it substitutes required parameters and raises for missing names or parameters. An unnamed Mount still reverse-resolves named child routes and prefixes the Mount path."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.compile_path`, `featurelifted.Route`, `featurelifted.Route.matches`, `featurelifted.Mount`, `featurelifted.Router`, `featurelifted.Router.match`, `featurelifted.Router.url_path_for`, `featurelifted.Match`, `featurelifted.Match.NONE` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "starlette.routing.Route",
+      "starlette.routing.Router"
+    ],
+    "exclusions": [
+      "network access",
+      "ASGI server",
+      "middleware/testclient"
+    ],
+    "forbidden": {
+      "imports": [
+        "starlette"
+      ],
+      "paths": [
+        "repo/",
+        "starlette/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: starlette."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "compile_path builds a matching regex and parameter convertors, and Route distinguishes full, partial, and non-matches for the request path."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "compile_path resolves registered convertors for typed path parameters and rejects unknown convertor names."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`Mount` matches child routes under a path prefix."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When url_path_for is called on Route, Mount, or Router, it substitutes required parameters and raises for missing names or parameters. An unnamed Mount still reverse-resolves named child routes and prefixes the Mount path."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.compile_path`, `featurelifted.Route`, `featurelifted.Route.matches`, `featurelifted.Mount`, `featurelifted.Router`, `featurelifted.Router.match`, `featurelifted.Router.url_path_for`, `featurelifted.Match`, `featurelifted.Match.NONE` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: starlette"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_router_matches_route",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_mount_prefix_and_url_path_for",
+        "behavior_ids": [
+          "B003",
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_method_mismatch_returns_no_match",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.compile_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Route",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Route.matches",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_method_mismatch_returns_no_match"
+        ]
+      },
+      {
+        "path": "featurelifted.Mount",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Router",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Router.match",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_mount_prefix_and_url_path_for"
+        ]
+      },
+      {
+        "path": "featurelifted.Router.url_path_for",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_mount_prefix_and_url_path_for"
+        ]
+      },
+      {
+        "path": "featurelifted.Match",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Match.NONE",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_method_mismatch_returns_no_match"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "4f6361d61c555c565c4995a89c403985bc7822c94c2ded4563dcd0a8864e7a5a",
+  "generated_task_hash": "36c18da37fbc2ba9d54f2165b25408f72c6e942725763fd6e083e63dde904b01"
+}

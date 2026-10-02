@@ -1,0 +1,372 @@
+{
+  "task_id": "referencing__json_schema_refs_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "referencing",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "referencing",
+    "url": "https://github.com/python-jsonschema/referencing",
+    "commit": "0.30.2-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "JSON Schema $ref resolution",
+    "description": "Extract referencing Registry/Resolver $ref, anchor, and fragment resolution for JSON Schema dialects without jsonschema validator implementations.",
+    "source_entrypoints": [
+      "referencing.Registry",
+      "referencing.Registry.resolver",
+      "referencing.jsonschema.DRAFT202012",
+      "referencing.jsonschema.lookup_recursive_ref"
+    ],
+    "included_behaviors": [
+      "Registry resource registration and base URI resolution",
+      "$ref pointer and external URI chaining",
+      "$anchor and JSON Schema dialect specifications",
+      "typed unresolvable and unknown dialect errors"
+    ],
+    "excluded_behaviors": [
+      "jsonschema validation keyword implementations",
+      "network retrieval of remote schemas",
+      "referencing test suite and original package import"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling",
+      "third_party_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Ref resolution couples immutable Registry graphs, Specification dialect hooks, fragment pointer walks, and rpds-backed resolver stacks.",
+    "signals": [
+      "Specification objects vary anchor and id extraction across draft versions",
+      "Resolver maintains dynamic scope for recursive refs",
+      "Registry merges resources with URI normalization",
+      "repo includes upstream tests for copy-all penalty"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Registry, Resource; from featurelifted.jsonschema import DRAFT202012, DRAFT7, UnknownDialect; from featurelifted.exceptions import Unresolvable, NoSuchAnchor",
+    "callable": "featurelifted.Registry.resolver",
+    "signature": "Registry.resolver(base_uri: str) -> Resolver"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "attrs",
+      "rpds"
+    ],
+    "forbidden_dependencies": [
+      "referencing"
+    ],
+    "forbidden_imports": [
+      "referencing"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "JSON Schema $ref resolution",
+    "summary": "Extract a task-scoped subset of `referencing` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Registry",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Registry.resolver",
+            "kind": "method",
+            "signature": "(self, base_uri: 'URI' = '') -> 'Resolver[D]'"
+          },
+          {
+            "path": "featurelifted.Registry.with_resource",
+            "kind": "method",
+            "signature": "(self, uri: 'URI', resource: 'Resource[D]')"
+          },
+          {
+            "path": "featurelifted.Registry.with_resources",
+            "kind": "method",
+            "signature": "(self, pairs: 'Iterable[tuple[URI, Resource[D]]]') -> 'Registry[D]'"
+          }
+        ],
+        "signature": "(resources=HashTrieMap({}), anchors: 'HashTrieMap[tuple[URI, str], AnchorType[D]]' = HashTrieMap({}), uncrawled: 'HashTrieSet[URI]' = HashTrieSet({}), retrieve: 'Retrieve[D]' = <function _fail_to_retrieve>) -> None"
+      },
+      {
+        "path": "featurelifted.Resource",
+        "kind": "class",
+        "signature": "(contents: 'D', specification: 'Specification[D]') -> None",
+        "members": [
+          {
+            "path": "featurelifted.Resource.from_contents",
+            "kind": "method",
+            "signature": "(contents: 'D', default_specification: 'Specification[D]' = None) -> 'Resource[D]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.NoSuchAnchor",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.Unresolvable",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.jsonschema",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.jsonschema.DRAFT202012",
+            "kind": "constant"
+          },
+          {
+            "path": "featurelifted.jsonschema.UnknownDialect",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: Registry resource registration and base URI resolution. Required observable cases include external ref resolution; unresolvable external ref."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: $ref pointer and external URI chaining. Required observable cases include external ref resolution; fragment ref into defs; unresolvable external ref."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: $anchor and JSON Schema dialect specifications. Required observable cases include anchor lookup; unknown dialect and missing anchor."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: typed unresolvable and unknown dialect errors. Required observable cases include unknown dialect and missing anchor."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Registry`, `featurelifted.Registry.resolver`, `featurelifted.Registry.with_resource`, `featurelifted.Registry.with_resources`, `featurelifted.Resource`, `featurelifted.Resource.from_contents`, `featurelifted.exceptions`, `featurelifted.exceptions.NoSuchAnchor`, `featurelifted.exceptions.Unresolvable`, `featurelifted.jsonschema`, `featurelifted.jsonschema.DRAFT202012`, `featurelifted.jsonschema.UnknownDialect` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "referencing.Registry",
+      "referencing.Registry.resolver",
+      "referencing.jsonschema.DRAFT202012",
+      "referencing.jsonschema.lookup_recursive_ref"
+    ],
+    "exclusions": [
+      "jsonschema validation keyword implementations",
+      "network retrieval of remote schemas",
+      "referencing test suite and original package import"
+    ],
+    "forbidden": {
+      "imports": [
+        "referencing"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: referencing."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Registry resource registration and base URI resolution. Required observable cases include external ref resolution; unresolvable external ref."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: $ref pointer and external URI chaining. Required observable cases include external ref resolution; fragment ref into defs; unresolvable external ref."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: $anchor and JSON Schema dialect specifications. Required observable cases include anchor lookup; unknown dialect and missing anchor."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: typed unresolvable and unknown dialect errors. Required observable cases include unknown dialect and missing anchor."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Registry`, `featurelifted.Registry.resolver`, `featurelifted.Registry.with_resource`, `featurelifted.Registry.with_resources`, `featurelifted.Resource`, `featurelifted.Resource.from_contents`, `featurelifted.exceptions`, `featurelifted.exceptions.NoSuchAnchor`, `featurelifted.exceptions.Unresolvable`, `featurelifted.jsonschema`, `featurelifted.jsonschema.DRAFT202012`, `featurelifted.jsonschema.UnknownDialect` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: referencing"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_external_ref_resolution",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_fragment_ref_into_defs",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_anchor_lookup",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unknown_dialect_and_missing_anchor",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unresolvable_external_ref",
+        "behavior_ids": [
+          "B002",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Registry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Registry.resolver",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Registry.with_resource",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_anchor_lookup",
+          "hidden_tests/test_hidden_behavior.py::test_fragment_ref_into_defs",
+          "hidden_tests/test_hidden_behavior.py::test_unknown_dialect_and_missing_anchor",
+          "hidden_tests/test_hidden_behavior.py::test_unresolvable_external_ref"
+        ]
+      },
+      {
+        "path": "featurelifted.Registry.with_resources",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Resource",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Resource.from_contents",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_unknown_dialect_and_missing_anchor"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.NoSuchAnchor",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.Unresolvable",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jsonschema",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jsonschema.DRAFT202012",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.jsonschema.UnknownDialect",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "44bbec92b96cfeb133008a353c7a43a7f4c651b20b9bcf08d55b8e3bbb310a83",
+  "generated_task_hash": "f51d061ccd76b126b35a64b162b313afc74704781abec7e4caa5748d2d8a9eec"
+}

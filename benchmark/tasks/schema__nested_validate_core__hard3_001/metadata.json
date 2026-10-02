@@ -1,0 +1,307 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Rule composition, optional keys, callable validators, error aggregation, and defaults must be preserved.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "Optional default values",
+      "forbidden extra keys",
+      "Or/And composition",
+      "callable validator errors"
+    ],
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "schema"
+    ],
+    "forbidden_imports": [
+      "schema"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "schema/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped schema optional or and into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "full package surface"
+    ],
+    "included_behaviors": [
+      "nested dict validation",
+      "Optional defaults",
+      "Or/And composition"
+    ],
+    "name": "Schema Optional Or And",
+    "source_entrypoints": [
+      "schema.Schema"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Schema",
+    "import": "from featurelifted import Schema, Optional, Or, And, SchemaError",
+    "package": "featurelifted",
+    "signature": "Schema(schema)"
+  },
+  "source": {
+    "commit": "310a1239b62f500284ce3bd91b7dabf70467f23e",
+    "license": "MIT",
+    "name": "schema",
+    "url": "https://github.com/keleshev/schema.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "rule / policy engine",
+    "data_model_coupling"
+  ],
+  "task_id": "schema__nested_validate_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Schema Optional Or And",
+    "summary": "Extract a task-scoped subset of `schema` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Schema",
+        "kind": "class",
+        "signature": "(schema: 'Any') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Schema.validate",
+            "kind": "method",
+            "signature": "(self, data: 'Any') -> 'Any'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Optional",
+        "kind": "class",
+        "signature": "(key: 'str', default: 'Any' = Ellipsis) -> 'None'"
+      },
+      {
+        "path": "featurelifted.Or",
+        "kind": "class",
+        "signature": "(*validators: 'Any') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Or.validate",
+            "kind": "method",
+            "signature": "(self, data: 'Any') -> 'Any'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.And",
+        "kind": "class",
+        "signature": "(*validators: 'Any') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.And.validate",
+            "kind": "method",
+            "signature": "(self, data: 'Any') -> 'Any'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.SchemaError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`Schema` validates nested dicts with type and literal rules."
+      },
+      {
+        "id": "B002",
+        "text": "`Optional` supplies defaults for missing keys."
+      },
+      {
+        "id": "B003",
+        "text": "Or accepts the first validating alternative, while And applies each validator in sequence. A callable And step transforms the value, so And(str, lambda s: s.upper()).validate(\"hi\") returns \"HI\", and SchemaError is reported when composition fails."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.Schema`, `featurelifted.Schema.validate`, `featurelifted.Optional`, `featurelifted.Or`, `featurelifted.Or.validate`, `featurelifted.And`, `featurelifted.And.validate`, `featurelifted.SchemaError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "schema.Schema"
+    ],
+    "exclusions": [
+      "network access",
+      "full package surface"
+    ],
+    "forbidden": {
+      "imports": [
+        "schema"
+      ],
+      "paths": [
+        "repo/",
+        "schema/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: schema."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`Schema` validates nested dicts with type and literal rules."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`Optional` supplies defaults for missing keys."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Or accepts the first validating alternative, while And applies each validator in sequence. A callable And step transforms the value, so And(str, lambda s: s.upper()).validate(\"hi\") returns \"HI\", and SchemaError is reported when composition fails."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Schema`, `featurelifted.Schema.validate`, `featurelifted.Optional`, `featurelifted.Or`, `featurelifted.Or.validate`, `featurelifted.And`, `featurelifted.And.validate`, `featurelifted.SchemaError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: schema"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_schema_validates_nested_dict",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_optional_default",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_or_and_composition",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_extra_keys_rejected",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Schema",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Schema.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_extra_keys_rejected",
+          "hidden_tests/test_hidden_contract.py::test_optional_default"
+        ]
+      },
+      {
+        "path": "featurelifted.Optional",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Or",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Or.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_or_and_composition"
+        ]
+      },
+      {
+        "path": "featurelifted.And",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.And.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_or_and_composition",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SchemaError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 6,
+  "spec_hash": "48b55048c6a02789a0bf4ac90731b2518ef809b5892453e241cb7bc91957cc9e",
+  "generated_task_hash": "ffa2f816ab957c3f67fcec6e553c5479a3700f3684557c0ebddc7acd690affef"
+}

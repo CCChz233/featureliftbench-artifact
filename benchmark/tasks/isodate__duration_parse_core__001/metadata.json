@@ -1,0 +1,369 @@
+{
+  "task_id": "isodate__duration_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "isodate",
+    "duration",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "isodate",
+    "url": "https://github.com/gweis/isodate",
+    "commit": "0.7.2-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "ISO8601 duration parse and format",
+    "description": "Extract isodate Duration parsing and isoformat helpers without importing isodate.",
+    "source_entrypoints": [
+      "isodate.parse_duration",
+      "isodate.duration_isoformat",
+      "isodate.duration.Duration"
+    ],
+    "included_behaviors": [
+      "parse P-period durations to timedelta or Duration",
+      "duration_isoformat for Duration and timedelta",
+      "decimal comma fractions in components",
+      "ISO8601Error on invalid input"
+    ],
+    "excluded_behaviors": [
+      "full date/time/tz parsing surface",
+      "strftime locale tables beyond duration chain",
+      "original isodate import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Duration parsing couples regex capture groups, Decimal year/month handling, and Duration vs timedelta selection.",
+    "signals": [
+      "years/months force Duration object",
+      "comma decimals normalized in regex groups",
+      "alternative datetime duration delegates to parse_datetime",
+      "duration_isoformat routes through strftime tokens"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Duration, ISO8601Error, duration_isoformat, parse_duration; from featurelifted.isodates import parse_date",
+    "callable": "featurelifted.parse_duration",
+    "signature": "parse_duration(datestring, as_timedelta_if_possible=True)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "isodate"
+    ],
+    "forbidden_imports": [
+      "isodate"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "ISO8601 duration parse and format",
+    "summary": "Extract a task-scoped subset of `isodate` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Duration",
+        "kind": "class",
+        "signature": "(days=0, seconds=0, microseconds=0, milliseconds=0, minutes=0, hours=0, weeks=0, months=0, years=0)",
+        "members": [
+          {
+            "path": "featurelifted.Duration.months",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Duration.tdelta",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Duration.totimedelta",
+            "kind": "method",
+            "signature": "(self, start=None, end=None)"
+          },
+          {
+            "path": "featurelifted.Duration.years",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.ISO8601Error",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.duration_isoformat",
+        "kind": "function",
+        "signature": "(tduration, format='P%P')"
+      },
+      {
+        "path": "featurelifted.parse_duration",
+        "kind": "function",
+        "signature": "(datestring, as_timedelta_if_possible=True)"
+      },
+      {
+        "path": "featurelifted.isodates",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.isodates.parse_date",
+            "kind": "function",
+            "signature": "(datestring, yeardigits=4, expanded=False, defaultmonth=1, defaultday=1)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse P-period durations to timedelta or Duration. Required observable cases include parse duration days hours; parse duration weeks; parse duration full components; parse duration comma decimal hours; duration totimedelta with start; duration isoformat timedelta; parse invalid raises."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: duration_isoformat for Duration and timedelta. Required observable cases include duration isoformat; duration totimedelta with start; duration isoformat timedelta."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: decimal comma fractions in components. Required observable cases include parse duration comma decimal hours."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: ISO8601Error on invalid input. Required observable cases include parse invalid raises."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Duration`, `featurelifted.Duration.months`, `featurelifted.Duration.tdelta`, `featurelifted.Duration.totimedelta`, `featurelifted.Duration.years`, `featurelifted.ISO8601Error`, `featurelifted.duration_isoformat`, `featurelifted.parse_duration`, `featurelifted.isodates`, `featurelifted.isodates.parse_date` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "isodate.parse_duration",
+      "isodate.duration_isoformat",
+      "isodate.duration.Duration"
+    ],
+    "exclusions": [
+      "full date/time/tz parsing surface",
+      "strftime locale tables beyond duration chain",
+      "original isodate import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "isodate"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: isodate."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse P-period durations to timedelta or Duration. Required observable cases include parse duration days hours; parse duration weeks; parse duration full components; parse duration comma decimal hours; duration totimedelta with start; duration isoformat timedelta; parse invalid raises."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: duration_isoformat for Duration and timedelta. Required observable cases include duration isoformat; duration totimedelta with start; duration isoformat timedelta."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: decimal comma fractions in components. Required observable cases include parse duration comma decimal hours."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ISO8601Error on invalid input. Required observable cases include parse invalid raises."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Duration`, `featurelifted.Duration.months`, `featurelifted.Duration.tdelta`, `featurelifted.Duration.totimedelta`, `featurelifted.Duration.years`, `featurelifted.ISO8601Error`, `featurelifted.duration_isoformat`, `featurelifted.parse_duration`, `featurelifted.isodates`, `featurelifted.isodates.parse_date` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: isodate"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_duration_days_hours",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_duration_weeks",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_duration_isoformat",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_duration_full_components",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_duration_comma_decimal_hours",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_duration_totimedelta_with_start",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_duration_isoformat_timedelta",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_invalid_raises",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_isodate_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Duration",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Duration.months",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_parse_duration_full_components"
+        ]
+      },
+      {
+        "path": "featurelifted.Duration.tdelta",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_parse_duration_full_components"
+        ]
+      },
+      {
+        "path": "featurelifted.Duration.totimedelta",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_duration_totimedelta_with_start"
+        ]
+      },
+      {
+        "path": "featurelifted.Duration.years",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_parse_duration_full_components"
+        ]
+      },
+      {
+        "path": "featurelifted.ISO8601Error",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.duration_isoformat",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parse_duration",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.isodates",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.isodates.parse_date",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "368ac121abfc5bc9643fce773d9133f46fccee35fb065f864065434dc24cd33c",
+  "generated_task_hash": "59a657dc234a86c8c37c5ec1cfebfa26fc8c044ed87a1d7911f244660b972851"
+}

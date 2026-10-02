@@ -1,0 +1,330 @@
+{
+  "task_id": "pyyaml__safe_load_dump__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "yaml",
+    "parser",
+    "serializer",
+    "security",
+    "pure-python"
+  ],
+  "source": {
+    "name": "PyYAML",
+    "url": "https://github.com/yaml/pyyaml",
+    "commit": "6.0.1-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Safe YAML load and dump",
+    "description": "Extract PyYAML's safe YAML parsing and dumping behavior without exposing unsafe object construction.",
+    "source_entrypoints": [
+      "yaml.safe_load",
+      "yaml.safe_load_all",
+      "yaml.safe_dump",
+      "yaml.safe_dump_all",
+      "yaml.YAMLError",
+      "yaml.constructor.ConstructorError"
+    ],
+    "included_behaviors": [
+      "parse mappings, sequences, scalars, booleans, nulls, integers, floats, and nested documents",
+      "support anchors, aliases, and merge keys with SafeLoader semantics",
+      "dump plain Python data through SafeDumper with deterministic sort_keys behavior",
+      "load and dump multi-document streams",
+      "reject unsafe Python object tags under safe_load"
+    ],
+    "excluded_behaviors": [
+      "unsafe load/object construction APIs",
+      "LibYAML C extension acceleration",
+      "command line utilities and test fixtures"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Safe YAML load/dump behavior depends on scanner/parser/composer/constructor/dumper pipelines and tag resolution.",
+    "signals": [
+      "multi-stage parser pipeline",
+      "constructor/representer data model",
+      "anchor, alias, merge key, and tag handling"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import safe_load, safe_load_all, safe_dump, safe_dump_all, YAMLError; from featurelifted.constructor import ConstructorError",
+    "callable": "featurelifted.safe_load",
+    "signature": "safe_load(stream)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "PyYAML"
+    ],
+    "forbidden_imports": [
+      "yaml"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Safe YAML load and dump",
+    "summary": "Extract a task-scoped subset of `yaml` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.safe_load",
+        "kind": "function",
+        "signature": "(stream)"
+      },
+      {
+        "path": "featurelifted.safe_load_all",
+        "kind": "function",
+        "signature": "(stream)"
+      },
+      {
+        "path": "featurelifted.safe_dump",
+        "kind": "function",
+        "signature": "(data, stream=None, **kwds)"
+      },
+      {
+        "path": "featurelifted.safe_dump_all",
+        "kind": "function",
+        "signature": "(documents, stream=None, **kwds)"
+      },
+      {
+        "path": "featurelifted.YAMLError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.constructor",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.constructor.ConstructorError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse mappings, sequences, scalars, booleans, nulls, integers, floats, and nested documents. Required observable cases include safe load basic mapping sequence and scalars; unicode scalar and timestamp tag."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: support anchors, aliases, and merge keys with SafeLoader semantics. Required observable cases include anchors aliases merge keys and dates."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: dump plain Python data through SafeDumper with deterministic sort_keys behavior. Required observable cases include safe dump sort keys output; parse errors and flow style dumping."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: load and dump multi-document streams. Required observable cases include multi document dump load and unsafe tags rejected; parse errors and flow style dumping."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: reject unsafe Python object tags under safe_load. Required observable cases include safe load basic mapping sequence and scalars; multi document dump load and unsafe tags rejected; unicode scalar and timestamp tag."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.safe_load`, `featurelifted.safe_load_all`, `featurelifted.safe_dump`, `featurelifted.safe_dump_all`, `featurelifted.YAMLError`, `featurelifted.constructor`, `featurelifted.constructor.ConstructorError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "yaml.safe_load",
+      "yaml.safe_load_all",
+      "yaml.safe_dump",
+      "yaml.safe_dump_all",
+      "yaml.YAMLError",
+      "yaml.constructor.ConstructorError"
+    ],
+    "exclusions": [
+      "unsafe load/object construction APIs",
+      "LibYAML C extension acceleration",
+      "command line utilities and test fixtures"
+    ],
+    "forbidden": {
+      "imports": [
+        "yaml"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: yaml."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse mappings, sequences, scalars, booleans, nulls, integers, floats, and nested documents. Required observable cases include safe load basic mapping sequence and scalars; unicode scalar and timestamp tag."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support anchors, aliases, and merge keys with SafeLoader semantics. Required observable cases include anchors aliases merge keys and dates."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: dump plain Python data through SafeDumper with deterministic sort_keys behavior. Required observable cases include safe dump sort keys output; parse errors and flow style dumping."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: load and dump multi-document streams. Required observable cases include multi document dump load and unsafe tags rejected; parse errors and flow style dumping."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject unsafe Python object tags under safe_load. Required observable cases include safe load basic mapping sequence and scalars; multi document dump load and unsafe tags rejected; unicode scalar and timestamp tag."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.safe_load`, `featurelifted.safe_load_all`, `featurelifted.safe_dump`, `featurelifted.safe_dump_all`, `featurelifted.YAMLError`, `featurelifted.constructor`, `featurelifted.constructor.ConstructorError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: yaml"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_safe_load_basic_mapping_sequence_and_scalars",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_safe_dump_sort_keys_output",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_anchors_aliases_merge_keys_and_dates",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_multi_document_dump_load_and_unsafe_tags_rejected",
+        "behavior_ids": [
+          "B004",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_errors_and_flow_style_dumping",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unicode_scalar_and_timestamp_tag",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.safe_load",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.safe_load_all",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.safe_dump",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.safe_dump_all",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.YAMLError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.constructor",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.constructor.ConstructorError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "1ca38c26acd168ebe4c01715f4444749e72c804854fa1675f8670a3cbc5c9ea4",
+  "generated_task_hash": "988604b927a4fb465ad734485a54870ffe96a269c390fc0330eb0a71c9c92b4f"
+}

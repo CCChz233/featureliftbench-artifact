@@ -1,0 +1,10 @@
+{
+  "source_package_name": "dateutil",
+  "required_source_files": [
+    "dateutil/_common.py",
+    "dateutil/easter.py",
+    "dateutil/rrule.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle closure is rrule stack only; repo snapshot includes full dateutil package for extraction denominator."
+}

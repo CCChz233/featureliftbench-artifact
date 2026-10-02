@@ -1,0 +1,436 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "License expression behavior depends on parser state, symbol registry aliases, exception symbols, boolean precedence, and policy classification.",
+    "level": "high",
+    "primary": "parser_state_coupling",
+    "signals": [
+      "AND binds tighter than OR unless parentheses override it.",
+      "WITH is only valid with exception symbols.",
+      "Aliases normalize to canonical license keys.",
+      "Unknown symbols are collected by validation and affect policy decisions."
+    ],
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "license_expression",
+      "boolean"
+    ],
+    "forbidden_imports": [
+      "license_expression",
+      "boolean"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "src/license_expression/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped license expression parser and policy evaluator.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "ScanCode license database",
+      "SPDX bundled datasets",
+      "boolean.py dependency",
+      "HTML rendering templates"
+    ],
+    "included_behaviors": [
+      "LicenseSymbol aliases and exception marker",
+      "Licensing.parse",
+      "Licensing.validate",
+      "Licensing.license_symbols",
+      "Licensing.evaluate_policy",
+      "AND/OR/WITH parsing",
+      "parentheses",
+      "alias normalization",
+      "unknown symbol and exception placement errors"
+    ],
+    "name": "License expression parse and policy evaluation",
+    "source_entrypoints": [
+      "license_expression.Licensing",
+      "license_expression.LicenseSymbol",
+      "license_expression.ExpressionInfo",
+      "license_expression.ExpressionParseError"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Licensing",
+    "import": "from featurelifted import LicenseSymbol, Licensing",
+    "package": "featurelifted",
+    "signature": "Licensing(symbols=()).parse(expression, validate=False, strict=False)"
+  },
+  "source": {
+    "commit": "2efada20a05837dd573fa6852fbc0974939f2b14",
+    "license": "Apache-2.0",
+    "name": "license_expression",
+    "url": "https://github.com/aboutcode-org/license-expression.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "rule / policy engine",
+    "parser_state_coupling"
+  ],
+  "task_id": "license_expression__policy_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "License expression parse and policy evaluation",
+    "summary": "Extract a task-scoped subset of `license_expression` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.LicenseSymbol",
+        "kind": "class",
+        "signature": "(key: 'str', aliases: 'tuple[str, ...] | list[str]' = (), is_exception: 'bool' = False) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.LicenseSymbol.key",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Licensing",
+        "kind": "class",
+        "signature": "(symbols: 'tuple[LicenseSymbol | str, ...] | list[LicenseSymbol | str]' = ()) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Licensing.parse",
+            "kind": "method",
+            "signature": "(self, expression: 'str', validate: 'bool' = False, strict: 'bool' = False) -> 'Node'"
+          },
+          {
+            "path": "featurelifted.Licensing.validate",
+            "kind": "method",
+            "signature": "(self, expression: 'str') -> 'ExpressionInfo'"
+          },
+          {
+            "path": "featurelifted.Licensing.license_symbols",
+            "kind": "method",
+            "signature": "(self, expression: 'str | Node') -> 'list[LicenseSymbol]'"
+          },
+          {
+            "path": "featurelifted.Licensing.evaluate_policy",
+            "kind": "method",
+            "signature": "(self, expression: 'str', allowed: 'tuple[str, ...] | list[str] | set[str]' = (), denied: 'tuple[str, ...] | list[str] | set[str]' = ()) -> 'dict[str, Any]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.ExpressionInfo",
+        "kind": "class",
+        "signature": "(original_expression: 'str', normalized_expression: 'str | None' = None, errors: 'list[str] | None' = None, invalid_symbols: 'list[str] | None' = None) -> None"
+      },
+      {
+        "path": "featurelifted.ExpressionParseError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "Parse symbols, `AND`, `OR`, `WITH`, and parentheses."
+      },
+      {
+        "id": "B002",
+        "text": "`AND` binds tighter than `OR`."
+      },
+      {
+        "id": "B003",
+        "text": "Parentheses override precedence."
+      },
+      {
+        "id": "B004",
+        "text": "`WITH` binds a license symbol to an exception symbol."
+      },
+      {
+        "id": "B005",
+        "text": "Aliases normalize to canonical `LicenseSymbol.key` values."
+      },
+      {
+        "id": "B006",
+        "text": "When parse(..., strict=True) is used, exception symbols cannot appear as plain licenses and raise ExpressionParseError; default parse(..., strict=False) does not enforce that check."
+      },
+      {
+        "id": "B007",
+        "text": "When parse(..., strict=True) is used, plain license symbols cannot be used as WITH exceptions and raise ExpressionParseError; default parse(..., strict=False) does not raise for that misuse."
+      },
+      {
+        "id": "B008",
+        "text": "`validate()` returns `ExpressionInfo` with errors and invalid symbols instead of raising for unknown symbols."
+      },
+      {
+        "id": "B009",
+        "text": "`evaluate_policy()` returns a dictionary with `status`, `normalized`, `symbols`, `denied`, `unknown`, and `errors`."
+      },
+      {
+        "id": "B010",
+        "text": "The package exposes the required task API paths `featurelifted.LicenseSymbol`, `featurelifted.LicenseSymbol.key`, `featurelifted.Licensing`, `featurelifted.Licensing.parse`, `featurelifted.Licensing.validate`, `featurelifted.Licensing.license_symbols`, `featurelifted.Licensing.evaluate_policy`, `featurelifted.ExpressionInfo`, `featurelifted.ExpressionParseError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "license_expression.Licensing",
+      "license_expression.LicenseSymbol",
+      "license_expression.ExpressionInfo",
+      "license_expression.ExpressionParseError"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "ScanCode license database",
+      "SPDX bundled datasets",
+      "boolean.py dependency",
+      "HTML rendering templates"
+    ],
+    "forbidden": {
+      "imports": [
+        "license_expression",
+        "boolean"
+      ],
+      "paths": [
+        "repo/",
+        "src/license_expression/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B011",
+      "text": "the submitted package does not import forbidden upstream packages: license_expression, boolean."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "Parse symbols, `AND`, `OR`, `WITH`, and parentheses."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`AND` binds tighter than `OR`."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Parentheses override precedence."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "`WITH` binds a license symbol to an exception symbol."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "Aliases normalize to canonical `LicenseSymbol.key` values."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When parse(..., strict=True) is used, exception symbols cannot appear as plain licenses and raise ExpressionParseError; default parse(..., strict=False) does not enforce that check."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "When parse(..., strict=True) is used, plain license symbols cannot be used as WITH exceptions and raise ExpressionParseError; default parse(..., strict=False) does not raise for that misuse."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "included_behavior",
+        "text": "`validate()` returns `ExpressionInfo` with errors and invalid symbols instead of raising for unknown symbols."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "included_behavior",
+        "text": "`evaluate_policy()` returns a dictionary with `status`, `normalized`, `symbols`, `denied`, `unknown`, and `errors`."
+      },
+      {
+        "behavior_id": "B010",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.LicenseSymbol`, `featurelifted.LicenseSymbol.key`, `featurelifted.Licensing`, `featurelifted.Licensing.parse`, `featurelifted.Licensing.validate`, `featurelifted.Licensing.license_symbols`, `featurelifted.Licensing.evaluate_policy`, `featurelifted.ExpressionInfo`, `featurelifted.ExpressionParseError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B011",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: license_expression, boolean"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_alias_normalization_and_precedence_rendering",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_with_exception_normalizes_aliases",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_policy_allows_known_allowed_symbols",
+        "behavior_ids": [
+          "B004",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_parentheses_override_precedence",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_plain_symbol_cannot_be_used_as_with_exception",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_exception_symbol_cannot_be_used_as_plain_license",
+        "behavior_ids": [
+          "B004",
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_validate_reports_unknown_symbol_without_normalized_expression",
+        "behavior_ids": [
+          "B003",
+          "B009",
+          "B001",
+          "B006",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_policy_denies_denied_symbol_even_inside_with_expression",
+        "behavior_ids": [
+          "B005",
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_unbalanced_parentheses_raise_parse_error",
+        "behavior_ids": [
+          "B002",
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B010"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.LicenseSymbol",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LicenseSymbol.key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Licensing",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Licensing.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Licensing.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Licensing.license_symbols",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Licensing.evaluate_policy",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ExpressionInfo",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ExpressionParseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "d4e3cc863a0e88a40238ff2764a12db880c2e113173b8903330655780eadf806",
+  "generated_task_hash": "357545033c2dd7251ffa3199bde8f706d023ac3c73ba2d38c2423404a1c408ff"
+}

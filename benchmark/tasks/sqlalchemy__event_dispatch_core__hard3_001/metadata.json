@@ -1,0 +1,275 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Listener registration, once=True semantics, propagation, and target resolution are stateful and transitive.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "listener remove during dispatch deactivates without breaking iteration",
+      "once listener runs only one time",
+      "subclass propagation registers on child targets",
+      "named kwargs dispatch passes kwargs by name"
+    ],
+    "types": [
+      "framework_coupling",
+      "global_state_registry_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "sqlalchemy"
+    ],
+    "forbidden_imports": [
+      "sqlalchemy"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "sqlalchemy/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped event registry dispatch core into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "ORM/engine/database access"
+    ],
+    "included_behaviors": [
+      "listener registration/removal",
+      "dispatch ordering",
+      "once semantics",
+      "subclass propagation",
+      "named kwargs"
+    ],
+    "name": "Event registry dispatch core",
+    "source_entrypoints": [
+      "sqlalchemy.event.listen",
+      "sqlalchemy.event.remove"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "listen",
+    "import": "from featurelifted import listen, remove, dispatch, EventTarget",
+    "package": "featurelifted",
+    "signature": "listen(target, identifier, fn, once=False, propagate=False, named=False)"
+  },
+  "source": {
+    "commit": "d59159ca08cdf661f97d19d2966071a1b1d3df80",
+    "license": "MIT",
+    "name": "sqlalchemy",
+    "url": "https://github.com/sqlalchemy/sqlalchemy.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "copy-heavy trap tasks",
+    "framework_coupling"
+  ],
+  "task_id": "sqlalchemy__event_dispatch_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Event registry dispatch core",
+    "summary": "Extract a task-scoped subset of `sqlalchemy` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.listen",
+        "kind": "function",
+        "signature": "(target: 'type', identifier: 'str', fn: 'Callable', once: 'bool' = False, propagate: 'bool' = False, named: 'bool' = False) -> 'None'"
+      },
+      {
+        "path": "featurelifted.remove",
+        "kind": "function",
+        "signature": "(target: 'type', identifier: 'str', fn: 'Callable') -> 'None'"
+      },
+      {
+        "path": "featurelifted.dispatch",
+        "kind": "function",
+        "signature": "(target: 'type', identifier: 'str', *args, **kwargs) -> 'None'"
+      },
+      {
+        "path": "featurelifted.EventTarget",
+        "kind": "class",
+        "signature": "()"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`listen` registers listeners for `(target, identifier)` pairs."
+      },
+      {
+        "id": "B002",
+        "text": "`dispatch` invokes active listeners; `once=True` listeners run at most once."
+      },
+      {
+        "id": "B003",
+        "text": "`remove` during dispatch must not break in-flight dispatch."
+      },
+      {
+        "id": "B004",
+        "text": "`propagate=True` also registers on subclasses."
+      },
+      {
+        "id": "B005",
+        "text": "`named=True` invokes listeners with keyword arguments."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.listen`, `featurelifted.remove`, `featurelifted.dispatch`, `featurelifted.EventTarget` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "sqlalchemy.event.listen",
+      "sqlalchemy.event.remove"
+    ],
+    "exclusions": [
+      "network access",
+      "ORM/engine/database access"
+    ],
+    "forbidden": {
+      "imports": [
+        "sqlalchemy"
+      ],
+      "paths": [
+        "repo/",
+        "sqlalchemy/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: sqlalchemy."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`listen` registers listeners for `(target, identifier)` pairs."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`dispatch` invokes active listeners; `once=True` listeners run at most once."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`remove` during dispatch must not break in-flight dispatch."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "`propagate=True` also registers on subclasses."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "`named=True` invokes listeners with keyword arguments."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.listen`, `featurelifted.remove`, `featurelifted.dispatch`, `featurelifted.EventTarget` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: sqlalchemy"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_dispatch_invokes_listener",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_once_and_remove_during_dispatch_and_propagation",
+        "behavior_ids": [
+          "B001",
+          "B003",
+          "B004",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_named_kwargs_dispatch",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.listen",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.remove",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.dispatch",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EventTarget",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "97a381c16d57ac7b5438f0acb052cabd4583062de8ac279b1873684307a7bf3f",
+  "generated_task_hash": "4af06ffa36cfa38c9f6e6aa10ec46865454a533a69a6c269a80294470ad65845"
+}

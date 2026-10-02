@@ -1,0 +1,33 @@
+{
+  "source_package_name": "parso",
+  "required_source_files": [
+    "parso/__init__.py",
+    "parso/_compatibility.py",
+    "parso/cache.py",
+    "parso/file_io.py",
+    "parso/grammar.py",
+    "parso/normalizer.py",
+    "parso/parser.py",
+    "parso/tree.py",
+    "parso/utils.py",
+    "parso/pgen2/__init__.py",
+    "parso/pgen2/generator.py",
+    "parso/pgen2/grammar_parser.py",
+    "parso/python/__init__.py",
+    "parso/python/errors.py",
+    "parso/python/grammar310.txt",
+    "parso/python/grammar311.txt",
+    "parso/python/grammar312.txt",
+    "parso/python/grammar36.txt",
+    "parso/python/grammar37.txt",
+    "parso/python/grammar38.txt",
+    "parso/python/grammar39.txt",
+    "parso/python/parser.py",
+    "parso/python/prefix.py",
+    "parso/python/token.py",
+    "parso/python/tokenize.py",
+    "parso/python/tree.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Core grammar/parser tree; copy-all adds diff/pep8 modules."
+}

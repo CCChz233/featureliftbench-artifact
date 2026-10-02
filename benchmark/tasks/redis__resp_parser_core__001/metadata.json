@@ -1,0 +1,325 @@
+{
+  "task_id": "redis__resp_parser_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "parser_state_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "redis",
+    "url": "https://github.com/redis/redis-py",
+    "commit": "8.0.1-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "RESP2/RESP3 wire parser",
+    "description": "Extract redis-py synchronous RESP2/RESP3 parsing and command encoding without network I/O.",
+    "source_entrypoints": [
+      "redis._parsers._RESP2Parser",
+      "redis._parsers._RESP3Parser",
+      "redis._parsers.Encoder",
+      "redis._parsers.SocketBuffer"
+    ],
+    "included_behaviors": [
+      "parse RESP simple, bulk, and multi-bulk replies",
+      "decode bulk strings with optional byte preservation",
+      "map Redis error prefixes to exception classes",
+      "encode commands to RESP bulk arrays",
+      "buffer incremental socket reads via SocketBuffer"
+    ],
+    "excluded_behaviors": [
+      "TCP/TLS connection management",
+      "Redis command client and cluster logic",
+      "pub/sub push notification handlers",
+      "hiredis C extension parser"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "RESP parsing couples incremental buffers, encoder settings, and error classification tables.",
+    "signals": [
+      "SocketBuffer incremental reads",
+      "parser rewind on partial reads",
+      "Encoder decode_responses flag"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted._parsers import _RESP2Parser, _RESP3Parser, Encoder; from featurelifted.exceptions import ResponseError",
+    "callable": "featurelifted._parsers._RESP2Parser.read_response",
+    "signature": "read_response(disable_decoding=False, timeout=SENTINEL)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "redis"
+    ],
+    "forbidden_imports": [
+      "redis"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "RESP2/RESP3 wire parser",
+    "summary": "Extract a task-scoped subset of `redis` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted._parsers",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted._parsers.Encoder",
+            "kind": "class",
+            "signature": "(encoding, encoding_errors, decode_responses)",
+            "members": [
+              {
+                "path": "featurelifted._parsers.Encoder.encode",
+                "kind": "method",
+                "signature": "(self, value)"
+              }
+            ]
+          },
+          {
+            "path": "featurelifted._parsers._RESP2Parser",
+            "kind": "function",
+            "signature": "(socket_read_size)"
+          },
+          {
+            "path": "featurelifted._parsers._RESP3Parser",
+            "kind": "function",
+            "signature": "(socket_read_size)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.ResponseError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse RESP simple, bulk, and multi-bulk replies. Required observable cases include resp2 simple and bulk replies; resp2 array reply; resp2 error reply returns response error."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: decode bulk strings with optional byte preservation. Required observable cases include resp3 null and boolean."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: map Redis error prefixes to exception classes. Required observable cases include resp2 error reply returns response error."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: encode commands to RESP bulk arrays. Required observable cases include resp2 array reply; encoder rejects bool."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: buffer incremental socket reads via SocketBuffer. Required observable cases include resp3 null and boolean."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted._parsers`, `featurelifted._parsers.Encoder`, `featurelifted._parsers.Encoder.encode`, `featurelifted._parsers._RESP2Parser`, `featurelifted._parsers._RESP3Parser`, `featurelifted.exceptions`, `featurelifted.exceptions.ResponseError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "redis._parsers._RESP2Parser",
+      "redis._parsers._RESP3Parser",
+      "redis._parsers.Encoder",
+      "redis._parsers.SocketBuffer"
+    ],
+    "exclusions": [
+      "TCP/TLS connection management",
+      "Redis command client and cluster logic",
+      "pub/sub push notification handlers",
+      "hiredis C extension parser"
+    ],
+    "forbidden": {
+      "imports": [
+        "redis"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: redis."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse RESP simple, bulk, and multi-bulk replies. Required observable cases include resp2 simple and bulk replies; resp2 array reply; resp2 error reply returns response error."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: decode bulk strings with optional byte preservation. Required observable cases include resp3 null and boolean."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: map Redis error prefixes to exception classes. Required observable cases include resp2 error reply returns response error."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: encode commands to RESP bulk arrays. Required observable cases include resp2 array reply; encoder rejects bool."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: buffer incremental socket reads via SocketBuffer. Required observable cases include resp3 null and boolean."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted._parsers`, `featurelifted._parsers.Encoder`, `featurelifted._parsers.Encoder.encode`, `featurelifted._parsers._RESP2Parser`, `featurelifted._parsers._RESP3Parser`, `featurelifted.exceptions`, `featurelifted.exceptions.ResponseError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: redis"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_resp2_simple_and_bulk_replies",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_resp2_array_reply",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_resp2_error_reply_returns_response_error",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_resp3_null_and_boolean",
+        "behavior_ids": [
+          "B006",
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_encoder_rejects_bool",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted._parsers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted._parsers.Encoder",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted._parsers.Encoder.encode",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_encoder_rejects_bool"
+        ]
+      },
+      {
+        "path": "featurelifted._parsers._RESP2Parser",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted._parsers._RESP3Parser",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.ResponseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "3fa13a91a143562827462eaa131bbe8c78e35d96b480a588a31f351257cc90f9",
+  "generated_task_hash": "085f906aaaad9989c7fa0b3beafb83dee823340c2b0dad20d77039a2b4422f84"
+}

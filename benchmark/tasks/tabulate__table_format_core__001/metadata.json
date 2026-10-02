@@ -1,0 +1,370 @@
+{
+  "task_id": "tabulate__table_format_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "tabulate",
+    "table-formatting",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "tabulate",
+    "url": "https://github.com/astanin/python-tabulate",
+    "commit": "268615a5c27dc40e5c22454c07b44d5c50410da0",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Table formatting core",
+    "description": "Extract tabulate() table formatting with format registry, Unicode display width, column alignment, and data normalization without importing tabulate or CLI entrypoints.",
+    "source_entrypoints": [
+      "tabulate.tabulate",
+      "tabulate.tabulate_formats",
+      "tabulate.simple_separated_format",
+      "tabulate._visible_width",
+      "tabulate._align_column",
+      "tabulate._format_table",
+      "tabulate._normalize_tabular_data",
+      "tabulate._table_formats"
+    ],
+    "included_behaviors": [
+      "tabulate() renders simple, grid, pipe, and plain table formats",
+      "automatic numeric decimal alignment and string column padding",
+      "colalign and colglobalalign per-column alignment overrides",
+      "Unicode wide-character display width via wcwidth when available",
+      "ANSI escape sequences excluded from visible column width",
+      "simple_separated_format builds custom separator TableFormat",
+      "tabulate_formats lists supported output format names"
+    ],
+    "excluded_behaviors": [
+      "CLI entrypoint tabulate/cli.py and __main__",
+      "upstream benchmark and example scripts",
+      "original tabulate import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Table formatting couples format template registry, wcwidth display measurement, numeric type inference, column alignment, and tabular data normalization across formats, layout, and render modules.",
+    "signals": [
+      "_table_formats maps 36+ output templates",
+      "_visible_width uses wcwidth.width or wcswidth with ANSI stripping",
+      "numalign decimal pads fractional parts for alignment",
+      "colglobalalign applies before per-column colalign overrides"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import tabulate, tabulate_formats, simple_separated_format",
+    "callable": "featurelifted.tabulate",
+    "signature": "tabulate(tabular_data, headers=(), tablefmt='simple', floatfmt='g', intfmt='', numalign='default', stralign='default', missingval='', showindex='default', disable_numparse=False, colglobalalign=None, colalign=None, preserve_whitespace=False, maxcolwidths=None, headersglobalalign=None, headersalign=None, rowalign=None, maxheadercolwidths=None, break_long_words=True, break_on_hyphens=True)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "tabulate"
+    ],
+    "forbidden_imports": [
+      "tabulate"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "scoring_reference": {
+    "oracle_loc": 2311,
+    "oracle_bytes": 104749,
+    "oracle_dependency_count": 0,
+    "copy_all_loc": 7385,
+    "copy_all_bytes": 315755
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Table formatting core",
+    "summary": "Extract a task-scoped subset of `tabulate` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.tabulate",
+        "kind": "function",
+        "signature": "(tabular_data, headers=(), tablefmt='simple', floatfmt='g', intfmt='', numalign='default', stralign='default', missingval='', showindex='default', disable_numparse=False, colglobalalign=None, colalign=None, preserve_whitespace=False, maxcolwidths=None, headersglobalalign=None, headersalign=None, rowalign=None, maxheadercolwidths=None, break_long_words=True, break_on_hyphens=True)"
+      },
+      {
+        "path": "featurelifted.tabulate_formats",
+        "kind": "object"
+      },
+      {
+        "path": "featurelifted.simple_separated_format",
+        "kind": "function",
+        "signature": "(separator)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: tabulate() renders simple, grid, pipe, and plain table formats. Required observable cases include tabulate simple ascii; tabulate with headers; tabulate grid basic; tabulate formats registry; wide char grid alignment; pipe format colalign; latex booktabs format; dict rows headers keys."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: automatic numeric decimal alignment and string column padding. Required observable cases include decimal column alignment."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: colalign and colglobalalign per-column alignment overrides. Required observable cases include decimal column alignment; colglobalalign center column."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: Unicode wide-character display width via wcwidth when available. Required observable cases include wide char grid alignment."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: ANSI escape sequences excluded from visible column width. Required observable cases include ansi visible width plain; html escapes angle brackets."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: simple_separated_format builds custom separator TableFormat. Required observable cases include wide char grid alignment."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: tabulate_formats lists supported output format names. Required observable cases include tabulate with headers; tabulate formats registry; latex booktabs format; dict rows headers keys."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.tabulate`, `featurelifted.tabulate_formats`, `featurelifted.simple_separated_format` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "tabulate.tabulate",
+      "tabulate.tabulate_formats",
+      "tabulate.simple_separated_format",
+      "tabulate._visible_width",
+      "tabulate._align_column",
+      "tabulate._format_table",
+      "tabulate._normalize_tabular_data",
+      "tabulate._table_formats"
+    ],
+    "exclusions": [
+      "CLI entrypoint tabulate/cli.py and __main__",
+      "upstream benchmark and example scripts",
+      "original tabulate import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "tabulate"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: tabulate."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: tabulate() renders simple, grid, pipe, and plain table formats. Required observable cases include tabulate simple ascii; tabulate with headers; tabulate grid basic; tabulate formats registry; wide char grid alignment; pipe format colalign; latex booktabs format; dict rows headers keys."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: automatic numeric decimal alignment and string column padding. Required observable cases include decimal column alignment."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: colalign and colglobalalign per-column alignment overrides. Required observable cases include decimal column alignment; colglobalalign center column."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Unicode wide-character display width via wcwidth when available. Required observable cases include wide char grid alignment."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ANSI escape sequences excluded from visible column width. Required observable cases include ansi visible width plain; html escapes angle brackets."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: simple_separated_format builds custom separator TableFormat. Required observable cases include wide char grid alignment."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: tabulate_formats lists supported output format names. Required observable cases include tabulate with headers; tabulate formats registry; latex booktabs format; dict rows headers keys."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.tabulate`, `featurelifted.tabulate_formats`, `featurelifted.simple_separated_format` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: tabulate"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_tabulate_simple_ascii",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_tabulate_with_headers",
+        "behavior_ids": [
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_tabulate_grid_basic",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_tabulate_formats_registry",
+        "behavior_ids": [
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_decimal_column_alignment",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_wide_char_grid_alignment",
+        "behavior_ids": [
+          "B001",
+          "B004",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_colglobalalign_center_column",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_pipe_format_colalign",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_ansi_visible_width_plain",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_latex_booktabs_format",
+        "behavior_ids": [
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_html_escapes_angle_brackets",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_dict_rows_headers_keys",
+        "behavior_ids": [
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_tabulate_import_surface",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.tabulate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tabulate_formats",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.simple_separated_format",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "47fc6f96085db36f530e568460dbf64d88c60daf15e7389118bc6b266b705ae7",
+  "generated_task_hash": "405cfdf01ba3c5296cd10082d98f6a9e92046d2519841f68ba02e5c521ac5548"
+}

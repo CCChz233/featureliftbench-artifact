@@ -1,0 +1,442 @@
+{
+  "task_id": "sqlparse__parse_format_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "decoupling-discriminator",
+    "parser",
+    "formatter",
+    "tokenizer",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "sqlparse",
+    "url": "https://github.com/andialbrecht/sqlparse",
+    "commit": "f80af6a4007f11ada847218df8c29dc859238290",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "SQL parse, split, and format core",
+    "description": "Extract sqlparse's SQL statement parsing, splitting, token tree, and common formatting behavior as a standalone package.",
+    "source_entrypoints": [
+      "sqlparse.parse",
+      "sqlparse.parsestream",
+      "sqlparse.split",
+      "sqlparse.format",
+      "sqlparse.sql.Token",
+      "sqlparse.sql.TokenList",
+      "sqlparse.sql.Statement",
+      "sqlparse.sql.Identifier",
+      "sqlparse.sql.IdentifierList",
+      "sqlparse.tokens"
+    ],
+    "included_behaviors": [
+      "parse SQL text into Statement token trees",
+      "split multi-statement SQL scripts while respecting strings, comments, and nesting",
+      "support common token tree traversal and identifier helpers",
+      "format common SQL with keyword case, identifier case, comment stripping, reindentation, indentation width, and operator spacing",
+      "preserve original behavior for comments, whitespace, string literals, aliases, functions, nested expressions, CTEs, CASE expressions, and common DDL/DML"
+    ],
+    "excluded_behaviors": [
+      "command line interface",
+      "original project tests",
+      "documentation and release tooling",
+      "packaging metadata from the original project",
+      "dialect-perfect SQL validation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "SQL parse, split, and format behavior depends on tokenizer state, grouping passes, token tree classes, and formatter filters spread across multiple modules.",
+    "signals": [
+      "lexer and statement-splitting state",
+      "grouped token tree data model",
+      "formatter behavior composed from multiple filters",
+      "public API hides a multi-module runtime closure"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import parse, parsestream, split, format, sql, tokens; from featurelifted.exceptions import SQLParseError",
+    "callable": "featurelifted.parse",
+    "signature": "parse(sql: str, encoding: str | None = None) -> tuple[Statement, ...]"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "sqlparse"
+    ],
+    "forbidden_imports": [
+      "sqlparse"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "scoring_reference": {
+    "copy_all_bytes": 492572,
+    "copy_all_loc": 6026,
+    "oracle_bytes": 321016,
+    "oracle_loc": 2930,
+    "oracle_dependency_count": 0
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "SQL parse, split, and format core",
+    "summary": "Extract a task-scoped subset of `sqlparse` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(sql: str, encoding: str | None = None) -> tuple[Statement, ...]"
+      },
+      {
+        "path": "featurelifted.parsestream",
+        "kind": "function",
+        "signature": "(stream: Union[str, IO[str]], encoding: str | None = None) -> collections.abc.Generator[Statement, None, None]"
+      },
+      {
+        "path": "featurelifted.split",
+        "kind": "function",
+        "signature": "(sql: str, encoding: str | None = None, strip_semicolon: bool = False) -> list[str]"
+      },
+      {
+        "path": "featurelifted.format",
+        "kind": "function",
+        "signature": "(sql: str, encoding: str | None = None, **options: Any) -> str"
+      },
+      {
+        "path": "featurelifted.sql",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.sql.Comparison",
+            "kind": "class",
+            "signature": "(tokens=None)"
+          },
+          {
+            "path": "featurelifted.sql.Identifier",
+            "kind": "class",
+            "signature": "(tokens=None)"
+          },
+          {
+            "path": "featurelifted.sql.Statement",
+            "kind": "class",
+            "signature": "(tokens=None)"
+          },
+          {
+            "path": "featurelifted.sql.Where",
+            "kind": "class",
+            "signature": "(tokens=None)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.tokens",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.tokens.Keyword",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.SQLParseError",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.tokens.Keyword.DML",
+        "kind": "attribute"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse SQL text into Statement token trees. Required observable cases include parse returns statement tokens; token navigation and ancestor relationships."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: split multi-statement SQL scripts while respecting strings, comments, and nesting. Required observable cases include split respects quoted semicolons; split handles comments and embedded semicolons."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: support common token tree traversal and identifier helpers. Required observable cases include format supports common options; cte aliases and identifier helpers."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: format common SQL with keyword case, identifier case, comment stripping, reindentation, indentation width, and operator spacing. Required observable cases include format supports common options; formatter comment stripping and spacing; formatter rejects invalid options."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: preserve original behavior for comments, whitespace, string literals, aliases, functions, nested expressions, CTEs, CASE expressions, and common DDL/DML. Required observable cases include cte aliases and identifier helpers."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.parsestream`, `featurelifted.split`, `featurelifted.format`, `featurelifted.sql`, `featurelifted.sql.Comparison`, `featurelifted.sql.Identifier`, `featurelifted.sql.Statement`, `featurelifted.sql.Where`, `featurelifted.tokens`, `featurelifted.tokens.Keyword`, `featurelifted.exceptions`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "sqlparse.parse",
+      "sqlparse.parsestream",
+      "sqlparse.split",
+      "sqlparse.format",
+      "sqlparse.sql.Token",
+      "sqlparse.sql.TokenList",
+      "sqlparse.sql.Statement",
+      "sqlparse.sql.Identifier",
+      "sqlparse.sql.IdentifierList",
+      "sqlparse.tokens"
+    ],
+    "exclusions": [
+      "command line interface",
+      "original project tests",
+      "documentation and release tooling",
+      "packaging metadata from the original project",
+      "dialect-perfect SQL validation"
+    ],
+    "forbidden": {
+      "imports": [
+        "sqlparse"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: sqlparse."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse SQL text into Statement token trees. Required observable cases include parse returns statement tokens; token navigation and ancestor relationships."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: split multi-statement SQL scripts while respecting strings, comments, and nesting. Required observable cases include split respects quoted semicolons; split handles comments and embedded semicolons."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support common token tree traversal and identifier helpers. Required observable cases include format supports common options; cte aliases and identifier helpers."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: format common SQL with keyword case, identifier case, comment stripping, reindentation, indentation width, and operator spacing. Required observable cases include format supports common options; formatter comment stripping and spacing; formatter rejects invalid options."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preserve original behavior for comments, whitespace, string literals, aliases, functions, nested expressions, CTEs, CASE expressions, and common DDL/DML. Required observable cases include cte aliases and identifier helpers."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.parsestream`, `featurelifted.split`, `featurelifted.format`, `featurelifted.sql`, `featurelifted.sql.Comparison`, `featurelifted.sql.Identifier`, `featurelifted.sql.Statement`, `featurelifted.sql.Where`, `featurelifted.tokens`, `featurelifted.tokens.Keyword`, `featurelifted.exceptions`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: sqlparse"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_returns_statement_tokens",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_split_respects_quoted_semicolons",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_format_supports_common_options",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_split_handles_comments_and_embedded_semicolons",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_cte_aliases_and_identifier_helpers",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_token_navigation_and_ancestor_relationships",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_formatter_comment_stripping_and_spacing",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_formatter_rejects_invalid_options",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsestream",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.split",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.format",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql.Comparison",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql.Identifier",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql.Statement",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql.Where",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tokens",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tokens.Keyword",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.SQLParseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tokens.Keyword.DML",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "b86cf6a77ef6d95394e535ed3879a9a21bd649d489f37beeb0ee2d1291d3839c",
+  "generated_task_hash": "90ac2078bab944a2236f66712d454e7061334889664878b7edfa95d79d949fc2"
+}

@@ -1,0 +1,14 @@
+{
+  "source_package_name": "email_validator",
+  "required_source_files": [
+    "email_validator/exceptions.py",
+    "email_validator/rfc_constants.py",
+    "email_validator/syntax.py",
+    "email_validator/types.py",
+    "email_validator/validate_email.py"
+  ],
+  "runtime_dependencies": [
+    "idna"
+  ],
+  "notes": "Oracle copies offline syntax-validation closure only; excludes deliverability.py, CLI, and upstream tests."
+}

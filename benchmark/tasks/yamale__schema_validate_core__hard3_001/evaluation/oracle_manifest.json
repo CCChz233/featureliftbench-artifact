@@ -1,0 +1,25 @@
+{
+  "source_package_name": "yamale",
+  "runtime_dependencies": [
+    "PyYAML"
+  ],
+  "required_source_files": [
+    "repo/yamale/yamale.py",
+    "repo/yamale/schema/schema.py",
+    "repo/yamale/validators/validators.py",
+    "repo/yamale/syntax/parser.py"
+  ],
+  "target_api": [
+    "featurelifted.make_schema",
+    "featurelifted.validate",
+    "featurelifted.ValidationResult"
+  ],
+  "forbidden_imports": [
+    "yamale"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "yamale/"
+  ],
+  "notes": "In-memory Yamale subset with PyYAML dependency."
+}

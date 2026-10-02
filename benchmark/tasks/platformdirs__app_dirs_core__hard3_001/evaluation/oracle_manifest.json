@@ -1,0 +1,25 @@
+{
+  "source_package_name": "platformdirs",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/platformdirs/__init__.py",
+    "repo/src/platformdirs/api.py",
+    "repo/src/platformdirs/_xdg.py",
+    "repo/src/platformdirs/unix.py",
+    "repo/src/platformdirs/macos.py",
+    "repo/src/platformdirs/windows.py"
+  ],
+  "target_api": [
+    "featurelifted.user_data_dir",
+    "featurelifted.user_config_dir",
+    "featurelifted.user_cache_dir"
+  ],
+  "forbidden_imports": [
+    "platformdirs"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "src/platformdirs/"
+  ],
+  "notes": "Task-scoped extraction of user data/config/cache path resolution. Site, media, Android, and directory creation helpers are intentionally excluded."
+}

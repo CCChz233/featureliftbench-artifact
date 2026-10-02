@@ -1,0 +1,423 @@
+{
+  "task_id": "python_dateutil__rrule_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "recurrence",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "python-dateutil",
+    "url": "https://github.com/dateutil/dateutil",
+    "commit": "1ae807774053c071acc9e7d3d27778fba0a7773e",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "iCalendar recurrence (rrule) core",
+    "description": "Extract python-dateutil rrule/rruleset/rrulestr recurrence iteration for naive datetimes without timezone, general parser, or relativedelta machinery.",
+    "source_entrypoints": [
+      "dateutil.rrule.rrule",
+      "dateutil.rrule.rruleset",
+      "dateutil.rrule.rrulestr",
+      "dateutil.rrule.weekday",
+      "dateutil.easter.easter"
+    ],
+    "included_behaviors": [
+      "rrule iteration with freq, interval, count, until, and BY* filters",
+      "rruleset include rules with EXDATE/RDATE (naive)",
+      "rrulestr for RRULE lines with naive iCalendar date values",
+      "BYEASTER offsets via easter helper",
+      "weekday constants MO..SU and freq constants"
+    ],
+    "excluded_behaviors": [
+      "dateutil.tz, TZID, zoneinfo, tzwin",
+      "relativedelta and general dateutil.parser",
+      "original dateutil package import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "global_state_registry_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Recurrence couples RFC grammar parsing, calendar bitmask state, leap years, setpos/weekday interactions, generator caching, and rruleset merging.",
+    "signals": [
+      "rrulestr maps RFC tokens to constructor kwargs",
+      "BYSETPOS interacts with BYDAY monthly masks",
+      "BYEASTER needs separate holiday algorithm",
+      "rruleset exdate/rdate override iteration order"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import rrule, rruleset, rrulestr, YEARLY, MONTHLY, WEEKLY, DAILY, MO, TU, WE, TH, FR, SA, SU",
+    "callable": "featurelifted.rrule",
+    "signature": "rrule(freq, dtstart=None, interval=1, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "python-dateutil",
+      "dateutil"
+    ],
+    "forbidden_imports": [
+      "dateutil"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "iCalendar recurrence (rrule) core",
+    "summary": "Extract a task-scoped subset of `dateutil` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.rrule",
+        "kind": "module"
+      },
+      {
+        "path": "featurelifted.rruleset",
+        "kind": "function",
+        "signature": "(cache=False)"
+      },
+      {
+        "path": "featurelifted.rrulestr",
+        "kind": "function",
+        "signature": "(s, **kwargs)"
+      },
+      {
+        "path": "featurelifted.YEARLY",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.MONTHLY",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.WEEKLY",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.DAILY",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.MO",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.TU",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.WE",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.TH",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.FR",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.SA",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.SU",
+        "kind": "constant"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: rrule iteration with freq, interval, count, until, and BY* filters. Required observable cases include weekly byweekday filter; count stops iteration; bysetpos last friday; invalid rrulestr freq raises."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: rruleset include rules with EXDATE/RDATE (naive). Required observable cases include rrulestr parses monthly rule; rruleset exdate skips."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: rrulestr for RRULE lines with naive iCalendar date values. Required observable cases include monthly rrule yields dates; rrulestr parses monthly rule; invalid rrulestr freq raises; rrulestr byday token."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: BYEASTER offsets via easter helper. Required observable cases include byeaster occurrence."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: weekday constants MO..SU and freq constants. Required observable cases include bysetpos last friday."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.rrule`, `featurelifted.rruleset`, `featurelifted.rrulestr`, `featurelifted.YEARLY`, `featurelifted.MONTHLY`, `featurelifted.WEEKLY`, `featurelifted.DAILY`, `featurelifted.MO`, `featurelifted.TU`, `featurelifted.WE`, `featurelifted.TH`, `featurelifted.FR`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "dateutil.rrule.rrule",
+      "dateutil.rrule.rruleset",
+      "dateutil.rrule.rrulestr",
+      "dateutil.rrule.weekday",
+      "dateutil.easter.easter"
+    ],
+    "exclusions": [
+      "dateutil.tz, TZID, zoneinfo, tzwin",
+      "relativedelta and general dateutil.parser",
+      "original dateutil package import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "dateutil"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: dateutil."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: rrule iteration with freq, interval, count, until, and BY* filters. Required observable cases include weekly byweekday filter; count stops iteration; bysetpos last friday; invalid rrulestr freq raises."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: rruleset include rules with EXDATE/RDATE (naive). Required observable cases include rrulestr parses monthly rule; rruleset exdate skips."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: rrulestr for RRULE lines with naive iCalendar date values. Required observable cases include monthly rrule yields dates; rrulestr parses monthly rule; invalid rrulestr freq raises; rrulestr byday token."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: BYEASTER offsets via easter helper. Required observable cases include byeaster occurrence."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: weekday constants MO..SU and freq constants. Required observable cases include bysetpos last friday."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.rrule`, `featurelifted.rruleset`, `featurelifted.rrulestr`, `featurelifted.YEARLY`, `featurelifted.MONTHLY`, `featurelifted.WEEKLY`, `featurelifted.DAILY`, `featurelifted.MO`, `featurelifted.TU`, `featurelifted.WE`, `featurelifted.TH`, `featurelifted.FR`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: dateutil"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_monthly_rrule_yields_dates",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_weekly_byweekday_filter",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_count_stops_iteration",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_rrulestr_parses_monthly_rule",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_bysetpos_last_friday",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_byeaster_occurrence",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_rruleset_exdate_skips",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_rrulestr_freq_raises",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_rrulestr_byday_token",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_dateutil_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.rrule",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.rruleset",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.rrulestr",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.YEARLY",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MONTHLY",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.WEEKLY",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.DAILY",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MO",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TU",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.WE",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TH",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FR",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SA",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SU",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "b9aa48529e402fb358754ceccae85cc28cf0140cfe6008f63a6689ee124cdcf8",
+  "generated_task_hash": "2edc956380f9324e6656ea84c5d27219e260cf4a7f74a3a5f4bfb04003271e68"
+}

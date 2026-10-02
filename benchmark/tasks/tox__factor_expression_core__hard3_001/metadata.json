@@ -1,0 +1,247 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Factor expressions, negation, envlist discovery, and factor-filtered ini lines interact through parser state.",
+    "level": "high",
+    "primary": "parser_state_coupling",
+    "signals": [
+      "factor negation excludes matching lines",
+      "envlist expansion from brace groups",
+      "env_factors filter selects factor-conditioned lines",
+      "continuation lines respect pending skip state"
+    ],
+    "types": [
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "tox"
+    ],
+    "forbidden_imports": [
+      "tox"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "tox/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped environment factor expression and ini filtering into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "virtualenv creation",
+      "subprocess execution"
+    ],
+    "included_behaviors": [
+      "brace factor expansion",
+      "negated factors",
+      "env list discovery",
+      "factor-filtered ini lines"
+    ],
+    "name": "Environment factor expression and ini filtering",
+    "source_entrypoints": [
+      "tox.config.loader.ini.factor.filter_for_env"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "filter_for_env",
+    "import": "from featurelifted import expand_factors, find_envs, filter_for_env",
+    "package": "featurelifted",
+    "signature": "filter_for_env(value: str, env_name: str | None = None, env_factors: set[str] | None = None)"
+  },
+  "source": {
+    "commit": "5458a28f15a36c0d7ad2e7166cce4dac0a9cd7cf",
+    "license": "MIT",
+    "name": "tox",
+    "url": "https://github.com/tox-dev/tox.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "parser_state_coupling"
+  ],
+  "task_id": "tox__factor_expression_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Environment factor expression and ini filtering",
+    "summary": "Extract a task-scoped subset of `tox` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.expand_factors",
+        "kind": "function",
+        "signature": "(value: 'str') -> 'Iterator[tuple[list[list[tuple[str, bool]]] | None, str]]'"
+      },
+      {
+        "path": "featurelifted.find_envs",
+        "kind": "function",
+        "signature": "(value: 'str') -> 'list[str]'"
+      },
+      {
+        "path": "featurelifted.filter_for_env",
+        "kind": "function",
+        "signature": "(value: 'str', env_name: 'str | None', env_factors: 'set[str] | None' = None) -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`find_envs` discovers environment names from brace factor expressions."
+      },
+      {
+        "id": "B002",
+        "text": "When factor expressions contain negation, filter_for_env accepts an environment only when positive factors match and negated factors do not."
+      },
+      {
+        "id": "B003",
+        "text": "find_envs expands brace and factor expressions into the deterministic set of environment names they describe."
+      },
+      {
+        "id": "B004",
+        "text": "`filter_for_env` keeps lines whose factor expressions match `env_name` and/or `env_factors`."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.expand_factors`, `featurelifted.find_envs`, `featurelifted.filter_for_env` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "tox.config.loader.ini.factor.filter_for_env"
+    ],
+    "exclusions": [
+      "network access",
+      "virtualenv creation",
+      "subprocess execution"
+    ],
+    "forbidden": {
+      "imports": [
+        "tox"
+      ],
+      "paths": [
+        "repo/",
+        "tox/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: tox."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`find_envs` discovers environment names from brace factor expressions."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When factor expressions contain negation, filter_for_env accepts an environment only when positive factors match and negated factors do not."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "find_envs expands brace and factor expressions into the deterministic set of environment names they describe."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "`filter_for_env` keeps lines whose factor expressions match `env_name` and/or `env_factors`."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.expand_factors`, `featurelifted.find_envs`, `featurelifted.filter_for_env` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: tox"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_find_envs_brace_groups",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_filter_for_env_by_factors",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.expand_factors",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.find_envs",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.filter_for_env",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "45ed97bd79f0311bf21e266882569566e237ff7abef2743b30822cf12f8d2a7e",
+  "generated_task_hash": "5af2c69dd88a88568481162142f21c4132336922286a4d4f0c44c9e9341d1feb"
+}

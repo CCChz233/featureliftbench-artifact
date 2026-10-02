@@ -1,0 +1,285 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Eviction policies, tag metadata, expiration order, and size accounting require stateful reasoning while excluding disk backend.",
+    "level": "high",
+    "primary": "resource_coupling",
+    "signals": [
+      "least-recently-used tie breaking",
+      "tag-filtered eviction",
+      "expire order by timestamp",
+      "touch updates access order"
+    ],
+    "types": [
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "diskcache"
+    ],
+    "forbidden_imports": [
+      "diskcache"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "diskcache/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped evictionpolicyplanner into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "sqlite disk backend",
+      "file I/O"
+    ],
+    "included_behaviors": [
+      "LRU eviction planning",
+      "tag filtering",
+      "expiration purge"
+    ],
+    "name": "EvictionPolicyPlanner",
+    "source_entrypoints": [
+      "diskcache.core.Cache"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "EvictionPolicyPlanner",
+    "import": "from featurelifted import EvictionPolicyPlanner",
+    "package": "featurelifted",
+    "signature": "EvictionPolicyPlanner()"
+  },
+  "source": {
+    "commit": "ebfa37cd99d7ef716ec452ad8af4b4276a8e2233",
+    "license": "Apache-2.0",
+    "name": "diskcache",
+    "url": "https://github.com/grantjenks/python-diskcache.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "stateful runtime behavior",
+    "resource_coupling"
+  ],
+  "task_id": "diskcache__eviction_policy_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "EvictionPolicyPlanner",
+    "summary": "Extract a task-scoped subset of `diskcache` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.EvictionPolicyPlanner",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.EvictionPolicyPlanner.evict",
+            "kind": "method",
+            "signature": "(self, max_size: 'int', *, tag: 'str | None' = None) -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.EvictionPolicyPlanner.purge_expired",
+            "kind": "method",
+            "signature": "(self, now: 'float') -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.EvictionPolicyPlanner.set",
+            "kind": "method",
+            "signature": "(self, key: 'str', *, size: 'int' = 1, expire_at: 'float | None' = None, tag: 'str | None' = None) -> 'None'"
+          },
+          {
+            "path": "featurelifted.EvictionPolicyPlanner.total_size",
+            "kind": "method",
+            "signature": "(self) -> 'int'"
+          },
+          {
+            "path": "featurelifted.EvictionPolicyPlanner.touch",
+            "kind": "method",
+            "signature": "(self, key: 'str') -> 'None'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`touch(key)` updates access order for LRU decisions."
+      },
+      {
+        "id": "B002",
+        "text": "`evict(max_size, tag=...)` removes least-recently-used entries until under budget."
+      },
+      {
+        "id": "B003",
+        "text": "When purge_expired runs, expired entries are removed before size-based eviction and unexpired entries remain available."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.EvictionPolicyPlanner`, `featurelifted.EvictionPolicyPlanner.evict`, `featurelifted.EvictionPolicyPlanner.purge_expired`, `featurelifted.EvictionPolicyPlanner.set`, `featurelifted.EvictionPolicyPlanner.total_size`, `featurelifted.EvictionPolicyPlanner.touch` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "diskcache.core.Cache"
+    ],
+    "exclusions": [
+      "network access",
+      "sqlite disk backend",
+      "file I/O"
+    ],
+    "forbidden": {
+      "imports": [
+        "diskcache"
+      ],
+      "paths": [
+        "repo/",
+        "diskcache/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: diskcache."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`touch(key)` updates access order for LRU decisions."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`evict(max_size, tag=...)` removes least-recently-used entries until under budget."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When purge_expired runs, expired entries are removed before size-based eviction and unexpired entries remain available."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.EvictionPolicyPlanner`, `featurelifted.EvictionPolicyPlanner.evict`, `featurelifted.EvictionPolicyPlanner.purge_expired`, `featurelifted.EvictionPolicyPlanner.set`, `featurelifted.EvictionPolicyPlanner.total_size`, `featurelifted.EvictionPolicyPlanner.touch` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: diskcache"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_evict_least_recently_used",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_tag_filtered_eviction",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_purge_expired_order",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_touch_updates_lru",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.EvictionPolicyPlanner",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EvictionPolicyPlanner.evict",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_tag_filtered_eviction",
+          "hidden_tests/test_hidden_contract.py::test_touch_updates_lru"
+        ]
+      },
+      {
+        "path": "featurelifted.EvictionPolicyPlanner.purge_expired",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_purge_expired_order"
+        ]
+      },
+      {
+        "path": "featurelifted.EvictionPolicyPlanner.set",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_purge_expired_order",
+          "hidden_tests/test_hidden_contract.py::test_tag_filtered_eviction",
+          "hidden_tests/test_hidden_contract.py::test_touch_updates_lru"
+        ]
+      },
+      {
+        "path": "featurelifted.EvictionPolicyPlanner.total_size",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_tag_filtered_eviction"
+        ]
+      },
+      {
+        "path": "featurelifted.EvictionPolicyPlanner.touch",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_touch_updates_lru"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "a1592cea3ab813a323670dbb060cfb875f017d21ad39b1134efa403f16911151",
+  "generated_task_hash": "4a29ba50ce015dc6924ded95deeed3e3ba6291a89e38c151569c78f0555a2cd9"
+}

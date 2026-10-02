@@ -1,0 +1,10 @@
+{
+  "source_files": [
+    "src/jinja2/filters.py",
+    "src/jinja2/tests.py",
+    "src/jinja2/runtime.py",
+    "src/jinja2/environment.py",
+    "src/jinja2/defaults.py"
+  ],
+  "notes": "Filters/tests with compile/render support for template usage."
+}

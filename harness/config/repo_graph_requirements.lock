@@ -1,0 +1,4 @@
+# Repository Semantic Graph parser stack. Keep these exact for snapshot identity.
+tree-sitter==0.26.0
+tree-sitter-go==0.25.0
+tree-sitter-python==0.25.0

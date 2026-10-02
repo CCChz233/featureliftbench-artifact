@@ -1,0 +1,252 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "TOML metadata normalization, environment matrix selection, overrides, and validation errors require several helpers.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "environment inheritance chain",
+      "circular environment detection",
+      "invalid classifier rejection",
+      "script and dependency normalization"
+    ],
+    "types": [
+      "data_model_coupling",
+      "config_environment_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "hatch",
+      "hatchling"
+    ],
+    "forbidden_imports": [
+      "hatch",
+      "hatchling"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "hatch/",
+      "hatchling/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped normalize_project_metadata select_environment into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "build/env runner",
+      "wheel generation"
+    ],
+    "included_behaviors": [
+      "project metadata normalization",
+      "environment inheritance",
+      "classifier validation"
+    ],
+    "name": "normalize_project_metadata select_environment",
+    "source_entrypoints": [
+      "src.hatchling.metadata.core.ProjectMetadata"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "normalize_project_metadata",
+    "import": "from featurelifted import normalize_project_metadata, select_environment, MetadataValidationError",
+    "package": "featurelifted",
+    "signature": "normalize_project_metadata(project: dict)"
+  },
+  "source": {
+    "commit": "19ced89249f2249772eed4566bd40d72e25d77ec",
+    "license": "MIT",
+    "name": "hatch",
+    "url": "https://github.com/pypa/hatch.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "metadata extraction / package discovery",
+    "data_model_coupling"
+  ],
+  "task_id": "hatch__project_metadata_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "normalize_project_metadata select_environment",
+    "summary": "Extract a task-scoped subset of `hatch` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.normalize_project_metadata",
+        "kind": "function",
+        "signature": "(project: 'dict') -> 'dict'"
+      },
+      {
+        "path": "featurelifted.select_environment",
+        "kind": "function",
+        "signature": "(envs: 'dict', name: 'str') -> 'dict'"
+      },
+      {
+        "path": "featurelifted.MetadataValidationError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`normalize_project_metadata` lowercases names, sorts dependencies, and validates classifiers."
+      },
+      {
+        "id": "B002",
+        "text": "`select_environment` resolves environment inheritance and include chains."
+      },
+      {
+        "id": "B003",
+        "text": "Circular inheritance raises `ValueError`; invalid classifiers raise `MetadataValidationError`."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.normalize_project_metadata`, `featurelifted.select_environment`, `featurelifted.MetadataValidationError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "src.hatchling.metadata.core.ProjectMetadata"
+    ],
+    "exclusions": [
+      "network access",
+      "build/env runner",
+      "wheel generation"
+    ],
+    "forbidden": {
+      "imports": [
+        "hatch",
+        "hatchling"
+      ],
+      "paths": [
+        "repo/",
+        "hatch/",
+        "hatchling/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: hatch, hatchling."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`normalize_project_metadata` lowercases names, sorts dependencies, and validates classifiers."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`select_environment` resolves environment inheritance and include chains."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Circular inheritance raises `ValueError`; invalid classifiers raise `MetadataValidationError`."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.normalize_project_metadata`, `featurelifted.select_environment`, `featurelifted.MetadataValidationError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: hatch, hatchling"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_normalize_project_metadata",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_select_environment_inheritance",
+        "behavior_ids": [
+          "B002",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_circular_environment_raises",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_classifier_raises",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.normalize_project_metadata",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.select_environment",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MetadataValidationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "9f1982ff80ae545753362455f8661206a12d1fb114eb195e789038a3e9e2b1b9",
+  "generated_task_hash": "e0f2b9b1a3f463a85704136134936b0c7e257ab436c4fbeeeafc62677eb2e386"
+}

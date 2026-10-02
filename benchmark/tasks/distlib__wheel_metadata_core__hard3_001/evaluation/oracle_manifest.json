@@ -1,0 +1,23 @@
+{
+  "source_package_name": "distlib",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/distlib/wheel.py",
+    "repo/distlib/resources.py",
+    "repo/distlib/util.py"
+  ],
+  "target_api": [
+    "featurelifted.to_posix",
+    "featurelifted.normalize_record_path",
+    "featurelifted.parse_record",
+    "featurelifted.validate_record_hash"
+  ],
+  "forbidden_imports": [
+    "distlib"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "distlib/"
+  ],
+  "notes": "Wheel RECORD parsing subset without installer runtime."
+}

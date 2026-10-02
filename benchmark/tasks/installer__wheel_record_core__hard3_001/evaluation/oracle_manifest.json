@@ -1,0 +1,21 @@
+{
+  "source_package_name": "installer",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/installer/records.py",
+    "repo/src/installer/_core.py"
+  ],
+  "target_api": [
+    "featurelifted.parse_wheel_record",
+    "featurelifted.find_dist_info",
+    "featurelifted.script_name"
+  ],
+  "forbidden_imports": [
+    "installer"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "installer/"
+  ],
+  "notes": "Wheel RECORD planner without install destinations."
+}

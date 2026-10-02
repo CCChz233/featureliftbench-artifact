@@ -1,0 +1,7 @@
+{
+  "source_files": [
+    "src/_pytest/config/__init__.py",
+    "src/_pytest/mark/__init__.py"
+  ],
+  "notes": "Subset extracted into ini_markers module mirroring linelist + marker line parsing."
+}

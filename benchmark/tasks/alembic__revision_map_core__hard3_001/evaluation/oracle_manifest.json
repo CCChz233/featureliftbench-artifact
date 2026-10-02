@@ -1,0 +1,28 @@
+{
+  "required_source_files": [
+    "repo/alembic/script/revision.py",
+    "repo/alembic/script/base.py",
+    "repo/alembic/util/exc.py",
+    "repo/alembic/util/langhelpers.py",
+    "repo/pyproject.toml",
+    "repo/LICENSE"
+  ],
+  "source_package_name": "alembic",
+  "runtime_dependencies": [],
+  "forbidden_imports": [
+    "alembic",
+    "sqlalchemy"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "alembic/"
+  ],
+  "target_symbols": [
+    "Revision",
+    "RevisionMap",
+    "MissingRevision",
+    "MultipleHeads",
+    "CycleDetected"
+  ],
+  "notes": "Oracle evidence should inspect revision graph, branch-label, dependency, and error semantics without accepting runtime imports from Alembic or SQLAlchemy."
+}

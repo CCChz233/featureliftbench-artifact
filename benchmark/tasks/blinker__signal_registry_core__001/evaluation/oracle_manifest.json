@@ -1,0 +1,8 @@
+{
+  "notes": "Entrypoints are maintainer-private provenance and are never Agent-visible in Main.",
+  "required_source_files": [
+    "blinker.base.Signal",
+    "blinker.base.Namespace",
+    "blinker.base.ANY"
+  ]
+}

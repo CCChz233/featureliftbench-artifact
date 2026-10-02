@@ -1,0 +1,18 @@
+{
+  "source_package_name": "tomlkit",
+  "required_source_files": [
+    "tomlkit/__init__.py",
+    "tomlkit/api.py",
+    "tomlkit/container.py",
+    "tomlkit/exceptions.py",
+    "tomlkit/items.py",
+    "tomlkit/parser.py",
+    "tomlkit/source.py",
+    "tomlkit/toml_document.py",
+    "tomlkit/toml_file.py",
+    "tomlkit/_compat.py",
+    "tomlkit/_types.py",
+    "tomlkit/_utils.py"
+  ],
+  "notes": "Reference closure for TOML parse/dump and document round-trip behavior. Tests, docs, CI, packaging metadata, and release tooling are intentionally excluded."
+}

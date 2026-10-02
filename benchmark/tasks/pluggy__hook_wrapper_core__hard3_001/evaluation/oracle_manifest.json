@@ -1,0 +1,20 @@
+{
+  "source_package_name": "pluggy",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/pluggy/_hooks.py",
+    "repo/src/pluggy/_callers.py"
+  ],
+  "target_api": [
+    "featurelifted.HookCaller",
+    "featurelifted.HookCaller.call_historic"
+  ],
+  "forbidden_imports": [
+    "pluggy"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "pluggy/"
+  ],
+  "notes": "Historic wrapper ordering subset without plugin manager."
+}

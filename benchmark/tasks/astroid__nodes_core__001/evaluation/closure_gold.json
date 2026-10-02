@@ -1,0 +1,1233 @@
+{
+  "annotation_scope": {
+    "behavioral": "linked_to_public_behavior_ids",
+    "file": "complete_ai_assisted_reference_closure",
+    "runtime": "unresolved",
+    "symbol": "unresolved"
+  },
+  "audit": {
+    "limitation": "File completeness is provisional reference-closure completeness. Symbol, runtime-state, replaceability, and semantic minimality remain unresolved until independent human review and executable necessity probes.",
+    "manifest_file_count": 0,
+    "selection_source": "static_entrypoint_import_closure",
+    "static_candidate_count": 44,
+    "static_candidates_not_in_reference_closure": []
+  },
+  "closure_variants": [
+    {
+      "requirements": [
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_001",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_002",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/__pkginfo__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_003",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/_ast.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_004",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/_cache.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_005",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/arguments.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_006",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/astroid_manager.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_007",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/bases.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_008",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/brain/helpers.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_009",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/builder.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_010",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/const.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_011",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/constraint.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_012",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/context.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_013",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/decorators.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_014",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/exceptions.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_015",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/filter_statements.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_016",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/helpers.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_017",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/inference.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_018",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/inference_tip.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_019",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/interpreter/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_020",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/interpreter/_import/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_021",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/interpreter/_import/spec.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_022",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/interpreter/_import/util.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_023",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/interpreter/dunder_lookup.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_024",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/interpreter/objectmodel.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_025",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/manager.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_026",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/modutils.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_027",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_028",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/_base_nodes.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_029",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/as_string.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_030",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/const.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_031",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/node_classes.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_032",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/node_ng.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_033",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/scoped_nodes/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_034",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/scoped_nodes/mixin.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_035",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/scoped_nodes/scoped_nodes.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_036",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/scoped_nodes/utils.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_037",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/nodes/utils.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_038",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/objects.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_039",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/protocols.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_040",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/raw_building.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_041",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/rebuilder.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_042",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/transforms.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_043",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/typing.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_044",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/astroid/util.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [],
+          "evidence_paths": [
+            "requirements.lock"
+          ],
+          "kind": "third_party",
+          "necessity": "must",
+          "rationale": "Pinned evaluator dependency; necessity beyond the reference implementation remains human-review pending.",
+          "requirement_id": "third_party_requirement_001",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "third_party",
+                  "value": "lazy-object-proxy"
+                }
+              ],
+              "solution_id": "approved_dependency"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [],
+          "evidence_paths": [
+            "requirements.lock"
+          ],
+          "kind": "third_party",
+          "necessity": "must",
+          "rationale": "Pinned evaluator dependency; necessity beyond the reference implementation remains human-review pending.",
+          "requirement_id": "third_party_requirement_002",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "third_party",
+                  "value": "wrapt"
+                }
+              ],
+              "solution_id": "approved_dependency"
+            }
+          ]
+        }
+      ],
+      "variant_id": "reference_source_closure"
+    }
+  ],
+  "entrypoints": [
+    "astroid.builder.parse",
+    "astroid.rebuilder.TreeRebuilder",
+    "astroid.nodes"
+  ],
+  "gold_completeness": {
+    "adapter": "unresolved",
+    "file": "complete",
+    "resource": "unresolved",
+    "runtime_state": "unresolved",
+    "symbol": "unresolved",
+    "third_party": "partial"
+  },
+  "review": {
+    "adjudicator": "",
+    "disagreements": [],
+    "formal_human_double_review_pending": true,
+    "reviewer_1": "codex_manifest_normalization_pass",
+    "reviewer_1_type": "ai_assisted_author",
+    "reviewer_2": "codex_static_entrypoint_closure_pass",
+    "reviewer_2_type": "ai_assisted_second_pass_not_independent_human",
+    "status": "ai_assisted_reviewed"
+  },
+  "schema_version": "featureliftbench.closure_gold.v1",
+  "task_id": "astroid__nodes_core__001"
+}

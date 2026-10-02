@@ -1,0 +1,13 @@
+{
+  "source_files": [
+    "src/jinja2/exceptions.py",
+    "src/jinja2/utils.py",
+    "src/jinja2/_identifier.py",
+    "src/jinja2/constants.py",
+    "src/jinja2/lexer.py",
+    "src/jinja2/nodes.py",
+    "src/jinja2/parser.py",
+    "src/jinja2/environment.py"
+  ],
+  "notes": "Lexer/parser closure only. Compiler, runtime, loaders, filters excluded."
+}

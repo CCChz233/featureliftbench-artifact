@@ -1,0 +1,32 @@
+{
+  "source_package_name": "requests_cache",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/requests_cache/cache_keys.py",
+    "repo/requests_cache/policy/expiration.py",
+    "repo/requests_cache/policy/directives.py",
+    "repo/requests_cache/_utils.py",
+    "repo/pyproject.toml",
+    "repo/LICENSE"
+  ],
+  "target_api": [
+    "featurelifted.create_key",
+    "featurelifted.create_cache_key",
+    "featurelifted.normalize_url",
+    "featurelifted.normalize_params",
+    "featurelifted.normalize_headers",
+    "featurelifted.normalize_body",
+    "featurelifted.CachePolicy",
+    "featurelifted.get_expiration"
+  ],
+  "forbidden_imports": [
+    "requests_cache",
+    "requests",
+    "url_normalize"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "requests_cache/"
+  ],
+  "notes": "Task-scoped cache key and expiration policy extraction. HTTP sessions, storage backends, serializers, Redis/MongoDB/SQLite/filesystem cache layers, and network behavior are intentionally excluded."
+}

@@ -1,0 +1,471 @@
+{
+  "task_id": "packaging__requirement_marker_specifier__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "parser",
+    "packaging",
+    "pep440",
+    "pep508",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "packaging",
+    "url": "https://github.com/pypa/packaging",
+    "commit": "24.1-installed-snapshot",
+    "license": "Apache-2.0 OR BSD-2-Clause"
+  },
+  "feature": {
+    "name": "Python package requirement, marker, specifier, and version semantics",
+    "description": "Extract packaging's core PEP 440 and PEP 508 parsing/evaluation behavior as a standalone package.",
+    "source_entrypoints": [
+      "packaging.version.Version",
+      "packaging.version.InvalidVersion",
+      "packaging.specifiers.Specifier",
+      "packaging.specifiers.SpecifierSet",
+      "packaging.specifiers.InvalidSpecifier",
+      "packaging.requirements.Requirement",
+      "packaging.requirements.InvalidRequirement",
+      "packaging.markers.Marker",
+      "packaging.markers.InvalidMarker",
+      "packaging.markers.default_environment"
+    ],
+    "included_behaviors": [
+      "parse, normalize, compare, hash, and stringify PEP 440 versions including epochs, post releases, pre releases, dev releases, and local versions",
+      "parse and evaluate specifier sets including compatible release, equality wildcard, exclusion, prerelease handling, filtering, and containment",
+      "parse PEP 508 requirements with extras, URL requirements, specifiers, and environment markers",
+      "parse and evaluate environment markers with and/or grouping, in/not in operators, extra handling, and default environment values",
+      "raise stable InvalidVersion, InvalidSpecifier, InvalidRequirement, and InvalidMarker errors for malformed input"
+    ],
+    "excluded_behaviors": [
+      "wheel tag generation and compatibility tags",
+      "manylinux and musllinux platform probing",
+      "package metadata validation",
+      "filename and sdist/wheel utility helpers outside the required entrypoints",
+      "original project tests, documentation, and release tooling"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "PEP requirement behavior combines grammar parsing, specifier/version models, marker evaluation, and error classes.",
+    "signals": [
+      "requirement and marker grammar",
+      "version/specifier comparison models",
+      "cross-module exception semantics"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Version, Specifier, SpecifierSet, Requirement, Marker, default_environment, InvalidVersion, InvalidSpecifier, InvalidRequirement, InvalidMarker",
+    "callable": "featurelifted.Requirement",
+    "signature": "Requirement(requirement_string: str)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "packaging"
+    ],
+    "forbidden_imports": [
+      "packaging"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Python package requirement, marker, specifier, and version semantics",
+    "summary": "Extract a task-scoped subset of `packaging` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Version",
+        "kind": "class",
+        "signature": "(version: 'str') -> 'None'"
+      },
+      {
+        "path": "featurelifted.Specifier",
+        "kind": "class",
+        "signature": "(spec: 'str' = '', prereleases: 'bool | None' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.SpecifierSet",
+        "kind": "class",
+        "signature": "(specifiers: 'str' = '', prereleases: 'bool | None' = None) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.SpecifierSet.filter",
+            "kind": "method",
+            "signature": "(self, iterable: 'Iterable[UnparsedVersionVar]', prereleases: 'bool | None' = None) -> 'Iterator[UnparsedVersionVar]'"
+          },
+          {
+            "path": "featurelifted.SpecifierSet.__contains__",
+            "kind": "method",
+            "signature": "(self, item: 'UnparsedVersion') -> 'bool'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement",
+        "kind": "class",
+        "signature": "(requirement_string: 'str') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Requirement.extras",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Requirement.marker",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Requirement.name",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Requirement.specifier",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Requirement.url",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Marker",
+        "kind": "class",
+        "signature": "(marker: 'str') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Marker.evaluate",
+            "kind": "method",
+            "signature": "(self, environment: 'dict[str, str] | None' = None) -> 'bool'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.default_environment",
+        "kind": "function",
+        "signature": "() -> 'Environment'"
+      },
+      {
+        "path": "featurelifted.InvalidVersion",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.InvalidSpecifier",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.InvalidRequirement",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.InvalidMarker",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse, normalize, compare, hash, and stringify PEP 440 versions including epochs, post releases, pre releases, dev releases, and local versions. Required observable cases include versions and specifiers basic semantics; version normalization ordering and invalid inputs."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: parse and evaluate specifier sets including compatible release, equality wildcard, exclusion, prerelease handling, filtering, and containment. Required observable cases include versions and specifiers basic semantics; specifier prerelease wildcard compatible and filtering."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: parse PEP 508 requirements with extras, URL requirements, specifiers, and environment markers. Required observable cases include requirements and markers api; invalid requirement is rejected; requirement urls extras and marker evaluation."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: parse and evaluate environment markers with and/or grouping, in/not in operators, extra handling, and default environment values. Required observable cases include requirements and markers api; marker boolean logic default environment and errors."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: raise stable InvalidVersion, InvalidSpecifier, InvalidRequirement, and InvalidMarker errors for malformed input. Required observable cases include version normalization ordering and invalid inputs."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Version`, `featurelifted.Specifier`, `featurelifted.SpecifierSet`, `featurelifted.SpecifierSet.filter`, `featurelifted.SpecifierSet.__contains__`, `featurelifted.Requirement`, `featurelifted.Requirement.extras`, `featurelifted.Requirement.marker`, `featurelifted.Requirement.name`, `featurelifted.Requirement.specifier`, `featurelifted.Requirement.url`, `featurelifted.Marker`, and 6 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "packaging.version.Version",
+      "packaging.version.InvalidVersion",
+      "packaging.specifiers.Specifier",
+      "packaging.specifiers.SpecifierSet",
+      "packaging.specifiers.InvalidSpecifier",
+      "packaging.requirements.Requirement",
+      "packaging.requirements.InvalidRequirement",
+      "packaging.markers.Marker",
+      "packaging.markers.InvalidMarker",
+      "packaging.markers.default_environment"
+    ],
+    "exclusions": [
+      "wheel tag generation and compatibility tags",
+      "manylinux and musllinux platform probing",
+      "package metadata validation",
+      "filename and sdist/wheel utility helpers outside the required entrypoints",
+      "original project tests, documentation, and release tooling"
+    ],
+    "forbidden": {
+      "imports": [
+        "packaging"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: packaging."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse, normalize, compare, hash, and stringify PEP 440 versions including epochs, post releases, pre releases, dev releases, and local versions. Required observable cases include versions and specifiers basic semantics; version normalization ordering and invalid inputs."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse and evaluate specifier sets including compatible release, equality wildcard, exclusion, prerelease handling, filtering, and containment. Required observable cases include versions and specifiers basic semantics; specifier prerelease wildcard compatible and filtering."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse PEP 508 requirements with extras, URL requirements, specifiers, and environment markers. Required observable cases include requirements and markers api; invalid requirement is rejected; requirement urls extras and marker evaluation."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse and evaluate environment markers with and/or grouping, in/not in operators, extra handling, and default environment values. Required observable cases include requirements and markers api; marker boolean logic default environment and errors."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise stable InvalidVersion, InvalidSpecifier, InvalidRequirement, and InvalidMarker errors for malformed input. Required observable cases include version normalization ordering and invalid inputs."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Version`, `featurelifted.Specifier`, `featurelifted.SpecifierSet`, `featurelifted.SpecifierSet.filter`, `featurelifted.SpecifierSet.__contains__`, `featurelifted.Requirement`, `featurelifted.Requirement.extras`, `featurelifted.Requirement.marker`, `featurelifted.Requirement.name`, `featurelifted.Requirement.specifier`, `featurelifted.Requirement.url`, `featurelifted.Marker`, and 6 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: packaging"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_versions_and_specifiers_basic_semantics",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_requirements_and_markers_public_api",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_invalid_requirement_is_rejected",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_version_normalization_ordering_and_invalid_inputs",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_specifier_prerelease_wildcard_compatible_and_filtering",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_marker_boolean_logic_default_environment_and_errors",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Version",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Specifier",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SpecifierSet",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SpecifierSet.filter",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_specifier_prerelease_wildcard_compatible_and_filtering"
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement.extras",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation"
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement.marker",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation"
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement.name",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation"
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement.specifier",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation"
+        ]
+      },
+      {
+        "path": "featurelifted.Requirement.url",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation"
+        ]
+      },
+      {
+        "path": "featurelifted.Marker",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Marker.evaluate",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_marker_boolean_logic_default_environment_and_errors"
+        ]
+      },
+      {
+        "path": "featurelifted.default_environment",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidVersion",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidSpecifier",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidRequirement",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidMarker",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SpecifierSet.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_marker_boolean_logic_default_environment_and_errors",
+          "hidden_tests/test_hidden_behavior.py::test_requirement_urls_extras_and_marker_evaluation",
+          "hidden_tests/test_hidden_behavior.py::test_specifier_prerelease_wildcard_compatible_and_filtering",
+          "hidden_tests/test_hidden_behavior.py::test_version_normalization_ordering_and_invalid_inputs",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "725d8c9b5c31d83fe7b3b9c71dbc60a99e017d1f7047b71673cc6411a6b6daf4",
+  "generated_task_hash": "1f5bb83c691d9a7380568ab388d48e032036884e4abab63f7e8f7f5ae9365b74"
+}

@@ -1,0 +1,294 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Requires local zoneinfo resource lookup, cache behavior, alias handling, and binary parser boundary.",
+    "level": "high",
+    "primary": "resource_coupling",
+    "signals": [
+      "cache identity for aliases",
+      "missing zone UnknownZoneError",
+      "circular alias detection",
+      "invalid tzfile header"
+    ],
+    "types": [
+      "resource_coupling",
+      "parser_state_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "dateutil"
+    ],
+    "forbidden_imports": [
+      "dateutil"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "dateutil/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped zoneresolver into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "tzdata download",
+      "full datetime tz conversion"
+    ],
+    "included_behaviors": [
+      "tzfile parsing boundary",
+      "zone cache",
+      "alias resolution"
+    ],
+    "name": "ZoneResolver",
+    "source_entrypoints": [
+      "dateutil.zoneinfo.gettz"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "ZoneResolver",
+    "import": "from featurelifted import ZoneResolver, parse_tzfile, UnknownZoneError, InvalidTZFileError",
+    "package": "featurelifted",
+    "signature": "ZoneResolver()"
+  },
+  "source": {
+    "commit": "48bd1af97e71baf8e96fce5b663d589caac8f147",
+    "license": "Apache-2.0",
+    "name": "dateutil",
+    "url": "https://github.com/dateutil/dateutil.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "path/resource resolver",
+    "resource_coupling"
+  ],
+  "task_id": "dateutil__zone_resolver_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "ZoneResolver",
+    "summary": "Extract a task-scoped subset of `dateutil` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.ZoneResolver",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.ZoneResolver.load_zone",
+            "kind": "method",
+            "signature": "(self, name: 'str', tzdata: 'dict[str, bytes]') -> 'TZZone'"
+          },
+          {
+            "path": "featurelifted.ZoneResolver.get",
+            "kind": "method",
+            "signature": "(self, name: 'str') -> 'TZZone'"
+          },
+          {
+            "path": "featurelifted.ZoneResolver.register_alias",
+            "kind": "method",
+            "signature": "(self, alias: 'str', canonical: 'str') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.parse_tzfile",
+        "kind": "function",
+        "signature": "(data: 'bytes') -> 'dict[str, int]'"
+      },
+      {
+        "path": "featurelifted.UnknownZoneError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.InvalidTZFileError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`parse_tzfile` validates tzfile headers and extracts metadata."
+      },
+      {
+        "id": "B002",
+        "text": "Aliases resolve to canonical zone names with cycle detection."
+      },
+      {
+        "id": "B003",
+        "text": "When a zone alias is resolved, ZoneResolver follows aliases to the canonical zone and raises UnknownZoneError for missing names or alias cycles."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.ZoneResolver`, `featurelifted.ZoneResolver.load_zone`, `featurelifted.ZoneResolver.get`, `featurelifted.ZoneResolver.register_alias`, `featurelifted.parse_tzfile`, `featurelifted.UnknownZoneError`, `featurelifted.InvalidTZFileError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "dateutil.zoneinfo.gettz"
+    ],
+    "exclusions": [
+      "network access",
+      "tzdata download",
+      "full datetime tz conversion"
+    ],
+    "forbidden": {
+      "imports": [
+        "dateutil"
+      ],
+      "paths": [
+        "repo/",
+        "dateutil/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: dateutil."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`parse_tzfile` validates tzfile headers and extracts metadata."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Aliases resolve to canonical zone names with cycle detection."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When a zone alias is resolved, ZoneResolver follows aliases to the canonical zone and raises UnknownZoneError for missing names or alias cycles."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.ZoneResolver`, `featurelifted.ZoneResolver.load_zone`, `featurelifted.ZoneResolver.get`, `featurelifted.ZoneResolver.register_alias`, `featurelifted.parse_tzfile`, `featurelifted.UnknownZoneError`, `featurelifted.InvalidTZFileError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: dateutil"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_load_zone_caches",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_alias_resolution",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_circular_alias_raises",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_tzfile_header",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.ZoneResolver",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ZoneResolver.load_zone",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_alias_resolution",
+          "hidden_tests/test_hidden_contract.py::test_circular_alias_raises"
+        ]
+      },
+      {
+        "path": "featurelifted.ZoneResolver.get",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_alias_resolution"
+        ]
+      },
+      {
+        "path": "featurelifted.ZoneResolver.register_alias",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_alias_resolution",
+          "hidden_tests/test_hidden_contract.py::test_circular_alias_raises"
+        ]
+      },
+      {
+        "path": "featurelifted.parse_tzfile",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.UnknownZoneError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidTZFileError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "f0f65e9586d03703bb4f65c2a9c800ffddc19b989f3719cbabf23ead712462ed",
+  "generated_task_hash": "7ddfcf54883361abde80cd04e574e92bba0009f6adeaadf1f587c33b74ae4e64"
+}

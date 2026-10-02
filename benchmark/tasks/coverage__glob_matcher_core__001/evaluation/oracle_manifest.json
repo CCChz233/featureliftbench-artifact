@@ -1,0 +1,10 @@
+{
+  "source_files": [
+    "coverage/env.py",
+    "coverage/exceptions.py",
+    "coverage/types.py",
+    "coverage/misc.py",
+    "coverage/files.py"
+  ],
+  "notes": "Glob matching closure: prep_patterns, GlobMatcher, globs_to_regex and supporting path/regex helpers from files.py."
+}

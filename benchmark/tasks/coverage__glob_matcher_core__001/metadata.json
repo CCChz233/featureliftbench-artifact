@@ -1,0 +1,323 @@
+{
+  "task_id": "coverage__glob_matcher_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "config_environment_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "coveragepy",
+    "url": "https://github.com/coveragepy/coveragepy",
+    "commit": "f0dcf65f47120d9f74f6777134d3b8e92515ce6f",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Glob matcher core",
+    "description": "Extract coverage.py glob pattern preparation and file-path matching used for include/omit and report filters.",
+    "source_entrypoints": [
+      "coverage.files.prep_patterns",
+      "coverage.files.GlobMatcher",
+      "coverage.files.globs_to_regex"
+    ],
+    "included_behaviors": [
+      "prepare relative and absolute glob patterns for matching",
+      "match file paths against include/omit style glob lists",
+      "convert glob syntax to compiled regex with Windows slash tolerance",
+      "reject invalid glob patterns such as triple-star segments"
+    ],
+    "excluded_behaviors": [
+      "path alias remapping for combine",
+      "source/include/omit selection policy",
+      "configuration file parsing",
+      "coverage measurement, reporting, and CLI",
+      "original project tests and packaging metadata"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "implicit_dependency_coupling",
+      "resource_coupling"
+    ],
+    "description": "Glob matching depends on path canonicalization helpers, platform flags, regex joining utilities, and error types spread across multiple modules.",
+    "signals": [
+      "glob tokenization and regex compilation pipeline",
+      "platform-specific case sensitivity behavior",
+      "shared files.py utilities also used by unrelated features"
+    ],
+    "primary": "resource_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import GlobMatcher, prep_patterns, globs_to_regex; from featurelifted.exceptions import ConfigError",
+    "callable": "featurelifted.GlobMatcher.match",
+    "signature": "GlobMatcher(pats: Iterable[str], name: str = 'unknown').match(fpath: str) -> bool"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "coverage"
+    ],
+    "forbidden_imports": [
+      "coverage"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Glob matcher core",
+    "summary": "Extract a task-scoped subset of `coverage` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.GlobMatcher",
+        "kind": "class",
+        "signature": "(pats: 'Iterable[str]', name: 'str' = 'unknown') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.GlobMatcher.match",
+            "kind": "method",
+            "signature": "(self, fpath: 'str') -> 'bool'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.prep_patterns",
+        "kind": "function",
+        "signature": "(patterns: 'Iterable[str]') -> 'list[str]'"
+      },
+      {
+        "path": "featurelifted.globs_to_regex",
+        "kind": "function",
+        "signature": "(patterns: 'Iterable[str]', case_insensitive: 'bool' = False, partial: 'bool' = False) -> 're.Pattern[str]'"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.ConfigError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: prepare relative and absolute glob patterns for matching. Required observable cases include glob matcher matches simple patterns; prep patterns adds absolute path; glob matcher many patterns; glob matcher backslash pattern; glob matcher question mark single char."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: match file paths against include/omit style glob lists. Required observable cases include glob matcher respects windows style paths; glob matcher question mark single char."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: convert glob syntax to compiled regex with Windows slash tolerance. Required observable cases include glob matcher respects windows style paths."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: reject invalid glob patterns such as triple-star segments. Required observable cases include glob matcher matches simple patterns; globs to regex rejects invalid pattern; glob matcher many patterns; glob matcher backslash pattern."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.GlobMatcher`, `featurelifted.GlobMatcher.match`, `featurelifted.prep_patterns`, `featurelifted.globs_to_regex`, `featurelifted.exceptions`, `featurelifted.exceptions.ConfigError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "coverage.files.prep_patterns",
+      "coverage.files.GlobMatcher",
+      "coverage.files.globs_to_regex"
+    ],
+    "exclusions": [
+      "path alias remapping for combine",
+      "source/include/omit selection policy",
+      "configuration file parsing",
+      "coverage measurement, reporting, and CLI",
+      "original project tests and packaging metadata"
+    ],
+    "forbidden": {
+      "imports": [
+        "coverage"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: coverage."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: prepare relative and absolute glob patterns for matching. Required observable cases include glob matcher matches simple patterns; prep patterns adds absolute path; glob matcher many patterns; glob matcher backslash pattern; glob matcher question mark single char."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: match file paths against include/omit style glob lists. Required observable cases include glob matcher respects windows style paths; glob matcher question mark single char."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: convert glob syntax to compiled regex with Windows slash tolerance. Required observable cases include glob matcher respects windows style paths."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject invalid glob patterns such as triple-star segments. Required observable cases include glob matcher matches simple patterns; globs to regex rejects invalid pattern; glob matcher many patterns; glob matcher backslash pattern."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.GlobMatcher`, `featurelifted.GlobMatcher.match`, `featurelifted.prep_patterns`, `featurelifted.globs_to_regex`, `featurelifted.exceptions`, `featurelifted.exceptions.ConfigError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: coverage"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_glob_matcher_matches_simple_patterns",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_prep_patterns_adds_absolute_path",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_globs_to_regex_rejects_invalid_pattern",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_glob_matcher_respects_windows_style_paths",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_glob_matcher_many_patterns",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_glob_matcher_backslash_pattern",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_glob_matcher_question_mark_single_char",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.GlobMatcher",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.GlobMatcher.match",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_glob_matcher_backslash_pattern",
+          "hidden_tests/test_hidden_behavior.py::test_glob_matcher_many_patterns",
+          "hidden_tests/test_hidden_behavior.py::test_glob_matcher_question_mark_single_char",
+          "hidden_tests/test_hidden_behavior.py::test_glob_matcher_respects_windows_style_paths"
+        ]
+      },
+      {
+        "path": "featurelifted.prep_patterns",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.globs_to_regex",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.ConfigError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "97d386a25f6d936db13415306047740381d25fc2b31c7fc8236c5849ce4d00cd",
+  "generated_task_hash": "236a81a0511db6ae10f9c4404addcc3eca391fd2e4205c8b53e563696e0f3e4a"
+}

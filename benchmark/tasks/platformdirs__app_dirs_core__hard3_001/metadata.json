@@ -1,0 +1,324 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Platform path resolution depends on environment variables, OS-specific base directories, app author conventions, version suffixing, and cache opinion semantics.",
+    "level": "high",
+    "primary": "config_environment_coupling",
+    "signals": [
+      "Linux and macOS honor XDG overrides before platform defaults.",
+      "Windows data/config paths depend on roaming, appauthor, appname, and version.",
+      "Windows cache path inserts Cache before version only when opinion=True."
+    ],
+    "types": [
+      "config_environment_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "platformdirs"
+    ],
+    "forbidden_imports": [
+      "platformdirs"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "src/platformdirs/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract deterministic user data/config/cache path resolution for Linux, macOS, and Windows without importing platformdirs.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "Android path resolution",
+      "site directories",
+      "media directory helpers",
+      "filesystem creation"
+    ],
+    "included_behaviors": [
+      "Linux XDG_DATA_HOME, XDG_CONFIG_HOME, and XDG_CACHE_HOME precedence",
+      "Linux default ~/.local/share, ~/.config, and ~/.cache fallbacks",
+      "macOS Application Support and Caches defaults",
+      "macOS XDG override precedence",
+      "Windows LocalAppData vs AppData roaming behavior",
+      "Windows appauthor, appauthor=False, version, and cache opinion semantics"
+    ],
+    "name": "User/cache/config/data path resolver",
+    "source_entrypoints": [
+      "platformdirs.user_data_dir",
+      "platformdirs.user_config_dir",
+      "platformdirs.user_cache_dir"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "user_data_dir",
+    "import": "from featurelifted import user_cache_dir, user_config_dir, user_data_dir",
+    "package": "featurelifted",
+    "signature": "user_data_dir(appname=None, appauthor=None, version=None, roaming=False, platform=\"linux\", env=None, home=None) -> str"
+  },
+  "source": {
+    "commit": "4bd7bb307292ae7c46fabef7cb58951825d0dd68",
+    "license": "MIT",
+    "name": "platformdirs",
+    "url": "https://github.com/tox-dev/platformdirs.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "path/resource resolver",
+    "config_environment_coupling"
+  ],
+  "task_id": "platformdirs__app_dirs_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "User/cache/config/data path resolver",
+    "summary": "Extract a task-scoped subset of `platformdirs` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.user_cache_dir",
+        "kind": "function",
+        "signature": "(appname: 'str | None' = None, appauthor: 'str | bool | None' = None, version: 'str | None' = None, opinion: 'bool' = True, platform: 'str' = 'linux', env: 'Env' = None, home: 'str | None' = None) -> 'str'"
+      },
+      {
+        "path": "featurelifted.user_config_dir",
+        "kind": "function",
+        "signature": "(appname: 'str | None' = None, appauthor: 'str | bool | None' = None, version: 'str | None' = None, roaming: 'bool' = False, platform: 'str' = 'linux', env: 'Env' = None, home: 'str | None' = None) -> 'str'"
+      },
+      {
+        "path": "featurelifted.user_data_dir",
+        "kind": "function",
+        "signature": "(appname: 'str | None' = None, appauthor: 'str | bool | None' = None, version: 'str | None' = None, roaming: 'bool' = False, platform: 'str' = 'linux', env: 'Env' = None, home: 'str | None' = None) -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`XDG_DATA_HOME`, `XDG_CONFIG_HOME`, and `XDG_CACHE_HOME` override defaults when they are non-blank."
+      },
+      {
+        "id": "B002",
+        "text": "Defaults are `~/.local/share`, `~/.config`, and `~/.cache`."
+      },
+      {
+        "id": "B003",
+        "text": "On macOS, data and config paths default to Library/Application Support and cache paths default to Library/Caches under home."
+      },
+      {
+        "id": "B004",
+        "text": "On macOS, non-blank XDG directory overrides take precedence over the Library defaults."
+      },
+      {
+        "id": "B005",
+        "text": "Data/config use `LOCALAPPDATA` by default and `APPDATA` when `roaming=True`."
+      },
+      {
+        "id": "B006",
+        "text": "On Windows, appauthor, appauthor=False, version, roaming, and cache opinion options determine the exact appended path segments."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.user_cache_dir`, `featurelifted.user_config_dir`, `featurelifted.user_data_dir` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "platformdirs.user_data_dir",
+      "platformdirs.user_config_dir",
+      "platformdirs.user_cache_dir"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "Android path resolution",
+      "site directories",
+      "media directory helpers",
+      "filesystem creation"
+    ],
+    "forbidden": {
+      "imports": [
+        "platformdirs"
+      ],
+      "paths": [
+        "repo/",
+        "src/platformdirs/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: platformdirs."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`XDG_DATA_HOME`, `XDG_CONFIG_HOME`, and `XDG_CACHE_HOME` override defaults when they are non-blank."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Defaults are `~/.local/share`, `~/.config`, and `~/.cache`."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "On macOS, data and config paths default to Library/Application Support and cache paths default to Library/Caches under home."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "On macOS, non-blank XDG directory overrides take precedence over the Library defaults."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "Data/config use `LOCALAPPDATA` by default and `APPDATA` when `roaming=True`."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "On Windows, appauthor, appauthor=False, version, roaming, and cache opinion options determine the exact appended path segments."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.user_cache_dir`, `featurelifted.user_config_dir`, `featurelifted.user_data_dir` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: platformdirs"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_linux_defaults_append_app_and_version",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_linux_xdg_overrides_take_precedence",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_windows_author_roaming_and_cache_layout",
+        "behavior_ids": [
+          "B005",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_macos_defaults_and_xdg_precedence",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_blank_xdg_values_are_ignored",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_windows_appauthor_false_omits_author_segment",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_windows_cache_opinion_can_be_disabled",
+        "behavior_ids": [
+          "B006",
+          "B002",
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_no_appname_returns_platform_base_dir",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.user_cache_dir",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.user_config_dir",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.user_data_dir",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "f581508584929069482376fe59dfa84717b169ec70609a46fe8f539d8f276aa6",
+  "generated_task_hash": "6af54c3aae43005a468b655e9ff2b6cf2138c374094916bbffc157218374a5d4"
+}

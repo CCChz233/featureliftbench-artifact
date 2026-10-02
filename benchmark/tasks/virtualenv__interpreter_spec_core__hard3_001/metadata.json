@@ -1,0 +1,258 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Version spec parsing, path lookup ordering, and candidate filtering interact across discovery helpers.",
+    "level": "high",
+    "primary": "resource_coupling",
+    "signals": [
+      "exact and compatible version constraints",
+      "path glob candidate filtering",
+      "duplicate candidate deduplication",
+      "invalid spec InvalidInterpreterSpec"
+    ],
+    "types": [
+      "resource_coupling",
+      "config_environment_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "virtualenv"
+    ],
+    "forbidden_imports": [
+      "virtualenv"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "virtualenv/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped parse_spec match_version into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "environment creation",
+      "process spawning"
+    ],
+    "included_behaviors": [
+      "interpreter spec parsing",
+      "version matching",
+      "path discovery"
+    ],
+    "name": "parse_spec match_version",
+    "source_entrypoints": [
+      "virtualenv.discovery.discover.Discover"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "parse_spec",
+    "import": "from featurelifted import parse_spec, match_version, discover_paths, InvalidInterpreterSpec",
+    "package": "featurelifted",
+    "signature": "parse_spec(spec: str)"
+  },
+  "source": {
+    "commit": "57c8dc69a9080c3cd5741355aa756ce5a3b8ab15",
+    "license": "MIT",
+    "name": "virtualenv",
+    "url": "https://github.com/pypa/virtualenv.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "path/resource resolver",
+    "resource_coupling"
+  ],
+  "task_id": "virtualenv__interpreter_spec_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "parse_spec match_version",
+    "summary": "Extract a task-scoped subset of `virtualenv` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse_spec",
+        "kind": "function",
+        "signature": "(spec: 'str') -> 'tuple[str | None, tuple[str, ...]]'"
+      },
+      {
+        "path": "featurelifted.match_version",
+        "kind": "function",
+        "signature": "(version: 'str', constraint: 'str | None') -> 'bool'"
+      },
+      {
+        "path": "featurelifted.discover_paths",
+        "kind": "function",
+        "signature": "(candidates: 'list[str]', spec: 'str') -> 'list[str]'"
+      },
+      {
+        "path": "featurelifted.InvalidInterpreterSpec",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`parse_spec` parses version constraints and path globs from interpreter specs."
+      },
+      {
+        "id": "B002",
+        "text": "`match_version` evaluates constraint operators including `~=`."
+      },
+      {
+        "id": "B003",
+        "text": "discover_paths filters candidate paths by spec, including reading an implementation-prefixed version such as python3.11 from the path string when the spec is python>=3.11."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.parse_spec`, `featurelifted.match_version`, `featurelifted.discover_paths`, `featurelifted.InvalidInterpreterSpec` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "virtualenv.discovery.discover.Discover"
+    ],
+    "exclusions": [
+      "network access",
+      "environment creation",
+      "process spawning"
+    ],
+    "forbidden": {
+      "imports": [
+        "virtualenv"
+      ],
+      "paths": [
+        "repo/",
+        "virtualenv/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: virtualenv."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`parse_spec` parses version constraints and path globs from interpreter specs."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`match_version` evaluates constraint operators including `~=`."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "discover_paths filters candidate paths by spec, including reading an implementation-prefixed version such as python3.11 from the path string when the spec is python>=3.11."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse_spec`, `featurelifted.match_version`, `featurelifted.discover_paths`, `featurelifted.InvalidInterpreterSpec` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: virtualenv"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_discover_paths_by_glob",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_match_version_operators",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_version_constraint_filters_candidates",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_spec_raises",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse_spec",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.match_version",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.discover_paths",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidInterpreterSpec",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 6,
+  "spec_hash": "f8f42d9e49edf38d743ea3c93d45c58031c51aa33e285caaa384582a730a4def",
+  "generated_task_hash": "337460049b598511273e8972988e525af4ba1346f75e588a1c123e9ed10d0aa3"
+}

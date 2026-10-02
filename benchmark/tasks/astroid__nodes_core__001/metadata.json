@@ -1,0 +1,280 @@
+{
+  "task_id": "astroid__nodes_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "astroid",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "astroid",
+    "url": "https://github.com/PyCQA/astroid",
+    "commit": "2.14.2-installed-snapshot",
+    "license": "LGPL-2.1-or-later"
+  },
+  "feature": {
+    "name": "Astroid parse and nodes subset",
+    "description": "Extract astroid string parsing into NodeNG trees via TreeRebuilder without inference, brain plugins, or import introspection.",
+    "source_entrypoints": [
+      "astroid.builder.parse",
+      "astroid.rebuilder.TreeRebuilder",
+      "astroid.nodes"
+    ],
+    "included_behaviors": [
+      "parse Python source into astroid Module trees",
+      "rebuild functions, classes, async, and match statements",
+      "preserve docstrings, annotations, and default arguments",
+      "NodeNG as_string and basic structural attributes"
+    ],
+    "excluded_behaviors": [
+      "inference engine and brain module overrides",
+      "live object introspection and import graph analysis",
+      "pylint integration and original astroid import"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling",
+      "framework_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "AST rebuilding couples stdlib ast parsing, TreeRebuilder visitor dispatch, scoped node graphs, and manager transform hooks.",
+    "signals": [
+      "TreeRebuilder maintains global/import-from/delayed-assattr stacks",
+      "nodes package mirrors stdlib AST with extra inference hooks",
+      "builder applies transform visitors after rebuild",
+      "full astroid includes large brain/ inference subsystems"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import parse, nodes; from featurelifted.nodes import Module, ClassDef, FunctionDef, AsyncFunctionDef, Match",
+    "callable": "featurelifted.parse",
+    "signature": "parse(code: str, module_name: str = '', path: str | None = None) -> Module"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "lazy-object-proxy",
+      "wrapt"
+    ],
+    "forbidden_dependencies": [
+      "astroid"
+    ],
+    "forbidden_imports": [
+      "astroid"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Astroid parse and nodes subset",
+    "summary": "Extract a task-scoped subset of `astroid` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(code: 'str', module_name: 'str' = '', path: 'str | None' = None, apply_transforms: 'bool' = True) -> 'nodes.Module'"
+      },
+      {
+        "path": "featurelifted.ClassDef",
+        "kind": "class",
+        "signature": "(name=None, doc: 'str | None' = None, lineno=None, col_offset=None, parent=None, *, end_lineno=None, end_col_offset=None)"
+      },
+      {
+        "path": "featurelifted.FunctionDef",
+        "kind": "class",
+        "signature": "(name=None, doc: 'str | None' = None, lineno=None, col_offset=None, parent=None, *, end_lineno=None, end_col_offset=None)"
+      },
+      {
+        "path": "featurelifted.AsyncFunctionDef",
+        "kind": "class",
+        "signature": "(name=None, doc: 'str | None' = None, lineno=None, col_offset=None, parent=None, *, end_lineno=None, end_col_offset=None)"
+      },
+      {
+        "path": "featurelifted.Match",
+        "kind": "class",
+        "signature": "(lineno: 'int | None' = None, col_offset: 'int | None' = None, parent: 'NodeNG | None' = None, *, end_lineno: 'int | None' = None, end_col_offset: 'int | None' = None) -> 'None'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse Python source into astroid Module trees. Required observable cases include parse function and class; module as string contains def."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: rebuild functions, classes, async, and match statements. Required observable cases include async and match statements."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: preserve docstrings, annotations, and default arguments. Required observable cases include defaults and docstring."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: NodeNG as_string and basic structural attributes. Required observable cases include module as string contains def."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.ClassDef`, `featurelifted.FunctionDef`, `featurelifted.AsyncFunctionDef`, `featurelifted.Match` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "astroid.builder.parse",
+      "astroid.rebuilder.TreeRebuilder",
+      "astroid.nodes"
+    ],
+    "exclusions": [
+      "inference engine and brain module overrides",
+      "live object introspection and import graph analysis",
+      "pylint integration and original astroid import"
+    ],
+    "forbidden": {
+      "imports": [
+        "astroid"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: astroid."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse Python source into astroid Module trees. Required observable cases include parse function and class; module as string contains def."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: rebuild functions, classes, async, and match statements. Required observable cases include async and match statements."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preserve docstrings, annotations, and default arguments. Required observable cases include defaults and docstring."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: NodeNG as_string and basic structural attributes. Required observable cases include module as string contains def."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.ClassDef`, `featurelifted.FunctionDef`, `featurelifted.AsyncFunctionDef`, `featurelifted.Match` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: astroid"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_function_and_class",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_async_and_match_statements",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_defaults_and_docstring",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_module_as_string_contains_def",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ClassDef",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FunctionDef",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.AsyncFunctionDef",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Match",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "79c990eb8cf8e96d0e1f6a739367d04a0a2285fe60e14ace9782e4d81a283ed7",
+  "generated_task_hash": "1bfdf4f61e38af0102fe119d8a8cd6f49bddb2c39815359d408317caae1558df"
+}

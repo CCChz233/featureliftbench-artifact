@@ -1,0 +1,6 @@
+{
+  "source_files": [
+    "src/_pytest/skipping.py"
+  ],
+  "notes": "evaluate_condition subset extracted from skipping.py with local Mark/EvalContext types."
+}

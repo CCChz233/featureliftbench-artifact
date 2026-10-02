@@ -1,0 +1,288 @@
+{
+  "task_id": "ruamel_yaml__roundtrip_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "ruamel-yaml",
+    "roundtrip",
+    "hard-first",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "ruamel.yaml",
+    "url": "https://sourceforge.net/projects/ruamel-yaml/",
+    "commit": "0.18.6-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "YAML roundtrip with comments",
+    "description": "Extract ruamel.yaml round-trip load/dump preserving comments and key order.",
+    "source_entrypoints": [
+      "ruamel.yaml.round_trip_load",
+      "ruamel.yaml.round_trip_dump",
+      "ruamel.yaml.YAML"
+    ],
+    "included_behaviors": [
+      "round-trip load/dump preserves end-of-line comments",
+      "CommentedMap key order preserved",
+      "flow style and literal block scalars"
+    ],
+    "excluded_behaviors": [
+      "C yaml acceleration",
+      "jinja2 templating",
+      "original ruamel import"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Round-trip YAML couples scanner comment tokens, CommentedMap model, and emitter layout.",
+    "signals": [
+      "CommentedMap comment slots",
+      "RoundTripLoader/Dumper pairing",
+      "scalar string quote preservation"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import YAML, round_trip_load, round_trip_dump, CommentedMap",
+    "callable": "featurelifted.round_trip_load",
+    "signature": "round_trip_load(stream) -> CommentedMap"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "ruamel.yaml",
+      "ruamel"
+    ],
+    "forbidden_imports": [
+      "ruamel"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "YAML roundtrip with comments",
+    "summary": "Extract a task-scoped subset of `ruamel` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.YAML",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.round_trip_load",
+        "kind": "function",
+        "signature": "(stream: 'StreamTextType', version: 'Optional[VersionType]' = None, preserve_quotes: 'Optional[bool]' = None) -> 'Any'"
+      },
+      {
+        "path": "featurelifted.round_trip_dump",
+        "kind": "function",
+        "signature": "(data: 'Any', stream: 'Optional[StreamType]' = None, Dumper: 'Any' = <class 'RoundTripDumper'>, default_style: 'Any' = None, default_flow_style: 'Any' = None, canonical: 'Optional[bool]' = None, indent: 'Optional[int]' = None, width: 'Optional[int]' = None, allow_unicode: 'Optional[bool]' = None, line_break: 'Any' = None, encoding: 'Any' = None, explicit_start: 'Optional[bool]' = None, explicit_end: 'Optional[bool]' = None, version: 'Optional[VersionType]' = None, tags: 'Any' = None, block_seq_indent: 'Any' = None, top_level_colon_align: 'Any' = None, prefix_colon: 'Any' = None) -> 'Any'"
+      },
+      {
+        "path": "featurelifted.CommentedMap",
+        "kind": "class",
+        "signature": "(*args: 'Any', **kw: 'Any') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.CommentedMap.fa",
+            "kind": "attribute"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: round-trip load/dump preserves end-of-line comments. Required observable cases include roundtrip basic mapping; eol comment preserved; flow style dump; anchor alias roundtrip."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: CommentedMap key order preserved. Required observable cases include key order preserved; no ruamel import surface."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: flow style and literal block scalars. Required observable cases include flow style dump; literal block scalar."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.YAML`, `featurelifted.round_trip_load`, `featurelifted.round_trip_dump`, `featurelifted.CommentedMap`, `featurelifted.CommentedMap.fa` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "ruamel.yaml.round_trip_load",
+      "ruamel.yaml.round_trip_dump",
+      "ruamel.yaml.YAML"
+    ],
+    "exclusions": [
+      "C yaml acceleration",
+      "jinja2 templating",
+      "original ruamel import"
+    ],
+    "forbidden": {
+      "imports": [
+        "ruamel"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: ruamel."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: round-trip load/dump preserves end-of-line comments. Required observable cases include roundtrip basic mapping; eol comment preserved; flow style dump; anchor alias roundtrip."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: CommentedMap key order preserved. Required observable cases include key order preserved; no ruamel import surface."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: flow style and literal block scalars. Required observable cases include flow style dump; literal block scalar."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.YAML`, `featurelifted.round_trip_load`, `featurelifted.round_trip_dump`, `featurelifted.CommentedMap`, `featurelifted.CommentedMap.fa` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: ruamel"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_roundtrip_basic_mapping",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_key_order_preserved",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_eol_comment_preserved",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_flow_style_dump",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_literal_block_scalar",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_anchor_alias_roundtrip",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_ruamel_import_surface",
+        "behavior_ids": [
+          "B005",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.YAML",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.round_trip_load",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.round_trip_dump",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CommentedMap",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CommentedMap.fa",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_flow_style_dump"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "b3a26f13c64d1e24180b5844a979959798d9fbe9b7f22290c651622df7e0e773",
+  "generated_task_hash": "43c9c2524a697faac30581f427f4370dd5767f5454fb02d4fa4f91e02cce08f5"
+}

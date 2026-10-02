@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "featureliftbench"
+version = "0.1.0"
+description = "A benchmark for evaluating feature-level decoupling from entangled Python repositories."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["rich>=13.0"]
+
+[project.optional-dependencies]
+repo-graph = [
+  "tree-sitter==0.26.0",
+  "tree-sitter-go==0.25.0",
+  "tree-sitter-python==0.25.0",
+]
+
+[project.scripts]
+featureliftbench = "featureliftbench.cli:main"
+flb-rsg = "featureliftbench.repo_graph.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["harness"]
+
+[tool.setuptools.package-data]
+featureliftbench = [
+  "schemas/*.json",
+  "repo_graph/languages/*/queries/*.scm",
+]

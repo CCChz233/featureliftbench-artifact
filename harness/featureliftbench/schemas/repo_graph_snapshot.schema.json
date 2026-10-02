@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://featureliftbench.local/schemas/repo_graph_snapshot.schema.json",
+  "title": "FeatureLiftBench Repository Semantic Graph Snapshot",
+  "type": "object",
+  "required": ["manifest", "nodes", "edges"],
+  "properties": {
+    "manifest": {
+      "type": "object",
+      "required": ["schema_version", "snapshot_id", "source", "builder", "counts", "graph_hash"],
+      "properties": {
+        "schema_version": {"const": "featureliftbench.repo_graph.snapshot.v1"},
+        "snapshot_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "graph_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "stable_id", "kind", "name", "qualified_name"]
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "source", "kind", "resolution", "provenance"],
+        "properties": {
+          "resolution": {"enum": ["exact", "probable", "candidate", "unresolved"]}
+        }
+      }
+    }
+  }
+}

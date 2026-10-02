@@ -1,0 +1,306 @@
+{
+  "benchmark_split": "external_main",
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Extract Flask-style decorator registration, typed path matching, method dispatch, and error handlers.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "route decorator registration for static, string, and int path segments",
+      "method-aware dispatch with GET default",
+      "Response normalization for strings, tuples, and Response values"
+    ],
+    "types": [
+      "framework_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "flask"
+    ],
+    "forbidden_imports": [
+      "flask"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "flask/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "evaluation_spec": {
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "hidden_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_string_converter_and_response_passthrough"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_error_handlers"
+      },
+      {
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface",
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+      }
+    ],
+    "manual_review": {
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface.",
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review"
+    },
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: route decorator registration for static, string, and int path segments. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: method-aware dispatch with GET default. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Response normalization for strings, tuples, and Response values. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: 404 and 405 error-handler dispatch. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.App`, `featurelifted.App.dispatch`, `featurelifted.App.errorhandler`, `featurelifted.App.route`, `featurelifted.Response` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: flask."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_static_and_typed_routes"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_method_dispatch"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.App"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_error_handlers",
+          "hidden_tests/test_hidden_contract.py::test_string_converter_and_response_passthrough"
+        ],
+        "path": "featurelifted.App.dispatch"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_error_handlers"
+        ],
+        "path": "featurelifted.App.errorhandler"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_string_converter_and_response_passthrough"
+        ],
+        "path": "featurelifted.App.route"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.Response"
+      }
+    ]
+  },
+  "feature": {
+    "description": "Extract Flask-style decorator registration, typed path matching, method dispatch, and error handlers.",
+    "excluded_behaviors": [
+      "WSGI server",
+      "request globals",
+      "templates",
+      "sessions",
+      "blueprints",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "included_behaviors": [
+      "route decorator registration for static, string, and int path segments",
+      "method-aware dispatch with GET default",
+      "Response normalization for strings, tuples, and Response values",
+      "404 and 405 error-handler dispatch"
+    ],
+    "name": "Application route registration and dispatch",
+    "source_entrypoints": [
+      "flask.app.Flask.route",
+      "flask.app.Flask.dispatch_request",
+      "flask.wrappers.Response"
+    ]
+  },
+  "generated_task_hash": "929646ac7e746b683c651a03f42df4426a94daac749de8150b4644b66b9bfd32",
+  "language": "python",
+  "output": {
+    "callable": "App",
+    "import": "from featurelifted import App, Response",
+    "package": "featurelifted",
+    "signature": "App(name)"
+  },
+  "public_spec": {
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: route decorator registration for static, string, and int path segments. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: method-aware dispatch with GET default. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: Response normalization for strings, tuples, and Response values. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: 404 and 405 error-handler dispatch. Required observable cases include static and typed routes; method dispatch; string converter and response passthrough; error handlers."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.App`, `featurelifted.App.dispatch`, `featurelifted.App.errorhandler`, `featurelifted.App.route`, `featurelifted.Response` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "exclusions": [
+      "WSGI server",
+      "request globals",
+      "templates",
+      "sessions",
+      "blueprints",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "forbidden": {
+      "imports": [
+        "flask"
+      ],
+      "paths": [
+        "repo/",
+        "flask/"
+      ]
+    },
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "The submitted package does not import forbidden upstream packages: flask."
+    },
+    "optional_api": [],
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "required_api": [
+      {
+        "kind": "class",
+        "members": [
+          {
+            "kind": "method",
+            "path": "featurelifted.App.dispatch",
+            "signature": "(self, path, method='GET')"
+          },
+          {
+            "kind": "method",
+            "path": "featurelifted.App.errorhandler",
+            "signature": "(self, code)"
+          },
+          {
+            "kind": "method",
+            "path": "featurelifted.App.route",
+            "signature": "(self, rule, methods=None)"
+          }
+        ],
+        "path": "featurelifted.App",
+        "signature": "(name)"
+      },
+      {
+        "kind": "class",
+        "path": "featurelifted.Response",
+        "signature": "(body: object, status_code: int = 200, headers: dict = <factory>) -> None"
+      }
+    ],
+    "source_entrypoints": [
+      "flask.app.Flask.route",
+      "flask.app.Flask.dispatch_request",
+      "flask.wrappers.Response"
+    ],
+    "summary": "Extract a task-scoped subset of `flask` into a standalone `featurelifted` package.",
+    "title": "Application route registration and dispatch"
+  },
+  "selection_id": "external150-replacement-20260727-v1",
+  "source": {
+    "commit": "c12a5d874c5a014495eb2db8a73f40037bc813ac",
+    "license": "BSD-3-Clause",
+    "name": "flask",
+    "requested_tag": "3.0.3",
+    "resolved_commit": "c12a5d874c5a014495eb2db8a73f40037bc813ac",
+    "url": "https://github.com/pallets/flask.git"
+  },
+  "spec_hash": "47f8cc847562617c5d9f1ee214a38d7e7f5efcca9a2a9ffc8c8106d994385b62",
+  "spec_status": "compliant",
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "external150-replacement",
+    "preregistered",
+    "framework_coupling"
+  ],
+  "task_id": "flask__route_dispatch_core__001",
+  "task_revision": 2,
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  }
+}

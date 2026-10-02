@@ -1,0 +1,283 @@
+{
+  "task_id": "pygments__formatter_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "parser_state_coupling",
+    "formatter",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "pygments",
+    "url": "https://github.com/pygments/pygments",
+    "commit": "2.15.1",
+    "license": "BSD-2-Clause"
+  },
+  "feature": {
+    "name": "HTML formatter core",
+    "description": "Extract Pygments HTML syntax highlighting formatter and highlight() integration with lexers as a standalone package.",
+    "source_entrypoints": [
+      "pygments.highlight",
+      "pygments.formatters.html.HtmlFormatter",
+      "pygments.formatter.Formatter",
+      "pygments.style.Style",
+      "pygments.lexers.get_lexer_by_name"
+    ],
+    "included_behaviors": [
+      "render token streams to HTML spans with HtmlFormatter",
+      "highlight source with highlight(code, lexer, formatter)",
+      "support nowrap, linenos, cssclass, and title options",
+      "escape HTML in source text and preserve token class names",
+      "resolve Python lexer for integrated highlighting"
+    ],
+    "excluded_behaviors": [
+      "image, LaTeX, RTF, SVG, and terminal formatters",
+      "command-line pygmentize tool",
+      "full lexer catalog beyond Python integration",
+      "original project tests and documentation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "HTML formatting couples formatter option state, style registries, token-to-CSS mapping, and lexer-driven highlight pipelines.",
+    "signals": [
+      "formatter option validation and defaults",
+      "style and token class translation",
+      "highlight() lexer-formatter pipeline",
+      "line number and wrapper table state"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import highlight, HtmlFormatter, get_lexer_by_name",
+    "callable": "featurelifted.highlight",
+    "signature": "highlight(code: str, lexer: Lexer, formatter: Formatter, outfile: IO[str] | None = None) -> str"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "pygments"
+    ],
+    "forbidden_imports": [
+      "pygments"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "HTML formatter core",
+    "summary": "Extract a task-scoped subset of `pygments` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.highlight",
+        "kind": "function",
+        "signature": "(code, lexer, formatter, outfile=None)"
+      },
+      {
+        "path": "featurelifted.HtmlFormatter",
+        "kind": "class",
+        "signature": "(**options)"
+      },
+      {
+        "path": "featurelifted.get_lexer_by_name",
+        "kind": "function",
+        "signature": "(_alias, **options)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: render token streams to HTML spans with HtmlFormatter. Required observable cases include html formatter wraps tokens; linenos and cssclass options."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: highlight source with highlight(code, lexer, formatter). Required observable cases include full document and keyword highlighting."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: support nowrap, linenos, cssclass, and title options. Required observable cases include nowrap option omits outer div; linenos and cssclass options."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: escape HTML in source text and preserve token class names. Required observable cases include html formatter wraps tokens; html escapes angle brackets in source."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: resolve Python lexer for integrated highlighting. Required observable cases include full document and keyword highlighting."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.highlight`, `featurelifted.HtmlFormatter`, `featurelifted.get_lexer_by_name` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pygments.highlight",
+      "pygments.formatters.html.HtmlFormatter",
+      "pygments.formatter.Formatter",
+      "pygments.style.Style",
+      "pygments.lexers.get_lexer_by_name"
+    ],
+    "exclusions": [
+      "image, LaTeX, RTF, SVG, and terminal formatters",
+      "command-line pygmentize tool",
+      "full lexer catalog beyond Python integration",
+      "original project tests and documentation"
+    ],
+    "forbidden": {
+      "imports": [
+        "pygments"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: pygments."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: render token streams to HTML spans with HtmlFormatter. Required observable cases include html formatter wraps tokens; linenos and cssclass options."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: highlight source with highlight(code, lexer, formatter). Required observable cases include full document and keyword highlighting."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support nowrap, linenos, cssclass, and title options. Required observable cases include nowrap option omits outer div; linenos and cssclass options."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: escape HTML in source text and preserve token class names. Required observable cases include html formatter wraps tokens; html escapes angle brackets in source."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve Python lexer for integrated highlighting. Required observable cases include full document and keyword highlighting."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.highlight`, `featurelifted.HtmlFormatter`, `featurelifted.get_lexer_by_name` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pygments"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_formatter_public.py::test_html_formatter_wraps_tokens",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_formatter_public.py::test_nowrap_option_omits_outer_div",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_formatter_hidden.py::test_linenos_and_cssclass_options",
+        "behavior_ids": [
+          "B003",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_formatter_hidden.py::test_html_escapes_angle_brackets_in_source",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_formatter_hidden.py::test_full_document_and_keyword_highlighting",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.highlight",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.HtmlFormatter",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.get_lexer_by_name",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "47b0ccc9b2ec17bfd9455033ad82b9a9310df6ce781321b8ff462d53908bde1c",
+  "generated_task_hash": "d6beb01425f6d8524deb377136db52d409ec07ab338839e101837e09a9927b7e"
+}

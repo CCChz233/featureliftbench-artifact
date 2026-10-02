@@ -1,0 +1,32 @@
+{
+  "source_package_name": "networkx",
+  "required_source_files": [
+    "networkx/__init__.py",
+    "networkx/exception.py",
+    "networkx/lazy_imports.py",
+    "networkx/convert.py",
+    "networkx/utils/__init__.py",
+    "networkx/utils/backends.py",
+    "networkx/utils/configs.py",
+    "networkx/utils/decorators.py",
+    "networkx/utils/misc.py",
+    "networkx/utils/heaps.py",
+    "networkx/utils/mapped_queue.py",
+    "networkx/utils/random_sequence.py",
+    "networkx/utils/union_find.py",
+    "networkx/utils/rcm.py",
+    "networkx/classes/__init__.py",
+    "networkx/classes/coreviews.py",
+    "networkx/classes/reportviews.py",
+    "networkx/classes/filters.py",
+    "networkx/classes/graph.py",
+    "networkx/classes/digraph.py",
+    "networkx/classes/function.py",
+    "networkx/classes/graphviews.py",
+    "networkx/generators/__init__.py",
+    "networkx/generators/classic.py",
+    "networkx/algorithms/__init__.py",
+    "networkx/algorithms/dag.py"
+  ],
+  "notes": "Curated DAG topological-sort closure from NetworkX 3.3 site-packages snapshot."
+}

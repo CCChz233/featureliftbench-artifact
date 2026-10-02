@@ -1,0 +1,491 @@
+{
+  "task_id": "h2__frame_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "h2",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "h2",
+    "url": "https://github.com/python-hyper/h2",
+    "commit": "4.3.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "HTTP/2 frame parse and buffer",
+    "description": "Extract hyperframe HTTP/2 frame serialization and h2 FrameBuffer reassembly without connection/stream state machines.",
+    "source_entrypoints": [
+      "hyperframe.frame.Frame.parse_frame_header",
+      "hyperframe.frame.DataFrame.serialize",
+      "h2.frame_buffer.FrameBuffer"
+    ],
+    "included_behaviors": [
+      "parse and serialize HTTP/2 frames (DATA, HEADERS, PING, SETTINGS, etc.)",
+      "FrameBuffer incremental parsing with continuation reassembly",
+      "HTTP/2 connection preamble validation for server mode",
+      "frame size limits and typed protocol errors"
+    ],
+    "excluded_behaviors": [
+      "h2 connection and stream state machines",
+      "HPACK header compression and flow control windows",
+      "network sockets and asyncio integration",
+      "original h2 or hyperframe imports at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Frame parsing couples binary struct layouts, flag validation, continuation backlog state, and cross-package hyperframe/h2 error types.",
+    "signals": [
+      "FrameBuffer tracks partial headers blocks across CONTINUATION frames",
+      "hyperframe frame classes enforce stream-id association rules",
+      "server preamble bytes consumed before frame iteration",
+      "full h2 package includes large connection/stream modules"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted.hyperframe.frame import Frame, DataFrame, PingFrame, HeadersFrame, ContinuationFrame, SettingsFrame; from featurelifted.h2.frame_buffer import FrameBuffer; from featurelifted.h2.exceptions import ProtocolError, FrameTooLargeError; from featurelifted.hyperframe.exceptions import InvalidDataError, InvalidFrameError",
+    "callable": "featurelifted.hyperframe.frame.Frame.parse_frame_header",
+    "signature": "Frame.parse_frame_header(memoryview) -> tuple[Frame, int]"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "h2",
+      "hyperframe"
+    ],
+    "forbidden_imports": [
+      "h2",
+      "hyperframe"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "HTTP/2 frame parse and buffer",
+    "summary": "Extract a task-scoped subset of `h2` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.h2.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.h2.exceptions.FrameTooLargeError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.h2.exceptions.ProtocolError",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.h2.frame_buffer",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.h2.frame_buffer.FrameBuffer",
+            "kind": "class",
+            "signature": "(server: 'bool' = False) -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.h2.frame_buffer.FrameBuffer.add_data",
+                "kind": "method",
+                "signature": "(self, data: 'bytes') -> 'None'"
+              },
+              {
+                "path": "featurelifted.h2.frame_buffer.FrameBuffer.max_frame_size",
+                "kind": "attribute"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.hyperframe.exceptions.InvalidDataError",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.hyperframe.frame.ContinuationFrame",
+            "kind": "class",
+            "signature": "(stream_id: 'int', data: 'bytes' = b'', **kwargs: 'Any') -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.hyperframe.frame.ContinuationFrame.data",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.hyperframe.frame.ContinuationFrame.flags",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.hyperframe.frame.ContinuationFrame.serialize",
+                "kind": "method",
+                "signature": "(self) -> 'bytes'"
+              }
+            ]
+          },
+          {
+            "path": "featurelifted.hyperframe.frame.DataFrame",
+            "kind": "class",
+            "signature": "(stream_id: 'int', data: 'bytes' = b'', **kwargs: 'Any') -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.hyperframe.frame.DataFrame.data",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.hyperframe.frame.DataFrame.serialize",
+                "kind": "method",
+                "signature": "(self) -> 'bytes'"
+              }
+            ]
+          },
+          {
+            "path": "featurelifted.hyperframe.frame.Frame",
+            "kind": "class",
+            "signature": "(stream_id: 'int', flags: 'Iterable[str]' = ()) -> 'None'"
+          },
+          {
+            "path": "featurelifted.hyperframe.frame.HeadersFrame",
+            "kind": "class",
+            "signature": "(stream_id: 'int', data: 'bytes' = b'', **kwargs: 'Any') -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.hyperframe.frame.HeadersFrame.data",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.hyperframe.frame.HeadersFrame.serialize",
+                "kind": "method",
+                "signature": "(self) -> 'bytes'"
+              }
+            ]
+          },
+          {
+            "path": "featurelifted.hyperframe.frame.PingFrame",
+            "kind": "class",
+            "signature": "(stream_id: 'int' = 0, opaque_data: 'bytes' = b'', **kwargs: 'Any') -> 'None'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse and serialize HTTP/2 frames (DATA, HEADERS, PING, SETTINGS, etc.). Required observable cases include ping frame roundtrip; data frame via frame buffer; ping stream id must be zero; frame buffer rejects bad preamble; frame buffer enforces max frame size."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: FrameBuffer incremental parsing with continuation reassembly. Required observable cases include continuation reassembly."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: HTTP/2 connection preamble validation for server mode. Required observable cases include frame buffer rejects bad preamble."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: frame size limits and typed protocol errors. Required observable cases include frame buffer enforces max frame size."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.h2.exceptions`, `featurelifted.h2.exceptions.FrameTooLargeError`, `featurelifted.h2.exceptions.ProtocolError`, `featurelifted.h2.frame_buffer`, `featurelifted.h2.frame_buffer.FrameBuffer`, `featurelifted.h2.frame_buffer.FrameBuffer.add_data`, `featurelifted.h2.frame_buffer.FrameBuffer.max_frame_size`, `featurelifted.hyperframe.exceptions`, `featurelifted.hyperframe.exceptions.InvalidDataError`, `featurelifted.hyperframe.frame`, `featurelifted.hyperframe.frame.ContinuationFrame`, `featurelifted.hyperframe.frame.ContinuationFrame.data`, and 10 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "hyperframe.frame.Frame.parse_frame_header",
+      "hyperframe.frame.DataFrame.serialize",
+      "h2.frame_buffer.FrameBuffer"
+    ],
+    "exclusions": [
+      "h2 connection and stream state machines",
+      "HPACK header compression and flow control windows",
+      "network sockets and asyncio integration",
+      "original h2 or hyperframe imports at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "h2",
+        "hyperframe"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: h2, hyperframe."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse and serialize HTTP/2 frames (DATA, HEADERS, PING, SETTINGS, etc.). Required observable cases include ping frame roundtrip; data frame via frame buffer; ping stream id must be zero; frame buffer rejects bad preamble; frame buffer enforces max frame size."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: FrameBuffer incremental parsing with continuation reassembly. Required observable cases include continuation reassembly."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: HTTP/2 connection preamble validation for server mode. Required observable cases include frame buffer rejects bad preamble."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: frame size limits and typed protocol errors. Required observable cases include frame buffer enforces max frame size."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.h2.exceptions`, `featurelifted.h2.exceptions.FrameTooLargeError`, `featurelifted.h2.exceptions.ProtocolError`, `featurelifted.h2.frame_buffer`, `featurelifted.h2.frame_buffer.FrameBuffer`, `featurelifted.h2.frame_buffer.FrameBuffer.add_data`, `featurelifted.h2.frame_buffer.FrameBuffer.max_frame_size`, `featurelifted.hyperframe.exceptions`, `featurelifted.hyperframe.exceptions.InvalidDataError`, `featurelifted.hyperframe.frame`, `featurelifted.hyperframe.frame.ContinuationFrame`, `featurelifted.hyperframe.frame.ContinuationFrame.data`, and 10 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: h2, hyperframe"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_ping_frame_roundtrip",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_data_frame_via_frame_buffer",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_ping_stream_id_must_be_zero",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_frame_buffer_rejects_bad_preamble",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_frame_buffer_enforces_max_frame_size",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.h2.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.h2.exceptions.FrameTooLargeError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.h2.exceptions.ProtocolError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.h2.frame_buffer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.h2.frame_buffer.FrameBuffer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.h2.frame_buffer.FrameBuffer.add_data",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly",
+          "hidden_tests/test_hidden_behavior.py::test_frame_buffer_enforces_max_frame_size",
+          "hidden_tests/test_hidden_behavior.py::test_frame_buffer_rejects_bad_preamble"
+        ]
+      },
+      {
+        "path": "featurelifted.h2.frame_buffer.FrameBuffer.max_frame_size",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly",
+          "hidden_tests/test_hidden_behavior.py::test_frame_buffer_enforces_max_frame_size"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.exceptions.InvalidDataError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.ContinuationFrame",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.ContinuationFrame.data",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.ContinuationFrame.flags",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.ContinuationFrame.serialize",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.DataFrame",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.DataFrame.data",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_frame_buffer_enforces_max_frame_size"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.DataFrame.serialize",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_frame_buffer_enforces_max_frame_size"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.Frame",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.HeadersFrame",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.HeadersFrame.data",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.HeadersFrame.serialize",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_continuation_reassembly"
+        ]
+      },
+      {
+        "path": "featurelifted.hyperframe.frame.PingFrame",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "ae1f9aea089e632f013f21e62b784131e28428755d06ab572542df8980d9e0b9",
+  "generated_task_hash": "07e0d99ab732d72237076ba8d148fb13657f32424ef1f4859a206882cfd7bdd3"
+}

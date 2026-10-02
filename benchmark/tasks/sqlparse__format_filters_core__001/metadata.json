@@ -1,0 +1,243 @@
+{
+  "task_id": "sqlparse__format_filters_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "formatter",
+    "tokenizer",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "sqlparse",
+    "url": "https://github.com/andialbrecht/sqlparse",
+    "commit": "f80af6a4007f11ada847218df8c29dc859238290",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "SQL format and filters core",
+    "description": "Extract sqlparse's SQL formatting behavior composed from filter-stack modules as a standalone package.",
+    "source_entrypoints": [
+      "sqlparse.format"
+    ],
+    "included_behaviors": [
+      "format common SQL with keyword case, identifier case, comment stripping, reindentation, indentation width, and operator spacing",
+      "preserve original formatter behavior for comments, whitespace, string literals, aliases, and nested expressions",
+      "validate formatter options and reject invalid values"
+    ],
+    "excluded_behaviors": [
+      "SQL parsing into navigable token trees",
+      "multi-statement script splitting",
+      "command line interface",
+      "original project tests",
+      "documentation and release tooling",
+      "packaging metadata from the original project",
+      "dialect-perfect SQL validation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "SQL formatting behavior depends on tokenizer state, filter-stack composition, and formatter filters spread across multiple modules.",
+    "signals": [
+      "formatter behavior composed from multiple filters",
+      "filter stack postprocessing and serialization",
+      "public API hides a multi-module runtime closure"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import format; from featurelifted.exceptions import SQLParseError",
+    "callable": "featurelifted.format",
+    "signature": "format(sql: str, encoding: str | None = None, **options) -> str"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "sqlparse"
+    ],
+    "forbidden_imports": [
+      "sqlparse"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "SQL format and filters core",
+    "summary": "Extract a task-scoped subset of `sqlparse` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.format",
+        "kind": "function",
+        "signature": "(sql: str, encoding: str | None = None, **options: Any) -> str"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.SQLParseError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: format common SQL with keyword case, identifier case, comment stripping, reindentation, indentation width, and operator spacing. Required observable cases include format supports common options; formatter comment stripping and spacing."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: preserve original formatter behavior for comments, whitespace, string literals, aliases, and nested expressions. Required observable cases include formatter rejects invalid options."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: validate formatter options and reject invalid values. Required observable cases include formatter rejects invalid options."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.format`, `featurelifted.exceptions`, `featurelifted.exceptions.SQLParseError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "sqlparse.format"
+    ],
+    "exclusions": [
+      "SQL parsing into navigable token trees",
+      "multi-statement script splitting",
+      "command line interface",
+      "original project tests",
+      "documentation and release tooling",
+      "packaging metadata from the original project",
+      "dialect-perfect SQL validation"
+    ],
+    "forbidden": {
+      "imports": [
+        "sqlparse"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: sqlparse."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: format common SQL with keyword case, identifier case, comment stripping, reindentation, indentation width, and operator spacing. Required observable cases include format supports common options; formatter comment stripping and spacing."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preserve original formatter behavior for comments, whitespace, string literals, aliases, and nested expressions. Required observable cases include formatter rejects invalid options."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate formatter options and reject invalid values. Required observable cases include formatter rejects invalid options."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.format`, `featurelifted.exceptions`, `featurelifted.exceptions.SQLParseError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: sqlparse"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_format_supports_common_options",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_formatter_comment_stripping_and_spacing",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_formatter_rejects_invalid_options",
+        "behavior_ids": [
+          "B003",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.format",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.SQLParseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "cf96b43d6b971a9394804617b15eb855ce475a51ecc79b80550cd9e7396890ee",
+  "generated_task_hash": "ce03f1ac5bd018920a3f0e2217594511b65d28a1d7c842f34867481bc6f51f81"
+}

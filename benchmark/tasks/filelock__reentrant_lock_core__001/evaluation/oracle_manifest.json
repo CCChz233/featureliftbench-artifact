@@ -1,0 +1,8 @@
+{
+  "notes": "Entrypoints are maintainer-private provenance and are never Agent-visible in Main.",
+  "required_source_files": [
+    "filelock._api.BaseFileLock",
+    "filelock._unix.UnixFileLock",
+    "filelock._error.Timeout"
+  ]
+}

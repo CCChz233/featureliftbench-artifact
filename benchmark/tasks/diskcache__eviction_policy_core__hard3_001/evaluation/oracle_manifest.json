@@ -1,0 +1,19 @@
+{
+  "source_package_name": "diskcache",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/diskcache/core.py"
+  ],
+  "target_api": [
+    "featurelifted.EvictionPolicyPlanner",
+    "featurelifted.EvictionPolicyPlanner.evict"
+  ],
+  "forbidden_imports": [
+    "diskcache"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "diskcache/"
+  ],
+  "notes": "In-memory eviction planner without sqlite backend."
+}

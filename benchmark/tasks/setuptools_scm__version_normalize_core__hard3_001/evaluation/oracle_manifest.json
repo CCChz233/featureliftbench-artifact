@@ -1,0 +1,18 @@
+{
+  "source_package_name": "setuptools_scm",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/setuptools-scm/src/setuptools_scm/version.py"
+  ],
+  "target_api": [
+    "featurelifted.version_from_scm"
+  ],
+  "forbidden_imports": [
+    "setuptools_scm"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "setuptools_scm/"
+  ],
+  "notes": "SCM version normalization without subprocess git."
+}

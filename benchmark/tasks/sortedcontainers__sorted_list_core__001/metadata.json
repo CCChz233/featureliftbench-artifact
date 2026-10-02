@@ -1,0 +1,458 @@
+{
+  "task_id": "sortedcontainers__sorted_list_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "sortedcontainers",
+    "data-structures",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "sortedcontainers",
+    "url": "https://github.com/grantjenks/python-sortedcontainers",
+    "commit": "a1f52d6713dd2c2713a881d4f4d86ed68ff71cab",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "SortedList core",
+    "description": "Extract SortedList with add/remove/bisect, positional indexing, range iterators, and sublist invariants without importing sortedcontainers.",
+    "source_entrypoints": [
+      "sortedcontainers.SortedList",
+      "sortedcontainers.SortedList.add",
+      "sortedcontainers.SortedList.discard",
+      "sortedcontainers.SortedList.remove",
+      "sortedcontainers.SortedList.bisect_left",
+      "sortedcontainers.SortedList.bisect_right",
+      "sortedcontainers.SortedList.irange",
+      "sortedcontainers.SortedList.islice",
+      "sortedcontainers.SortedList._check",
+      "sortedcontainers.SortedList._reset"
+    ],
+    "included_behaviors": [
+      "maintain sorted order with add/update and duplicate values",
+      "bisect_left/bisect_right and count/index on duplicate-heavy lists",
+      "positional indexing and slice reads with small load factors",
+      "irange/islice inclusive bounds and reverse iteration",
+      "sublist merge/delete invariants validated via _check after _reset"
+    ],
+    "excluded_behaviors": [
+      "SortedKeyList, SortedDict, SortedSet, and key-function variants",
+      "benchmarks, upstream tests, docs, and packaging metadata",
+      "original sortedcontainers import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "SortedList couples sublist splitting, fenwick-style index trees, positional mapping, and delete-merge invariants inside one performance-oriented data structure.",
+    "signals": [
+      "_reset/load factor drives sublist splits and merge behavior on delete",
+      "_pos/_loc/_build_index share a segment tree over sublist lengths",
+      "irange/islice reuse bisect + positional mapping rather than materializing",
+      "_check validates cross-sublist ordering and load-factor invariants"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import SortedList",
+    "callable": "featurelifted.SortedList",
+    "signature": "SortedList(iterable=None, key=None)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "sortedcontainers"
+    ],
+    "forbidden_imports": [
+      "sortedcontainers"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "SortedList core",
+    "summary": "Extract a task-scoped subset of `sortedcontainers` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.SortedList",
+        "kind": "class",
+        "signature": "(iterable=None, key=None)",
+        "members": [
+          {
+            "path": "featurelifted.SortedList._check",
+            "kind": "method",
+            "signature": "(self)"
+          },
+          {
+            "path": "featurelifted.SortedList._lists",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.SortedList._maxes",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.SortedList._reset",
+            "kind": "method",
+            "signature": "(self, load)"
+          },
+          {
+            "path": "featurelifted.SortedList.add",
+            "kind": "method",
+            "signature": "(self, value)"
+          },
+          {
+            "path": "featurelifted.SortedList.bisect",
+            "kind": "method",
+            "signature": "(self, value)"
+          },
+          {
+            "path": "featurelifted.SortedList.bisect_left",
+            "kind": "method",
+            "signature": "(self, value)"
+          },
+          {
+            "path": "featurelifted.SortedList.bisect_right",
+            "kind": "method",
+            "signature": "(self, value)"
+          },
+          {
+            "path": "featurelifted.SortedList.index",
+            "kind": "method",
+            "signature": "(self, value, start=None, stop=None)"
+          },
+          {
+            "path": "featurelifted.SortedList.irange",
+            "kind": "method",
+            "signature": "(self, minimum=None, maximum=None, inclusive=(True, True), reverse=False)"
+          },
+          {
+            "path": "featurelifted.SortedList.islice",
+            "kind": "method",
+            "signature": "(self, start=None, stop=None, reverse=False)"
+          },
+          {
+            "path": "featurelifted.SortedList.update",
+            "kind": "method",
+            "signature": "(self, iterable)"
+          },
+          {
+            "path": "featurelifted.SortedList.__delitem__",
+            "kind": "method",
+            "signature": "(self, index)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: maintain sorted order with add/update and duplicate values. Required observable cases include add and iteration; no sortedcontainers import surface."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: bisect_left/bisect_right and count/index on duplicate-heavy lists. Required observable cases include bisect and count; discard and remove; bisect with small load; index duplicate window."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: positional indexing and slice reads with small load factors. Required observable cases include bisect with small load."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: irange/islice inclusive bounds and reverse iteration. Required observable cases include add and iteration; irange inclusive bounds; islice reverse."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: sublist merge/delete invariants validated via _check after _reset. Required observable cases include delete random invariants; check invariants."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.SortedList`, `featurelifted.SortedList._check`, `featurelifted.SortedList._lists`, `featurelifted.SortedList._maxes`, `featurelifted.SortedList._reset`, `featurelifted.SortedList.add`, `featurelifted.SortedList.bisect`, `featurelifted.SortedList.bisect_left`, `featurelifted.SortedList.bisect_right`, `featurelifted.SortedList.index`, `featurelifted.SortedList.irange`, `featurelifted.SortedList.islice`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "sortedcontainers.SortedList",
+      "sortedcontainers.SortedList.add",
+      "sortedcontainers.SortedList.discard",
+      "sortedcontainers.SortedList.remove",
+      "sortedcontainers.SortedList.bisect_left",
+      "sortedcontainers.SortedList.bisect_right",
+      "sortedcontainers.SortedList.irange",
+      "sortedcontainers.SortedList.islice",
+      "sortedcontainers.SortedList._check",
+      "sortedcontainers.SortedList._reset"
+    ],
+    "exclusions": [
+      "SortedKeyList, SortedDict, SortedSet, and key-function variants",
+      "benchmarks, upstream tests, docs, and packaging metadata",
+      "original sortedcontainers import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "sortedcontainers"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: sortedcontainers."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: maintain sorted order with add/update and duplicate values. Required observable cases include add and iteration; no sortedcontainers import surface."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: bisect_left/bisect_right and count/index on duplicate-heavy lists. Required observable cases include bisect and count; discard and remove; bisect with small load; index duplicate window."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: positional indexing and slice reads with small load factors. Required observable cases include bisect with small load."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: irange/islice inclusive bounds and reverse iteration. Required observable cases include add and iteration; irange inclusive bounds; islice reverse."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: sublist merge/delete invariants validated via _check after _reset. Required observable cases include delete random invariants; check invariants."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.SortedList`, `featurelifted.SortedList._check`, `featurelifted.SortedList._lists`, `featurelifted.SortedList._maxes`, `featurelifted.SortedList._reset`, `featurelifted.SortedList.add`, `featurelifted.SortedList.bisect`, `featurelifted.SortedList.bisect_left`, `featurelifted.SortedList.bisect_right`, `featurelifted.SortedList.index`, `featurelifted.SortedList.irange`, `featurelifted.SortedList.islice`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: sortedcontainers"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_add_and_iteration",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_bisect_and_count",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_discard_and_remove",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hidden_irange_inclusive_bounds",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hidden_islice_reverse",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hidden_delete_random_invariants",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hidden_index_duplicate_window",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_sortedcontainers_import_surface",
+        "behavior_ids": [
+          "B007",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.SortedList",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList._check",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_delete_random_invariants"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList._lists",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList._maxes",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList._reset",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_delete_random_invariants",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_index_duplicate_window",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_irange_inclusive_bounds",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_islice_reverse"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.add",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.bisect",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.bisect_left",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.bisect_right",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.index",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_index_duplicate_window"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.irange",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_irange_inclusive_bounds"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.islice",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_islice_reverse"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.update",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load"
+        ]
+      },
+      {
+        "path": "featurelifted.SortedList.__delitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_hidden_bisect_with_small_load",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_check_invariants",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_delete_random_invariants",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_index_duplicate_window",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_irange_inclusive_bounds",
+          "hidden_tests/test_hidden_behavior.py::test_hidden_islice_reverse",
+          "hidden_tests/test_hidden_behavior.py::test_no_sortedcontainers_import_surface",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "be973b5da3429a9f5073e172e42b3a58a050990457be043c1ee1563e5161e302",
+  "generated_task_hash": "4cb47f59e4fb3e5cef0542bbe11f193616b93848f0981af675ddfa40710d81d0"
+}

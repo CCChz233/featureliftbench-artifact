@@ -1,0 +1,312 @@
+{
+  "task_id": "jinja2__loader_inheritance_core__001",
+  "source": {
+    "name": "jinja2",
+    "url": "https://github.com/pallets/jinja",
+    "commit": "15206881c006c79667fe5154fe80c01c65410679",
+    "license": "BSD-3-Clause"
+  },
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "template-engine",
+    "pure-python",
+    "multi-module"
+  ],
+  "environment": {
+    "python": "3.12",
+    "network": false,
+    "timeout_seconds": 120,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "MarkupSafe"
+    ],
+    "forbidden_dependencies": [
+      "jinja2",
+      "Jinja2"
+    ],
+    "forbidden_imports": [
+      "jinja2",
+      "jinja"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "feature": {
+    "name": "Jinja2 loader and inheritance core",
+    "description": "Extract Jinja2 template loading and extends/block inheritance rendering.",
+    "source_entrypoints": [
+      "jinja2.loaders.BaseLoader",
+      "jinja2.loaders.DictLoader",
+      "jinja2.environment.Environment.get_template",
+      "jinja2.environment.Template.render"
+    ],
+    "included_behaviors": [
+      "load templates via DictLoader and BaseLoader subclasses",
+      "resolve extends chains and block overrides",
+      "render nested block inheritance across multiple templates",
+      "support trim_blocks for layout templates"
+    ],
+    "excluded_behaviors": [
+      "PackageLoader zip/import paths beyond DictLoader",
+      "async rendering, extensions, bytecode cache",
+      "CLI, original tests, docs, packaging metadata"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "resource_coupling",
+      "framework_coupling",
+      "data_model_coupling"
+    ],
+    "description": "Loader/inheritance couples template lookup, compile pipeline, and block resolution across multiple sources.",
+    "signals": [
+      "loader get_source and template cache",
+      "extends/import include graph in parser/compiler",
+      "block super() resolution at render time"
+    ],
+    "primary": "framework_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Environment, DictLoader; from featurelifted.exceptions import TemplateNotFound; from featurelifted.loaders import BaseLoader",
+    "callable": "featurelifted.Environment.get_template",
+    "signature": "get_template(name: str) -> Template"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Jinja2 loader and inheritance core",
+    "summary": "Extract a task-scoped subset of `jinja2` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Environment",
+        "kind": "class",
+        "signature": "(block_start_string: str = '{%', block_end_string: str = '%}', variable_start_string: str = '{{', variable_end_string: str = '}}', comment_start_string: str = '{#', comment_end_string: str = '#}', line_statement_prefix: Optional[str] = None, line_comment_prefix: Optional[str] = None, trim_blocks: bool = False, lstrip_blocks: bool = False, newline_sequence: \"te.Literal['\\\\n', '\\\\r\\\\n', '\\\\r']\" = '\\n', keep_trailing_newline: bool = False, extensions: Sequence[Union[str, Type[ForwardRef('Extension')]]] = (), optimized: bool = True, undefined: Type[Undefined] = <class 'Undefined'>, finalize: Optional[Callable[..., Any]] = None, autoescape: Union[bool, Callable[[Optional[str]], bool]] = False, loader: Optional[ForwardRef('BaseLoader')] = None, cache_size: int = 400, auto_reload: bool = True, bytecode_cache: Optional[ForwardRef('BytecodeCache')] = None, enable_async: bool = False)",
+        "members": [
+          {
+            "path": "featurelifted.Environment.get_template",
+            "kind": "method",
+            "signature": "(self, name: Union[str, ForwardRef('Template')], parent: Optional[str] = None, globals: Optional[MutableMapping[str, Any]] = None) -> 'Template'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.DictLoader",
+        "kind": "class",
+        "signature": "(mapping: Mapping[str, str]) -> None"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.TemplateNotFound",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.loaders",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.loaders.BaseLoader",
+            "kind": "class",
+            "signature": "()"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: load templates via DictLoader and BaseLoader subclasses. Required observable cases include loader module required for missing template."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: resolve extends chains and block overrides. Required observable cases include extends overrides block; multi level inheritance."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: render nested block inheritance across multiple templates. Required observable cases include multi level inheritance; base loader subclass get source."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: support trim_blocks for layout templates. Required observable cases include multi level inheritance."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Environment`, `featurelifted.Environment.get_template`, `featurelifted.DictLoader`, `featurelifted.exceptions`, `featurelifted.exceptions.TemplateNotFound`, `featurelifted.loaders`, `featurelifted.loaders.BaseLoader` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "jinja2.loaders.BaseLoader",
+      "jinja2.loaders.DictLoader",
+      "jinja2.environment.Environment.get_template",
+      "jinja2.environment.Template.render"
+    ],
+    "exclusions": [
+      "PackageLoader zip/import paths beyond DictLoader",
+      "async rendering, extensions, bytecode cache",
+      "CLI, original tests, docs, packaging metadata"
+    ],
+    "forbidden": {
+      "imports": [
+        "jinja2",
+        "jinja"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: jinja2, jinja."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: load templates via DictLoader and BaseLoader subclasses. Required observable cases include loader module required for missing template."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve extends chains and block overrides. Required observable cases include extends overrides block; multi level inheritance."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: render nested block inheritance across multiple templates. Required observable cases include multi level inheritance; base loader subclass get source."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support trim_blocks for layout templates. Required observable cases include multi level inheritance."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Environment`, `featurelifted.Environment.get_template`, `featurelifted.DictLoader`, `featurelifted.exceptions`, `featurelifted.exceptions.TemplateNotFound`, `featurelifted.loaders`, `featurelifted.loaders.BaseLoader` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: jinja2, jinja"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_extends_overrides_block",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_multi_level_inheritance",
+        "behavior_ids": [
+          "B003",
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_loader_module_required_for_missing_template",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_base_loader_subclass_get_source",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Environment",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Environment.get_template",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_base_loader_subclass_get_source",
+          "hidden_tests/test_hidden_behavior.py::test_loader_module_required_for_missing_template",
+          "hidden_tests/test_hidden_behavior.py::test_multi_level_inheritance"
+        ]
+      },
+      {
+        "path": "featurelifted.DictLoader",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.TemplateNotFound",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.loaders",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.loaders.BaseLoader",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "bc89e78c0f9b6418c822a5cca527f64eaf09cfb6225ba78556d6a84a9e39744d",
+  "generated_task_hash": "f23122d089a34adaf951e2e913b135437ccc640161513dfce7b8102a7c546e8f"
+}

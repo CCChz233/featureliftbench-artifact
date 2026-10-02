@@ -1,0 +1,37 @@
+{
+  "source_package_name": "pendulum",
+  "required_source_files": [
+    "pendulum/constants.py",
+    "pendulum/day.py",
+    "pendulum/exceptions.py",
+    "pendulum/utils/__init__.py",
+    "pendulum/utils/_compat.py",
+    "pendulum/_helpers.py",
+    "pendulum/helpers.py",
+    "pendulum/duration.py",
+    "pendulum/date.py",
+    "pendulum/time.py",
+    "pendulum/datetime.py",
+    "pendulum/interval.py",
+    "pendulum/mixins/__init__.py",
+    "pendulum/mixins/default.py",
+    "pendulum/formatting/__init__.py",
+    "pendulum/formatting/formatter.py",
+    "pendulum/parsing/__init__.py",
+    "pendulum/parsing/iso8601.py",
+    "pendulum/parsing/exceptions/__init__.py",
+    "pendulum/parser.py",
+    "pendulum/tz/__init__.py",
+    "pendulum/tz/exceptions.py",
+    "pendulum/tz/timezone.py",
+    "pendulum/locales/__init__.py",
+    "pendulum/locales/locale.py",
+    "pendulum/locales/en/__init__.py",
+    "pendulum/locales/en/custom.py",
+    "pendulum/locales/en/locale.py"
+  ],
+  "runtime_dependencies": [
+    "python-dateutil"
+  ],
+  "notes": "Oracle closure is parse/format/duration core with UTC/fixed offsets and English locale only; excludes tzdata bundle, other locales, humanize, and runtime now/travel."
+}

@@ -1,0 +1,2 @@
+[tool.setuptools.package-data]
+pkg = ["settings.toml", "data/*.json"]

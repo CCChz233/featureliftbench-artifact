@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://featureliftbench.local/schemas/source-registry-v1.json",
+  "title": "FeatureLiftBench Canonical Source Registry",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "repositories",
+    "snapshots",
+    "summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "featureliftbench.source_registry.v1"
+    },
+    "policy_id": {
+      "const": "featureliftbench.full_repository_source.v2"
+    },
+    "generated_from": {
+      "type": "string"
+    },
+    "repositories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/repository"
+      }
+    },
+    "snapshots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/snapshot"
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "repository_count",
+        "snapshot_count",
+        "task_count",
+        "external_repository_count",
+        "curated_repository_count",
+        "ready_snapshot_count",
+        "pending_snapshot_count"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "repository_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "snapshot_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "task_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "external_repository_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "curated_repository_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "ready_snapshot_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pending_snapshot_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nullableInteger": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "repository": {
+      "type": "object",
+      "required": [
+        "source_repo_id",
+        "canonical_url",
+        "source_kind",
+        "display_names",
+        "upstream_org",
+        "ecosystem_family",
+        "licenses",
+        "snapshot_ids",
+        "task_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_repo_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_kind": {
+          "enum": [
+            "external_oss",
+            "curated"
+          ]
+        },
+        "display_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "upstream_org": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "ecosystem_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licenses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "snapshot_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "task_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "required": [
+        "source_snapshot_id",
+        "source_repo_id",
+        "requested_revision",
+        "revision_kind",
+        "resolved_commit",
+        "acquisition_method",
+        "current_snapshot_scope",
+        "target_snapshot_scope",
+        "status",
+        "archive_path",
+        "archive_sha256",
+        "source_tree_sha256",
+        "license_text_path",
+        "tracked_file_count",
+        "python_file_count",
+        "python_loc",
+        "total_bytes",
+        "max_path_depth",
+        "task_ids"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source_snapshot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_repo_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requested_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision_kind": {
+          "enum": [
+            "git_commit",
+            "installed_snapshot",
+            "tag_or_version",
+            "curated"
+          ]
+        },
+        "resolved_commit": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "acquisition_method": {
+          "enum": [
+            "git_checkout",
+            "official_vcs_archive",
+            "pending_revision_resolution",
+            "local_curated"
+          ]
+        },
+        "current_snapshot_scope": {
+          "enum": [
+            "legacy_task_local_mixed",
+            "curated_source_tree",
+            "full_tracked_tree"
+          ]
+        },
+        "target_snapshot_scope": {
+          "enum": [
+            "full_tracked_tree",
+            "curated_source_tree"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending_revision_resolution",
+            "pending_full_materialization",
+            "pending_curated_audit",
+            "ready",
+            "blocked"
+          ]
+        },
+        "archive_path": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "archive_sha256": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "source_tree_sha256": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "license_text_path": {
+          "$ref": "#/$defs/nullableString"
+        },
+        "tracked_file_count": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "python_file_count": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "python_loc": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "total_bytes": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "max_path_depth": {
+          "$ref": "#/$defs/nullableInteger"
+        },
+        "task_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

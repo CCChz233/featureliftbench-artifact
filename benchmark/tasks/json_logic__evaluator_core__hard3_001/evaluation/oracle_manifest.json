@@ -1,0 +1,18 @@
+{
+  "source_package_name": "json_logic",
+  "required_source_files": [
+    "repo/json_logic/__init__.py"
+  ],
+  "runtime_dependencies": [],
+  "target_api": [
+    "featurelifted.jsonLogic"
+  ],
+  "forbidden_imports": [
+    "json_logic"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "json_logic/"
+  ],
+  "notes": "jsonLogic core"
+}

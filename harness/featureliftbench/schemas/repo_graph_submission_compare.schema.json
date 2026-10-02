@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://featureliftbench.local/schemas/repo_graph_submission_compare.schema.json",
+  "title": "FeatureLiftBench Repository Graph Submission Comparison",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "revision",
+    "content_hash",
+    "artifact_mappings",
+    "gaps",
+    "advisory_only"
+  ],
+  "properties": {
+    "schema_version": {"const": "featureliftbench.repo_graph.submission_compare.v1"},
+    "revision": {"type": "integer", "minimum": 0},
+    "content_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact_mappings": {"type": "array", "items": {"type": "object"}},
+    "classification_counts": {"type": "object"},
+    "gaps": {
+      "type": "object",
+      "required": ["missing_providers", "missing_types", "forbidden_imports", "missing_resources"]
+    },
+    "advisory_only": {"const": true}
+  }
+}

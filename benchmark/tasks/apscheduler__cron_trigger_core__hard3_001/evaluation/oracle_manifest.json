@@ -1,0 +1,18 @@
+{
+  "source_package_name": "apscheduler",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/apscheduler/triggers/cron/__init__.py"
+  ],
+  "target_api": [
+    "featurelifted.CronTrigger"
+  ],
+  "forbidden_imports": [
+    "apscheduler"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "apscheduler/"
+  ],
+  "notes": "Cron trigger subset without scheduler runtime."
+}

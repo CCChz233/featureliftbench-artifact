@@ -1,0 +1,34 @@
+{
+  "source_package_name": "tenacity",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/tenacity/__init__.py",
+    "repo/tenacity/retry.py",
+    "repo/tenacity/stop.py",
+    "repo/tenacity/wait.py",
+    "repo/tenacity/_utils.py"
+  ],
+  "target_api": [
+    "featurelifted.Retrying",
+    "featurelifted.RetryCallState",
+    "featurelifted.RetryError",
+    "featurelifted.retry_if_exception_type",
+    "featurelifted.retry_if_result",
+    "featurelifted.stop_after_attempt",
+    "featurelifted.stop_after_delay",
+    "featurelifted.stop_before_delay",
+    "featurelifted.wait_fixed",
+    "featurelifted.wait_none",
+    "featurelifted.wait_chain",
+    "featurelifted.wait_combine",
+    "featurelifted.wait_exponential"
+  ],
+  "forbidden_imports": [
+    "tenacity"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "tenacity/"
+  ],
+  "notes": "Task-scoped synchronous retry state machine. Async, Tornado, decorator overloads, and logging helpers are intentionally excluded."
+}

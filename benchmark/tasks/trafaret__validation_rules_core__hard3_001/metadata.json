@@ -1,0 +1,369 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Composable validators, DataError structure, key policies, and converter behavior interact.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "Dict key optionality via Key",
+      "Forward recursion via set_type",
+      "path-specific DataError",
+      "Or/And composition operators"
+    ],
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "trafaret"
+    ],
+    "forbidden_imports": [
+      "trafaret"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "trafaret/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped composable trafaret validation rules into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "mongo/internet validators",
+      "async mixins"
+    ],
+    "included_behaviors": [
+      "composable validators",
+      "DataError paths",
+      "Forward references"
+    ],
+    "name": "Composable trafaret validation rules",
+    "source_entrypoints": [
+      "trafaret.Dict",
+      "trafaret.Or",
+      "trafaret.Forward"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Dict",
+    "import": "from featurelifted import Int, String, Dict, Key, Or, And, Forward, DataError",
+    "package": "featurelifted",
+    "signature": "Dict(schema)"
+  },
+  "source": {
+    "commit": "4ac577155c93e5a3b024645abd64b1442fd4d550",
+    "license": "BSD-3-Clause",
+    "name": "trafaret",
+    "url": "https://github.com/Deepwalker/trafaret.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "rule / policy engine",
+    "data_model_coupling"
+  ],
+  "task_id": "trafaret__validation_rules_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Composable trafaret validation rules",
+    "summary": "Extract a task-scoped subset of `trafaret` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Int",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.String",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.Dict",
+        "kind": "class",
+        "signature": "(schema: 'dict[str, Trafaret]', allow_extra: 'bool' = False)",
+        "members": [
+          {
+            "path": "featurelifted.Dict.check",
+            "kind": "method",
+            "signature": "(self, value, path=())"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Key",
+        "kind": "class",
+        "signature": "(name: 'str', validator: 'Trafaret', optional: 'bool' = False)"
+      },
+      {
+        "path": "featurelifted.Or",
+        "kind": "class",
+        "signature": "(*options: 'Trafaret')",
+        "members": [
+          {
+            "path": "featurelifted.Or.check",
+            "kind": "method",
+            "signature": "(self, value)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.And",
+        "kind": "class",
+        "signature": "(*parts: 'Trafaret')",
+        "members": [
+          {
+            "path": "featurelifted.And.check",
+            "kind": "method",
+            "signature": "(self, value)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Forward",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Forward.set_type",
+            "kind": "method",
+            "signature": "(self, target: 'Trafaret') -> 'None'"
+          },
+          {
+            "path": "featurelifted.Forward.check",
+            "kind": "method",
+            "signature": "(self, value)"
+          }
+        ],
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.DataError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`Dict`, `Key`, `Or`, `And`, and `Forward` compose validation rules."
+      },
+      {
+        "id": "B002",
+        "text": "DataError carries a path tuple for nested validation failures. Dict shorthand keys are required, so Dict({\"name\": String()}).check({}) raises DataError whose path is (\"name\",)."
+      },
+      {
+        "id": "B003",
+        "text": "`Forward.set_type` enables recursive schemas."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.Int`, `featurelifted.String`, `featurelifted.Dict`, `featurelifted.Dict.check`, `featurelifted.Key`, `featurelifted.Or`, `featurelifted.Or.check`, `featurelifted.And`, `featurelifted.And.check`, `featurelifted.Forward`, `featurelifted.Forward.set_type`, `featurelifted.Forward.check`, `featurelifted.DataError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "trafaret.Dict",
+      "trafaret.Or",
+      "trafaret.Forward"
+    ],
+    "exclusions": [
+      "network access",
+      "mongo/internet validators",
+      "async mixins"
+    ],
+    "forbidden": {
+      "imports": [
+        "trafaret"
+      ],
+      "paths": [
+        "repo/",
+        "trafaret/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: trafaret."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`Dict`, `Key`, `Or`, `And`, and `Forward` compose validation rules."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "DataError carries a path tuple for nested validation failures. Dict shorthand keys are required, so Dict({\"name\": String()}).check({}) raises DataError whose path is (\"name\",)."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`Forward.set_type` enables recursive schemas."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Int`, `featurelifted.String`, `featurelifted.Dict`, `featurelifted.Dict.check`, `featurelifted.Key`, `featurelifted.Or`, `featurelifted.Or.check`, `featurelifted.And`, `featurelifted.And.check`, `featurelifted.Forward`, `featurelifted.Forward.set_type`, `featurelifted.Forward.check`, `featurelifted.DataError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: trafaret"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_dict_validates_schema",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_or_composition",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_key_optional_and_dataerror_path",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_forward_recursion",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Int",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.String",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Dict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Dict.check",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_key_optional_and_dataerror_path"
+        ]
+      },
+      {
+        "path": "featurelifted.Key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Or",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Or.check",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_or_composition"
+        ]
+      },
+      {
+        "path": "featurelifted.And",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.And.check",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_or_composition",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Forward",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Forward.set_type",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_forward_recursion"
+        ]
+      },
+      {
+        "path": "featurelifted.Forward.check",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_forward_recursion"
+        ]
+      },
+      {
+        "path": "featurelifted.DataError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 6,
+  "spec_hash": "419552827fa9279331ac70e30c2c5f7ea55be32306966171daebaf232b04e0b3",
+  "generated_task_hash": "e9f0515b112ffb0fb7995c3a2677180706bebe87dd2c8a1476f22f1c266ea594"
+}

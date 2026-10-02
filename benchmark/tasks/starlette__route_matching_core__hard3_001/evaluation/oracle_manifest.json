@@ -1,0 +1,22 @@
+{
+  "source_package_name": "starlette",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/starlette/routing.py",
+    "repo/starlette/convertors.py"
+  ],
+  "target_api": [
+    "featurelifted.Router",
+    "featurelifted.Route",
+    "featurelifted.Mount",
+    "featurelifted.compile_path"
+  ],
+  "forbidden_imports": [
+    "starlette"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "starlette/"
+  ],
+  "notes": "Route matching subset without ASGI server."
+}

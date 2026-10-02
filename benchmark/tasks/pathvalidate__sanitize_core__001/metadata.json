@@ -1,0 +1,428 @@
+{
+  "task_id": "pathvalidate__sanitize_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "pathvalidate",
+    "path-sanitization",
+    "functional-discriminator",
+    "config_environment_coupling"
+  ],
+  "source": {
+    "name": "pathvalidate",
+    "url": "https://github.com/thombashi/pathvalidate",
+    "commit": "1ca0a50fce51d5b5bd633457a72abf74dbe3112d",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Filename and filepath sanitization core",
+    "description": "Extract cross-platform filename and filepath sanitization with platform-specific reserved names, validation errors, and sanitize/validate helpers without importing pathvalidate.",
+    "source_entrypoints": [
+      "pathvalidate.sanitize_filename",
+      "pathvalidate.sanitize_filepath",
+      "pathvalidate.validate_filename",
+      "pathvalidate.validate_filepath",
+      "pathvalidate.is_valid_filename",
+      "pathvalidate.is_valid_filepath",
+      "pathvalidate.Platform",
+      "pathvalidate.error.ValidationError",
+      "pathvalidate.error.ErrorReason",
+      "pathvalidate.error.ReservedNameError",
+      "pathvalidate._filename.FileNameSanitizer",
+      "pathvalidate._filepath.FilePathSanitizer"
+    ],
+    "included_behaviors": [
+      "sanitize_filename replaces invalid characters",
+      "sanitize_filepath sanitizes each path segment",
+      "Windows reserved device names (CON, PRN, etc.) rejected or rewritten",
+      "ValidationError exposes ErrorReason and reserved_name metadata",
+      "platform parameter selects Windows/Linux/macOS/universal rules"
+    ],
+    "excluded_behaviors": [
+      "click and argparse CLI integrations",
+      "LTSV label and symbol replacement helpers",
+      "upstream test suite and docs",
+      "original pathvalidate import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "Sanitization couples platform detection, reserved-name tables, per-segment filename rules, path normalization, and typed validation error metadata across _base, _common, _filename, and _filepath.",
+    "signals": [
+      "Platform enum drives Windows vs POSIX invalid char sets",
+      "ReservedNameHandler rewrites CON/PRN after regex sanitize",
+      "FilePathSanitizer delegates each segment to FileNameSanitizer",
+      "ValidationError carries ErrorReason codes and reserved_name"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Platform, sanitize_filename, sanitize_filepath, validate_filename, validate_filepath, is_valid_filename, is_valid_filepath, ValidationError, ErrorReason, ReservedNameError, InvalidCharError",
+    "callable": "featurelifted.sanitize_filename",
+    "signature": "sanitize_filename(value, platform='auto', replacement_text='', **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "pathvalidate"
+    ],
+    "forbidden_imports": [
+      "pathvalidate"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Filename and filepath sanitization core",
+    "summary": "Extract a task-scoped subset of `pathvalidate` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Platform",
+        "kind": "class",
+        "signature": "(*values)"
+      },
+      {
+        "path": "featurelifted.sanitize_filename",
+        "kind": "function",
+        "signature": "(filename: ~PathType, replacement_text: str = '', platform: Optional[~PlatformType] = None, max_len: Optional[int] = 255, fs_encoding: Optional[str] = None, check_reserved: Optional[bool] = None, null_value_handler: Optional[Callable[[ValidationError], str]] = None, reserved_name_handler: Optional[Callable[[ValidationError], str]] = None, additional_reserved_names: Optional[collections.abc.Sequence[str]] = None, validate_after_sanitize: bool = False) -> ~PathType"
+      },
+      {
+        "path": "featurelifted.sanitize_filepath",
+        "kind": "function",
+        "signature": "(file_path: ~PathType, replacement_text: str = '', platform: Optional[~PlatformType] = None, max_len: Optional[int] = None, fs_encoding: Optional[str] = None, check_reserved: Optional[bool] = None, null_value_handler: Optional[Callable[[ValidationError], str]] = None, reserved_name_handler: Optional[Callable[[ValidationError], str]] = None, additional_reserved_names: Optional[collections.abc.Sequence[str]] = None, normalize: bool = True, validate_after_sanitize: bool = False) -> ~PathType"
+      },
+      {
+        "path": "featurelifted.validate_filename",
+        "kind": "function",
+        "signature": "(filename: ~PathType, platform: Optional[~PlatformType] = None, min_len: int = 1, max_len: int = 255, fs_encoding: Optional[str] = None, check_reserved: bool = True, additional_reserved_names: Optional[collections.abc.Sequence[str]] = None) -> None"
+      },
+      {
+        "path": "featurelifted.validate_filepath",
+        "kind": "function",
+        "signature": "(file_path: ~PathType, platform: Optional[~PlatformType] = None, min_len: int = 1, max_len: Optional[int] = None, fs_encoding: Optional[str] = None, check_reserved: bool = True, additional_reserved_names: Optional[collections.abc.Sequence[str]] = None) -> None"
+      },
+      {
+        "path": "featurelifted.is_valid_filename",
+        "kind": "function",
+        "signature": "(filename: ~PathType, platform: Optional[~PlatformType] = None, min_len: int = 1, max_len: Optional[int] = None, fs_encoding: Optional[str] = None, check_reserved: bool = True, additional_reserved_names: Optional[collections.abc.Sequence[str]] = None) -> bool"
+      },
+      {
+        "path": "featurelifted.is_valid_filepath",
+        "kind": "function",
+        "signature": "(file_path: ~PathType, platform: Optional[~PlatformType] = None, min_len: int = 1, max_len: Optional[int] = None, fs_encoding: Optional[str] = None, check_reserved: bool = True, additional_reserved_names: Optional[collections.abc.Sequence[str]] = None) -> bool"
+      },
+      {
+        "path": "featurelifted.ValidationError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.ErrorReason",
+        "kind": "class",
+        "signature": "(*values)",
+        "members": [
+          {
+            "path": "featurelifted.ErrorReason.INVALID_CHARACTER",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.ErrorReason.RESERVED_NAME",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.ReservedNameError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.InvalidCharError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: sanitize_filename replaces invalid characters. Required observable cases include sanitize filename replaces invalid chars; validate filename accepts simple name; invalid character error reason."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: sanitize_filepath sanitizes each path segment. Required observable cases include sanitize filepath joins segments; sanitize filepath reserved segment."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: Windows reserved device names (CON, PRN, etc.) rejected or rewritten. Required observable cases include windows reserved name sanitize; windows reserved name validate raises."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: ValidationError exposes ErrorReason and reserved_name metadata. Required observable cases include filepath reserved name metadata."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: platform parameter selects Windows/Linux/macOS/universal rules. Required observable cases include windows reserved name validate raises."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Platform`, `featurelifted.sanitize_filename`, `featurelifted.sanitize_filepath`, `featurelifted.validate_filename`, `featurelifted.validate_filepath`, `featurelifted.is_valid_filename`, `featurelifted.is_valid_filepath`, `featurelifted.ValidationError`, `featurelifted.ErrorReason`, `featurelifted.ErrorReason.INVALID_CHARACTER`, `featurelifted.ErrorReason.RESERVED_NAME`, `featurelifted.ReservedNameError`, and 1 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pathvalidate.sanitize_filename",
+      "pathvalidate.sanitize_filepath",
+      "pathvalidate.validate_filename",
+      "pathvalidate.validate_filepath",
+      "pathvalidate.is_valid_filename",
+      "pathvalidate.is_valid_filepath",
+      "pathvalidate.Platform",
+      "pathvalidate.error.ValidationError",
+      "pathvalidate.error.ErrorReason",
+      "pathvalidate.error.ReservedNameError",
+      "pathvalidate._filename.FileNameSanitizer",
+      "pathvalidate._filepath.FilePathSanitizer"
+    ],
+    "exclusions": [
+      "click and argparse CLI integrations",
+      "LTSV label and symbol replacement helpers",
+      "upstream test suite and docs",
+      "original pathvalidate import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "pathvalidate"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: pathvalidate."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: sanitize_filename replaces invalid characters. Required observable cases include sanitize filename replaces invalid chars; validate filename accepts simple name; invalid character error reason."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: sanitize_filepath sanitizes each path segment. Required observable cases include sanitize filepath joins segments; sanitize filepath reserved segment."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Windows reserved device names (CON, PRN, etc.) rejected or rewritten. Required observable cases include windows reserved name sanitize; windows reserved name validate raises."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ValidationError exposes ErrorReason and reserved_name metadata. Required observable cases include filepath reserved name metadata."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: platform parameter selects Windows/Linux/macOS/universal rules. Required observable cases include windows reserved name validate raises."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Platform`, `featurelifted.sanitize_filename`, `featurelifted.sanitize_filepath`, `featurelifted.validate_filename`, `featurelifted.validate_filepath`, `featurelifted.is_valid_filename`, `featurelifted.is_valid_filepath`, `featurelifted.ValidationError`, `featurelifted.ErrorReason`, `featurelifted.ErrorReason.INVALID_CHARACTER`, `featurelifted.ErrorReason.RESERVED_NAME`, `featurelifted.ReservedNameError`, and 1 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pathvalidate"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_sanitize_filename_replaces_invalid_chars",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_sanitize_filepath_joins_segments",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_validate_filename_accepts_simple_name",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_windows_reserved_name_sanitize",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_windows_reserved_name_validate_raises",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_sanitize_filepath_reserved_segment",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_character_error_reason",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_filepath_reserved_name_metadata",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_pathvalidate_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Platform",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sanitize_filename",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sanitize_filepath",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate_filename",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate_filepath",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.is_valid_filename",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.is_valid_filepath",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ValidationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ErrorReason",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ErrorReason.INVALID_CHARACTER",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_invalid_character_error_reason"
+        ]
+      },
+      {
+        "path": "featurelifted.ErrorReason.RESERVED_NAME",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_filepath_reserved_name_metadata",
+          "hidden_tests/test_hidden_behavior.py::test_windows_reserved_name_validate_raises"
+        ]
+      },
+      {
+        "path": "featurelifted.ReservedNameError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidCharError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "540edb5b08a7d96d6049b054bd35fa941940855edb8f16c11733811b079cdfd9",
+  "generated_task_hash": "6c1ee88f4186c045f8d375476b8cfc08dd9f11a235b99fc95800c85516b10393"
+}

@@ -1,0 +1,102 @@
+{
+  "schema_version": "featureliftbench.diagnostic_suite.v1",
+  "suite_id": "rescue_plus_distill24_v1",
+  "frozen_on": "2026-08-17",
+  "purpose": "Development and matched API comparison of Lite V1 and Rescue+; not an unbiased estimate of Python-200 pass rate.",
+  "selection_sources": {
+    "api_main": "FeatureLiftBench-deepseek-v4-flash-150-20260805/deepseek-v4-flash-0731",
+    "api_lite_v1": "python200-deepseek-v4-flash-lite-v1-main-budget-0812-002",
+    "local_main": "python200-deepseek-v4-flash-vllm-local-0812-001",
+    "local_lite_v1": "python200-deepseek-v4-flash-lite-v1-vllm-local-0813-001"
+  },
+  "selection_policy": {
+    "api_main_pass_lite_fail": 10,
+    "api_both_fail": 5,
+    "external50_local_main_pass_lite_fail": 3,
+    "api_main_fail_lite_pass": 3,
+    "both_pass_sentinels": 3,
+    "excluded_known_contract_audit_issues": [
+      "pluggy__hook_specs_core__001",
+      "pluggy__hook_wrapper_core__hard3_001",
+      "tenacity__retry_state_core__hard3_001"
+    ]
+  },
+  "tiers": {
+    "core12": [
+      "responses__request_matcher_core__hard3_001",
+      "networkx__dag_topo_core__001",
+      "json_logic__evaluator_core__hard3_001",
+      "httpx__request_model_core__001",
+      "platformdirs__app_dirs_core__hard3_001",
+      "rich__markup_parse_core__001",
+      "alembic__revision_map_core__hard3_001",
+      "deepdiff__deep_compare_core__001",
+      "schema__nested_validate_core__hard3_001",
+      "joserfc__jwt_claims_core__001",
+      "transitions__state_machine_core__hard3_001",
+      "cachetools__cache_eviction_core__001"
+    ],
+    "distill24": [
+      "responses__request_matcher_core__hard3_001",
+      "networkx__dag_topo_core__001",
+      "json_logic__evaluator_core__hard3_001",
+      "httpx__request_model_core__001",
+      "platformdirs__app_dirs_core__hard3_001",
+      "rich__markup_parse_core__001",
+      "alembic__revision_map_core__hard3_001",
+      "deepdiff__deep_compare_core__001",
+      "schema__nested_validate_core__hard3_001",
+      "joserfc__jwt_claims_core__001",
+      "transitions__state_machine_core__hard3_001",
+      "cachetools__cache_eviction_core__001",
+      "cerberus__schema_validate_core__001",
+      "jinja2__loader_inheritance_core__001",
+      "pygments__formatter_core__001",
+      "python_dateutil__rrule_core__001",
+      "jsonschema__validator_core__001",
+      "requests_cache__cache_key_core__hard3_001",
+      "icalendar__component_roundtrip_core__001",
+      "vcrpy__cassette_match_core__001",
+      "arrow__parse_format_core__001",
+      "glom__spec_eval_core__hard3_001",
+      "referencing__json_schema_refs_core__001",
+      "returns__result_pipeline_core__hard3_001"
+    ]
+  },
+  "strata": {
+    "api_main_pass_lite_fail": [
+      "cerberus__schema_validate_core__001",
+      "httpx__request_model_core__001",
+      "jinja2__loader_inheritance_core__001",
+      "json_logic__evaluator_core__hard3_001",
+      "networkx__dag_topo_core__001",
+      "platformdirs__app_dirs_core__hard3_001",
+      "pygments__formatter_core__001",
+      "python_dateutil__rrule_core__001",
+      "responses__request_matcher_core__hard3_001",
+      "rich__markup_parse_core__001"
+    ],
+    "api_both_fail": [
+      "alembic__revision_map_core__hard3_001",
+      "deepdiff__deep_compare_core__001",
+      "jsonschema__validator_core__001",
+      "requests_cache__cache_key_core__hard3_001",
+      "schema__nested_validate_core__hard3_001"
+    ],
+    "external50_local_main_pass_lite_fail": [
+      "icalendar__component_roundtrip_core__001",
+      "joserfc__jwt_claims_core__001",
+      "vcrpy__cassette_match_core__001"
+    ],
+    "api_main_fail_lite_pass": [
+      "arrow__parse_format_core__001",
+      "glom__spec_eval_core__hard3_001",
+      "transitions__state_machine_core__hard3_001"
+    ],
+    "both_pass_sentinels": [
+      "cachetools__cache_eviction_core__001",
+      "referencing__json_schema_refs_core__001",
+      "returns__result_pipeline_core__hard3_001"
+    ]
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "task_id": "jsonpath_ng__expression_eval_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "jsonpath",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "jsonpath-ng",
+    "url": "https://github.com/h2non/jsonpath-ng",
+    "commit": "e59ead334ac47618e6d844ad758114b3bfafcc8a",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "JSONPath parse, find, and update core",
+    "description": "Extract jsonpath-ng expression parsing and evaluation (including filter expressions) without CLI or original package import.",
+    "source_entrypoints": [
+      "jsonpath_ng.ext.parse",
+      "jsonpath_ng.jsonpath.JSONPath.find",
+      "jsonpath_ng.jsonpath.JSONPath.update",
+      "jsonpath_ng.parser.JsonPathParser",
+      "jsonpath_ng.lexer.JsonPathLexer"
+    ],
+    "included_behaviors": [
+      "parse JSONPath strings into expression objects",
+      "find matching values in dict/list document trees",
+      "update values at matching paths in place",
+      "filter expressions with comparison operators",
+      "array slices and wildcard/index segments"
+    ],
+    "excluded_behaviors": [
+      "CLI bin/jsonpath.py",
+      "original jsonpath_ng import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "JSONPath couples lexer/parser grammar, AST node types, tree walking, filter evaluation, and in-place update semantics.",
+    "signals": [
+      "PLY lexer/parser builds AST from path strings",
+      "Child/Index/Slice nodes compose navigation",
+      "ext filter parser adds comparison and @ context",
+      "update mutates nested dict/list structure"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import parse; from featurelifted.jsonpath import JSONPath; from featurelifted.exceptions import JsonPathLexerError, JsonPathParserError",
+    "callable": "featurelifted.parse",
+    "signature": "parse(path_string)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "ply"
+    ],
+    "forbidden_dependencies": [
+      "jsonpath-ng",
+      "jsonpath_ng"
+    ],
+    "forbidden_imports": [
+      "jsonpath_ng"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "JSONPath parse, find, and update core",
+    "summary": "Extract a task-scoped subset of `jsonpath_ng` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(path, debug=False)"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.JsonPathLexerError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.JsonPathParserError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse JSONPath strings into expression objects. Required observable cases include parse find simple path; root child fields; filter expression selects items; invalid expression raises."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: find matching values in dict/list document trees. Required observable cases include parse find simple path; wildcard array find; root child fields; update nested path."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: update values at matching paths in place. Required observable cases include update value in place; update nested path."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: filter expressions with comparison operators. Required observable cases include filter expression selects items; invalid expression raises."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: array slices and wildcard/index segments. Required observable cases include wildcard array find; bracket slice selects range; negative index selects last."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.exceptions`, `featurelifted.exceptions.JsonPathLexerError`, `featurelifted.exceptions.JsonPathParserError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "jsonpath_ng.ext.parse",
+      "jsonpath_ng.jsonpath.JSONPath.find",
+      "jsonpath_ng.jsonpath.JSONPath.update",
+      "jsonpath_ng.parser.JsonPathParser",
+      "jsonpath_ng.lexer.JsonPathLexer"
+    ],
+    "exclusions": [
+      "CLI bin/jsonpath.py",
+      "original jsonpath_ng import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "jsonpath_ng"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: jsonpath_ng."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse JSONPath strings into expression objects. Required observable cases include parse find simple path; root child fields; filter expression selects items; invalid expression raises."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: find matching values in dict/list document trees. Required observable cases include parse find simple path; wildcard array find; root child fields; update nested path."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: update values at matching paths in place. Required observable cases include update value in place; update nested path."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: filter expressions with comparison operators. Required observable cases include filter expression selects items; invalid expression raises."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: array slices and wildcard/index segments. Required observable cases include wildcard array find; bracket slice selects range; negative index selects last."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.exceptions`, `featurelifted.exceptions.JsonPathLexerError`, `featurelifted.exceptions.JsonPathParserError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: jsonpath_ng"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_find_simple_path",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_wildcard_array_find",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_update_value_in_place",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_root_child_fields",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_filter_expression_selects_items",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_bracket_slice_selects_range",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_update_nested_path",
+        "behavior_ids": [
+          "B003",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_negative_index_selects_last",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_expression_raises",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_jsonpath_ng_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.JsonPathLexerError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.JsonPathParserError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "03fb97edc4fedb30aabdd323cd3ab22f5f65fb85140f35f61c448101a1214d57",
+  "generated_task_hash": "e548af0c9c7793239a41677859768933a08fc80e8c4f7731376a6db04147aa15"
+}

@@ -1,0 +1,12 @@
+{
+  "source_package_name": "intervaltree",
+  "required_source_files": [
+    "intervaltree/interval.py",
+    "intervaltree/intervaltree.py",
+    "intervaltree/node.py"
+  ],
+  "runtime_dependencies": [
+    "sortedcontainers"
+  ],
+  "notes": "Oracle copies the three runtime modules; SortedDict comes from allowed sortedcontainers dependency."
+}

@@ -1,0 +1,428 @@
+{
+  "task_id": "jsonpointer__resolve_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "jsonpointer",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "jsonpointer",
+    "url": "https://github.com/stefankoegl/python-json-pointer",
+    "commit": "5998f951dcc5ace60f67f35afe6778c445401a07",
+    "license": "Modified BSD License"
+  },
+  "feature": {
+    "name": "JSON Pointer resolve and set",
+    "description": "Extract RFC 6901 JSON Pointer parsing, resolve, set, and escape/unescape without importing jsonpointer.",
+    "source_entrypoints": [
+      "jsonpointer.JsonPointer",
+      "jsonpointer.resolve_pointer",
+      "jsonpointer.set_pointer",
+      "jsonpointer.escape",
+      "jsonpointer.unescape"
+    ],
+    "included_behaviors": [
+      "resolve pointers against nested dict/list documents",
+      "set values including array append via '-' token",
+      "escape and unescape ~ and / in token names",
+      "default values for missing paths and invalid escapes"
+    ],
+    "excluded_behaviors": [
+      "jsonpatch operations beyond pointer resolve/set",
+      "upstream tests and docs",
+      "original jsonpointer import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "JSON Pointer couples token unescaping, sequence vs mapping dispatch, EndOfList sentinel handling, and in-place deepcopy mutation paths.",
+    "signals": [
+      "pointer parts split/unescape RFC 6901 tokens",
+      "walk/get_part distinguishes Mapping vs Sequence indexing",
+      "set handles '-' append vs mapping assignment",
+      "invalid ~ escapes validated at parse time"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import EndOfList, JsonPointer, JsonPointerException, resolve_pointer, set_pointer, escape, unescape",
+    "callable": "featurelifted.resolve_pointer",
+    "signature": "resolve_pointer(doc, pointer, default=...)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "jsonpointer"
+    ],
+    "forbidden_imports": [
+      "jsonpointer"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "JSON Pointer resolve and set",
+    "summary": "Extract a task-scoped subset of `jsonpointer` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.EndOfList",
+        "kind": "class",
+        "signature": "(list_) -> None"
+      },
+      {
+        "path": "featurelifted.JsonPointer",
+        "kind": "class",
+        "signature": "(pointer)",
+        "members": [
+          {
+            "path": "featurelifted.JsonPointer.from_parts",
+            "kind": "method",
+            "signature": "(parts)"
+          },
+          {
+            "path": "featurelifted.JsonPointer.get_parts",
+            "kind": "method",
+            "signature": "(self)"
+          },
+          {
+            "path": "featurelifted.JsonPointer.path",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.JsonPointer.__contains__",
+            "kind": "method",
+            "signature": "(self, item)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointerException",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.resolve_pointer",
+        "kind": "function",
+        "signature": "(doc, pointer, default=<object object>)"
+      },
+      {
+        "path": "featurelifted.set_pointer",
+        "kind": "function",
+        "signature": "(doc, pointer, value, inplace=True)"
+      },
+      {
+        "path": "featurelifted.escape",
+        "kind": "function",
+        "signature": "(s: str) -> str"
+      },
+      {
+        "path": "featurelifted.unescape",
+        "kind": "function",
+        "signature": "(s: str) -> str"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: resolve pointers against nested dict/list documents. Required observable cases include resolve root empty pointer; resolve nested dict path; resolve array index; set pointer inplace; json pointer path round trip; end of list marker; pointer join operator."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: set values including array append via '-' token. Required observable cases include resolve array index; set pointer inplace; array index rejects leading zero; set append via dash; set out of place deepcopy."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: escape and unescape ~ and / in token names. Required observable cases include escape round trip paths."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: default values for missing paths and invalid escapes. Required observable cases include json pointer path round trip; escape round trip paths; invalid escape raises; resolve missing with default."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.EndOfList`, `featurelifted.JsonPointer`, `featurelifted.JsonPointer.from_parts`, `featurelifted.JsonPointer.get_parts`, `featurelifted.JsonPointer.path`, `featurelifted.JsonPointer.__contains__`, `featurelifted.JsonPointerException`, `featurelifted.resolve_pointer`, `featurelifted.set_pointer`, `featurelifted.escape`, `featurelifted.unescape` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "jsonpointer.JsonPointer",
+      "jsonpointer.resolve_pointer",
+      "jsonpointer.set_pointer",
+      "jsonpointer.escape",
+      "jsonpointer.unescape"
+    ],
+    "exclusions": [
+      "jsonpatch operations beyond pointer resolve/set",
+      "upstream tests and docs",
+      "original jsonpointer import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "jsonpointer"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: jsonpointer."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve pointers against nested dict/list documents. Required observable cases include resolve root empty pointer; resolve nested dict path; resolve array index; set pointer inplace; json pointer path round trip; end of list marker; pointer join operator."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: set values including array append via '-' token. Required observable cases include resolve array index; set pointer inplace; array index rejects leading zero; set append via dash; set out of place deepcopy."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: escape and unescape ~ and / in token names. Required observable cases include escape round trip paths."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: default values for missing paths and invalid escapes. Required observable cases include json pointer path round trip; escape round trip paths; invalid escape raises; resolve missing with default."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.EndOfList`, `featurelifted.JsonPointer`, `featurelifted.JsonPointer.from_parts`, `featurelifted.JsonPointer.get_parts`, `featurelifted.JsonPointer.path`, `featurelifted.JsonPointer.__contains__`, `featurelifted.JsonPointerException`, `featurelifted.resolve_pointer`, `featurelifted.set_pointer`, `featurelifted.escape`, `featurelifted.unescape` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: jsonpointer"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_resolve_root_empty_pointer",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_resolve_nested_dict_path",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_resolve_array_index",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_set_pointer_inplace",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_json_pointer_path_round_trip",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_escape_round_trip_paths",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_escape_raises",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_end_of_list_marker",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_array_index_rejects_leading_zero",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_set_append_via_dash",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_set_out_of_place_deepcopy",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_resolve_missing_with_default",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_pointer_join_operator",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_jsonpointer_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.EndOfList",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointer.from_parts",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_escape_round_trip_paths"
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointer.get_parts",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_escape_round_trip_paths"
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointer.path",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_escape_round_trip_paths"
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointerException",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.resolve_pointer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.set_pointer",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.escape",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.unescape",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.JsonPointer.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_array_index_rejects_leading_zero",
+          "hidden_tests/test_hidden_behavior.py::test_end_of_list_marker",
+          "hidden_tests/test_hidden_behavior.py::test_escape_round_trip_paths",
+          "hidden_tests/test_hidden_behavior.py::test_invalid_escape_raises",
+          "hidden_tests/test_hidden_behavior.py::test_no_jsonpointer_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_pointer_join_operator",
+          "hidden_tests/test_hidden_behavior.py::test_resolve_missing_with_default",
+          "hidden_tests/test_hidden_behavior.py::test_set_append_via_dash",
+          "hidden_tests/test_hidden_behavior.py::test_set_out_of_place_deepcopy",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "37abe1dad97e6eb6cbe6cf81a1a3811ce5b4d5d0104b6e726b4c874d75dec227",
+  "generated_task_hash": "565f6dd976e72d423cce29e42156521e811bd1ab0d3f8d45f9252361d5ba0ffe"
+}

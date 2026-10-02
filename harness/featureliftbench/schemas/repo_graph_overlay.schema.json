@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://featureliftbench.local/schemas/repo_graph_overlay.schema.json",
+  "title": "FeatureLiftBench Repository Graph Run Overlay",
+  "type": "object",
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "featureliftbench.repo_graph.task_overlay.v1",
+        "featureliftbench.repo_graph.closure_overlay.v1"
+      ]
+    },
+    "task_id": {"type": "string"},
+    "private_to_run": {"type": "boolean"},
+    "behaviors": {"type": "array", "items": {"type": "object"}},
+    "entrypoint_mapping": {"type": "array", "items": {"type": "object"}},
+    "candidate_nodes": {"type": "array", "items": {"type": "object"}},
+    "exact_edges": {"type": "array", "items": {"type": "object"}},
+    "uncertain_risks": {"type": "array", "items": {"type": "object"}},
+    "agent_claim_required": {"type": "boolean"}
+  }
+}

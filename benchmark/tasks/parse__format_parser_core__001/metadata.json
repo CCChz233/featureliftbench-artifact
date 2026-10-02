@@ -1,0 +1,290 @@
+{
+  "benchmark_split": "external_main",
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Extract parse-style format compilation with named and positional fields and typed conversions.",
+    "level": "high",
+    "primary": "parser_state_coupling",
+    "signals": [
+      "literal and escaped-brace matching",
+      "named and positional capture fields",
+      "integer, float, word, and default string conversions"
+    ],
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "parse"
+    ],
+    "forbidden_imports": [
+      "parse"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "parse/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "evaluation_spec": {
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "hidden_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_full_match_and_case_policy"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_word_and_default_boundaries"
+      },
+      {
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface",
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+      }
+    ],
+    "manual_review": {
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface.",
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review"
+    },
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: literal and escaped-brace matching. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: named and positional capture fields. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: integer, float, word, and default string conversions. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: case-sensitive option and full-string matching. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Parser`, `featurelifted.Result`, `featurelifted.compile`, `featurelifted.parse` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: parse."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_named_and_typed_fields"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_positional_and_escaped_braces"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.Parser"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.Result"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.compile"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.parse"
+      }
+    ]
+  },
+  "feature": {
+    "description": "Extract parse-style format compilation with named and positional fields and typed conversions.",
+    "excluded_behaviors": [
+      "custom type registries",
+      "datetime formats",
+      "search and findall",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "included_behaviors": [
+      "literal and escaped-brace matching",
+      "named and positional capture fields",
+      "integer, float, word, and default string conversions",
+      "case-sensitive option and full-string matching"
+    ],
+    "name": "Format-string parser",
+    "source_entrypoints": [
+      "parse.parse",
+      "parse.compile",
+      "parse.Parser",
+      "parse.Result"
+    ]
+  },
+  "generated_task_hash": "a7943213f61fb8874342c7369cd739c2125d89fb8e0d394cf1cb1cea29f22a12",
+  "language": "python",
+  "output": {
+    "callable": "parse",
+    "import": "from featurelifted import Parser, Result, compile, parse",
+    "package": "featurelifted",
+    "signature": "parse(format, string, case_sensitive=False)"
+  },
+  "public_spec": {
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: literal and escaped-brace matching. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: named and positional capture fields. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: integer, float, word, and default string conversions. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: case-sensitive option and full-string matching. Required observable cases include named and typed fields; positional and escaped braces; full match and case policy; word and default boundaries."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Parser`, `featurelifted.Result`, `featurelifted.compile`, `featurelifted.parse` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "exclusions": [
+      "custom type registries",
+      "datetime formats",
+      "search and findall",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "forbidden": {
+      "imports": [
+        "parse"
+      ],
+      "paths": [
+        "repo/",
+        "parse/"
+      ]
+    },
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "The submitted package does not import forbidden upstream packages: parse."
+    },
+    "optional_api": [],
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "required_api": [
+      {
+        "kind": "class",
+        "path": "featurelifted.Parser",
+        "signature": "(format, case_sensitive=False)"
+      },
+      {
+        "kind": "class",
+        "path": "featurelifted.Result",
+        "signature": "(fixed: tuple, named: dict) -> None"
+      },
+      {
+        "kind": "function",
+        "path": "featurelifted.compile",
+        "signature": "(format, case_sensitive=False)"
+      },
+      {
+        "kind": "function",
+        "path": "featurelifted.parse",
+        "signature": "(format, string, case_sensitive=False)"
+      }
+    ],
+    "source_entrypoints": [
+      "parse.parse",
+      "parse.compile",
+      "parse.Parser",
+      "parse.Result"
+    ],
+    "summary": "Extract a task-scoped subset of `parse` into a standalone `featurelifted` package.",
+    "title": "Format-string parser"
+  },
+  "selection_id": "external150-replacement-20260727-v1",
+  "source": {
+    "commit": "334db144c2813e9029cb890bbd49edd30f67ab9b",
+    "license": "MIT",
+    "name": "parse",
+    "requested_tag": "1.20.2",
+    "resolved_commit": "334db144c2813e9029cb890bbd49edd30f67ab9b",
+    "url": "https://github.com/r1chardj0n3s/parse.git"
+  },
+  "spec_hash": "38b49e4f01464e54d8d9f100ed0088e92fc0c5663ce99f36ba23784b664452c8",
+  "spec_status": "compliant",
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "external150-replacement",
+    "preregistered",
+    "parser_state_coupling"
+  ],
+  "task_id": "parse__format_parser_core__001",
+  "task_revision": 2,
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  }
+}

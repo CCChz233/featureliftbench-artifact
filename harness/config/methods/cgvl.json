@@ -1,0 +1,59 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "cgvl.model-primary12.2",
+  "display_name": "Contract-Guided Verification Loop v2",
+  "ablation_arm": "cgvl",
+  "method_label": "cgvl",
+  "cli_flag": "--cgvl",
+  "environment_flag": "FEATURELIFTBENCH_CGVL=1",
+  "description": "Harness expands every functional Bxxx clause into compact semantic cells, groups union arms, checks exact public-entry calls, requires executable actual/expected assertions and recomputed counterexample witnesses, scans the public isolation contract, and rejects a red runtime finish. Same 128k Main envelope, 120 steps, No-Hint, no 2M cap. Hidden and public_tests stay unmounted. Screening only; numbers do not enter the Python-200' main table.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_cgvl"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only (v2 cgvl_matrix.json + compact cgvl_cells)",
+    "evaluator_feedback_to_agent": false,
+    "source_entrypoints_in_workspace": false
+  },
+  "method": {
+    "checker_mode": "cgvl_v2_semantic_evidence_gate",
+    "behavior_cases": true,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "token",
+    "mount_public_tests": false,
+    "expose_source_hints": false,
+    "cgvl": true
+  },
+  "process_metrics": [
+    "checker_ran",
+    "checker_ok",
+    "cells_filled",
+    "public_entry_cells",
+    "finished_while_red",
+    "assertion_records",
+    "counterexamples_killed",
+    "isolation_ok",
+    "runtime_finish_gate_ok"
+  ],
+  "screening": {
+    "slice": "12 model-primary contract-alignment failures from the 2026-08-29 process audit",
+    "task_list": "harness/config/experiments/cgvl_model_primary12_v2.txt",
+    "readout": "functional_gate vs same-day Main. Kill if Functional 0→1 < 3/12 or Hidden 0→1 is 0 on the Hidden subset. Still not a main-table row.",
+    "kill_if": "Functional 0→1 is <3/12, or Hidden-only subset flips 0",
+    "keep_if": "Hidden 0→1 ≥2 on aiohttp/pygments/python_decouple/zope with public_tests unmounted",
+    "do_not": [
+      "Python-200'",
+      "include Cookiecutter/Decorator/Installer/Yamale",
+      "stack Public-feedback",
+      "stack Spec-adversarial"
+    ]
+  }
+}

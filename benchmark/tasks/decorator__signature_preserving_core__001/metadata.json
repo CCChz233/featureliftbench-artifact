@@ -1,0 +1,254 @@
+{
+  "benchmark_split": "external_main",
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Extract caller-based decoration that preserves introspection metadata for sync and async functions.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "caller receives the original function before bound arguments",
+      "decorated call enforces the original function signature",
+      "name, docstring, module, annotations, wrapped, and inspect.signature are preserved"
+    ],
+    "types": [
+      "data_model_coupling",
+      "framework_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "decorator"
+    ],
+    "forbidden_imports": [
+      "decorator"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "decorator/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "evaluation_spec": {
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "hidden_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_calls_follow_original_signature"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_async_caller_and_wrapped"
+      },
+      {
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface",
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+      }
+    ],
+    "manual_review": {
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface.",
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review"
+    },
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: caller receives the original function before bound arguments. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: decorated call enforces the original function signature. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: name, docstring, module, annotations, wrapped, and inspect.signature are preserved. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: async callers and coroutine functions remain awaitable. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.decorate`, `featurelifted.decorator` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: decorator."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_metadata_signature_and_call_order"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.decorate"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.decorator"
+      }
+    ]
+  },
+  "feature": {
+    "description": "Extract caller-based decoration that preserves introspection metadata for sync and async functions.",
+    "excluded_behaviors": [
+      "contextmanager helpers",
+      "FunctionMaker source generation",
+      "class decoration",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "included_behaviors": [
+      "caller receives the original function before bound arguments",
+      "decorated call enforces the original function signature",
+      "name, docstring, module, annotations, wrapped, and inspect.signature are preserved",
+      "async callers and coroutine functions remain awaitable"
+    ],
+    "name": "Signature-preserving function decorator",
+    "source_entrypoints": [
+      "decorator.decorator",
+      "decorator.decorate"
+    ]
+  },
+  "generated_task_hash": "5a22f777b8eb72e1d9476434fbbce7ae2f073effbc45566dd853269d87ee8233",
+  "language": "python",
+  "output": {
+    "callable": "decorator",
+    "import": "from featurelifted import decorate, decorator",
+    "package": "featurelifted",
+    "signature": "decorator(caller, func=None)"
+  },
+  "public_spec": {
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: caller receives the original function before bound arguments. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: decorated call enforces the original function signature. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: name, docstring, module, annotations, wrapped, and inspect.signature are preserved. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: async callers and coroutine functions remain awaitable. Required observable cases include metadata signature and call order; invalid calls follow original signature; async caller and wrapped."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.decorate`, `featurelifted.decorator` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "exclusions": [
+      "contextmanager helpers",
+      "FunctionMaker source generation",
+      "class decoration",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "forbidden": {
+      "imports": [
+        "decorator"
+      ],
+      "paths": [
+        "repo/",
+        "decorator/"
+      ]
+    },
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "The submitted package does not import forbidden upstream packages: decorator."
+    },
+    "optional_api": [],
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "required_api": [
+      {
+        "kind": "function",
+        "path": "featurelifted.decorate",
+        "signature": "(func, caller)"
+      },
+      {
+        "kind": "function",
+        "path": "featurelifted.decorator",
+        "signature": "(caller, func=None)"
+      }
+    ],
+    "source_entrypoints": [
+      "decorator.decorator",
+      "decorator.decorate"
+    ],
+    "summary": "Extract a task-scoped subset of `decorator` into a standalone `featurelifted` package.",
+    "title": "Signature-preserving function decorator"
+  },
+  "selection_id": "external150-replacement-20260727-v1",
+  "source": {
+    "commit": "ad013a2c1ad7969963acf3dea948632be387f5a0",
+    "license": "BSD-2-Clause",
+    "name": "decorator",
+    "requested_tag": "5.1.1",
+    "resolved_commit": "ad013a2c1ad7969963acf3dea948632be387f5a0",
+    "url": "https://github.com/micheles/decorator.git"
+  },
+  "spec_hash": "55ca39d6c1ed86fbabc65a3185a62092335b214760a8d3add942591785ed37f6",
+  "spec_status": "compliant",
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "external150-replacement",
+    "preregistered",
+    "reflection_signature_coupling"
+  ],
+  "task_id": "decorator__signature_preserving_core__001",
+  "task_revision": 2,
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  }
+}

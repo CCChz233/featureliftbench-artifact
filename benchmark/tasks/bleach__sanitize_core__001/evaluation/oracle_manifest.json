@@ -1,0 +1,12 @@
+{
+  "source_package_name": "bleach",
+  "required_source_files": [
+    "bleach/sanitizer.py",
+    "bleach/html5lib_shim.py",
+    "bleach/utils.py",
+    "bleach/_vendor/parse.py",
+    "bleach/_vendor/html5lib"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle sanitizer stack; repo includes linkifier for copy-all penalty."
+}

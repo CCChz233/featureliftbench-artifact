@@ -1,0 +1,25 @@
+{
+  "source_package_name": "license_expression",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/license_expression/__init__.py",
+    "repo/src/license_expression/_pyahocorasick.py",
+    "repo/pyproject.toml",
+    "repo/LICENSE"
+  ],
+  "target_api": [
+    "featurelifted.LicenseSymbol",
+    "featurelifted.Licensing",
+    "featurelifted.ExpressionInfo",
+    "featurelifted.ExpressionParseError"
+  ],
+  "forbidden_imports": [
+    "license_expression",
+    "boolean"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "src/license_expression/"
+  ],
+  "notes": "Task-scoped parser and policy evaluator. ScanCode/SPDX bundled datasets, boolean.py dependency, and HTML rendering are intentionally excluded."
+}

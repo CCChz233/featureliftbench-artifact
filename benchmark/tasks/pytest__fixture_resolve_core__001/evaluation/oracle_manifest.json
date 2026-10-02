@@ -1,0 +1,6 @@
+{
+  "source_files": [
+    "src/_pytest/fixtures.py"
+  ],
+  "notes": "Fixture name resolution subset: closure, registry lookup, deduplication, and marker helpers."
+}

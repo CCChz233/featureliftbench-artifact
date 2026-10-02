@@ -1,0 +1,20 @@
+{
+  "source_package_name": "tox",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/tox/config/loader/ini/factor.py"
+  ],
+  "target_api": [
+    "featurelifted.expand_factors",
+    "featurelifted.find_envs",
+    "featurelifted.filter_for_env"
+  ],
+  "forbidden_imports": [
+    "tox"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "tox/"
+  ],
+  "notes": "Factor expression and ini filtering subset without environment execution."
+}

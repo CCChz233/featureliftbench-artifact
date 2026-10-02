@@ -1,0 +1,265 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Spec interpreter, path state, exception tree, and registry-like modes span multiple helpers.",
+    "level": "high",
+    "primary": "parser_state_coupling",
+    "signals": [
+      "Coalesce returns first successful spec or default",
+      "T returns the target itself",
+      "nested path errors raise PathAccessError",
+      "default argument to glom catches path errors"
+    ],
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "glom"
+    ],
+    "forbidden_imports": [
+      "glom"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "glom/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped spec evaluation with coalesce, t, and error paths into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "CLI",
+      "streaming/grouping operators beyond target subset"
+    ],
+    "included_behaviors": [
+      "glom path evaluation",
+      "Coalesce",
+      "T target reference",
+      "path access errors"
+    ],
+    "name": "Spec evaluation with Coalesce, T, and error paths",
+    "source_entrypoints": [
+      "glom.glom",
+      "glom.T",
+      "glom.Coalesce"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "glom",
+    "import": "from featurelifted import glom, T, Coalesce, PathAccessError",
+    "package": "featurelifted",
+    "signature": "glom(target, spec, default=None)"
+  },
+  "source": {
+    "commit": "6fd41340f30519ddc64a546ad2703dfe53f12356",
+    "license": "BSD-3-Clause",
+    "name": "glom",
+    "url": "https://github.com/mahmoud/glom.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "rule / policy engine",
+    "parser_state_coupling"
+  ],
+  "task_id": "glom__spec_eval_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Spec evaluation with Coalesce, T, and error paths",
+    "summary": "Extract a task-scoped subset of `glom` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.glom",
+        "kind": "function",
+        "signature": "(target, spec, default=None)"
+      },
+      {
+        "path": "featurelifted.T",
+        "kind": "object"
+      },
+      {
+        "path": "featurelifted.Coalesce",
+        "kind": "class",
+        "signature": "(specs: 'list[Any]', default: 'Any' = None) -> None"
+      },
+      {
+        "path": "featurelifted.PathAccessError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`glom` evaluates dict/list/tuple specs, dotted path strings, callables, `T`, and `Coalesce`."
+      },
+      {
+        "id": "B002",
+        "text": "`Coalesce` returns the first successful child spec or a configured default."
+      },
+      {
+        "id": "B003",
+        "text": "When a T expression is evaluated, attribute and item traversal start from the current target and compose in expression order."
+      },
+      {
+        "id": "B004",
+        "text": "When dotted-path or T traversal cannot access a requested component, glom raises PathAccessError unless a declared default handles the failure."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.glom`, `featurelifted.T`, `featurelifted.Coalesce`, `featurelifted.PathAccessError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "glom.glom",
+      "glom.T",
+      "glom.Coalesce"
+    ],
+    "exclusions": [
+      "network access",
+      "CLI",
+      "streaming/grouping operators beyond target subset"
+    ],
+    "forbidden": {
+      "imports": [
+        "glom"
+      ],
+      "paths": [
+        "repo/",
+        "glom/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: glom."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`glom` evaluates dict/list/tuple specs, dotted path strings, callables, `T`, and `Coalesce`."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`Coalesce` returns the first successful child spec or a configured default."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When a T expression is evaluated, attribute and item traversal start from the current target and compose in expression order."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When dotted-path or T traversal cannot access a requested component, glom raises PathAccessError unless a declared default handles the failure."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.glom`, `featurelifted.T`, `featurelifted.Coalesce`, `featurelifted.PathAccessError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: glom"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_glom_path_and_t",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_coalesce_and_default",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_nested_path_error",
+        "behavior_ids": [
+          "B001",
+          "B004",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.glom",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.T",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Coalesce",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PathAccessError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "f4ebd5e263b6208fefea400b78f1f0706774fb2a70124eb5802e4f71174b6ff3",
+  "generated_task_hash": "79c02d0e995f84ef0c185cd248a27210ffe456c8928c6db454b91d1b6829e665"
+}

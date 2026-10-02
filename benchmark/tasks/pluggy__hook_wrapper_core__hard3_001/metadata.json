@@ -1,0 +1,269 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Hook wrappers, historic replay, call ordering, and result forcing require registry behavior and transitive helper closure.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "wrapper teardown order",
+      "historic replay on late registration",
+      "tryfirst/trylast hookimpl ordering",
+      "call_extra restores hook lists"
+    ],
+    "types": [
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "pluggy"
+    ],
+    "forbidden_imports": [
+      "pluggy"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "pluggy/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped hookcaller historic wrapper ordering into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "plugin manager discovery",
+      "entry point loading"
+    ],
+    "included_behaviors": [
+      "historic hook replay",
+      "hookwrapper ordering",
+      "multicall result aggregation"
+    ],
+    "name": "HookCaller historic wrapper ordering",
+    "source_entrypoints": [
+      "pluggy._hooks.HookCaller"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "HookCaller",
+    "import": "from featurelifted import HookCaller",
+    "package": "featurelifted",
+    "signature": "HookCaller(name, historic=False, firstresult=False)"
+  },
+  "source": {
+    "commit": "6b0f3293895e9a3dc5b5e5d4bcad5b1649e19c21",
+    "license": "MIT",
+    "name": "pluggy",
+    "url": "https://github.com/pytest-dev/pluggy.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "framework_coupling"
+  ],
+  "task_id": "pluggy__hook_wrapper_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "HookCaller historic wrapper ordering",
+    "summary": "Extract a task-scoped subset of `pluggy` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.HookCaller",
+        "kind": "class",
+        "signature": "(name: 'str', *, firstresult: 'bool' = False, historic: 'bool' = False) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.HookCaller.add_hookimpl",
+            "kind": "method",
+            "signature": "(self, function: 'Callable[..., Any]', *, tryfirst: 'bool' = False, trylast: 'bool' = False, optionalhook: 'bool' = False) -> 'None'"
+          },
+          {
+            "path": "featurelifted.HookCaller.call_extra",
+            "kind": "method",
+            "signature": "(self, methods: 'list[Callable[..., Any]]', kwargs: 'dict[str, Any]') -> 'Any'"
+          },
+          {
+            "path": "featurelifted.HookCaller.get_hookimpls",
+            "kind": "method",
+            "signature": "(self) -> 'list[HookImpl]'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`call_extra()` temporarily adds hook implementations without mutating permanent state."
+      },
+      {
+        "id": "B002",
+        "text": "`tryfirst`/`trylast` options control hookimpl ordering."
+      },
+      {
+        "id": "B003",
+        "text": "When HookCaller invokes multiple implementations, it aggregates results in hook order, honors firstresult, and lets wrappers observe or modify the outcome."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.HookCaller`, `featurelifted.HookCaller.add_hookimpl`, `featurelifted.HookCaller.call_extra`, `featurelifted.HookCaller.get_hookimpls` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "pluggy._hooks.HookCaller"
+    ],
+    "exclusions": [
+      "network access",
+      "plugin manager discovery",
+      "entry point loading"
+    ],
+    "forbidden": {
+      "imports": [
+        "pluggy"
+      ],
+      "paths": [
+        "repo/",
+        "pluggy/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: pluggy."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`call_extra()` temporarily adds hook implementations without mutating permanent state."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`tryfirst`/`trylast` options control hookimpl ordering."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When HookCaller invokes multiple implementations, it aggregates results in hook order, honors firstresult, and lets wrappers observe or modify the outcome."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.HookCaller`, `featurelifted.HookCaller.add_hookimpl`, `featurelifted.HookCaller.call_extra`, `featurelifted.HookCaller.get_hookimpls` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pluggy"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_historic_replays_for_late_registration",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_hookwrapper_runs_teardown",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_tryfirst_trylast_ordering",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_call_extra_restores_state",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_direct_call_on_historic_raises",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.HookCaller",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.HookCaller.add_hookimpl",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_call_extra_restores_state",
+          "hidden_tests/test_hidden_contract.py::test_tryfirst_trylast_ordering"
+        ]
+      },
+      {
+        "path": "featurelifted.HookCaller.call_extra",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_call_extra_restores_state"
+        ]
+      },
+      {
+        "path": "featurelifted.HookCaller.get_hookimpls",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_call_extra_restores_state"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "48ff3245d4de79e32e3dea79f69deb801fbdf5e289947bbe5baa91950008438e",
+  "generated_task_hash": "e2a2a54d3a9f14d1a0bf5ef9b867423ec99bca708b6fd84ce557a0125eb3d664"
+}

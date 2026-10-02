@@ -1,0 +1,318 @@
+{
+  "task_id": "coverage__path_remap_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "config_environment_coupling",
+    "resource_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "coveragepy",
+    "url": "https://github.com/coveragepy/coveragepy",
+    "commit": "f0dcf65f47120d9f74f6777134d3b8e92515ce6f",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Combine path remap",
+    "description": "Extract coverage.py PathAliases logic that remaps measured file paths when combining data from different machines or checkout roots.",
+    "source_entrypoints": [
+      "coverage.files.PathAliases.add",
+      "coverage.files.PathAliases.map"
+    ],
+    "included_behaviors": [
+      "register glob-style path prefix aliases",
+      "map absolute and relative paths through the first matching alias",
+      "normalize path separators to the alias result style",
+      "reject alias patterns ending in wildcards with ConfigError (message: must not end with wildcards)",
+      "skip mappings when the mapped target path does not exist"
+    ],
+    "excluded_behaviors": [
+      "glob include/omit matching for measurement",
+      "run-section configuration parsing",
+      "InOrOut source selection policy",
+      "coverage data combine I/O and SQLite storage",
+      "original project tests and CLI"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Path remapping reuses glob-to-regex conversion, canonicalization, existence checks, and auto-generated relative alias rules.",
+    "signals": [
+      "PathAliases layered on globs_to_regex and canonical_filename",
+      "relative versus absolute alias modes",
+      "implicit alias generation for unmatched relative paths"
+    ],
+    "primary": "resource_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import PathAliases; from featurelifted.exceptions import ConfigError",
+    "callable": "featurelifted.PathAliases.map",
+    "signature": "PathAliases(...).map(path: str, exists: Callable[[str], bool] = ...) -> str"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "coverage"
+    ],
+    "forbidden_imports": [
+      "coverage"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Combine path remap",
+    "summary": "Extract a task-scoped subset of `coverage` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.PathAliases",
+        "kind": "class",
+        "signature": "(debugfn: 'Callable[[str], None] | None' = None, relative: 'bool' = False) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.PathAliases.map",
+            "kind": "method",
+            "signature": "(self, path: 'str', exists: 'Callable[[str], bool]' = <function source_exists>) -> 'str'"
+          },
+          {
+            "path": "featurelifted.PathAliases.add",
+            "kind": "method",
+            "signature": "(self, pattern: 'str', result: 'str') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.ConfigError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: register glob-style path prefix aliases. Required observable cases include path aliases maps wildcard prefix; path aliases leaves unmatched paths; path aliases multiple rules; path aliases rejects trailing wildcards; path aliases skips nonexistent targets; path aliases relative pattern."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: map absolute and relative paths through the first matching alias. Required observable cases include path aliases maps wildcard prefix; path aliases leaves unmatched paths; path aliases multiple rules; path aliases relative pattern."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: normalize path separators to the alias result style. Required observable cases include path aliases skips nonexistent targets."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: reject alias patterns ending in wildcards with ConfigError (message: must not end with wildcards). Required observable cases include path aliases rejects trailing wildcards."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: skip mappings when the mapped target path does not exist. Required observable cases include path aliases skips nonexistent targets."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.PathAliases`, `featurelifted.PathAliases.map`, `featurelifted.PathAliases.add`, `featurelifted.exceptions`, `featurelifted.exceptions.ConfigError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "coverage.files.PathAliases.add",
+      "coverage.files.PathAliases.map"
+    ],
+    "exclusions": [
+      "glob include/omit matching for measurement",
+      "run-section configuration parsing",
+      "InOrOut source selection policy",
+      "coverage data combine I/O and SQLite storage",
+      "original project tests and CLI"
+    ],
+    "forbidden": {
+      "imports": [
+        "coverage"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: coverage."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: register glob-style path prefix aliases. Required observable cases include path aliases maps wildcard prefix; path aliases leaves unmatched paths; path aliases multiple rules; path aliases rejects trailing wildcards; path aliases skips nonexistent targets; path aliases relative pattern."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: map absolute and relative paths through the first matching alias. Required observable cases include path aliases maps wildcard prefix; path aliases leaves unmatched paths; path aliases multiple rules; path aliases relative pattern."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: normalize path separators to the alias result style. Required observable cases include path aliases skips nonexistent targets."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject alias patterns ending in wildcards with ConfigError (message: must not end with wildcards). Required observable cases include path aliases rejects trailing wildcards."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: skip mappings when the mapped target path does not exist. Required observable cases include path aliases skips nonexistent targets."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.PathAliases`, `featurelifted.PathAliases.map`, `featurelifted.PathAliases.add`, `featurelifted.exceptions`, `featurelifted.exceptions.ConfigError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: coverage"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_path_aliases_maps_wildcard_prefix",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_path_aliases_leaves_unmatched_paths",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_path_aliases_multiple_rules",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_path_aliases_rejects_trailing_wildcards",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_path_aliases_skips_nonexistent_targets",
+        "behavior_ids": [
+          "B001",
+          "B005",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_path_aliases_relative_pattern",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.PathAliases",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PathAliases.map",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_multiple_rules",
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_relative_pattern",
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_skips_nonexistent_targets"
+        ]
+      },
+      {
+        "path": "featurelifted.PathAliases.add",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_multiple_rules",
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_rejects_trailing_wildcards",
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_relative_pattern",
+          "hidden_tests/test_hidden_behavior.py::test_path_aliases_skips_nonexistent_targets"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.ConfigError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "2e47626c057e02a2572731edafc8aa24903facb02add9a71c1c07055ff4ac942",
+  "generated_task_hash": "64fc7e58cb0982edd31bd2d41d756ddd764cc1faedadecbb58b93f2091c40d6a"
+}

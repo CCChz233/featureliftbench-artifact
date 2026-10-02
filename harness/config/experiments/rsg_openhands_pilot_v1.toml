@@ -1,0 +1,50 @@
+schema_version = "featureliftbench.rsg_pilot.spec.v1"
+name = "openhands-rsg-pilot-v1"
+agent = "openhands-agent"
+agent_version = "1.16.0"
+sdk_version = "1.21.0"
+model = "deepseek/deepseek-v4-flash"
+agent_config = "harness/config/agents.example.toml"
+agent_image = "featureliftbench-agent:openhands-rsg-pilot-v1"
+eval_image = "featureliftbench-eval:latest"
+task_root = "benchmark/tasks"
+repeats = 3
+order_seed = 20260723
+num_workers = 1
+timeout_seconds = 3600
+retry_rate_limit = 3
+max_infrastructure_attempts = 2
+
+tasks = [
+  "celery__signal_dispatch_core__hard3_001",
+  "requests_cache__cache_key_core__hard3_001",
+]
+
+[context]
+window_tokens = 131072
+reserved_output_tokens = 8192
+trigger_tokens = 122880
+target_tokens = 61440
+keep_first = 4
+max_events = 1000000
+
+[arms.p0]
+profile = "openhands_deepseek_v4_flash_rsg_pilot_p0"
+repo_graph_mode = "disabled"
+
+[arms.p3]
+profile = "openhands_deepseek_v4_flash_rsg_pilot_p3"
+repo_graph_mode = "closure"
+
+[stopping]
+adoption_first_n = 4
+adoption_minimum = 3
+consecutive_infrastructure_failures = 2
+max_total_tokens = 30000000
+
+[acceptance]
+planned_cells = 12
+final_adoption_minimum = 5
+final_adoption_denominator = 6
+formal_pass_allowed_regression = 1
+token_regression_limit = 0.20

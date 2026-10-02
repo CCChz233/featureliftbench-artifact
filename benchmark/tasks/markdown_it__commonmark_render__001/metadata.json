@@ -1,0 +1,288 @@
+{
+  "task_id": "markdown_it__commonmark_render__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "markdown",
+    "parser",
+    "renderer",
+    "commonmark",
+    "pure-python"
+  ],
+  "source": {
+    "name": "markdown-it-py",
+    "url": "https://github.com/executablebooks/markdown-it-py",
+    "commit": "2.2.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "CommonMark block/inline parsing and HTML rendering",
+    "description": "Extract markdown-it-py's MarkdownIt parser and renderer for CommonMark-compatible HTML output.",
+    "source_entrypoints": [
+      "markdown_it.MarkdownIt",
+      "markdown_it.token.Token",
+      "markdown_it.utils"
+    ],
+    "included_behaviors": [
+      "render headings, paragraphs, emphasis, lists, blockquotes, links, images, code spans, and fenced code blocks",
+      "escape raw text correctly in rendered HTML",
+      "parse Markdown into Token objects with nesting, tags, attrs, content, and markup",
+      "support the commonmark preset and enable/disable rules"
+    ],
+    "excluded_behaviors": [
+      "CLI entrypoints",
+      "plugin ecosystem beyond core parser rules",
+      "documentation and benchmark fixtures"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "CommonMark rendering is coupled to block/inline parser rules, token trees, renderer state, and escaping behavior.",
+    "signals": [
+      "block and inline rule pipeline",
+      "token stream data model",
+      "renderer rule interactions"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import MarkdownIt",
+    "callable": "featurelifted.MarkdownIt",
+    "signature": "MarkdownIt(config='commonmark', options_update=None, renderer_cls=None)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "mdurl"
+    ],
+    "forbidden_dependencies": [
+      "markdown-it-py"
+    ],
+    "forbidden_imports": [
+      "markdown_it"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "CommonMark block/inline parsing and HTML rendering",
+    "summary": "Extract a task-scoped subset of `markdown_it` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.MarkdownIt",
+        "kind": "class",
+        "signature": "(config: 'str | Mapping' = 'commonmark', options_update: 'Mapping | None' = None, *, renderer_cls: 'Callable[[MarkdownIt], RendererProtocol]' = <class 'RendererHTML'>)",
+        "members": [
+          {
+            "path": "featurelifted.MarkdownIt.render",
+            "kind": "method",
+            "signature": "(self, src: 'str', env: 'MutableMapping | None' = None) -> 'Any'"
+          },
+          {
+            "path": "featurelifted.MarkdownIt.disable",
+            "kind": "method",
+            "signature": "(self, names: 'str | Iterable[str]', ignoreInvalid: 'bool' = False) -> 'MarkdownIt'"
+          },
+          {
+            "path": "featurelifted.MarkdownIt.enable",
+            "kind": "method",
+            "signature": "(self, names: 'str | Iterable[str]', ignoreInvalid: 'bool' = False) -> 'MarkdownIt'"
+          },
+          {
+            "path": "featurelifted.MarkdownIt.parse",
+            "kind": "method",
+            "signature": "(self, src: 'str', env: 'MutableMapping | None' = None) -> 'list[Token]'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: render headings, paragraphs, emphasis, lists, blockquotes, links, images, code spans, and fenced code blocks. Required observable cases include nested blocks code escaping and images; strikethrough and reference links."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: escape raw text correctly in rendered HTML. Required observable cases include commonmark basic html rendering; strikethrough and reference links."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: parse Markdown into Token objects with nesting, tags, attrs, content, and markup. Required observable cases include parse returns useful tokens; strikethrough and reference links."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: support the commonmark preset and enable/disable rules. Required observable cases include fence rule disable and link attributes."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.MarkdownIt`, `featurelifted.MarkdownIt.render`, `featurelifted.MarkdownIt.disable`, `featurelifted.MarkdownIt.enable`, `featurelifted.MarkdownIt.parse` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "markdown_it.MarkdownIt",
+      "markdown_it.token.Token",
+      "markdown_it.utils"
+    ],
+    "exclusions": [
+      "CLI entrypoints",
+      "plugin ecosystem beyond core parser rules",
+      "documentation and benchmark fixtures"
+    ],
+    "forbidden": {
+      "imports": [
+        "markdown_it"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: markdown_it."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: render headings, paragraphs, emphasis, lists, blockquotes, links, images, code spans, and fenced code blocks. Required observable cases include nested blocks code escaping and images; strikethrough and reference links."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: escape raw text correctly in rendered HTML. Required observable cases include commonmark basic html rendering; strikethrough and reference links."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse Markdown into Token objects with nesting, tags, attrs, content, and markup. Required observable cases include parse returns useful tokens; strikethrough and reference links."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support the commonmark preset and enable/disable rules. Required observable cases include fence rule disable and link attributes."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.MarkdownIt`, `featurelifted.MarkdownIt.render`, `featurelifted.MarkdownIt.disable`, `featurelifted.MarkdownIt.enable`, `featurelifted.MarkdownIt.parse` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: markdown_it"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_commonmark_basic_html_rendering",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_returns_useful_tokens",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_blocks_code_escaping_and_images",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_fence_rule_disable_and_link_attributes",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_strikethrough_and_reference_links",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.MarkdownIt",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkdownIt.render",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_fence_rule_disable_and_link_attributes",
+          "hidden_tests/test_hidden_behavior.py::test_nested_blocks_code_escaping_and_images"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkdownIt.disable",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_fence_rule_disable_and_link_attributes"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkdownIt.enable",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_strikethrough_and_reference_links"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkdownIt.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_fence_rule_disable_and_link_attributes"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "486ea9c45561c8571bdbb18908d38c42c19176a7d09654963232a364eccfb5de",
+  "generated_task_hash": "56ddc94c9ad62c4cf1d8408a43ede65483a04eaaf88bd01134c670a1849862a3"
+}

@@ -1,0 +1,502 @@
+{
+  "task_id": "urllib3__retry_backoff_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "urllib3",
+    "retry-policy",
+    "functional-discriminator",
+    "config_environment_coupling"
+  ],
+  "source": {
+    "name": "urllib3",
+    "url": "https://github.com/urllib3/urllib3",
+    "commit": "2f68c5363ef632d73dd4d9300289d7ce5ff275b4",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Retry backoff policy core",
+    "description": "Extract urllib3 Retry configuration, exponential backoff, status_forcelist matching, redirect accounting, and increment/history semantics without importing urllib3 or performing HTTP I/O.",
+    "source_entrypoints": [
+      "urllib3.util.retry.Retry",
+      "urllib3.util.retry.RequestHistory",
+      "urllib3.util.retry.Retry.get_backoff_time",
+      "urllib3.util.retry.Retry.is_retry",
+      "urllib3.util.retry.Retry.increment",
+      "urllib3.util.retry.Retry.parse_retry_after",
+      "urllib3.exceptions.MaxRetryError"
+    ],
+    "included_behaviors": [
+      "Retry defaults and from_int coercion",
+      "connect/read/status/redirect/other counter decrement and exhaustion",
+      "status_forcelist and allowed_methods conjunction",
+      "exponential backoff with max cap and redirect reset",
+      "Retry-After header parsing with numeric and HTTP-date forms",
+      "RequestHistory accumulation on increment",
+      "remove_headers_on_redirect lowercasing"
+    ],
+    "excluded_behaviors": [
+      "HTTP connection pools, sockets, TLS, and actual request/response I/O",
+      "PoolManager and connectionpool integration",
+      "upstream test suite and dummyserver",
+      "original urllib3 import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "Retry couples multi-counter configuration, backoff history semantics, status/method allowlists, redirect vs error history, and typed MaxRetryError reasons.",
+    "signals": [
+      "total/connect/read/status/redirect/other counter interplay",
+      "consecutive error backoff vs redirect history reset",
+      "status_forcelist AND allowed_methods gating",
+      "RequestHistory tuple growth on increment branches",
+      "parse_retry_after numeric vs HTTP-date branches"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Retry, RequestHistory, ConnectTimeoutError, ReadTimeoutError, MaxRetryError, ResponseError, InvalidHeader",
+    "callable": "featurelifted.Retry",
+    "signature": "Retry(total=10, connect=None, read=None, redirect=None, status=None, other=None, **kw)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "urllib3"
+    ],
+    "forbidden_imports": [
+      "urllib3"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Retry backoff policy core",
+    "summary": "Extract a task-scoped subset of `urllib3` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Retry",
+        "kind": "class",
+        "signature": "(total: 'bool | int | None' = 10, connect: 'int | None' = None, read: 'int | None' = None, redirect: 'bool | int | None' = None, status: 'int | None' = None, other: 'int | None' = None, allowed_methods: 'typing.Collection[str] | None' = frozenset({'GET', 'DELETE', 'PUT', 'HEAD', 'TRACE', 'OPTIONS'}), status_forcelist: 'typing.Collection[int] | None' = None, backoff_factor: 'float' = 0, backoff_max: 'float' = 120, raise_on_redirect: 'bool' = True, raise_on_status: 'bool' = True, history: 'tuple[RequestHistory, ...] | None' = None, respect_retry_after_header: 'bool' = True, remove_headers_on_redirect: 'typing.Collection[str]' = frozenset({'Proxy-Authorization', 'Authorization', 'Cookie'}), backoff_jitter: 'float' = 0.0) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Retry.get_backoff_time",
+            "kind": "method",
+            "signature": "(self) -> 'float'"
+          },
+          {
+            "path": "featurelifted.Retry.history",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Retry.increment",
+            "kind": "method",
+            "signature": "(self, method: 'str | None' = None, url: 'str | None' = None, response: 'BaseHTTPResponse | None' = None, error: 'Exception | None' = None, _pool: 'ConnectionPool | None' = None, _stacktrace: 'TracebackType | None' = None) -> 'Self'"
+          },
+          {
+            "path": "featurelifted.Retry.is_retry",
+            "kind": "method",
+            "signature": "(self, method: 'str', status_code: 'int', has_retry_after: 'bool' = False) -> 'bool'"
+          },
+          {
+            "path": "featurelifted.Retry.parse_retry_after",
+            "kind": "method",
+            "signature": "(self, retry_after: 'str') -> 'float'"
+          },
+          {
+            "path": "featurelifted.Retry.remove_headers_on_redirect",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Retry.from_int",
+            "kind": "method",
+            "signature": "(retries: 'Retry | bool | int | None', redirect: 'bool | int | None' = True, default: 'Retry | bool | int | None' = None) -> 'Retry'"
+          },
+          {
+            "path": "featurelifted.Retry.total",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.RequestHistory",
+        "kind": "class",
+        "signature": "(method: ForwardRef('str | None'), url: ForwardRef('str | None'), error: ForwardRef('Exception | None'), status: ForwardRef('int | None'), redirect_location: ForwardRef('str | None'))"
+      },
+      {
+        "path": "featurelifted.ConnectTimeoutError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.ReadTimeoutError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.MaxRetryError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.ResponseError",
+        "kind": "exception",
+        "members": [
+          {
+            "path": "featurelifted.ResponseError.SPECIFIC_ERROR",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidHeader",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: Retry defaults and from_int coercion. Required observable cases include retry defaults and from int; total wins over connect."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: connect/read/status/redirect/other counter decrement and exhaustion. Required observable cases include connect timeout increment; total wins over connect."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: status_forcelist and allowed_methods conjunction. Required observable cases include is retry status forcelist; allowed methods and status forcelist and; read timeout requires allowed method; status increment raises specific error."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: exponential backoff with max cap and redirect reset. Required observable cases include backoff progression; backoff resets after redirect."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: Retry-After header parsing with numeric and HTTP-date forms. Required observable cases include parse retry after numeric and invalid."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: RequestHistory accumulation on increment. Required observable cases include connect timeout increment; history accumulates; status increment raises specific error."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: remove_headers_on_redirect lowercasing. Required observable cases include remove headers on redirect lowercased."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.Retry`, `featurelifted.Retry.get_backoff_time`, `featurelifted.Retry.history`, `featurelifted.Retry.increment`, `featurelifted.Retry.is_retry`, `featurelifted.Retry.parse_retry_after`, `featurelifted.Retry.remove_headers_on_redirect`, `featurelifted.Retry.from_int`, `featurelifted.Retry.total`, `featurelifted.RequestHistory`, `featurelifted.ConnectTimeoutError`, `featurelifted.ReadTimeoutError`, and 4 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "urllib3.util.retry.Retry",
+      "urllib3.util.retry.RequestHistory",
+      "urllib3.util.retry.Retry.get_backoff_time",
+      "urllib3.util.retry.Retry.is_retry",
+      "urllib3.util.retry.Retry.increment",
+      "urllib3.util.retry.Retry.parse_retry_after",
+      "urllib3.exceptions.MaxRetryError"
+    ],
+    "exclusions": [
+      "HTTP connection pools, sockets, TLS, and actual request/response I/O",
+      "PoolManager and connectionpool integration",
+      "upstream test suite and dummyserver",
+      "original urllib3 import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "urllib3"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: urllib3."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Retry defaults and from_int coercion. Required observable cases include retry defaults and from int; total wins over connect."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: connect/read/status/redirect/other counter decrement and exhaustion. Required observable cases include connect timeout increment; total wins over connect."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: status_forcelist and allowed_methods conjunction. Required observable cases include is retry status forcelist; allowed methods and status forcelist and; read timeout requires allowed method; status increment raises specific error."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: exponential backoff with max cap and redirect reset. Required observable cases include backoff progression; backoff resets after redirect."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Retry-After header parsing with numeric and HTTP-date forms. Required observable cases include parse retry after numeric and invalid."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: RequestHistory accumulation on increment. Required observable cases include connect timeout increment; history accumulates; status increment raises specific error."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: remove_headers_on_redirect lowercasing. Required observable cases include remove headers on redirect lowercased."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Retry`, `featurelifted.Retry.get_backoff_time`, `featurelifted.Retry.history`, `featurelifted.Retry.increment`, `featurelifted.Retry.is_retry`, `featurelifted.Retry.parse_retry_after`, `featurelifted.Retry.remove_headers_on_redirect`, `featurelifted.Retry.from_int`, `featurelifted.Retry.total`, `featurelifted.RequestHistory`, `featurelifted.ConnectTimeoutError`, `featurelifted.ReadTimeoutError`, and 4 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: urllib3"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_retry_public.py::test_retry_defaults_and_from_int",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_retry_public.py::test_is_retry_status_forcelist",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_retry_public.py::test_backoff_progression",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_retry_public.py::test_connect_timeout_increment",
+        "behavior_ids": [
+          "B002",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_total_wins_over_connect",
+        "behavior_ids": [
+          "B002",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_allowed_methods_and_status_forcelist_and",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_backoff_resets_after_redirect",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_parse_retry_after_numeric_and_invalid",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_history_accumulates",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_read_timeout_requires_allowed_method",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_remove_headers_on_redirect_lowercased",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_status_increment_raises_specific_error",
+        "behavior_ids": [
+          "B003",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_retry_hidden.py::test_no_urllib3_import_surface",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Retry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.get_backoff_time",
+        "covered_by_tests": [
+          "hidden_tests/test_retry_hidden.py::test_backoff_resets_after_redirect"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.history",
+        "covered_by_tests": [
+          "hidden_tests/test_retry_hidden.py::test_history_accumulates"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.increment",
+        "covered_by_tests": [
+          "hidden_tests/test_retry_hidden.py::test_backoff_resets_after_redirect",
+          "hidden_tests/test_retry_hidden.py::test_history_accumulates",
+          "hidden_tests/test_retry_hidden.py::test_read_timeout_requires_allowed_method",
+          "hidden_tests/test_retry_hidden.py::test_status_increment_raises_specific_error",
+          "hidden_tests/test_retry_hidden.py::test_total_wins_over_connect"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.is_retry",
+        "covered_by_tests": [
+          "hidden_tests/test_retry_hidden.py::test_allowed_methods_and_status_forcelist_and"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.parse_retry_after",
+        "covered_by_tests": [
+          "hidden_tests/test_retry_hidden.py::test_parse_retry_after_numeric_and_invalid"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.remove_headers_on_redirect",
+        "covered_by_tests": [
+          "hidden_tests/test_retry_hidden.py::test_remove_headers_on_redirect_lowercased"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.from_int",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Retry.total",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.RequestHistory",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ConnectTimeoutError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ReadTimeoutError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MaxRetryError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ResponseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ResponseError.SPECIFIC_ERROR",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.InvalidHeader",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "048953875ff80745de64c1e198cacdc2e5c2eb57d711d73db161a171b316bb69",
+  "generated_task_hash": "9f869b77378d4084bf52bba1fb49e1b74566435c615cae2799217620a1c51619"
+}

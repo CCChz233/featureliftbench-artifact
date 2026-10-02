@@ -1,0 +1,308 @@
+{
+  "task_id": "sqlparse__parse_split_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "parser",
+    "tokenizer",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "sqlparse",
+    "url": "https://github.com/andialbrecht/sqlparse",
+    "commit": "f80af6a4007f11ada847218df8c29dc859238290",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "SQL parse and split core",
+    "description": "Extract sqlparse's SQL statement parsing and multi-statement splitting behavior as a standalone package.",
+    "source_entrypoints": [
+      "sqlparse.parse",
+      "sqlparse.parsestream",
+      "sqlparse.split"
+    ],
+    "included_behaviors": [
+      "parse SQL text into Statement token trees",
+      "split multi-statement SQL scripts while respecting strings, comments, and nesting",
+      "preserve statement-splitting behavior for semicolons inside quotes and comments"
+    ],
+    "excluded_behaviors": [
+      "SQL formatting and formatter filters",
+      "token tree navigation helpers beyond basic parse output",
+      "command line interface",
+      "original project tests",
+      "documentation and release tooling",
+      "packaging metadata from the original project",
+      "dialect-perfect SQL validation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "SQL parse and split behavior depends on tokenizer state, statement-splitting passes, and grouping rules spread across multiple modules.",
+    "signals": [
+      "lexer and statement-splitting state",
+      "grouped token tree data model for split boundaries",
+      "public API hides a multi-module runtime closure"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import parse, parsestream, split, sql, tokens",
+    "callable": "featurelifted.parse",
+    "signature": "parse(sql: str, encoding: str | None = None) -> tuple[Statement, ...]"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "sqlparse"
+    ],
+    "forbidden_imports": [
+      "sqlparse"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "SQL parse and split core",
+    "summary": "Extract a task-scoped subset of `sqlparse` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(sql: str, encoding: str | None = None) -> tuple[Statement, ...]"
+      },
+      {
+        "path": "featurelifted.parsestream",
+        "kind": "function",
+        "signature": "(stream: Union[str, IO[str]], encoding: str | None = None) -> collections.abc.Generator[Statement, None, None]"
+      },
+      {
+        "path": "featurelifted.split",
+        "kind": "function",
+        "signature": "(sql: str, encoding: str | None = None, strip_semicolon: bool = False) -> list[str]"
+      },
+      {
+        "path": "featurelifted.sql",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.sql.Statement",
+            "kind": "class",
+            "signature": "(tokens=None)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.tokens",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.tokens.Keyword",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.tokens.Keyword.DML",
+        "kind": "attribute"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse SQL text into Statement token trees. Required observable cases include parse returns statement tokens; parse multiple statements."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: split multi-statement SQL scripts while respecting strings, comments, and nesting. Required observable cases include split respects quoted semicolons; split handles comments and embedded semicolons."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: preserve statement-splitting behavior for semicolons inside quotes and comments. Required observable cases include split handles comments and embedded semicolons."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.parsestream`, `featurelifted.split`, `featurelifted.sql`, `featurelifted.sql.Statement`, `featurelifted.tokens`, `featurelifted.tokens.Keyword`, `featurelifted.tokens.Keyword.DML` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "sqlparse.parse",
+      "sqlparse.parsestream",
+      "sqlparse.split"
+    ],
+    "exclusions": [
+      "SQL formatting and formatter filters",
+      "token tree navigation helpers beyond basic parse output",
+      "command line interface",
+      "original project tests",
+      "documentation and release tooling",
+      "packaging metadata from the original project",
+      "dialect-perfect SQL validation"
+    ],
+    "forbidden": {
+      "imports": [
+        "sqlparse"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: sqlparse."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse SQL text into Statement token trees. Required observable cases include parse returns statement tokens; parse multiple statements."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: split multi-statement SQL scripts while respecting strings, comments, and nesting. Required observable cases include split respects quoted semicolons; split handles comments and embedded semicolons."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preserve statement-splitting behavior for semicolons inside quotes and comments. Required observable cases include split handles comments and embedded semicolons."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.parsestream`, `featurelifted.split`, `featurelifted.sql`, `featurelifted.sql.Statement`, `featurelifted.tokens`, `featurelifted.tokens.Keyword`, `featurelifted.tokens.Keyword.DML` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: sqlparse"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_returns_statement_tokens",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_split_respects_quoted_semicolons",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_split_handles_comments_and_embedded_semicolons",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_multiple_statements",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parsestream",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.split",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.sql.Statement",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tokens",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tokens.Keyword",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.tokens.Keyword.DML",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "7d7d8d8c671fbe8b5086efb2097e3df4bbd04170321e6a6584a3808bb654c762",
+  "generated_task_hash": "df574c21bc99f4efff262e87524b7df730f08213d3639246a490d5f8eb407cb5"
+}

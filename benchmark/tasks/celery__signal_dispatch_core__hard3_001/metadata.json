@@ -1,0 +1,274 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Signal receiver registration, weak refs, sender filtering, and robust dispatch are stateful.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "weak receiver cleanup after sender deletion",
+      "sender filtering limits dispatch",
+      "exception capture in send responses",
+      "duplicate receiver ids via dispatch_uid"
+    ],
+    "types": [
+      "framework_coupling",
+      "global_state_registry_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "celery"
+    ],
+    "forbidden_imports": [
+      "celery"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "celery/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped signal registry and receiver dispatch into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "broker/task execution",
+      "worker runtime"
+    ],
+    "included_behaviors": [
+      "receiver registration",
+      "sender filtering",
+      "dispatch responses",
+      "weak receiver cleanup"
+    ],
+    "name": "Signal registry and receiver dispatch",
+    "source_entrypoints": [
+      "celery.utils.dispatch.signal.Signal"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Signal",
+    "import": "from featurelifted import Signal",
+    "package": "featurelifted",
+    "signature": "Signal(name='signal')"
+  },
+  "source": {
+    "commit": "201573a11fb8c6cf8f712deea3b23142146b2cbb",
+    "license": "BSD-3-Clause",
+    "name": "celery",
+    "url": "https://github.com/celery/celery.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "stateful runtime behavior",
+    "framework_coupling"
+  ],
+  "task_id": "celery__signal_dispatch_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Signal registry and receiver dispatch",
+    "summary": "Extract a task-scoped subset of `celery` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Signal",
+        "kind": "class",
+        "signature": "(name: 'str' = 'signal') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Signal.connect",
+            "kind": "method",
+            "signature": "(self, receiver: 'Callable[..., Any]', sender: 'Any' = None, dispatch_uid: 'Any' = None, weak: 'bool' = True) -> 'Callable[..., Any]'"
+          },
+          {
+            "path": "featurelifted.Signal.send",
+            "kind": "method",
+            "signature": "(self, sender: 'Any' = None, **kwargs) -> 'list[tuple[Any, Any]]'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When connect registers a receiver, dispatch invokes it once unless dispatch_uid intentionally deduplicates the registration."
+      },
+      {
+        "id": "B002",
+        "text": "When a receiver is registered for a sender, dispatch invokes it only for matching sender values while sender-agnostic receivers still run."
+      },
+      {
+        "id": "B003",
+        "text": "When a signal is dispatched, the returned list preserves receiver order and pairs each receiver with its response or captured exception."
+      },
+      {
+        "id": "B004",
+        "text": "When a weakly referenced receiver is garbage-collected, later dispatches omit and clean up that dead receiver."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Signal`, `featurelifted.Signal.connect`, `featurelifted.Signal.send` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "celery.utils.dispatch.signal.Signal"
+    ],
+    "exclusions": [
+      "network access",
+      "broker/task execution",
+      "worker runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "celery"
+      ],
+      "paths": [
+        "repo/",
+        "celery/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: celery."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When connect registers a receiver, dispatch invokes it once unless dispatch_uid intentionally deduplicates the registration."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When a receiver is registered for a sender, dispatch invokes it only for matching sender values while sender-agnostic receivers still run."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When a signal is dispatched, the returned list preserves receiver order and pairs each receiver with its response or captured exception."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When a weakly referenced receiver is garbage-collected, later dispatches omit and clean up that dead receiver."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Signal`, `featurelifted.Signal.connect`, `featurelifted.Signal.send` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: celery"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_signal_send_invokes_receiver",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_sender_filtering",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_dispatch_uid_allows_duplicate_callables",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_exception_capture_in_send",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_weak_receiver_cleanup",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Signal",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Signal.connect",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_dispatch_uid_allows_duplicate_callables",
+          "hidden_tests/test_hidden_contract.py::test_exception_capture_in_send",
+          "hidden_tests/test_hidden_contract.py::test_sender_filtering",
+          "hidden_tests/test_hidden_contract.py::test_weak_receiver_cleanup"
+        ]
+      },
+      {
+        "path": "featurelifted.Signal.send",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_dispatch_uid_allows_duplicate_callables",
+          "hidden_tests/test_hidden_contract.py::test_exception_capture_in_send",
+          "hidden_tests/test_hidden_contract.py::test_sender_filtering",
+          "hidden_tests/test_hidden_contract.py::test_weak_receiver_cleanup"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "400fd11cd7bdef464892a9ac8f78735d401db9b36c1970e6da781423d8451a38",
+  "generated_task_hash": "fa61fbc0db2852f2a630ad79dbd383967bf02ce6b679b671f7dede02adc9f3d2"
+}

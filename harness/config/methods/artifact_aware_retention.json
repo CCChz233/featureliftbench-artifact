@@ -1,0 +1,56 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "artifact-aware-retention.core12-screen.1",
+  "display_name": "Artifact-aware retention",
+  "ablation_arm": "main",
+  "method_label": "artifact_aware",
+  "cli_flag": null,
+  "environment_flag": "FEATURELIFTBENCH_OPENHANDS_CONDENSER_MODE=artifact_aware",
+  "description": "Same 128k Main envelope and trajectory. Condenser keeps persistent latest artifact/spec state and stubs unchanged ephemeral re-reads. Contrast: LLM Summary vs Recency Masking vs Artifact-aware. No 2M cap. Core-12 mechanism screening only.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_llm_summary",
+    "openhands_deepseek_v4_flash_recency_masking",
+    "openhands_deepseek_v4_flash_artifact_aware"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only",
+    "evaluator_feedback_to_agent": false
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "artifact_aware",
+    "openhands_condenser_attention_window": 100
+  },
+  "contrasts": [
+    {
+      "profile": "openhands_deepseek_v4_flash_llm_summary",
+      "openhands_condenser_mode": "token",
+      "role": "baseline LLM summarizer"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_recency_masking",
+      "openhands_condenser_mode": "recency_masking",
+      "role": "recency control"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_artifact_aware",
+      "openhands_condenser_mode": "artifact_aware",
+      "role": "information-role condenser"
+    }
+  ],
+  "screening": {
+    "slice": "Core-12",
+    "task_list": "harness/config/experiments/rescue_plus_core12_v1.txt",
+    "stop_if": "tokens do not drop or Pass clearly regresses; else Distill-24"
+  }
+}

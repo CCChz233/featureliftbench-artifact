@@ -1,0 +1,464 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Cache matching depends on normalized URL/query params, redacted ignored parameters, request body encoding, selected headers, and response/request cache-control semantics.",
+    "level": "high",
+    "primary": "third_party_dependency_coupling",
+    "signals": [
+      "Query parameter order should not change cache identity.",
+      "Ignored parameter values should be redacted rather than leaked.",
+      "Only selected headers should affect cache keys unless all headers are matched.",
+      "Cache-Control no-store and max-age alter storage and expiration behavior."
+    ],
+    "types": [
+      "third_party_dependency_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "requests_cache",
+      "requests",
+      "url_normalize"
+    ],
+    "forbidden_imports": [
+      "requests_cache",
+      "requests",
+      "url_normalize"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "requests_cache/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract task-scoped HTTP request cache key normalization and cache expiration policy.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "HTTP sessions",
+      "cache backends",
+      "serializers",
+      "Redis/MongoDB/SQLite/filesystem storage"
+    ],
+    "included_behaviors": [
+      "create_key",
+      "create_cache_key compatibility helper",
+      "normalize_url",
+      "normalize_params",
+      "normalize_headers",
+      "normalize_body",
+      "get_matched_headers",
+      "CachePolicy.from_headers",
+      "get_expiration",
+      "Cache-Control no-store and max-age",
+      "Expires and default expiration"
+    ],
+    "name": "HTTP request cache key and expiration policy",
+    "source_entrypoints": [
+      "requests_cache.cache_keys.create_key",
+      "requests_cache.cache_keys.normalize_url",
+      "requests_cache.cache_keys.normalize_body",
+      "requests_cache.policy.expiration.get_expiration_datetime",
+      "requests_cache.policy.directives.CacheDirectives"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "create_key",
+    "import": "from featurelifted import CachePolicy, create_key, get_expiration",
+    "package": "featurelifted",
+    "signature": "create_key(method, url, params=None, headers=None, body=None, ignored_parameters=None, match_headers=False) -> str"
+  },
+  "source": {
+    "commit": "df44b695a31401c617fa4725d189578c1d603ae1",
+    "license": "BSD-2-Clause",
+    "name": "requests_cache",
+    "url": "https://github.com/requests-cache/requests-cache.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "third-party dependency coupling",
+    "third_party_dependency_coupling"
+  ],
+  "task_id": "requests_cache__cache_key_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "HTTP request cache key and expiration policy",
+    "summary": "Extract a task-scoped subset of `requests_cache` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.CachePolicy",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.CachePolicy.from_headers",
+            "kind": "method",
+            "signature": "(headers: 'dict[str, Any] | None', default: 'int | None' = None, now: 'datetime | None' = None) -> \"'CachePolicy'\""
+          },
+          {
+            "path": "featurelifted.CachePolicy.expiration_seconds",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.CachePolicy.should_store",
+            "kind": "attribute"
+          }
+        ],
+        "signature": "(should_store: 'bool', expiration_seconds: 'int | None', reason: 'str' = '') -> None"
+      },
+      {
+        "path": "featurelifted.create_key",
+        "kind": "function",
+        "signature": "(method: 'str', url: 'str', params=None, headers: 'dict[str, Any] | None' = None, body: 'Any' = None, ignored_parameters=None, match_headers: 'bool | list[str] | tuple[str, ...]' = False, verify: 'bool' = True, serializer: 'Any' = None, content_root_key: 'str | None' = None) -> 'str'"
+      },
+      {
+        "path": "featurelifted.get_expiration",
+        "kind": "function",
+        "signature": "(headers: 'dict[str, Any] | None', default: 'int | None' = None, now: 'datetime | None' = None) -> 'int | None'"
+      },
+      {
+        "path": "featurelifted.create_cache_key",
+        "kind": "function",
+        "signature": "(request: 'Any', **kwargs: 'Any') -> 'str'"
+      },
+      {
+        "path": "featurelifted.normalize_body",
+        "kind": "function",
+        "signature": "(body: 'Any', headers: 'dict[str, Any] | None' = None, ignored_parameters=None, content_root_key: 'str | None' = None) -> 'bytes'"
+      },
+      {
+        "path": "featurelifted.normalize_headers",
+        "kind": "function",
+        "signature": "(headers: 'dict[str, Any] | None', ignored_parameters=None) -> 'dict[str, str]'"
+      },
+      {
+        "path": "featurelifted.normalize_params",
+        "kind": "function",
+        "signature": "(value: 'Any', ignored_parameters=None) -> 'str'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "create_key normalizes method, URL, parameters, selected headers, and body before returning a deterministic cache-key digest."
+      },
+      {
+        "id": "B002",
+        "text": "create_cache_key reads request-like objects and produces the same key as create_key with equivalent explicit fields."
+      },
+      {
+        "id": "B003",
+        "text": "normalize_url lowercases scheme and host, merges explicit parameters, sorts query items, and preserves key-only or repeated parameters."
+      },
+      {
+        "id": "B004",
+        "text": "normalize_params sorts parameters and redacts configured ignored values without removing their keys."
+      },
+      {
+        "id": "B005",
+        "text": "normalize_headers includes only matched headers, normalizes names and whitespace, and deterministically orders multi-value content."
+      },
+      {
+        "id": "B006",
+        "text": "normalize_body canonicalizes JSON key order and form-encoded parameters and redacts ignored values in both body forms."
+      },
+      {
+        "id": "B007",
+        "text": "get_matched_headers returns the normalized header subset requested by match_headers and excludes unmatched headers."
+      },
+      {
+        "id": "B008",
+        "text": "CachePolicy.from_headers interprets Cache-Control and Expires headers into storage and expiration decisions."
+      },
+      {
+        "id": "B009",
+        "text": "get_expiration returns max-age seconds, Expires relative to now, no-store suppression, or the declared default when no directive applies."
+      },
+      {
+        "id": "B010",
+        "text": "`Cache-Control: max-age=N` sets expiration to `N` seconds."
+      },
+      {
+        "id": "B011",
+        "text": "Use `default` expiration when no cache header applies."
+      },
+      {
+        "id": "B012",
+        "text": "The package exposes the required task API paths `featurelifted.CachePolicy`, `featurelifted.CachePolicy.from_headers`, `featurelifted.CachePolicy.expiration_seconds`, `featurelifted.CachePolicy.should_store`, `featurelifted.create_key`, `featurelifted.get_expiration`, `featurelifted.create_cache_key`, `featurelifted.normalize_body`, `featurelifted.normalize_headers`, `featurelifted.normalize_params` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "requests_cache.cache_keys.create_key",
+      "requests_cache.cache_keys.normalize_url",
+      "requests_cache.cache_keys.normalize_body",
+      "requests_cache.policy.expiration.get_expiration_datetime",
+      "requests_cache.policy.directives.CacheDirectives"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "HTTP sessions",
+      "cache backends",
+      "serializers",
+      "Redis/MongoDB/SQLite/filesystem storage"
+    ],
+    "forbidden": {
+      "imports": [
+        "requests_cache",
+        "requests",
+        "url_normalize"
+      ],
+      "paths": [
+        "repo/",
+        "requests_cache/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B013",
+      "text": "the submitted package does not import forbidden upstream packages: requests_cache, requests, url_normalize."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "create_key normalizes method, URL, parameters, selected headers, and body before returning a deterministic cache-key digest."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "create_cache_key reads request-like objects and produces the same key as create_key with equivalent explicit fields."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "normalize_url lowercases scheme and host, merges explicit parameters, sorts query items, and preserves key-only or repeated parameters."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "normalize_params sorts parameters and redacts configured ignored values without removing their keys."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "normalize_headers includes only matched headers, normalizes names and whitespace, and deterministically orders multi-value content."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "normalize_body canonicalizes JSON key order and form-encoded parameters and redacts ignored values in both body forms."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "get_matched_headers returns the normalized header subset requested by match_headers and excludes unmatched headers."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "included_behavior",
+        "text": "CachePolicy.from_headers interprets Cache-Control and Expires headers into storage and expiration decisions."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "included_behavior",
+        "text": "get_expiration returns max-age seconds, Expires relative to now, no-store suppression, or the declared default when no directive applies."
+      },
+      {
+        "behavior_id": "B010",
+        "clause_kind": "included_behavior",
+        "text": "`Cache-Control: max-age=N` sets expiration to `N` seconds."
+      },
+      {
+        "behavior_id": "B011",
+        "clause_kind": "included_behavior",
+        "text": "Use `default` expiration when no cache header applies."
+      },
+      {
+        "behavior_id": "B012",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.CachePolicy`, `featurelifted.CachePolicy.from_headers`, `featurelifted.CachePolicy.expiration_seconds`, `featurelifted.CachePolicy.should_store`, `featurelifted.create_key`, `featurelifted.get_expiration`, `featurelifted.create_cache_key`, `featurelifted.normalize_body`, `featurelifted.normalize_headers`, `featurelifted.normalize_params` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B013",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: requests_cache, requests, url_normalize"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_query_order_normalized",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_ignored_parameter_redacts_value_for_matching",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_cache_control_max_age_and_no_store",
+        "behavior_ids": [
+          "B010"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_json_body_sorting_and_redaction_affect_cache_key",
+        "behavior_ids": [
+          "B001",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_form_body_and_key_only_params_are_normalized",
+        "behavior_ids": [
+          "B004",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_match_headers_controls_key_variation",
+        "behavior_ids": [
+          "B005",
+          "B007",
+          "B002",
+          "B003",
+          "B008",
+          "B009",
+          "B010"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_header_multi_value_normalization_and_redaction",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_expires_header_and_default_expiration",
+        "behavior_ids": [
+          "B011"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B012"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.CachePolicy",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CachePolicy.from_headers",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_expires_header_and_default_expiration"
+        ]
+      },
+      {
+        "path": "featurelifted.CachePolicy.expiration_seconds",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_expires_header_and_default_expiration",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CachePolicy.should_store",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.create_key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.get_expiration",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.create_cache_key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.normalize_body",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.normalize_headers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.normalize_params",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 6,
+  "spec_hash": "56fb0f0c35093553772bfa936c515e2b30179cf0d270a472f1d63409e1c81a6b",
+  "generated_task_hash": "e9c8e7fabad5b518bdf1fd723c2f99073f365c59bfe398fdebb7c4c7ad93d94d"
+}

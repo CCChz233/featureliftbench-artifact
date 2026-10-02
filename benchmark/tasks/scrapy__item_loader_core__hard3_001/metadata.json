@@ -1,0 +1,342 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Declarative processors, field metadata, nested loaders, and default processor resolution interact dynamically.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "input and output processor composition",
+      "nested item loader inherits parent defaults",
+      "default processor overrides per field",
+      "missing field add_value raises KeyError"
+    ],
+    "types": [
+      "framework_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "scrapy"
+    ],
+    "forbidden_imports": [
+      "scrapy"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "scrapy/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped item loader processor registry into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "selector/response extraction",
+      "downloader/crawler code"
+    ],
+    "included_behaviors": [
+      "Item/Field metadata",
+      "ItemLoader processor pipeline",
+      "nested loaders"
+    ],
+    "name": "Item loader processor registry",
+    "source_entrypoints": [
+      "scrapy.loader.ItemLoader",
+      "scrapy.item.Item"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "ItemLoader",
+    "import": "from featurelifted import Item, Field, ItemLoader, Compose, TakeFirst, Identity",
+    "package": "featurelifted",
+    "signature": "ItemLoader(item=None, parent=None, **context)"
+  },
+  "source": {
+    "commit": "dd10cb8e9a982fe3d311078d6e1207596e272717",
+    "license": "BSD-3-Clause",
+    "name": "scrapy",
+    "url": "https://github.com/scrapy/scrapy.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "framework_coupling"
+  ],
+  "task_id": "scrapy__item_loader_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "public_spec": {
+    "title": "Item loader processor registry",
+    "summary": "Extract a task-scoped subset of `scrapy` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Item",
+        "kind": "class",
+        "signature": "(*args, **kwargs)"
+      },
+      {
+        "path": "featurelifted.Field",
+        "kind": "class",
+        "signature": "(*args, **kwargs)"
+      },
+      {
+        "path": "featurelifted.ItemLoader",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.ItemLoader.__init__",
+            "kind": "method",
+            "signature": "(self, item: 'type[Item] | Item | None' = None, parent: \"'ItemLoader | None'\" = None, **context)"
+          },
+          {
+            "path": "featurelifted.ItemLoader.add_value",
+            "kind": "method",
+            "signature": "(self, field_name: 'str', value: 'Any') -> 'None'"
+          },
+          {
+            "path": "featurelifted.ItemLoader.load_item",
+            "kind": "method",
+            "signature": "(self) -> 'Item'"
+          },
+          {
+            "path": "featurelifted.ItemLoader.default_output_processor",
+            "kind": "attribute"
+          }
+        ],
+        "signature": "(item: 'type[Item] | Item | None' = None, parent: \"'ItemLoader | None'\" = None, **context)"
+      },
+      {
+        "path": "featurelifted.Compose",
+        "kind": "function",
+        "signature": "(*processors: 'Callable') -> 'Callable'"
+      },
+      {
+        "path": "featurelifted.TakeFirst",
+        "kind": "function",
+        "signature": "()"
+      }
+    ],
+    "optional_api": [
+      {
+        "path": "featurelifted.Identity",
+        "kind": "callable"
+      }
+    ],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When an Item declares Field metadata with input or output processors, those processors are attached to the field definition."
+      },
+      {
+        "id": "B002",
+        "text": "When ItemLoader.add_value runs input processors and load_item runs output processors, the resulting item values reflect the processor pipeline."
+      },
+      {
+        "id": "B003",
+        "text": "When a nested ItemLoader is created with parent=..., it inherits the parent default processor types."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.Item`, `featurelifted.Field`, `featurelifted.ItemLoader`, `featurelifted.ItemLoader.__init__`, `featurelifted.ItemLoader.add_value`, `featurelifted.ItemLoader.load_item`, `featurelifted.ItemLoader.default_output_processor`, `featurelifted.Compose`, `featurelifted.TakeFirst` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "id": "B006",
+        "text": "When add_value is called for an undefined field name, ItemLoader raises KeyError."
+      }
+    ],
+    "source_entrypoints": [
+      "scrapy.loader.ItemLoader",
+      "scrapy.item.Item"
+    ],
+    "exclusions": [
+      "network access",
+      "selector/response extraction",
+      "downloader/crawler code"
+    ],
+    "forbidden": {
+      "imports": [
+        "scrapy"
+      ],
+      "paths": [
+        "repo/",
+        "scrapy/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "The submitted package does not import forbidden upstream packages: scrapy."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When an Item declares Field metadata with input or output processors, those processors are attached to the field definition."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When ItemLoader.add_value runs input processors and load_item runs output processors, the resulting item values reflect the processor pipeline."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When a nested ItemLoader is created with parent=..., it inherits the parent default processor types."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Item`, `featurelifted.Field`, `featurelifted.ItemLoader`, `featurelifted.ItemLoader.__init__`, `featurelifted.ItemLoader.add_value`, `featurelifted.ItemLoader.load_item`, `featurelifted.ItemLoader.default_output_processor`, `featurelifted.Compose`, `featurelifted.TakeFirst` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: scrapy."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When add_value is called for an undefined field name, ItemLoader raises KeyError."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When add_value is called for an undefined field name, ItemLoader raises KeyError."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When add_value is called for an undefined field name, ItemLoader raises KeyError."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When add_value is called for an undefined field name, ItemLoader raises KeyError."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_item_loader_applies_processors",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_compose_output_processor_and_parent_defaults",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_missing_field_raises",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Item",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Field",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ItemLoader",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ItemLoader.__init__",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ItemLoader.add_value",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_compose_output_processor_and_parent_defaults",
+          "hidden_tests/test_hidden_contract.py::test_missing_field_raises"
+        ]
+      },
+      {
+        "path": "featurelifted.ItemLoader.load_item",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_compose_output_processor_and_parent_defaults"
+        ]
+      },
+      {
+        "path": "featurelifted.ItemLoader.default_output_processor",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_compose_output_processor_and_parent_defaults"
+        ]
+      },
+      {
+        "path": "featurelifted.Compose",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TakeFirst",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "constitution_pilot_migration",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Historical failure on undefined field KeyError is now explicit behavior B006.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "spec_status": "compliant",
+  "task_revision": 5,
+  "spec_hash": "57f579c3d9dacf2f5b3fe95d23589c9bcddb9c7a1d75e8cffa0dcc3d8ca449cc",
+  "generated_task_hash": "ac1d9ee9fca690fa9e77e238e068a868a9932788d3ce263124cecb490fc51486"
+}

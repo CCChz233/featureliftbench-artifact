@@ -1,0 +1,43 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "v2.adaptive-budget.1",
+  "display_name": "V2",
+  "ablation_arm": "adaptive_budget_v2",
+  "method_label": "v2",
+  "cli_flag": "--adaptive-budget-v2",
+  "environment_flag": "FEATURELIFTBENCH_ADAPTIVE_BUDGET_V2=1",
+  "description": "Main paper protocol with a 1.5M primary total-token cap, one legal progress checkpoint (events/mtime only), and an optional 500K targeted-repair phase. Hard ceiling remains 2M. Never uses evaluator public/hidden tests.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_v2"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only",
+    "evaluator_feedback_to_agent": false
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "primary_token_limit": 1500000,
+    "extra_token_limit": 500000,
+    "openhands_total_token_limit": 1500000,
+    "openhands_max_steps": 120,
+    "repair_rounds": 1,
+    "checkpoint": "recent_submission_writes_or_mtime",
+    "recent_actions": 10,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "primary_prompt": "main",
+    "repair_prompt": "targeted_repair"
+  },
+  "provenance": {
+    "diagnostic": "experiments/methods/adaptive_budget_v2/core12-deepseek-v4-flash-v2-0817-001",
+    "compare_vs": [
+      "experiments/methods/main_2m_cap/core12-deepseek-v4-flash-main-2m-cap-0817-001",
+      "live API Main (FeatureLiftBench-deepseek-v4-flash-150 / external50)"
+    ]
+  }
+}

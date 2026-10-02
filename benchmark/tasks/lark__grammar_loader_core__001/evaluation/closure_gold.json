@@ -1,0 +1,932 @@
+{
+  "annotation_scope": {
+    "behavioral": "linked_to_public_behavior_ids",
+    "file": "complete_ai_assisted_reference_closure",
+    "runtime": "unresolved",
+    "symbol": "unresolved"
+  },
+  "audit": {
+    "limitation": "File completeness is provisional reference-closure completeness. Symbol, runtime-state, replaceability, and semantic minimality remain unresolved until independent human review and executable necessity probes.",
+    "manifest_file_count": 34,
+    "selection_source": "oracle_manifest.required_source_files",
+    "static_candidate_count": 23,
+    "static_candidates_not_in_reference_closure": []
+  },
+  "closure_variants": [
+    {
+      "requirements": [
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_001",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_002",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/ast_utils.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_003",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/common.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_004",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/exceptions.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_005",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/grammar.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_006",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/grammars/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_007",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/grammars/common.lark"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_008",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/grammars/lark.lark"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_009",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/grammars/python.lark"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_010",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/grammars/unicode.lark"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_011",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/indenter.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_012",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/lark.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_013",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/lexer.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_014",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/load_grammar.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_015",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parse_tree_builder.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_016",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parser_frontends.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_017",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_018",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/cyk.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_019",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/earley.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_020",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/earley_common.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_021",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/earley_forest.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_022",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/grammar_analysis.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_023",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/lalr_analysis.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_024",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/lalr_interactive_parser.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_025",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/lalr_parser.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_026",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/lalr_parser_state.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_027",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/parsers/xearley.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_028",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/py.typed"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_029",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/reconstruct.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_030",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/tree.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_031",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/tree_matcher.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_032",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/tree_templates.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_033",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/utils.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004"
+          ],
+          "evidence_paths": [
+            "evaluation/oracle_manifest.json#required_source_files"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement confirmed by the legacy oracle manifest and a separate static pass.",
+          "requirement_id": "file_requirement_034",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/lark/visitors.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        }
+      ],
+      "variant_id": "reference_source_closure"
+    }
+  ],
+  "entrypoints": [
+    "lark.Lark",
+    "lark.Lark.open",
+    "lark.Lark.open_from_package",
+    "lark.load_grammar.load_grammar"
+  ],
+  "gold_completeness": {
+    "adapter": "unresolved",
+    "file": "complete",
+    "resource": "unresolved",
+    "runtime_state": "unresolved",
+    "symbol": "unresolved",
+    "third_party": "unresolved"
+  },
+  "review": {
+    "adjudicator": "",
+    "disagreements": [],
+    "formal_human_double_review_pending": true,
+    "reviewer_1": "codex_manifest_normalization_pass",
+    "reviewer_1_type": "ai_assisted_author",
+    "reviewer_2": "codex_static_entrypoint_closure_pass",
+    "reviewer_2_type": "ai_assisted_second_pass_not_independent_human",
+    "status": "ai_assisted_reviewed"
+  },
+  "schema_version": "featureliftbench.closure_gold.v1",
+  "task_id": "lark__grammar_loader_core__001"
+}

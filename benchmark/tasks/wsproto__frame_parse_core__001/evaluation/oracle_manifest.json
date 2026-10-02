@@ -1,0 +1,5 @@
+{
+  "source_package_name": "wsproto",
+  "required_source_files": [],
+  "notes": "Oracle is frame_protocol closure; repo includes wsproto and h11 for copy-all penalty."
+}

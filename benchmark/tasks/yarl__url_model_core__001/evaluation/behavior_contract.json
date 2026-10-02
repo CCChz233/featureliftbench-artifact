@@ -1,0 +1,209 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_duplicate_query_keys_multidict",
+      "public_clause_ids": [
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_semicolon_in_query_value_not_separator",
+      "public_clause_ids": [
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_idna_unicode_host_decoded",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_join_relative_parent_path",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_joinpath_normalizes_dot_segments",
+      "public_clause_ids": [
+        "B004",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_default_http_port_omitted_from_str",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_query_no_double_unquote",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_update_query_with_multidict",
+      "public_clause_ids": [
+        "B003",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_join_preserves_base_query_when_relative_has_query_only",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_no_yarl_import_surface",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_url_hidden.py::test_join_rejects_non_url_type",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B007"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: parse and construct URL objects with scheme, host, port, path, query, fragment. Required observable cases include basic parse components; with query kwargs; query no double unquote."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: join absolute and relative URLs preserving query and fragment rules. Required observable cases include join absolute path; with query kwargs; join relative parent path; query no double unquote; join preserves base query when relative has query only; join rejects non url type."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: MultiDict query with duplicate keys, ordering, and semicolon-in-value handling. Required observable cases include duplicate query keys multidict; semicolon in query value not separator; update query with multidict."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: path normalization for dot and dot-dot segments. Required observable cases include joinpath appends segments; joinpath normalizes dot segments."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The extracted feature must support this observable behavior: IDNA host encoding and decoding; default port omission in string form. Required observable cases include idna unicode host decoded; default http port omitted from str."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The extracted feature must support this observable behavior: with_query, update_query, and joinpath helpers. Required observable cases include joinpath appends segments; joinpath normalizes dot segments; update query with multidict."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "The package exposes the required task API paths `featurelifted.URL`, `featurelifted.Query`, `featurelifted.QueryVariable`, `featurelifted.SimpleQuery`, `featurelifted.cache_clear`, `featurelifted.cache_configure`, `featurelifted.cache_info` with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B008",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B008",
+      "text": "the submitted package does not import forbidden upstream packages: yarl, aiohttp"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_url_public.py::test_basic_parse_components",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_url_public.py::test_join_absolute_path",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_url_public.py::test_with_query_kwargs",
+      "public_clause_ids": [
+        "B001",
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_url_public.py::test_joinpath_appends_segments",
+      "public_clause_ids": [
+        "B004",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 3,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "parser_state_coupling",
+    "data_model_coupling",
+    "third_party_dependency_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "c25a05c0cf80d98fc22afc6f061f6693bcd34548fc64cba901d8d374b3f93d94",
+  "task_id": "yarl__url_model_core__001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

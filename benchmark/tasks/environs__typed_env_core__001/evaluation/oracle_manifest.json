@@ -1,0 +1,10 @@
+{
+  "source_package_name": "environs",
+  "required_source_files": [
+    "src/environs/exceptions.py",
+    "src/environs/types.py",
+    "src/environs/fields.py",
+    "src/environs/__init__.py"
+  ],
+  "notes": "Oracle copies exceptions, types, fields, and a trimmed env core (__init__ without dotenv, FileAwareEnv, or django URL parsers). Copy-all includes upstream tests for extraction calibration."
+}

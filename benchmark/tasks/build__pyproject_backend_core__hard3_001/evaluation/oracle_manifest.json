@@ -1,0 +1,20 @@
+{
+  "source_package_name": "build",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/build/_builder.py",
+    "repo/src/build/_exceptions.py"
+  ],
+  "target_api": [
+    "featurelifted.validate_source_directory",
+    "featurelifted.parse_build_system_table"
+  ],
+  "forbidden_imports": [
+    "build"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "build/"
+  ],
+  "notes": "Build-system table subset without isolated env runner."
+}

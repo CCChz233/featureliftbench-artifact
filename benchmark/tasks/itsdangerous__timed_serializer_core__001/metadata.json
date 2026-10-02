@@ -1,0 +1,301 @@
+{
+  "benchmark_split": "external_main",
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Extract URL-safe authenticated JSON serialization with timestamp expiry and explicit signature errors.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "deterministic URL-safe dumps and loads for JSON-compatible values",
+      "salt-separated HMAC-SHA256 signatures",
+      "timestamp max_age validation with injectable current time"
+    ],
+    "types": [
+      "data_model_coupling",
+      "config_environment_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "itsdangerous"
+    ],
+    "forbidden_imports": [
+      "itsdangerous"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "itsdangerous/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "evaluation_spec": {
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "hidden_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_expiry_boundary_and_error_type"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_wrong_key_and_malformed_token"
+      },
+      {
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface",
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+      }
+    ],
+    "manual_review": {
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface.",
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review"
+    },
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: deterministic URL-safe dumps and loads for JSON-compatible values. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: salt-separated HMAC-SHA256 signatures. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: timestamp max_age validation with injectable current time. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: BadSignature and SignatureExpired error distinctions. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.URLSafeTimedSerializer`, `featurelifted.URLSafeTimedSerializer.dumps`, `featurelifted.URLSafeTimedSerializer.loads`, `featurelifted.BadSignature`, `featurelifted.SignatureExpired` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: itsdangerous."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_roundtrip_and_salt_separation"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_tampering_raises_bad_signature"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.URLSafeTimedSerializer"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_expiry_boundary_and_error_type"
+        ],
+        "path": "featurelifted.URLSafeTimedSerializer.dumps"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_expiry_boundary_and_error_type"
+        ],
+        "path": "featurelifted.URLSafeTimedSerializer.loads"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.BadSignature"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.SignatureExpired"
+      }
+    ]
+  },
+  "feature": {
+    "description": "Extract URL-safe authenticated JSON serialization with timestamp expiry and explicit signature errors.",
+    "excluded_behaviors": [
+      "JWS",
+      "fallback signers",
+      "non-JSON serializers",
+      "network access",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "included_behaviors": [
+      "deterministic URL-safe dumps and loads for JSON-compatible values",
+      "salt-separated HMAC-SHA256 signatures",
+      "timestamp max_age validation with injectable current time",
+      "BadSignature and SignatureExpired error distinctions"
+    ],
+    "name": "Timed URL-safe serializer",
+    "source_entrypoints": [
+      "itsdangerous.url_safe.URLSafeTimedSerializer",
+      "itsdangerous.exc.BadSignature",
+      "itsdangerous.exc.SignatureExpired"
+    ]
+  },
+  "generated_task_hash": "25814246769dd5b8720c15ab74d2a9221674d15c6da0a8e5db4f9032740bf457",
+  "language": "python",
+  "output": {
+    "callable": "URLSafeTimedSerializer",
+    "import": "from featurelifted import URLSafeTimedSerializer, BadSignature, SignatureExpired",
+    "package": "featurelifted",
+    "signature": "URLSafeTimedSerializer(secret_key, salt='featurelift', *, now=None)"
+  },
+  "public_spec": {
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: deterministic URL-safe dumps and loads for JSON-compatible values. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: salt-separated HMAC-SHA256 signatures. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: timestamp max_age validation with injectable current time. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: BadSignature and SignatureExpired error distinctions. Required observable cases include roundtrip and salt separation; tampering raises bad signature; expiry boundary and error type; wrong key and malformed token."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.URLSafeTimedSerializer`, `featurelifted.URLSafeTimedSerializer.dumps`, `featurelifted.URLSafeTimedSerializer.loads`, `featurelifted.BadSignature`, `featurelifted.SignatureExpired` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "exclusions": [
+      "JWS",
+      "fallback signers",
+      "non-JSON serializers",
+      "network access",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "forbidden": {
+      "imports": [
+        "itsdangerous"
+      ],
+      "paths": [
+        "repo/",
+        "itsdangerous/"
+      ]
+    },
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "The submitted package does not import forbidden upstream packages: itsdangerous."
+    },
+    "optional_api": [],
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "required_api": [
+      {
+        "kind": "class",
+        "members": [
+          {
+            "kind": "method",
+            "path": "featurelifted.URLSafeTimedSerializer.dumps",
+            "signature": "(self, obj)"
+          },
+          {
+            "kind": "method",
+            "path": "featurelifted.URLSafeTimedSerializer.loads",
+            "signature": "(self, token, max_age=None, now=None)"
+          }
+        ],
+        "path": "featurelifted.URLSafeTimedSerializer",
+        "signature": "(secret_key, salt='featurelift', *, now=None)"
+      },
+      {
+        "kind": "exception",
+        "path": "featurelifted.BadSignature"
+      },
+      {
+        "kind": "exception",
+        "path": "featurelifted.SignatureExpired"
+      }
+    ],
+    "source_entrypoints": [
+      "itsdangerous.url_safe.URLSafeTimedSerializer",
+      "itsdangerous.exc.BadSignature",
+      "itsdangerous.exc.SignatureExpired"
+    ],
+    "summary": "Extract a task-scoped subset of `itsdangerous` into a standalone `featurelifted` package.",
+    "title": "Timed URL-safe serializer"
+  },
+  "selection_id": "external150-replacement-20260727-v1",
+  "source": {
+    "commit": "096c8d42545d3b68ea21a4f890fb2b2d8979c0bd",
+    "license": "BSD-3-Clause",
+    "name": "itsdangerous",
+    "requested_tag": "2.2.0",
+    "resolved_commit": "096c8d42545d3b68ea21a4f890fb2b2d8979c0bd",
+    "url": "https://github.com/pallets/itsdangerous.git"
+  },
+  "spec_hash": "de0957db5ae2686e85db4a2575e128df797485f2a5ce148fdf34a84479ae3b96",
+  "spec_status": "compliant",
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "external150-replacement",
+    "preregistered",
+    "serialization_crypto_coupling"
+  ],
+  "task_id": "itsdangerous__timed_serializer_core__001",
+  "task_revision": 2,
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  }
+}

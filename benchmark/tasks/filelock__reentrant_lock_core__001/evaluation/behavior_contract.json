@@ -1,0 +1,100 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_force_release_and_idempotence",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_two_instances_can_acquire_sequentially",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: exclusive lock-file acquisition across instances. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: reentrant acquire and balanced release on one instance. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: timeout and non-blocking acquisition. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: context-manager release and lock-file cleanup. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The package exposes the required task API paths `featurelifted.FileLock`, `featurelifted.FileLock.acquire`, `featurelifted.FileLock.is_locked`, `featurelifted.FileLock.release`, `featurelifted.Timeout` with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The submitted package does not import forbidden upstream packages: filelock."
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_context_and_reentrant_release",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_nonblocking_contention",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    }
+  ],
+  "review": {
+    "independent_human_review_required": false,
+    "model_results_consulted": false,
+    "reviewer_type": "maintainer_author"
+  },
+  "review_status": "maintainer_reviewed",
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "task_id": "filelock__reentrant_lock_core__001",
+  "spec_sha256": "be043b4ecfd11f8eb7bf3031e1027e76e699d886d7b699e22f747d109ed1363a"
+}

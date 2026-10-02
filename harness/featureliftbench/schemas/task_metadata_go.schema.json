@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FeatureLiftBench Go task metadata extension",
+  "type": "object",
+  "properties": {
+    "language": { "type": "string", "const": "go" },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["go", "network", "timeout_seconds", "cgo_enabled", "forbidden_imports"],
+      "properties": {
+        "go": { "type": "string", "minLength": 1 },
+        "network": { "type": "boolean" },
+        "timeout_seconds": { "type": "integer", "minimum": 1 },
+        "cgo_enabled": { "type": "boolean" },
+        "module_path": { "type": "string", "minLength": 1 },
+        "forbidden_imports": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public", "hidden", "command"],
+      "properties": {
+        "public": { "type": "string", "minLength": 1 },
+        "hidden": { "type": "string", "minLength": 1 },
+        "command": { "type": "string", "const": "go test" }
+      }
+    }
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "State registry, transition conditions, callbacks, nested states, and error modes are stateful and cross-module.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "conditional transitions skip when condition is false",
+      "before and after callbacks run around state changes",
+      "nested state names use dotted paths",
+      "invalid trigger raises MachineError unless ignored"
+    ],
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "transitions"
+    ],
+    "forbidden_imports": [
+      "transitions"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "transitions/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped hierarchical state machine transition core into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "async transitions",
+      "graphviz extensions",
+      "diagram rendering"
+    ],
+    "included_behaviors": [
+      "state machine trigger execution",
+      "conditional transitions",
+      "before/after callbacks",
+      "nested dotted states"
+    ],
+    "name": "Hierarchical state machine transition core",
+    "source_entrypoints": [
+      "transitions.Machine",
+      "transitions.MachineError"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Machine",
+    "import": "from featurelifted import Machine, MachineError, EventData",
+    "package": "featurelifted",
+    "signature": "Machine(model, states=None, initial='initial', transitions=None, ignore_invalid_triggers=False)"
+  },
+  "source": {
+    "commit": "bd42b38f3627e6bca7274fb4d9af2e105f75da7c",
+    "license": "MIT",
+    "name": "transitions",
+    "url": "https://github.com/pytransitions/transitions.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "stateful runtime behavior",
+    "data_model_coupling"
+  ],
+  "task_id": "transitions__state_machine_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "public_spec": {
+    "title": "Hierarchical state machine transition core",
+    "summary": "Extract a task-scoped subset of `transitions` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.MachineError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.Machine",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Machine.__init__",
+            "kind": "method",
+            "signature": "(self, model: 'Any', states: 'list[str] | None' = None, initial: 'str' = 'initial', transitions: 'list[dict] | None' = None, before_state_change: 'list[str] | None' = None, after_state_change: 'list[str] | None' = None, ignore_invalid_triggers: 'bool' = False, send_event: 'bool' = False, auto_transitions: 'bool' = False) -> 'None'"
+          }
+        ],
+        "signature": "(model: 'Any', states: 'list[str] | None' = None, initial: 'str' = 'initial', transitions: 'list[dict] | None' = None, before_state_change: 'list[str] | None' = None, after_state_change: 'list[str] | None' = None, ignore_invalid_triggers: 'bool' = False, send_event: 'bool' = False, auto_transitions: 'bool' = False) -> 'None'"
+      }
+    ],
+    "optional_api": [
+      {
+        "path": "featurelifted.EventData",
+        "kind": "class"
+      }
+    ],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When a registered trigger method is invoked on a model, the machine executes the matching transition and updates model.state."
+      },
+      {
+        "id": "B002",
+        "text": "When a transition declares conditions, the transition is skipped unless every condition callable returns a truthy value."
+      },
+      {
+        "id": "B003",
+        "text": "When transition before/after callbacks are configured, they run around the state change in upstream order."
+      },
+      {
+        "id": "B004",
+        "text": "When a machine is created with a dotted nested state name such as parent.child, the model exposes the nested hierarchy such that model.parent.state == \"child\"."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.MachineError`, `featurelifted.Machine`, `featurelifted.Machine.__init__` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "transitions.Machine",
+      "transitions.MachineError"
+    ],
+    "exclusions": [
+      "network access",
+      "async transitions",
+      "graphviz extensions",
+      "diagram rendering"
+    ],
+    "forbidden": {
+      "imports": [
+        "transitions"
+      ],
+      "paths": [
+        "repo/",
+        "transitions/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "The submitted package does not import forbidden upstream packages: transitions."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When a registered trigger method is invoked on a model, the machine executes the matching transition and updates model.state."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When a transition declares conditions, the transition is skipped unless every condition callable returns a truthy value."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When transition before/after callbacks are configured, they run around the state change in upstream order."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When a machine is created with a dotted nested state name such as parent.child, the model exposes the nested hierarchy such that model.parent.state == \"child\"."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.MachineError`, `featurelifted.Machine`, `featurelifted.Machine.__init__` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: transitions."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_machine_runs_transition",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_conditional_transition_and_callbacks",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_nested_state_name",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_trigger_raises",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.MachineError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Machine",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Machine.__init__",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "constitution_pilot_migration",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Historical failure on model.parent.state is now an explicit required behavior B004.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "spec_status": "compliant",
+  "task_revision": 5,
+  "spec_hash": "0e11c6db93094cec47c518ed3c1795f9ae78a588706ff814fc46cf6ab6045b0b",
+  "generated_task_hash": "eed90098218db2cdfd170333fe8d5f389071d98254f4d47a816893b454ccb0c1"
+}

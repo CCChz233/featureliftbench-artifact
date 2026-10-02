@@ -1,0 +1,266 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_extension_with_quoted_params",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_upgrade_case_insensitive_list",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_subprotocol_skips_empty_elements",
+      "public_clause_ids": [
+        "B002"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_headers_multiple_connection_values",
+      "public_clause_ids": [
+        "B001",
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_rejects_bad_upgrade",
+      "public_clause_ids": [
+        "B005",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_missing_key",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_invalid_key_length",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_origin_allowlist",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_request_invalid_method",
+      "public_clause_ids": [
+        "B003",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_headers_security_limit",
+      "public_clause_ids": [
+        "B003",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_extension_invalid_quoted_token",
+      "public_clause_ids": [
+        "B002",
+        "B007"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_build_subprotocol_roundtrip",
+      "public_clause_ids": [
+        "B002",
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_subprotocols_rejects_invalid_token",
+      "public_clause_ids": [
+        "B002",
+        "B007",
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_authorization_basic_credentials",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_authorization_basic_rejects_non_basic_scheme",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_build_www_authenticate_basic_format",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_origin_regex_allowlist",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_websockets_import_surface",
+      "public_clause_ids": [
+        "B009"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B008"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "mapping_policy": "Public clauses were frozen from metadata before test-node mapping. Nodeids are evaluator-private; no hidden inputs, examples, or assertions are stored here.",
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: parse Connection and Upgrade header lists with OWS and empty elements. Required observable cases include parse connection and upgrade; parse upgrade case insensitive list; headers multiple connection values."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: parse Sec-WebSocket-Extensions and Sec-WebSocket-Protocol grammars. Required observable cases include parse extension with quoted params; parse subprotocol skips empty elements; parse extension invalid quoted token; build subprotocol roundtrip; validate subprotocols rejects invalid token."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: parse WebSocket handshake HTTP requests from byte streams. Required observable cases include parse websocket request basic; parse request invalid method; parse headers security limit."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: case-insensitive Headers lookup with multiple values per name. Required observable cases include headers case insensitive lookup; headers multiple connection values."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The extracted feature must support this observable behavior: validate handshake request headers including Sec-WebSocket-Key and Version. Required observable cases include validate handshake rejects bad upgrade; validate handshake missing key; validate handshake invalid key length; validate handshake origin allowlist; validate handshake origin regex allowlist."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The extracted feature must support this observable behavior: compute Sec-WebSocket-Accept from Sec-WebSocket-Key. Required observable cases include accept key rfc6455 example; validate subprotocols rejects invalid token."
+    },
+    {
+      "behavior_id": "B007",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B007",
+      "text": "The extracted feature must support this observable behavior: raise typed errors for malformed headers and upgrade requests. Required observable cases include validate handshake rejects bad upgrade; parse request invalid method; parse headers security limit; parse extension invalid quoted token; validate subprotocols rejects invalid token."
+    },
+    {
+      "behavior_id": "B008",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B008",
+      "text": "The package exposes the required task API paths `featurelifted.Headers`, `featurelifted.Headers.get_all`, `featurelifted.Headers.__getitem__`, `featurelifted.Request`, `featurelifted.Request.parse`, `featurelifted.Response`, `featurelifted.accept_key`, `featurelifted.generate_key`, `featurelifted.validate_handshake_request`, `featurelifted.exceptions`, `featurelifted.exceptions.InvalidHeader`, `featurelifted.exceptions.InvalidHeaderFormat`, and 18 listed members with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B009",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B009",
+      "text": "the submitted package does not import forbidden upstream packages: websockets"
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_connection_and_upgrade",
+      "public_clause_ids": [
+        "B001"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_headers_case_insensitive_lookup",
+      "public_clause_ids": [
+        "B004"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_parse_websocket_request_basic",
+      "public_clause_ids": [
+        "B003"
+      ],
+      "mapping_method": "ai_assisted"
+    },
+    {
+      "nodeid": "public_tests/test_public_api.py::test_accept_key_rfc6455_example",
+      "public_clause_ids": [
+        "B006"
+      ],
+      "mapping_method": "ai_assisted"
+    }
+  ],
+  "review": {
+    "api_fallback_count": 0,
+    "conflict_count": 0,
+    "formal_human_double_review_pending": true,
+    "pass_1": {
+      "input_scope": "frozen public clauses and test nodeids",
+      "reviewer_id": "codex_semantic_nodeid_pass",
+      "reviewer_type": "ai_assisted_author"
+    },
+    "pass_2": {
+      "input_scope": "frozen public clauses and local test AST",
+      "reviewer_id": "codex_ast_body_pass",
+      "reviewer_type": "ai_assisted_second_pass_not_independent_human"
+    },
+    "protocol_version": "behavior_ai_review.v1"
+  },
+  "review_status": "ai_assisted_reviewed",
+  "risk_tags": [
+    "parser_state_coupling",
+    "data_model_coupling",
+    "implicit_dependency_coupling"
+  ],
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "spec_authored_from": [
+    "metadata.json#/feature/name",
+    "metadata.json#/feature/description",
+    "metadata.json#/feature/included_behaviors",
+    "metadata.json#/feature/excluded_behaviors",
+    "metadata.json#/output"
+  ],
+  "spec_sha256": "c939eef4fbae63a5c27e8c97b0defcacb33830fce27670646a18f647fde59143",
+  "task_id": "websockets__handshake_parse_core__001",
+  "unmapped_hidden_test_nodeids": [],
+  "unmapped_public_test_nodeids": []
+}

@@ -1,0 +1,13 @@
+{
+  "source_package_name": "frontmatter",
+  "required_source_files": [
+    "frontmatter/__init__.py",
+    "frontmatter/default_handlers.py",
+    "frontmatter/util.py",
+    "frontmatter/py.typed"
+  ],
+  "runtime_dependencies": [
+    "PyYAML"
+  ],
+  "notes": "Oracle copies YAML front matter runtime only; PyYAML is pinned in requirements.lock for Docker eval."
+}

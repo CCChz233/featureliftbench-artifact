@@ -1,0 +1,293 @@
+{
+  "task_id": "deepdiff__deep_compare_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "deepdiff",
+    "structural-diff",
+    "hard-first",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "deepdiff",
+    "url": "https://github.com/qlustered/deepdiff",
+    "commit": "9.1.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "DeepDiff path and exclude subset",
+    "description": "Extract DeepDiff structural comparison with exclude_paths and parse_path.",
+    "source_entrypoints": [
+      "deepdiff.DeepDiff",
+      "deepdiff.path.parse_path",
+      "deepdiff.path.extract"
+    ],
+    "included_behaviors": [
+      "DeepDiff dict/list value changes",
+      "exclude_paths and include_paths filtering",
+      "parse_path and extract by path expression"
+    ],
+    "excluded_behaviors": [
+      "DeepSearch",
+      "Delta patch",
+      "original deepdiff import"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "DeepDiff couples path expression parsing, diff tree model, and recursive comparison.",
+    "signals": [
+      "exclude_paths wildcard matching",
+      "DiffLevel parent stack",
+      "type-specific relationships"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import DeepDiff, parse_path, extract",
+    "callable": "featurelifted.DeepDiff",
+    "signature": "DeepDiff(t1, t2, exclude_paths=None, include_paths=None, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "deepdiff"
+    ],
+    "forbidden_imports": [
+      "deepdiff"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "DeepDiff path and exclude subset",
+    "summary": "Extract a task-scoped subset of `deepdiff` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.DeepDiff",
+        "kind": "class",
+        "signature": "(t1: Any, t2: Any, _original_type: Optional[Any] = None, cache_purge_level: int = 1, cache_size: int = 0, cache_tuning_sample_size: int = 0, custom_operators: Optional[List[Any]] = None, cutoff_distance_for_pairs: float = 0.3, cutoff_intersection_for_pairs: float = 0.7, default_timezone: Union[datetime.timezone, ForwardRef('BaseTzInfo')] = datetime.timezone.utc, encodings: Optional[List[str]] = None, exclude_obj_callback: Optional[Callable] = None, exclude_obj_callback_strict: Optional[Callable] = None, exclude_paths: Union[str, List[str], Set[str], FrozenSet[str], NoneType] = None, exclude_regex_paths: Union[str, List[str], Pattern[str], List[Pattern[str]], NoneType] = None, exclude_types: Optional[List[type]] = None, get_deep_distance: bool = False, group_by: Union[str, Tuple[str, str], Callable, NoneType] = None, group_by_sort_key: Union[str, Callable, NoneType] = None, hasher: Optional[Callable] = None, hashes: Optional[Dict[Any, Any]] = None, ignore_encoding_errors: bool = False, ignore_nan_inequality: bool = False, ignore_numeric_type_changes: bool = False, ignore_order: bool = False, ignore_order_func: Optional[Callable] = None, ignore_private_variables: bool = True, ignore_string_case: bool = False, ignore_string_type_changes: bool = False, ignore_type_in_groups: Optional[List[Tuple[Any, ...]]] = None, ignore_type_subclasses: bool = False, ignore_uuid_types: bool = False, include_obj_callback: Optional[Callable] = None, include_obj_callback_strict: Optional[Callable] = None, include_paths: Union[str, List[str], NoneType] = None, iterable_compare_func: Optional[Callable] = None, log_frequency_in_sec: int = 0, log_scale_similarity_threshold: float = 0.1, log_stacktrace: bool = False, math_epsilon: Optional[float] = None, max_diffs: Optional[int] = None, max_passes: int = 10000000, multiprocessing: bool = False, multiprocessing_workers: Optional[int] = None, multiprocessing_threshold: Optional[int] = None, number_format_notation: Literal['f', 'e'] = 'f', number_to_string_func: Optional[Callable] = None, progress_logger: Callable[[str], NoneType] = <bound method Logger.info of <Logger diff (WARNING)>>, report_repetition: bool = False, significant_digits: Optional[int] = None, threshold_to_diff_deeper: float = 0.33, truncate_datetime: Optional[str] = None, use_enum_value: bool = False, use_log_scale: bool = False, verbose_level: int = 1, view: str = 'text', zip_ordered_iterables: bool = False, _parameters: Optional[Dict[str, Any]] = None, _shared_parameters: Optional[Dict[str, Any]] = None, **kwargs)",
+        "members": [
+          {
+            "path": "featurelifted.DeepDiff.get",
+            "kind": "method",
+            "signature": "(self, key, default=None, /)"
+          },
+          {
+            "path": "featurelifted.DeepDiff.__contains__",
+            "kind": "method",
+            "signature": "(self, key, /)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.parse_path",
+        "kind": "function",
+        "signature": "(path, root_element=('root', 'GETATTR'), include_actions=False)"
+      },
+      {
+        "path": "featurelifted.extract",
+        "kind": "function",
+        "signature": "(obj, path)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: DeepDiff dict/list value changes. Required observable cases include shallow dict diff; identical nested; nested dict change; list item added."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: exclude_paths and include_paths filtering. Required observable cases include exclude paths wildcard."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: parse_path and extract by path expression. Required observable cases include parse path and extract."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.DeepDiff`, `featurelifted.DeepDiff.get`, `featurelifted.DeepDiff.__contains__`, `featurelifted.parse_path`, `featurelifted.extract` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "deepdiff.DeepDiff",
+      "deepdiff.path.parse_path",
+      "deepdiff.path.extract"
+    ],
+    "exclusions": [
+      "DeepSearch",
+      "Delta patch",
+      "original deepdiff import"
+    ],
+    "forbidden": {
+      "imports": [
+        "deepdiff"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: deepdiff."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: DeepDiff dict/list value changes. Required observable cases include shallow dict diff; identical nested; nested dict change; list item added."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: exclude_paths and include_paths filtering. Required observable cases include exclude paths wildcard."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse_path and extract by path expression. Required observable cases include parse path and extract."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.DeepDiff`, `featurelifted.DeepDiff.get`, `featurelifted.DeepDiff.__contains__`, `featurelifted.parse_path`, `featurelifted.extract` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: deepdiff"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_shallow_dict_diff",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_identical_nested",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_dict_change",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_exclude_paths_wildcard",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_list_item_added",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_path_and_extract",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_deepdiff_import_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.DeepDiff",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.DeepDiff.get",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_exclude_paths_wildcard",
+          "hidden_tests/test_hidden_behavior.py::test_nested_dict_change"
+        ]
+      },
+      {
+        "path": "featurelifted.parse_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.extract",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.DeepDiff.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_exclude_paths_wildcard",
+          "hidden_tests/test_hidden_behavior.py::test_list_item_added",
+          "hidden_tests/test_hidden_behavior.py::test_nested_dict_change",
+          "hidden_tests/test_hidden_behavior.py::test_no_deepdiff_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_parse_path_and_extract",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "9503ef3fa67f51862c339879f6d7a8c147a856ef538ad75dae380275a88fbba9",
+  "generated_task_hash": "adf69844145ed57c978114ba4acf9ae65eee823a06dfddf61da34029229a97b2"
+}

@@ -1,0 +1,9 @@
+{
+  "source_package_name": "astroid",
+  "required_source_files": [],
+  "notes": "Oracle is parse/rebuilder/nodes closure without brain or inference; repo is full astroid package.",
+  "v1_1_repair": {
+    "type": "relative_dynamic_import_adapter",
+    "evidence": "featurelifted/util.py resolves lazy modules relative to featurelifted instead of forbidden astroid"
+  }
+}

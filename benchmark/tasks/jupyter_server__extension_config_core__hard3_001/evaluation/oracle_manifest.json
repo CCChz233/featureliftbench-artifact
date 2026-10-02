@@ -1,0 +1,22 @@
+{
+  "source_package_name": "jupyter_server",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/jupyter_server/extension/config.py",
+    "repo/jupyter_server/config_manager.py"
+  ],
+  "target_api": [
+    "featurelifted.ExtensionConfigStore",
+    "featurelifted.merge_extension_configs",
+    "featurelifted.filter_enabled_extensions",
+    "featurelifted.recursive_update"
+  ],
+  "forbidden_imports": [
+    "jupyter_server"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "jupyter_server/"
+  ],
+  "notes": "Extension config merge subset without server runtime."
+}

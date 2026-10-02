@@ -1,0 +1,340 @@
+{
+  "task_id": "pytest__fixture_resolve_core__001",
+  "source": {
+    "name": "pytest",
+    "url": "https://github.com/pytest-dev/pytest",
+    "commit": "b55ab2aabb68c0ce94c3903139b062d0c2790152",
+    "license": "MIT"
+  },
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "test-framework",
+    "pure-python",
+    "multi-module"
+  ],
+  "environment": {
+    "python": "3.12",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "pytest"
+    ],
+    "forbidden_imports": [
+      "pytest",
+      "_pytest"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "feature": {
+    "name": "pytest fixture name resolution",
+    "description": "Extract pytest fixture name closure resolution and lookup helpers from _pytest.fixtures as a standalone package.",
+    "source_entrypoints": [
+      "_pytest.fixtures.getfixturemarker",
+      "_pytest.fixtures.FixtureManager.getfixtureclosure",
+      "_pytest.fixtures.FixtureManager.getfixturedefs",
+      "_pytest.fixtures.deduplicate_names",
+      "_pytest.fixtures.FixtureLookupError"
+    ],
+    "included_behaviors": [
+      "resolve transitive fixture name closure from initial argnames",
+      "match fixture definitions to parent nodeids",
+      "deduplicate fixture name sequences preserving order",
+      "sort closure fixtures by scope (session before function)",
+      "detect missing fixtures via FixtureLookupError"
+    ],
+    "excluded_behaviors": [
+      "fixture execution, setup/teardown, and parametrization",
+      "full pytest collection and plugin manager integration",
+      "request.getfixturevalue dynamic lookup",
+      "CLI, original tests, docs, packaging metadata"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "framework_coupling",
+      "global_state_registry_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Fixture name resolution couples registry state, nodeid visibility rules, and transitive dependency closure used throughout pytest setup.",
+    "signals": [
+      "FixtureManager arg2fixturedefs registry with nodeid scoping",
+      "getfixtureclosure expands fixture argnames transitively",
+      "scope-ordered teardown/setup sequencing encoded in closure sort"
+    ],
+    "primary": "framework_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import FixtureDef, FixtureLookupError, FixtureRegistry, deduplicate_names, fixture, getfixturemarker, resolve_fixture_closure",
+    "callable": "featurelifted.resolve_fixture_closure",
+    "signature": "resolve_fixture_closure(parent_nodeids, initialnames, registry, ignore_args=None) -> tuple[list[str], dict[str, tuple[FixtureDef, ...]]]"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "pytest fixture name resolution",
+    "summary": "Extract a task-scoped subset of `pytest` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.FixtureDef",
+        "kind": "class",
+        "signature": "(argname: 'str', argnames: 'tuple[str, ...]', baseid: 'str', scope: 'str' = 'function') -> None"
+      },
+      {
+        "path": "featurelifted.FixtureLookupError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.FixtureRegistry",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.FixtureRegistry.register",
+            "kind": "method",
+            "signature": "(self, fixturedef: 'FixtureDef') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.deduplicate_names",
+        "kind": "function",
+        "signature": "(*seqs: 'Iterable[str]') -> 'tuple[str, ...]'"
+      },
+      {
+        "path": "featurelifted.fixture",
+        "kind": "function",
+        "signature": "(fixture_function: 'FixtureFunction | None' = None, *, scope: 'str' = 'function', name: 'str | None' = None) -> 'FixtureFunctionMarker | FixtureFunction'"
+      },
+      {
+        "path": "featurelifted.getfixturemarker",
+        "kind": "function",
+        "signature": "(obj: 'object') -> 'FixtureFunctionMarker | None'"
+      },
+      {
+        "path": "featurelifted.resolve_fixture_closure",
+        "kind": "function",
+        "signature": "(parent_nodeids: 'AbstractSet[str]', initialnames: 'tuple[str, ...]', registry: 'FixtureRegistry', ignore_args: 'AbstractSet[str] | None' = None) -> 'tuple[list[str], dict[str, tuple[FixtureDef, ...]]]'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: resolve transitive fixture name closure from initial argnames. Required observable cases include resolve closure adds fixture dependencies; fixture lookup error lists available."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: match fixture definitions to parent nodeids. Required observable cases include fixture lookup error lists available."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: deduplicate fixture name sequences preserving order. Required observable cases include deduplicate names keeps first occurrence order."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: sort closure fixtures by scope (session before function). Required observable cases include resolve closure adds fixture dependencies; getfixturemarker on decorated function; closure sorted by scope descending."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: detect missing fixtures via FixtureLookupError. Required observable cases include getfixturemarker on decorated function; fixture lookup error lists available."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.FixtureDef`, `featurelifted.FixtureLookupError`, `featurelifted.FixtureRegistry`, `featurelifted.FixtureRegistry.register`, `featurelifted.deduplicate_names`, `featurelifted.fixture`, `featurelifted.getfixturemarker`, `featurelifted.resolve_fixture_closure` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "_pytest.fixtures.getfixturemarker",
+      "_pytest.fixtures.FixtureManager.getfixtureclosure",
+      "_pytest.fixtures.FixtureManager.getfixturedefs",
+      "_pytest.fixtures.deduplicate_names",
+      "_pytest.fixtures.FixtureLookupError"
+    ],
+    "exclusions": [
+      "fixture execution, setup/teardown, and parametrization",
+      "full pytest collection and plugin manager integration",
+      "request.getfixturevalue dynamic lookup",
+      "CLI, original tests, docs, packaging metadata"
+    ],
+    "forbidden": {
+      "imports": [
+        "pytest",
+        "_pytest"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: pytest, _pytest."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve transitive fixture name closure from initial argnames. Required observable cases include resolve closure adds fixture dependencies; fixture lookup error lists available."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: match fixture definitions to parent nodeids. Required observable cases include fixture lookup error lists available."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: deduplicate fixture name sequences preserving order. Required observable cases include deduplicate names keeps first occurrence order."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: sort closure fixtures by scope (session before function). Required observable cases include resolve closure adds fixture dependencies; getfixturemarker on decorated function; closure sorted by scope descending."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: detect missing fixtures via FixtureLookupError. Required observable cases include getfixturemarker on decorated function; fixture lookup error lists available."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.FixtureDef`, `featurelifted.FixtureLookupError`, `featurelifted.FixtureRegistry`, `featurelifted.FixtureRegistry.register`, `featurelifted.deduplicate_names`, `featurelifted.fixture`, `featurelifted.getfixturemarker`, `featurelifted.resolve_fixture_closure` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pytest, _pytest"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_resolve_closure_adds_fixture_dependencies",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_getfixturemarker_on_decorated_function",
+        "behavior_ids": [
+          "B004",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_deduplicate_names_keeps_first_occurrence_order",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_closure_sorted_by_scope_descending",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_fixture_lookup_error_lists_available",
+        "behavior_ids": [
+          "B001",
+          "B005",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.FixtureDef",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FixtureLookupError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FixtureRegistry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FixtureRegistry.register",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_closure_sorted_by_scope_descending",
+          "hidden_tests/test_hidden_behavior.py::test_fixture_lookup_error_lists_available"
+        ]
+      },
+      {
+        "path": "featurelifted.deduplicate_names",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.fixture",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.getfixturemarker",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.resolve_fixture_closure",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "ec173e1dda6a8c86ed01d1fdd3770ed134d8acd503eacb413280b06f7cb33ec7",
+  "generated_task_hash": "7e12e586d364b05ce23a7582a1cecfe1a730132669e7a388b20fa597d2ad378b"
+}

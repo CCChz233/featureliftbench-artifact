@@ -1,0 +1,481 @@
+{
+  "task_id": "dataclasses_json__serde_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "dataclasses-json",
+    "serialization",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling",
+    "framework_coupling"
+  ],
+  "source": {
+    "name": "dataclasses-json",
+    "url": "https://github.com/lidatong/dataclasses-json",
+    "commit": "dc63902eeb5e1c5ce1ea4e078c50e0eb9bc1a541",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Dataclass JSON serde core",
+    "description": "Extract dataclass to/from JSON with field config, letter-case transforms, and exclusion predicates without original dataclasses_json import.",
+    "source_entrypoints": [
+      "dataclasses_json.dataclass_json",
+      "dataclasses_json.DataClassJsonMixin",
+      "dataclasses_json.config",
+      "dataclasses_json.LetterCase",
+      "dataclasses_json.Exclude",
+      "dataclasses_json.global_config",
+      "dataclasses_json.core._asdict",
+      "dataclasses_json.core._decode_dataclass",
+      "dataclasses_json.undefined.Undefined"
+    ],
+    "included_behaviors": [
+      "round-trip dataclass instances through JSON and dict payloads",
+      "apply class-level and field-level letter case transforms",
+      "exclude fields via config predicates and Exclude helpers",
+      "register per-type encoders and decoders via config and global_config",
+      "decode nested dataclass fields recursively",
+      "reject unknown keys when undefined=Undefined.RAISE"
+    ],
+    "excluded_behaviors": [
+      "marshmallow schema generation and mm_field validation",
+      "CatchAll undefined INCLUDE mode and schema dump hooks",
+      "upstream tests, docs, CI, and packaging metadata",
+      "original dataclasses_json import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "dataclasses-json couples dataclass introspection, field metadata merging, letter-case encoding, exclusion predicates, undefined-parameter actions, and recursive decode across api, core, cfg, utils, stringcase, and undefined modules.",
+    "signals": [
+      "FieldOverride merges global, class, and field-level dataclasses_json metadata",
+      "LetterCase transforms must round-trip consistently on encode and decode",
+      "Exclude predicates gate keys during _encode_overrides",
+      "_decode_dataclass recurses into nested dataclass fields with type hints",
+      "Undefined.RAISE wraps init via _handle_undefined_parameters_safe"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import DataClassJsonMixin, LetterCase, Exclude, Undefined, dataclass_json, config, global_config; from featurelifted.undefined import UndefinedParameterError",
+    "callable": "featurelifted.dataclass_json",
+    "signature": "dataclass_json(cls=None, *, letter_case=None, undefined=None)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "typing-inspect"
+    ],
+    "forbidden_dependencies": [
+      "dataclasses-json",
+      "dataclasses_json",
+      "marshmallow"
+    ],
+    "forbidden_imports": [
+      "dataclasses_json",
+      "dataclasses-json",
+      "marshmallow"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Dataclass JSON serde core",
+    "summary": "Extract a task-scoped subset of `dataclasses_json` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.DataClassJsonMixin",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.LetterCase",
+        "kind": "class",
+        "signature": "(new_class_name, /, names, *, module=None, qualname=None, type=None, start=1, boundary=None)",
+        "members": [
+          {
+            "path": "featurelifted.LetterCase.CAMEL",
+            "kind": "method",
+            "signature": "(string)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Exclude",
+        "kind": "class",
+        "signature": "()",
+        "members": [
+          {
+            "path": "featurelifted.Exclude.ALWAYS",
+            "kind": "method",
+            "signature": "(_)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Undefined",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Undefined.RAISE",
+            "kind": "attribute"
+          }
+        ],
+        "signature": "(*values)"
+      },
+      {
+        "path": "featurelifted.dataclass_json",
+        "kind": "function",
+        "signature": "(_cls: Optional[Type[~T]] = None, *, letter_case: Optional[LetterCase] = None, undefined: Union[str, Undefined, NoneType] = None) -> Union[Callable[[Type[~T]], Type[~T]], Type[~T]]"
+      },
+      {
+        "path": "featurelifted.config",
+        "kind": "function",
+        "signature": "(metadata: Optional[dict] = None, *, encoder: Optional[Callable] = None, decoder: Optional[Callable] = None, mm_field: Optional[Any] = None, letter_case: Union[Callable[[str], str], LetterCase, NoneType] = None, undefined: Union[str, Undefined, NoneType] = None, field_name: Optional[str] = None, exclude: Optional[Callable[[~T], bool]] = None) -> Dict[str, dict]"
+      },
+      {
+        "path": "featurelifted.global_config",
+        "kind": "object",
+        "members": [
+          {
+            "path": "featurelifted.global_config.decoders",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.global_config.encoders",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.undefined",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.undefined.UndefinedParameterError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: round-trip dataclass instances through JSON and dict payloads. Required observable cases include basic json roundtrip; dict roundtrip; undefined raise on extra keys."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: apply class-level and field-level letter case transforms. Required observable cases include class level camel case; field level camel case; duplicate letter case encoding error."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: exclude fields via config predicates and Exclude helpers. Required observable cases include field name override; exclude always; exclude custom predicate."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: register per-type encoders and decoders via config and global_config. Required observable cases include global config encoder decoder."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: decode nested dataclass fields recursively. Required observable cases include field name override; nested dataclass roundtrip."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: reject unknown keys when undefined=Undefined.RAISE. Required observable cases include undefined raise on extra keys."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.DataClassJsonMixin`, `featurelifted.LetterCase`, `featurelifted.LetterCase.CAMEL`, `featurelifted.Exclude`, `featurelifted.Exclude.ALWAYS`, `featurelifted.Undefined`, `featurelifted.Undefined.RAISE`, `featurelifted.dataclass_json`, `featurelifted.config`, `featurelifted.global_config`, `featurelifted.global_config.decoders`, `featurelifted.global_config.encoders`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "dataclasses_json.dataclass_json",
+      "dataclasses_json.DataClassJsonMixin",
+      "dataclasses_json.config",
+      "dataclasses_json.LetterCase",
+      "dataclasses_json.Exclude",
+      "dataclasses_json.global_config",
+      "dataclasses_json.core._asdict",
+      "dataclasses_json.core._decode_dataclass",
+      "dataclasses_json.undefined.Undefined"
+    ],
+    "exclusions": [
+      "marshmallow schema generation and mm_field validation",
+      "CatchAll undefined INCLUDE mode and schema dump hooks",
+      "upstream tests, docs, CI, and packaging metadata",
+      "original dataclasses_json import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "dataclasses_json",
+        "dataclasses-json",
+        "marshmallow"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: dataclasses_json, dataclasses-json, marshmallow."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: round-trip dataclass instances through JSON and dict payloads. Required observable cases include basic json roundtrip; dict roundtrip; undefined raise on extra keys."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: apply class-level and field-level letter case transforms. Required observable cases include class level camel case; field level camel case; duplicate letter case encoding error."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: exclude fields via config predicates and Exclude helpers. Required observable cases include field name override; exclude always; exclude custom predicate."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: register per-type encoders and decoders via config and global_config. Required observable cases include global config encoder decoder."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: decode nested dataclass fields recursively. Required observable cases include field name override; nested dataclass roundtrip."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject unknown keys when undefined=Undefined.RAISE. Required observable cases include undefined raise on extra keys."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.DataClassJsonMixin`, `featurelifted.LetterCase`, `featurelifted.LetterCase.CAMEL`, `featurelifted.Exclude`, `featurelifted.Exclude.ALWAYS`, `featurelifted.Undefined`, `featurelifted.Undefined.RAISE`, `featurelifted.dataclass_json`, `featurelifted.config`, `featurelifted.global_config`, `featurelifted.global_config.decoders`, `featurelifted.global_config.encoders`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: dataclasses_json, dataclasses-json, marshmallow"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_basic_json_roundtrip",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dict_roundtrip",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_class_level_camel_case",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_field_name_override",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_field_level_camel_case",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_exclude_always",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_exclude_custom_predicate",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_dataclass_roundtrip",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_undefined_raise_on_extra_keys",
+        "behavior_ids": [
+          "B006",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_duplicate_letter_case_encoding_error",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_global_config_encoder_decoder",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_dataclasses_json_import_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.DataClassJsonMixin",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LetterCase",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LetterCase.CAMEL",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Exclude",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Exclude.ALWAYS",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Undefined",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Undefined.RAISE",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.dataclass_json",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.config",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.global_config",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.global_config.decoders",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.global_config.encoders",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.undefined",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.undefined.UndefinedParameterError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "597644652a051e64b363cde7c8d5dc44e24283fd67ea0a96eef43f24d6736a67",
+  "generated_task_hash": "33cab4a8221de6a0c8fff9255662904ccfe10e8045944ab5a99acbe7f0f1a13f"
+}

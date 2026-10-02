@@ -1,0 +1,466 @@
+{
+  "task_id": "python_multipart__form_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "python-multipart",
+    "multipart-parser",
+    "functional-discriminator",
+    "parser_state_coupling",
+    "resource_coupling"
+  ],
+  "source": {
+    "name": "python-multipart",
+    "url": "https://github.com/Kludex/python-multipart",
+    "commit": "98080c5de45bc23317577086dd9076ba85bc9ce2",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Multipart form-data parse core",
+    "description": "Extract python-multipart streaming multipart/form-data parsing over offline byte buffers with Field/File storage, Content-Transfer-Encoding decoders, and header parsing without importing python_multipart or ASGI frameworks.",
+    "source_entrypoints": [
+      "python_multipart.multipart.FormParser",
+      "python_multipart.multipart.MultipartParser",
+      "python_multipart.multipart.Field",
+      "python_multipart.multipart.File",
+      "python_multipart.multipart.parse_form",
+      "python_multipart.multipart.create_form_parser",
+      "python_multipart.multipart.parse_options_header",
+      "python_multipart.decoders.Base64Decoder",
+      "python_multipart.decoders.QuotedPrintableDecoder"
+    ],
+    "included_behaviors": [
+      "incremental multipart/form-data parsing via FormParser.write/finalize",
+      "field and file parts with Content-Disposition, Content-Type, and filename",
+      "parse_options_header boundary extraction from Content-Type",
+      "base64 and quoted-printable Content-Transfer-Encoding",
+      "preamble before first boundary and epilogue after closing boundary",
+      "MAX_MEMORY_FILE_SIZE spill to disk and configurable upload directory",
+      "MAX_HEADER_COUNT and MAX_HEADER_SIZE enforcement"
+    ],
+    "excluded_behaviors": [
+      "application/x-www-form-urlencoded and application/octet-stream FormParser branches",
+      "ASGI/Starlette/FastAPI request integration",
+      "fuzz harness, upstream pytest suite, docs, and CI",
+      "original python_multipart import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Multipart parsing couples incremental state machine transitions, header accumulation, Content-Transfer-Encoding decoder chaining, and in-memory vs on-disk File storage under size limits.",
+    "signals": [
+      "MultipartState machine with boundary lookahead across chunk boundaries",
+      "FormParser wires MultipartParser callbacks into Field/File writers",
+      "Base64Decoder and QuotedPrintableDecoder wrap part body writers",
+      "File.flush_to_disk triggered by MAX_MEMORY_FILE_SIZE config"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Field, File, FormParser, parse_form, create_form_parser, parse_options_header; from featurelifted.exceptions import FormParserError, MultipartParseError, FileError, DecodeError",
+    "callable": "featurelifted.FormParser",
+    "signature": "FormParser(content_type, on_field, on_file, on_end=None, boundary=None, file_name=None, config={})"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "python-multipart",
+      "multipart"
+    ],
+    "forbidden_imports": [
+      "python_multipart",
+      "multipart"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "scoring_reference": {
+    "oracle_loc": 1218,
+    "oracle_bytes": 140056,
+    "oracle_dependency_count": 0,
+    "copy_all_loc": 2812,
+    "copy_all_bytes": 151111,
+    "naive_loc": 240
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Multipart form-data parse core",
+    "summary": "Extract a task-scoped subset of `python_multipart` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Field",
+        "kind": "class",
+        "signature": "(name: 'bytes | None', *, content_type: 'str | None' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.File",
+        "kind": "class",
+        "signature": "(file_name: 'bytes | None', field_name: 'bytes | None' = None, config: 'FileConfig' = {}, *, content_type: 'str | None' = None) -> 'None'"
+      },
+      {
+        "path": "featurelifted.FormParser",
+        "kind": "class",
+        "signature": "(content_type: 'str', on_field: 'Callable[[Field], None] | None', on_file: 'Callable[[File], None] | None', on_end: 'Callable[[], None] | None' = None, boundary: 'bytes | str | None' = None, file_name: 'bytes | None' = None, config: 'dict[Any, Any]' = {}) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.FormParser.write",
+            "kind": "method",
+            "signature": "(self, data: 'bytes') -> 'int'"
+          },
+          {
+            "path": "featurelifted.FormParser.finalize",
+            "kind": "method",
+            "signature": "(self) -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.parse_form",
+        "kind": "function",
+        "signature": "(headers: 'dict[str, bytes]', input_stream: 'SupportsRead', on_field: 'Callable[[Field], None] | None', on_file: 'Callable[[File], None] | None', chunk_size: 'int' = 1048576) -> 'None'"
+      },
+      {
+        "path": "featurelifted.create_form_parser",
+        "kind": "function",
+        "signature": "(headers: 'dict[str, bytes]', on_field: 'Callable[[Field], None] | None', on_file: 'Callable[[File], None] | None', config: 'dict[Any, Any]' = {}) -> 'FormParser'"
+      },
+      {
+        "path": "featurelifted.parse_options_header",
+        "kind": "function",
+        "signature": "(value: 'str | bytes | None') -> 'tuple[bytes, dict[bytes, bytes]]'"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.FormParserError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.MultipartParseError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: incremental multipart/form-data parsing via FormParser.write/finalize. Required observable cases include parse form helper; create form parser from headers; incremental chunked parsing."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: field and file parts with Content-Disposition, Content-Type, and filename. Required observable cases include parse simple text field; missing field name raises."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: parse_options_header boundary extraction from Content-Type. Required observable cases include parse simple text field; parse options header boundary; parse form helper; preamble before first boundary."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: base64 and quoted-printable Content-Transfer-Encoding. Required observable cases include base64 content transfer encoding."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: preamble before first boundary and epilogue after closing boundary. Required observable cases include preamble before first boundary; epilogue after closing boundary."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: MAX_MEMORY_FILE_SIZE spill to disk and configurable upload directory. Required observable cases include parse file upload metadata; max memory file size spills to disk; max header size exceeded."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: MAX_HEADER_COUNT and MAX_HEADER_SIZE enforcement. Required observable cases include max header size exceeded."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.Field`, `featurelifted.File`, `featurelifted.FormParser`, `featurelifted.FormParser.write`, `featurelifted.FormParser.finalize`, `featurelifted.parse_form`, `featurelifted.create_form_parser`, `featurelifted.parse_options_header`, `featurelifted.exceptions`, `featurelifted.exceptions.FormParserError`, `featurelifted.exceptions.MultipartParseError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "python_multipart.multipart.FormParser",
+      "python_multipart.multipart.MultipartParser",
+      "python_multipart.multipart.Field",
+      "python_multipart.multipart.File",
+      "python_multipart.multipart.parse_form",
+      "python_multipart.multipart.create_form_parser",
+      "python_multipart.multipart.parse_options_header",
+      "python_multipart.decoders.Base64Decoder",
+      "python_multipart.decoders.QuotedPrintableDecoder"
+    ],
+    "exclusions": [
+      "application/x-www-form-urlencoded and application/octet-stream FormParser branches",
+      "ASGI/Starlette/FastAPI request integration",
+      "fuzz harness, upstream pytest suite, docs, and CI",
+      "original python_multipart import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "python_multipart",
+        "multipart"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: python_multipart, multipart."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: incremental multipart/form-data parsing via FormParser.write/finalize. Required observable cases include parse form helper; create form parser from headers; incremental chunked parsing."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: field and file parts with Content-Disposition, Content-Type, and filename. Required observable cases include parse simple text field; missing field name raises."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse_options_header boundary extraction from Content-Type. Required observable cases include parse simple text field; parse options header boundary; parse form helper; preamble before first boundary."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: base64 and quoted-printable Content-Transfer-Encoding. Required observable cases include base64 content transfer encoding."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preamble before first boundary and epilogue after closing boundary. Required observable cases include preamble before first boundary; epilogue after closing boundary."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: MAX_MEMORY_FILE_SIZE spill to disk and configurable upload directory. Required observable cases include parse file upload metadata; max memory file size spills to disk; max header size exceeded."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: MAX_HEADER_COUNT and MAX_HEADER_SIZE enforcement. Required observable cases include max header size exceeded."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Field`, `featurelifted.File`, `featurelifted.FormParser`, `featurelifted.FormParser.write`, `featurelifted.FormParser.finalize`, `featurelifted.parse_form`, `featurelifted.create_form_parser`, `featurelifted.parse_options_header`, `featurelifted.exceptions`, `featurelifted.exceptions.FormParserError`, `featurelifted.exceptions.MultipartParseError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: python_multipart, multipart"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_simple_text_field",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_file_upload_metadata",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_options_header_boundary",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_form_helper",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_create_form_parser_from_headers",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_incremental_chunked_parsing",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_base64_content_transfer_encoding",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_preamble_before_first_boundary",
+        "behavior_ids": [
+          "B005",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_epilogue_after_closing_boundary",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_missing_field_name_raises",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_max_memory_file_size_spills_to_disk",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_max_header_size_exceeded",
+        "behavior_ids": [
+          "B006",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_python_multipart_import_surface",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Field",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.File",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FormParser",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FormParser.write",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_incremental_chunked_parsing"
+        ]
+      },
+      {
+        "path": "featurelifted.FormParser.finalize",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_incremental_chunked_parsing"
+        ]
+      },
+      {
+        "path": "featurelifted.parse_form",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.create_form_parser",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parse_options_header",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.FormParserError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.MultipartParseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "bfeaa12c14259f7cfd05b2fa5d0b0479799a1ea60e4ac6dc941a3e3708394660",
+  "generated_task_hash": "a308ad31321851f0f345ed572f91618c218e59d9e5fe9bd214939b643d2fda66"
+}

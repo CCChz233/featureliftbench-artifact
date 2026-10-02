@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+title: FeatureLiftBench
+message: Replication package for peer review.
+type: dataset
+authors:
+  - name: Anonymous

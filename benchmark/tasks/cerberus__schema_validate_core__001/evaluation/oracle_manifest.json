@@ -1,0 +1,12 @@
+{
+  "source_package_name": "cerberus",
+  "required_source_files": [
+    "cerberus/__init__.py",
+    "cerberus/platform.py",
+    "cerberus/utils.py",
+    "cerberus/errors.py",
+    "cerberus/schema.py",
+    "cerberus/validator.py"
+  ],
+  "notes": "Oracle copies the six-module validation core; excludes benchmarks and upstream tests. Copy-all baseline may include benchmark modules for extraction calibration."
+}

@@ -1,0 +1,29 @@
+{
+  "source_package_name": "importlib_resources",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/importlib_resources/__init__.py",
+    "repo/importlib_resources/_common.py",
+    "repo/importlib_resources/_functional.py",
+    "repo/importlib_resources/abc.py",
+    "repo/importlib_resources/readers.py",
+    "repo/importlib_resources/simple.py",
+    "repo/pyproject.toml"
+  ],
+  "target_api": [
+    "featurelifted.files",
+    "featurelifted.read_text",
+    "featurelifted.read_binary",
+    "featurelifted.FileTraversable",
+    "featurelifted.MemoryTraversable",
+    "featurelifted.TraversalError"
+  ],
+  "forbidden_imports": [
+    "importlib_resources"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "importlib_resources/"
+  ],
+  "notes": "Task-scoped Traversable resource tree. Zip adapters, as_file, deprecated contents/path helpers, and temporary extraction are intentionally excluded. Upstream declares Apache-2.0 in pyproject.toml; no standalone LICENSE file exists at the pinned commit."
+}

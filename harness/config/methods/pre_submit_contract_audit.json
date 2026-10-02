@@ -1,0 +1,43 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "pre-submit-contract-audit.core12-screen.1",
+  "display_name": "Pre-submit explicit-contract audit",
+  "ablation_arm": "pre_submit_contract_audit",
+  "method_label": "pre_submit_contract_audit",
+  "cli_flag": "--pre-submit-contract-audit",
+  "environment_flag": "FEATURELIFTBENCH_PRE_SUBMIT_CONTRACT_AUDIT=1",
+  "description": "Prompt-only explicit-contract forgetting arm. Same 128k Main envelope, LLM Summary condenser, no checker, no Hidden, no public tests, no repair. First run must not stack with artifact-aware retention. Core-12 mechanism screening only.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_pre_submit_audit"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only",
+    "evaluator_feedback_to_agent": false
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "token",
+    "pre_submit_contract_audit": true
+  },
+  "process_metrics": [
+    "audit_executed",
+    "explicit_gap_found",
+    "continued_after_gap",
+    "public_0_to_1_flip_vs_llm_summary"
+  ],
+  "screening": {
+    "slice": "Core-12",
+    "task_list": "harness/config/experiments/rescue_plus_core12_v1.txt",
+    "do_not_stack_with": ["artifact_aware", "recency_masking"]
+  }
+}

@@ -1,0 +1,404 @@
+{
+  "task_id": "email_validator__validate_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "email-validator",
+    "parser_state_coupling",
+    "functional-discriminator",
+    "third_party_dependency_coupling"
+  ],
+  "source": {
+    "name": "email-validator",
+    "url": "https://github.com/JoshData/python-email-validator",
+    "commit": "b73d010bb3db70547199f39fd85d2286a7f6f476",
+    "license": "Unlicense"
+  },
+  "feature": {
+    "name": "Email syntax validation core",
+    "description": "Extract validate_email with ValidatedEmail normalization and typed EmailNotValidError hierarchy for offline syntax validation without DNS deliverability checks.",
+    "source_entrypoints": [
+      "email_validator.validate_email",
+      "email_validator.ValidatedEmail",
+      "email_validator.EmailNotValidError",
+      "email_validator.EmailSyntaxError",
+      "email_validator.syntax",
+      "email_validator.rfc_constants"
+    ],
+    "included_behaviors": [
+      "validate_email returns ValidatedEmail with normalized/local_part/domain fields",
+      "EmailSyntaxError and EmailNotValidError for invalid addresses",
+      "IDNA domain encoding and internationalized local parts (SMTPUTF8)",
+      "quoted local part parsing and de-quoting when allowed",
+      "display name angle-bracket parsing when allowed",
+      "reserved/special-use domain rejection and test_environment bypass",
+      "case-insensitive mailbox names (e.g. POSTMASTER)",
+      "Unicode NFC normalization of local parts"
+    ],
+    "excluded_behaviors": [
+      "DNS deliverability checks and caching_resolver",
+      "CLI entry point (__main__)",
+      "original email_validator import at runtime",
+      "network access"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "third_party_dependency_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "validate_email orchestrates split_email quoting state, IDNA via idna, RFC length tables, reserved-domain policy, and ValidatedEmail field assembly across syntax/rfc_constants modules.",
+    "signals": [
+      "split_email tracks quote/escape state for display names and quoted locals",
+      "validate_email_local_part and validate_email_domain_name share strict/UTF8 flags",
+      "SPECIAL_USE_DOMAIN_NAMES and CASE_INSENSITIVE_MAILBOX_NAMES drive post-parse policy",
+      "ValidatedEmail aggregates ascii vs Unicode domain/local representations"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import validate_email, ValidatedEmail, EmailNotValidError, EmailSyntaxError, EmailUndeliverableError",
+    "callable": "featurelifted.validate_email",
+    "signature": "validate_email(email, /, *, check_deliverability=False, **options) -> ValidatedEmail"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "idna"
+    ],
+    "forbidden_dependencies": [
+      "email-validator",
+      "email_validator",
+      "dnspython"
+    ],
+    "forbidden_imports": [
+      "email_validator",
+      "emailvalidator",
+      "dns"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Email syntax validation core",
+    "summary": "Extract a task-scoped subset of `email_validator` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.validate_email",
+        "kind": "module"
+      },
+      {
+        "path": "featurelifted.ValidatedEmail",
+        "kind": "class",
+        "signature": "()"
+      },
+      {
+        "path": "featurelifted.EmailNotValidError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.EmailSyntaxError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.EmailUndeliverableError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: validate_email returns ValidatedEmail with normalized/local_part/domain fields. Required observable cases include validate basic ascii email; validate plus addressing; invalid empty local part; quoted local part dequoted; smtputf8 local part; domain literal ipv4."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: EmailSyntaxError and EmailNotValidError for invalid addresses. Required observable cases include invalid missing at sign; unicode nfc local part."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: IDNA domain encoding and internationalized local parts (SMTPUTF8). Required observable cases include idna domain normalization; smtputf8 local part."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: quoted local part parsing and de-quoting when allowed. Required observable cases include quoted local part dequoted."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: display name angle-bracket parsing when allowed. Required observable cases include display name parsing; test environment allows dot test."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: reserved/special-use domain rejection and test_environment bypass. Required observable cases include reserved domain rejected; test environment allows dot test; domain literal ipv4."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: case-insensitive mailbox names (e.g. POSTMASTER). Required observable cases include postmaster case insensitive."
+      },
+      {
+        "id": "B008",
+        "text": "The extracted feature must support this observable behavior: Unicode NFC normalization of local parts. Required observable cases include invalid empty local part; unicode nfc local part."
+      },
+      {
+        "id": "B009",
+        "text": "The package exposes the required task API paths `featurelifted.validate_email`, `featurelifted.ValidatedEmail`, `featurelifted.EmailNotValidError`, `featurelifted.EmailSyntaxError`, `featurelifted.EmailUndeliverableError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "email_validator.validate_email",
+      "email_validator.ValidatedEmail",
+      "email_validator.EmailNotValidError",
+      "email_validator.EmailSyntaxError",
+      "email_validator.syntax",
+      "email_validator.rfc_constants"
+    ],
+    "exclusions": [
+      "DNS deliverability checks and caching_resolver",
+      "CLI entry point (__main__)",
+      "original email_validator import at runtime",
+      "network access"
+    ],
+    "forbidden": {
+      "imports": [
+        "email_validator",
+        "emailvalidator",
+        "dns"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B010",
+      "text": "the submitted package does not import forbidden upstream packages: email_validator, emailvalidator, dns."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate_email returns ValidatedEmail with normalized/local_part/domain fields. Required observable cases include validate basic ascii email; validate plus addressing; invalid empty local part; quoted local part dequoted; smtputf8 local part; domain literal ipv4."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: EmailSyntaxError and EmailNotValidError for invalid addresses. Required observable cases include invalid missing at sign; unicode nfc local part."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: IDNA domain encoding and internationalized local parts (SMTPUTF8). Required observable cases include idna domain normalization; smtputf8 local part."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: quoted local part parsing and de-quoting when allowed. Required observable cases include quoted local part dequoted."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: display name angle-bracket parsing when allowed. Required observable cases include display name parsing; test environment allows dot test."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reserved/special-use domain rejection and test_environment bypass. Required observable cases include reserved domain rejected; test environment allows dot test; domain literal ipv4."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: case-insensitive mailbox names (e.g. POSTMASTER). Required observable cases include postmaster case insensitive."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Unicode NFC normalization of local parts. Required observable cases include invalid empty local part; unicode nfc local part."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.validate_email`, `featurelifted.ValidatedEmail`, `featurelifted.EmailNotValidError`, `featurelifted.EmailSyntaxError`, `featurelifted.EmailUndeliverableError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B010",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: email_validator, emailvalidator, dns"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_validate_basic_ascii_email",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_validate_plus_addressing",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_invalid_missing_at_sign",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_invalid_empty_local_part",
+        "behavior_ids": [
+          "B001",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_idna_domain_normalization",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_quoted_local_part_dequoted",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_display_name_parsing",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_postmaster_case_insensitive",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_reserved_domain_rejected",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_test_environment_allows_dot_test",
+        "behavior_ids": [
+          "B005",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unicode_nfc_local_part",
+        "behavior_ids": [
+          "B008",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_smtputf8_local_part",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_domain_literal_ipv4",
+        "behavior_ids": [
+          "B001",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_email_validator_import_surface",
+        "behavior_ids": [
+          "B010"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.validate_email",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ValidatedEmail",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EmailNotValidError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EmailSyntaxError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.EmailUndeliverableError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "b1c64594c4bf4eac946a0b4dfc4414aa85988edda0c2b61bab8c976475310bd9",
+  "generated_task_hash": "9c4fa37db2af7d44f48fc3ec277935a4afe4f4d952bf2873e7edd208f1b3d0af"
+}

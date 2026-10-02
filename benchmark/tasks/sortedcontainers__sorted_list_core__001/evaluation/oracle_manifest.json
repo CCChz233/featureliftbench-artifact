@@ -1,0 +1,7 @@
+{
+  "source_package_name": "sortedcontainers",
+  "required_source_files": [
+    "sortedcontainers/sortedlist.py"
+  ],
+  "notes": "Oracle splits sortedlist.py into index/delete/invariant mixins plus SortedList core; excludes SortedKeyList, SortedDict, and SortedSet. Copy-all baseline includes the full sortedcontainers package."
+}

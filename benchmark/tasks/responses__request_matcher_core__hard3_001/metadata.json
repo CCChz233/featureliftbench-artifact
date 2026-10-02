@@ -1,0 +1,329 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Requests PreparedRequest matching, matcher ordering, call state, and exception messages require requests coupling.",
+    "level": "high",
+    "primary": "third_party_dependency_coupling",
+    "signals": [
+      "query param matcher compares parsed query strings",
+      "header matcher validates request headers",
+      "once responses are removed after first match",
+      "call history reset clears registered responses and history"
+    ],
+    "types": [
+      "third_party_dependency_coupling",
+      "data_model_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [
+      "certifi",
+      "charset-normalizer",
+      "idna",
+      "requests",
+      "urllib3"
+    ],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "responses"
+    ],
+    "forbidden_imports": [
+      "responses"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "responses/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped request matcher registry and call history into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "socket patching",
+      "HTTP adapter interception"
+    ],
+    "included_behaviors": [
+      "PreparedRequest matching",
+      "matcher helpers",
+      "registry find/add/reset",
+      "call history"
+    ],
+    "name": "Request matcher registry and call history",
+    "source_entrypoints": [
+      "responses.matchers",
+      "responses.registries.FirstMatchRegistry"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "MockResponseRegistry",
+    "import": "from featurelifted import MockResponseRegistry, MockResponse, query_string_matcher, header_matcher",
+    "package": "featurelifted",
+    "signature": "MockResponseRegistry()"
+  },
+  "source": {
+    "commit": "983a4975c969432d468c35085b613a3bec0edc46",
+    "license": "Apache-2.0",
+    "name": "responses",
+    "url": "https://github.com/getsentry/responses.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "third-party dependency coupling",
+    "third_party_dependency_coupling"
+  ],
+  "task_id": "responses__request_matcher_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Request matcher registry and call history",
+    "summary": "Extract a task-scoped subset of `responses` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.MockResponseRegistry",
+        "kind": "class",
+        "signature": "() -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.MockResponseRegistry._responses",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.MockResponseRegistry.add",
+            "kind": "method",
+            "signature": "(self, response: 'MockResponse') -> 'MockResponse'"
+          },
+          {
+            "path": "featurelifted.MockResponseRegistry.call_history",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.MockResponseRegistry.find",
+            "kind": "method",
+            "signature": "(self, request: 'PreparedRequest') -> 'tuple[MockResponse | None, list[str]]'"
+          },
+          {
+            "path": "featurelifted.MockResponseRegistry.reset",
+            "kind": "method",
+            "signature": "(self) -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponse",
+        "kind": "class",
+        "signature": "(url: 'str', method: 'str' = 'GET', status: 'int' = 200, body: 'Any' = '', match_querystring: 'bool' = False, headers: 'dict[str, str]' = <factory>, matchers: 'list[Callable[[PreparedRequest], tuple[bool, str]]]' = <factory>, call_count: 'int' = 0, once: 'bool' = False) -> None"
+      },
+      {
+        "path": "featurelifted.query_string_matcher",
+        "kind": "function",
+        "signature": "(params: 'dict[str, str]') -> 'Callable[[PreparedRequest], tuple[bool, str]]'"
+      },
+      {
+        "path": "featurelifted.header_matcher",
+        "kind": "function",
+        "signature": "(headers: 'dict[str, str]') -> 'Callable[[PreparedRequest], tuple[bool, str]]'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "Register `MockResponse` objects and find the first matching `PreparedRequest`."
+      },
+      {
+        "id": "B002",
+        "text": "Support `query_string_matcher` and `header_matcher` helper matchers."
+      },
+      {
+        "id": "B003",
+        "text": "`once=True` responses are removed after the first successful match."
+      },
+      {
+        "id": "B004",
+        "text": "`reset()` clears registered responses and call history."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.MockResponseRegistry`, `featurelifted.MockResponseRegistry._responses`, `featurelifted.MockResponseRegistry.add`, `featurelifted.MockResponseRegistry.call_history`, `featurelifted.MockResponseRegistry.find`, `featurelifted.MockResponseRegistry.reset`, `featurelifted.MockResponse`, `featurelifted.query_string_matcher`, `featurelifted.header_matcher` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "responses.matchers",
+      "responses.registries.FirstMatchRegistry"
+    ],
+    "exclusions": [
+      "network access",
+      "socket patching",
+      "HTTP adapter interception"
+    ],
+    "forbidden": {
+      "imports": [
+        "responses"
+      ],
+      "paths": [
+        "repo/",
+        "responses/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: responses."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "Register `MockResponse` objects and find the first matching `PreparedRequest`."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Support `query_string_matcher` and `header_matcher` helper matchers."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`once=True` responses are removed after the first successful match."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "`reset()` clears registered responses and call history."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.MockResponseRegistry`, `featurelifted.MockResponseRegistry._responses`, `featurelifted.MockResponseRegistry.add`, `featurelifted.MockResponseRegistry.call_history`, `featurelifted.MockResponseRegistry.find`, `featurelifted.MockResponseRegistry.reset`, `featurelifted.MockResponse`, `featurelifted.query_string_matcher`, `featurelifted.header_matcher` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: responses"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_registry_finds_matching_response",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_query_and_header_matchers_and_once_behavior",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_reset_clears_registry_and_history",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.MockResponseRegistry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponseRegistry._responses",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_reset_clears_registry_and_history"
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponseRegistry.add",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_query_and_header_matchers_and_once_behavior",
+          "hidden_tests/test_hidden_contract.py::test_reset_clears_registry_and_history"
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponseRegistry.call_history",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_query_and_header_matchers_and_once_behavior",
+          "hidden_tests/test_hidden_contract.py::test_reset_clears_registry_and_history"
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponseRegistry.find",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_query_and_header_matchers_and_once_behavior"
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponseRegistry.reset",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_reset_clears_registry_and_history"
+        ]
+      },
+      {
+        "path": "featurelifted.MockResponse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.query_string_matcher",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.header_matcher",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "5dc3f57195d09ca77d6ae3db3aea5f1f1671cd58e0b05a192dabd122087ff09b",
+  "generated_task_hash": "d639095c14e3cb9e9609a572dd7dba6b46cdd282f7406e9d5f3a8aaed2b2c7bc"
+}

@@ -1,0 +1,20 @@
+{
+  "source_package_name": "dateutil",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/dateutil/zoneinfo/__init__.py",
+    "repo/src/dateutil/tz/tz.py"
+  ],
+  "target_api": [
+    "featurelifted.ZoneResolver",
+    "featurelifted.parse_tzfile"
+  ],
+  "forbidden_imports": [
+    "dateutil"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "dateutil/"
+  ],
+  "notes": "Zone resolver subset without full tz conversion."
+}

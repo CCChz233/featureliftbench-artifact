@@ -1,0 +1,16 @@
+{
+  "source_files": [
+    "src/jinja2/loaders.py",
+    "src/jinja2/environment.py",
+    "src/jinja2/compiler.py",
+    "src/jinja2/runtime.py",
+    "src/jinja2/parser.py",
+    "src/jinja2/lexer.py",
+    "src/jinja2/nodes.py"
+  ],
+  "notes": "Loader + inheritance closure includes compile/render stack and DictLoader.",
+  "v1_1_repair": {
+    "type": "generated_import_namespace_adapter",
+    "evidence": "compiler and deferred loader utilities import featurelifted rather than forbidden jinja2"
+  }
+}

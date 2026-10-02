@@ -1,0 +1,24 @@
+{
+  "source_package_name": "multidict",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/multidict/__init__.py",
+    "repo/multidict/_abc.py",
+    "repo/multidict/_compat.py",
+    "repo/multidict/_multidict_py.py"
+  ],
+  "target_api": [
+    "featurelifted.MultiDict",
+    "featurelifted.CIMultiDict",
+    "featurelifted.MultiDictProxy",
+    "featurelifted.CIMultiDictProxy"
+  ],
+  "forbidden_imports": [
+    "multidict"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "multidict/"
+  ],
+  "notes": "Pure-Python multidict subset. C extension and typing-only modules excluded."
+}

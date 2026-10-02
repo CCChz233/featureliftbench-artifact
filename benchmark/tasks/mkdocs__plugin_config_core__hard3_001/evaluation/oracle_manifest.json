@@ -1,0 +1,21 @@
+{
+  "source_package_name": "mkdocs",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/mkdocs/plugins.py",
+    "repo/mkdocs/config/base.py"
+  ],
+  "target_api": [
+    "featurelifted.PluginConfig",
+    "featurelifted.PluginCollection",
+    "featurelifted.validate_plugin_config"
+  ],
+  "forbidden_imports": [
+    "mkdocs"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "mkdocs/"
+  ],
+  "notes": "Plugin planning subset without build/render pipeline."
+}

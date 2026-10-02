@@ -1,0 +1,464 @@
+{
+  "task_id": "tomlkit__roundtrip_document__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "parser",
+    "formatter",
+    "roundtrip",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "tomlkit",
+    "url": "https://github.com/python-poetry/tomlkit",
+    "commit": "9ac3f98214dbfbca0157b6c370c7986f497c34e4",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "TOML document parse and round-trip editing",
+    "description": "Extract tomlkit's core TOML parsing, document editing, and formatting-preserving dump API as a standalone package.",
+    "source_entrypoints": [
+      "tomlkit.parse",
+      "tomlkit.loads",
+      "tomlkit.dumps",
+      "tomlkit.document",
+      "tomlkit.table",
+      "tomlkit.inline_table",
+      "tomlkit.array",
+      "tomlkit.aot",
+      "tomlkit.string",
+      "tomlkit.item",
+      "tomlkit.exceptions.ParseError"
+    ],
+    "included_behaviors": [
+      "parse TOML strings and bytes into mutable TOMLDocument objects",
+      "preserve comments, blank lines, table order, inline tables, literal strings, multiline strings, and array formatting when dumping parsed documents",
+      "dump plain mappings, nested mappings, arrays, inline tables, and arrays of tables",
+      "support document/table/inline_table/array/aot/string/item constructors",
+      "support sorted-key dumping for mappings and parsed documents",
+      "support datetime, date, time, integers, floats, booleans, arrays, tables, dotted keys, and unicode strings",
+      "raise stable ParseError subclasses with line and column information for malformed TOML"
+    ],
+    "excluded_behaviors": [
+      "original project tests",
+      "original documentation",
+      "release tooling and CI configuration",
+      "packaging metadata from the original project",
+      "external toml compliance test fixtures"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Round-trip TOML behavior depends on parser state, document item models, formatting preservation, and error metadata.",
+    "signals": [
+      "parser and dumper state machines",
+      "document/node object model",
+      "format-preserving behavior across modules"
+    ],
+    "primary": "data_model_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import parse, loads, dumps, document, table, inline_table, array, aot, string, item; from featurelifted.exceptions import ParseError, UnexpectedCharError, InvalidUnicodeValueError",
+    "callable": "featurelifted.parse",
+    "signature": "parse(string: str | bytes) -> TOMLDocument"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "tomlkit"
+    ],
+    "forbidden_imports": [
+      "tomlkit"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "scoring_reference": {
+    "copy_all_bytes": 442317,
+    "copy_all_loc": 7580,
+    "oracle_bytes": 193160,
+    "oracle_loc": 4528,
+    "oracle_dependency_count": 0
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "TOML document parse and round-trip editing",
+    "summary": "Extract a task-scoped subset of `tomlkit` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(string: 'str | bytes') -> 'TOMLDocument'"
+      },
+      {
+        "path": "featurelifted.loads",
+        "kind": "function",
+        "signature": "(string: 'str | bytes') -> 'TOMLDocument'"
+      },
+      {
+        "path": "featurelifted.dumps",
+        "kind": "function",
+        "signature": "(data: 'Mapping[str, Any]', sort_keys: 'bool' = False) -> 'str'"
+      },
+      {
+        "path": "featurelifted.document",
+        "kind": "function",
+        "signature": "() -> 'TOMLDocument'"
+      },
+      {
+        "path": "featurelifted.table",
+        "kind": "function",
+        "signature": "(is_super_table: 'bool | None' = None) -> 'Table'"
+      },
+      {
+        "path": "featurelifted.inline_table",
+        "kind": "function",
+        "signature": "() -> 'InlineTable'"
+      },
+      {
+        "path": "featurelifted.array",
+        "kind": "function",
+        "signature": "(raw: 'str' = '[]') -> 'Array'"
+      },
+      {
+        "path": "featurelifted.aot",
+        "kind": "function",
+        "signature": "() -> 'AoT'"
+      },
+      {
+        "path": "featurelifted.string",
+        "kind": "function",
+        "signature": "(raw: 'str', *, literal: 'bool' = False, multiline: 'bool' = False, escape: 'bool' = True) -> 'String'"
+      },
+      {
+        "path": "featurelifted.item",
+        "kind": "function",
+        "signature": "(value: 'Any', _parent: 'Item | None' = None, _sort_keys: 'bool' = False) -> 'Item'"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.InvalidUnicodeValueError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.ParseError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.UnexpectedCharError",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse TOML strings and bytes into mutable TOMLDocument objects. Required observable cases include string constructor and sorted dump preserve expected format."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: preserve comments, blank lines, table order, inline tables, literal strings, multiline strings, and array formatting when dumping parsed documents. Required observable cases include parse document values and roundtrip layout; editing preserves table order and comments; inline table array and parse errors; multiline literal strings and trailing comma arrays roundtrip."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: dump plain mappings, nested mappings, arrays, inline tables, and arrays of tables. Required observable cases include dump plain mappings and build document; arrays of tables and inline tables dump correctly."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: support document/table/inline_table/array/aot/string/item constructors. Required observable cases include inline table array and parse errors; arrays of tables and inline tables dump correctly; string constructor and sorted dump preserve expected format."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: support sorted-key dumping for mappings and parsed documents. Required observable cases include parse document values and roundtrip layout; dump plain mappings and build document; string constructor and sorted dump preserve expected format."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: support datetime, date, time, integers, floats, booleans, arrays, tables, dotted keys, and unicode strings. Required observable cases include dotted keys table redefinition and unicode errors."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: raise stable ParseError subclasses with line and column information for malformed TOML. Required observable cases include string constructor and sorted dump preserve expected format."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.loads`, `featurelifted.dumps`, `featurelifted.document`, `featurelifted.table`, `featurelifted.inline_table`, `featurelifted.array`, `featurelifted.aot`, `featurelifted.string`, `featurelifted.item`, `featurelifted.exceptions`, `featurelifted.exceptions.InvalidUnicodeValueError`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "tomlkit.parse",
+      "tomlkit.loads",
+      "tomlkit.dumps",
+      "tomlkit.document",
+      "tomlkit.table",
+      "tomlkit.inline_table",
+      "tomlkit.array",
+      "tomlkit.aot",
+      "tomlkit.string",
+      "tomlkit.item",
+      "tomlkit.exceptions.ParseError"
+    ],
+    "exclusions": [
+      "original project tests",
+      "original documentation",
+      "release tooling and CI configuration",
+      "packaging metadata from the original project",
+      "external toml compliance test fixtures"
+    ],
+    "forbidden": {
+      "imports": [
+        "tomlkit"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: tomlkit."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse TOML strings and bytes into mutable TOMLDocument objects. Required observable cases include string constructor and sorted dump preserve expected format."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preserve comments, blank lines, table order, inline tables, literal strings, multiline strings, and array formatting when dumping parsed documents. Required observable cases include parse document values and roundtrip layout; editing preserves table order and comments; inline table array and parse errors; multiline literal strings and trailing comma arrays roundtrip."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: dump plain mappings, nested mappings, arrays, inline tables, and arrays of tables. Required observable cases include dump plain mappings and build document; arrays of tables and inline tables dump correctly."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support document/table/inline_table/array/aot/string/item constructors. Required observable cases include inline table array and parse errors; arrays of tables and inline tables dump correctly; string constructor and sorted dump preserve expected format."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support sorted-key dumping for mappings and parsed documents. Required observable cases include parse document values and roundtrip layout; dump plain mappings and build document; string constructor and sorted dump preserve expected format."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support datetime, date, time, integers, floats, booleans, arrays, tables, dotted keys, and unicode strings. Required observable cases include dotted keys table redefinition and unicode errors."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise stable ParseError subclasses with line and column information for malformed TOML. Required observable cases include string constructor and sorted dump preserve expected format."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.loads`, `featurelifted.dumps`, `featurelifted.document`, `featurelifted.table`, `featurelifted.inline_table`, `featurelifted.array`, `featurelifted.aot`, `featurelifted.string`, `featurelifted.item`, `featurelifted.exceptions`, `featurelifted.exceptions.InvalidUnicodeValueError`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: tomlkit"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_document_values_and_roundtrip_layout",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_editing_preserves_table_order_and_comments",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dump_plain_mappings_and_build_document",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_inline_table_array_and_parse_errors",
+        "behavior_ids": [
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_multiline_literal_strings_and_trailing_comma_arrays_roundtrip",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_arrays_of_tables_and_inline_tables_dump_correctly",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_dotted_keys_table_redefinition_and_unicode_errors",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_string_constructor_and_sorted_dump_preserve_expected_format",
+        "behavior_ids": [
+          "B004",
+          "B005",
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.loads",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.dumps",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.document",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.table",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.inline_table",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.array",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.aot",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.string",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.item",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.InvalidUnicodeValueError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.ParseError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.UnexpectedCharError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "bc220060189f47236bf0f9a9d7eef9d91074ba70f3b9fbd801ecc70cd3f878a3",
+  "generated_task_hash": "40ee90eec81a407ffc7784c836f596368df71ac84a416e20fe55f2e697026f23"
+}

@@ -1,0 +1,234 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Trigger fields, previous fire time, and boundary behavior require stateful iteration.",
+    "level": "high",
+    "primary": "parser_state_coupling",
+    "signals": [
+      "step expressions like */15",
+      "hour ranges",
+      "end date boundary",
+      "start_time lower bound"
+    ],
+    "types": [
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "apscheduler"
+    ],
+    "forbidden_imports": [
+      "apscheduler"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "apscheduler/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped cron trigger next-fire-time state into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "scheduler stores/executors",
+      "subprocess"
+    ],
+    "included_behaviors": [
+      "cron field parsing subset",
+      "next fire time iteration",
+      "end_time boundary"
+    ],
+    "name": "Cron trigger next-fire-time state",
+    "source_entrypoints": [
+      "apscheduler.triggers.cron.CronTrigger"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "CronTrigger",
+    "import": "from featurelifted import CronTrigger",
+    "package": "featurelifted",
+    "signature": "CronTrigger(minute='*', hour='*', day='*', start_time=None, end_time=None)"
+  },
+  "source": {
+    "commit": "4de063392ff59f4df6ec0f4e3e2020539d79fdc9",
+    "license": "MIT",
+    "name": "apscheduler",
+    "url": "https://github.com/agronholm/apscheduler.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "stateful runtime behavior",
+    "parser_state_coupling"
+  ],
+  "task_id": "apscheduler__cron_trigger_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Cron trigger next-fire-time state",
+    "summary": "Extract a task-scoped subset of `apscheduler` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.CronTrigger",
+        "kind": "class",
+        "signature": "(*, minute: 'str | int' = '*', hour: 'str | int' = '*', day: 'str | int' = '*', month: 'str | int' = '*', day_of_week: 'str | int' = '*', start_time: 'datetime | None' = None, end_time: 'datetime | None' = None) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.CronTrigger.get_next_fire_time",
+            "kind": "method",
+            "signature": "(self, now: 'datetime | None' = None) -> 'datetime | None'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When CronTrigger receives supported cron expressions, it parses wildcard, range, list, and step field forms into matching constraints."
+      },
+      {
+        "id": "B002",
+        "text": "When get_next_fire_time is called, it returns the first matching datetime after now while advancing across cron fields deterministically."
+      },
+      {
+        "id": "B003",
+        "text": "When a computed fire time would exceed end_time, get_next_fire_time returns no result; start_time remains the lower boundary."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.CronTrigger`, `featurelifted.CronTrigger.get_next_fire_time` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "apscheduler.triggers.cron.CronTrigger"
+    ],
+    "exclusions": [
+      "network access",
+      "scheduler stores/executors",
+      "subprocess"
+    ],
+    "forbidden": {
+      "imports": [
+        "apscheduler"
+      ],
+      "paths": [
+        "repo/",
+        "apscheduler/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: apscheduler."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When CronTrigger receives supported cron expressions, it parses wildcard, range, list, and step field forms into matching constraints."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When get_next_fire_time is called, it returns the first matching datetime after now while advancing across cron fields deterministically."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When a computed fire time would exceed end_time, get_next_fire_time returns no result; start_time remains the lower boundary."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.CronTrigger`, `featurelifted.CronTrigger.get_next_fire_time` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: apscheduler"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_specific_minute_and_hour",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_end_time_boundary",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_specific_day_and_hour",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.CronTrigger",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CronTrigger.get_next_fire_time",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_end_time_boundary",
+          "hidden_tests/test_hidden_contract.py::test_specific_day_and_hour"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "696d14e03f6fa794a3bcad0d4a846497b9cf1d57a1cdab0a827e845927b880da",
+  "generated_task_hash": "985912f835bc516446d47af07e567983a9dc85de84f73c9120256ff0ce9bf205"
+}

@@ -1,0 +1,274 @@
+{
+  "task_id": "typer__command_parser_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "cli",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "framework_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "typer",
+    "url": "https://github.com/fastapi/typer",
+    "commit": "0.20.0-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Typer command parser and CLI runner",
+    "description": "Extract Typer CLI command building, type-hint parameter parsing, and CliRunner invocation.",
+    "source_entrypoints": [
+      "typer.Typer",
+      "typer.run",
+      "typer.testing.CliRunner",
+      "typer.Argument",
+      "typer.Option"
+    ],
+    "included_behaviors": [
+      "build commands from type-annotated functions",
+      "parse options, arguments, defaults, and choices",
+      "invoke Typer apps through CliRunner",
+      "nested subcommands and context passing",
+      "usage errors for invalid parameters"
+    ],
+    "excluded_behaviors": [
+      "shell completion integration",
+      "rich markup rendering beyond basic echo",
+      "documentation and release tooling"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "framework_coupling",
+      "third_party_dependency_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "framework_coupling",
+    "description": "Typer couples Click decorators, type-hint introspection, and CliRunner invocation.",
+    "signals": [
+      "Typer/Click command framework",
+      "type-hint to parameter conversion",
+      "CliRunner test harness"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted as typer; from featurelifted.testing import CliRunner",
+    "callable": "featurelifted.Typer",
+    "signature": "Typer(name=None, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "typer",
+      "click"
+    ],
+    "forbidden_imports": [
+      "typer",
+      "click"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Typer command parser and CLI runner",
+    "summary": "Extract a task-scoped subset of `typer` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.testing",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.testing.CliRunner",
+            "kind": "class",
+            "signature": "(charset: str = 'utf-8', env: Optional[Mapping[str, Optional[str]]] = None, echo_stdin: bool = False, mix_stderr: bool = True) -> None",
+            "members": [
+              {
+                "path": "featurelifted.testing.CliRunner.invoke",
+                "kind": "method",
+                "signature": "(self, app: Typer, args: Union[Sequence[str], str, NoneType] = None, input: Union[str, bytes, IO[Any], NoneType] = None, env: Optional[Mapping[str, Optional[str]]] = None, catch_exceptions: bool = True, color: bool = False, **extra: Any) -> Result"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: build commands from type-annotated functions. Required observable cases include subcommands and optional path."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: parse options, arguments, defaults, and choices. Required observable cases include typed options and arguments; subcommands and optional path."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: invoke Typer apps through CliRunner. Required observable cases include typed options and arguments; subcommands and optional path; choice validation."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: nested subcommands and context passing. Required observable cases include subcommands and optional path."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: usage errors for invalid parameters. Required observable cases include subcommands and optional path."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.testing`, `featurelifted.testing.CliRunner`, `featurelifted.testing.CliRunner.invoke` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "typer.Typer",
+      "typer.run",
+      "typer.testing.CliRunner",
+      "typer.Argument",
+      "typer.Option"
+    ],
+    "exclusions": [
+      "shell completion integration",
+      "rich markup rendering beyond basic echo",
+      "documentation and release tooling"
+    ],
+    "forbidden": {
+      "imports": [
+        "typer",
+        "click"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: typer, click."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: build commands from type-annotated functions. Required observable cases include subcommands and optional path."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse options, arguments, defaults, and choices. Required observable cases include typed options and arguments; subcommands and optional path."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: invoke Typer apps through CliRunner. Required observable cases include typed options and arguments; subcommands and optional path; choice validation."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: nested subcommands and context passing. Required observable cases include subcommands and optional path."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: usage errors for invalid parameters. Required observable cases include subcommands and optional path."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.testing`, `featurelifted.testing.CliRunner`, `featurelifted.testing.CliRunner.invoke` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: typer, click"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_typed_options_and_arguments",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_subcommands_and_optional_path",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B002",
+          "B004",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_choice_validation",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.testing",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.testing.CliRunner",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.testing.CliRunner.invoke",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_choice_validation",
+          "hidden_tests/test_hidden_behavior.py::test_subcommands_and_optional_path"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "44033b3e0466e88d1f5c10e09c43ebe7c66ce3ee1a539e6b17cbf412477c24fc",
+  "generated_task_hash": "caa85a6eee15edd2e2230a459368ccfb633c61d2624ae6752c52bf78c8615c7e"
+}

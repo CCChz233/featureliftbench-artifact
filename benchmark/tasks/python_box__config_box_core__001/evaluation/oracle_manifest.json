@@ -1,0 +1,10 @@
+{
+  "source_package_name": "box",
+  "required_source_files": [
+    "box/box.py",
+    "box/config_box.py",
+    "box/exceptions.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle is Box+ConfigBox core with stub converters; repo includes converters/from_file/shorthand for copy-all penalty."
+}

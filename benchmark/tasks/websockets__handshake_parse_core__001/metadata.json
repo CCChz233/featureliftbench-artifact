@@ -1,0 +1,754 @@
+{
+  "task_id": "websockets__handshake_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "websockets",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling",
+    "no-network"
+  ],
+  "source": {
+    "name": "websockets",
+    "url": "https://github.com/python-websockets/websockets",
+    "commit": "d4303a5d3e373fc8c34177c3dec1a9c75c8865fa",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "WebSocket HTTP upgrade handshake parsing",
+    "description": "Extract websockets HTTP/1.1 handshake request parsing, header grammars (Connection, Upgrade, extensions, subprotocols), and handshake header validation without socket I/O or frame protocol.",
+    "source_entrypoints": [
+      "websockets.headers.parse_connection",
+      "websockets.headers.parse_upgrade",
+      "websockets.headers.parse_extension",
+      "websockets.headers.parse_subprotocol",
+      "websockets.http11.Request.parse",
+      "websockets.http11.Response.parse",
+      "websockets.datastructures.Headers",
+      "websockets.server.ServerProtocol.process_request",
+      "websockets.utils.accept_key"
+    ],
+    "included_behaviors": [
+      "parse Connection and Upgrade header lists with OWS and empty elements",
+      "parse Sec-WebSocket-Extensions and Sec-WebSocket-Protocol grammars",
+      "parse WebSocket handshake HTTP requests from byte streams",
+      "case-insensitive Headers lookup with multiple values per name",
+      "validate handshake request headers including Sec-WebSocket-Key and Version",
+      "compute Sec-WebSocket-Accept from Sec-WebSocket-Key",
+      "raise typed errors for malformed headers and upgrade requests"
+    ],
+    "excluded_behaviors": [
+      "socket and asyncio/sync network I/O",
+      "WebSocket frame encoding and masking",
+      "ServerProtocol and ClientProtocol connection state machines",
+      "extensions negotiation with permessage-deflate implementations",
+      "CLI, docs, CI, and original tests",
+      "original websockets package import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Handshake parsing couples RFC 7230/6455 header grammars, case-insensitive header storage, generator-based HTTP/1.1 line parsing, and upgrade validation rules.",
+    "signals": [
+      "manual ABNF parsers in headers.py share list/OWS helpers",
+      "Headers preserves insertion order and duplicate header names",
+      "Request.parse uses generator coroutines over StreamReader buffers",
+      "upgrade validation composes parse_connection, parse_upgrade, and key checks",
+      "full websockets package includes large unrelated async/sync transport stacks"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Headers, Request, Response, accept_key, generate_key, validate_handshake_request; from featurelifted.headers import parse_connection, parse_upgrade, parse_extension, parse_subprotocol, build_subprotocol, validate_subprotocols, parse_authorization_basic, build_authorization_basic, build_www_authenticate_basic; from featurelifted.exceptions import InvalidHeaderFormat, InvalidHeaderValue, InvalidUpgrade, InvalidHeader, InvalidOrigin, SecurityError; from featurelifted.http11 import parse_headers; from featurelifted.streams import StreamReader",
+    "callable": "featurelifted.validate_handshake_request",
+    "signature": "validate_handshake_request(request, *, origins=None)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "websockets"
+    ],
+    "forbidden_imports": [
+      "websockets"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "WebSocket HTTP upgrade handshake parsing",
+    "summary": "Extract a task-scoped subset of `websockets` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Headers",
+        "kind": "class",
+        "signature": "(*args: 'HeadersLike', **kwargs: 'str') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Headers.get_all",
+            "kind": "method",
+            "signature": "(self, key: 'str') -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.Headers.__getitem__",
+            "kind": "method",
+            "signature": "(self, key: 'str') -> 'str'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Request",
+        "kind": "class",
+        "signature": "(path: 'str', headers: 'Headers', _exception: 'Exception | None' = None) -> None",
+        "members": [
+          {
+            "path": "featurelifted.Request.parse",
+            "kind": "method",
+            "signature": "(read_line: 'Callable[[int], Generator[None, None, bytes | bytearray]]') -> 'Generator[None, None, Request]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Response",
+        "kind": "class",
+        "signature": "(status_code: 'int', reason_phrase: 'str', headers: 'Headers', body: 'bytes | bytearray' = b'', _exception: 'Exception | None' = None) -> None"
+      },
+      {
+        "path": "featurelifted.accept_key",
+        "kind": "function",
+        "signature": "(key: 'str') -> 'str'"
+      },
+      {
+        "path": "featurelifted.generate_key",
+        "kind": "function",
+        "signature": "() -> 'str'"
+      },
+      {
+        "path": "featurelifted.validate_handshake_request",
+        "kind": "function",
+        "signature": "(request: 'Request', *, origins: 'Sequence[Origin | re.Pattern[str] | None] | None' = None) -> 'str'"
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.exceptions.InvalidHeader",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.InvalidHeaderFormat",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.InvalidHeaderValue",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.InvalidOrigin",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.InvalidUpgrade",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.exceptions.SecurityError",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.headers",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.headers.build_authorization_basic",
+            "kind": "function",
+            "signature": "(username: 'str', password: 'str') -> 'str'"
+          },
+          {
+            "path": "featurelifted.headers.build_subprotocol",
+            "kind": "function",
+            "signature": "(subprotocols: 'Sequence[Subprotocol]') -> 'str'"
+          },
+          {
+            "path": "featurelifted.headers.build_www_authenticate_basic",
+            "kind": "function",
+            "signature": "(realm: 'str') -> 'str'"
+          },
+          {
+            "path": "featurelifted.headers.parse_authorization_basic",
+            "kind": "function",
+            "signature": "(header: 'str') -> 'tuple[str, str]'"
+          },
+          {
+            "path": "featurelifted.headers.parse_connection",
+            "kind": "function",
+            "signature": "(header: 'str') -> 'list[ConnectionOption]'"
+          },
+          {
+            "path": "featurelifted.headers.parse_extension",
+            "kind": "function",
+            "signature": "(header: 'str') -> 'list[ExtensionHeader]'"
+          },
+          {
+            "path": "featurelifted.headers.parse_subprotocol",
+            "kind": "function",
+            "signature": "(header: 'str') -> 'list[Subprotocol]'"
+          },
+          {
+            "path": "featurelifted.headers.parse_upgrade",
+            "kind": "function",
+            "signature": "(header: 'str') -> 'list[UpgradeProtocol]'"
+          },
+          {
+            "path": "featurelifted.headers.validate_subprotocols",
+            "kind": "function",
+            "signature": "(subprotocols: 'Sequence[Subprotocol]') -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.http11",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.http11.parse_headers",
+            "kind": "function",
+            "signature": "(read_line: 'Callable[[int], Generator[None, None, bytes | bytearray]]') -> 'Generator[None, None, Headers]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.streams",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.streams.StreamReader",
+            "kind": "class",
+            "signature": "() -> 'None'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse Connection and Upgrade header lists with OWS and empty elements. Required observable cases include parse connection and upgrade; parse upgrade case insensitive list; headers multiple connection values."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: parse Sec-WebSocket-Extensions and Sec-WebSocket-Protocol grammars. Required observable cases include parse extension with quoted params; parse subprotocol skips empty elements; parse extension invalid quoted token; build subprotocol roundtrip; validate subprotocols rejects invalid token."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: parse WebSocket handshake HTTP requests from byte streams. Required observable cases include parse websocket request basic; parse request invalid method; parse headers security limit."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: case-insensitive Headers lookup with multiple values per name. Required observable cases include headers case insensitive lookup; headers multiple connection values."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: validate handshake request headers including Sec-WebSocket-Key and Version. Required observable cases include validate handshake rejects bad upgrade; validate handshake missing key; validate handshake invalid key length; validate handshake origin allowlist; validate handshake origin regex allowlist."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: compute Sec-WebSocket-Accept from Sec-WebSocket-Key. Required observable cases include accept key rfc6455 example; validate subprotocols rejects invalid token."
+      },
+      {
+        "id": "B007",
+        "text": "The extracted feature must support this observable behavior: raise typed errors for malformed headers and upgrade requests. Required observable cases include validate handshake rejects bad upgrade; parse request invalid method; parse headers security limit; parse extension invalid quoted token; validate subprotocols rejects invalid token."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.Headers`, `featurelifted.Headers.get_all`, `featurelifted.Headers.__getitem__`, `featurelifted.Request`, `featurelifted.Request.parse`, `featurelifted.Response`, `featurelifted.accept_key`, `featurelifted.generate_key`, `featurelifted.validate_handshake_request`, `featurelifted.exceptions`, `featurelifted.exceptions.InvalidHeader`, `featurelifted.exceptions.InvalidHeaderFormat`, and 18 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "websockets.headers.parse_connection",
+      "websockets.headers.parse_upgrade",
+      "websockets.headers.parse_extension",
+      "websockets.headers.parse_subprotocol",
+      "websockets.http11.Request.parse",
+      "websockets.http11.Response.parse",
+      "websockets.datastructures.Headers",
+      "websockets.server.ServerProtocol.process_request",
+      "websockets.utils.accept_key"
+    ],
+    "exclusions": [
+      "socket and asyncio/sync network I/O",
+      "WebSocket frame encoding and masking",
+      "ServerProtocol and ClientProtocol connection state machines",
+      "extensions negotiation with permessage-deflate implementations",
+      "CLI, docs, CI, and original tests",
+      "original websockets package import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "websockets"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: websockets."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse Connection and Upgrade header lists with OWS and empty elements. Required observable cases include parse connection and upgrade; parse upgrade case insensitive list; headers multiple connection values."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse Sec-WebSocket-Extensions and Sec-WebSocket-Protocol grammars. Required observable cases include parse extension with quoted params; parse subprotocol skips empty elements; parse extension invalid quoted token; build subprotocol roundtrip; validate subprotocols rejects invalid token."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse WebSocket handshake HTTP requests from byte streams. Required observable cases include parse websocket request basic; parse request invalid method; parse headers security limit."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: case-insensitive Headers lookup with multiple values per name. Required observable cases include headers case insensitive lookup; headers multiple connection values."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate handshake request headers including Sec-WebSocket-Key and Version. Required observable cases include validate handshake rejects bad upgrade; validate handshake missing key; validate handshake invalid key length; validate handshake origin allowlist; validate handshake origin regex allowlist."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: compute Sec-WebSocket-Accept from Sec-WebSocket-Key. Required observable cases include accept key rfc6455 example; validate subprotocols rejects invalid token."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise typed errors for malformed headers and upgrade requests. Required observable cases include validate handshake rejects bad upgrade; parse request invalid method; parse headers security limit; parse extension invalid quoted token; validate subprotocols rejects invalid token."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Headers`, `featurelifted.Headers.get_all`, `featurelifted.Headers.__getitem__`, `featurelifted.Request`, `featurelifted.Request.parse`, `featurelifted.Response`, `featurelifted.accept_key`, `featurelifted.generate_key`, `featurelifted.validate_handshake_request`, `featurelifted.exceptions`, `featurelifted.exceptions.InvalidHeader`, `featurelifted.exceptions.InvalidHeaderFormat`, and 18 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: websockets"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_connection_and_upgrade",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_headers_case_insensitive_lookup",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_websocket_request_basic",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_accept_key_rfc6455_example",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_extension_with_quoted_params",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_upgrade_case_insensitive_list",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_subprotocol_skips_empty_elements",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_headers_multiple_connection_values",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_rejects_bad_upgrade",
+        "behavior_ids": [
+          "B005",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_missing_key",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_invalid_key_length",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_origin_allowlist",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_request_invalid_method",
+        "behavior_ids": [
+          "B003",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_headers_security_limit",
+        "behavior_ids": [
+          "B003",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_extension_invalid_quoted_token",
+        "behavior_ids": [
+          "B002",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_build_subprotocol_roundtrip",
+        "behavior_ids": [
+          "B002",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_subprotocols_rejects_invalid_token",
+        "behavior_ids": [
+          "B002",
+          "B007",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_authorization_basic_credentials",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_authorization_basic_rejects_non_basic_scheme",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_build_www_authenticate_basic_format",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_validate_handshake_origin_regex_allowlist",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_websockets_import_surface",
+        "behavior_ids": [
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Headers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Headers.get_all",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_headers_multiple_connection_values"
+        ]
+      },
+      {
+        "path": "featurelifted.Request",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Request.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Response",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.accept_key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.generate_key",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate_handshake_request",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.InvalidHeader",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.InvalidHeaderFormat",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.InvalidHeaderValue",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.InvalidOrigin",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.InvalidUpgrade",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.exceptions.SecurityError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.build_authorization_basic",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.build_subprotocol",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.build_www_authenticate_basic",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.parse_authorization_basic",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.parse_connection",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.parse_extension",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.parse_subprotocol",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.parse_upgrade",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.headers.validate_subprotocols",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.http11",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.http11.parse_headers",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.streams",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.streams.StreamReader",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Headers.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_build_subprotocol_roundtrip",
+          "hidden_tests/test_hidden_behavior.py::test_build_www_authenticate_basic_format",
+          "hidden_tests/test_hidden_behavior.py::test_headers_multiple_connection_values",
+          "hidden_tests/test_hidden_behavior.py::test_no_websockets_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_parse_authorization_basic_credentials",
+          "hidden_tests/test_hidden_behavior.py::test_parse_authorization_basic_rejects_non_basic_scheme",
+          "hidden_tests/test_hidden_behavior.py::test_parse_extension_invalid_quoted_token",
+          "hidden_tests/test_hidden_behavior.py::test_parse_extension_with_quoted_params",
+          "hidden_tests/test_hidden_behavior.py::test_parse_headers_security_limit",
+          "hidden_tests/test_hidden_behavior.py::test_parse_request_invalid_method",
+          "hidden_tests/test_hidden_behavior.py::test_parse_subprotocol_skips_empty_elements",
+          "hidden_tests/test_hidden_behavior.py::test_parse_upgrade_case_insensitive_list",
+          "hidden_tests/test_hidden_behavior.py::test_validate_handshake_invalid_key_length",
+          "hidden_tests/test_hidden_behavior.py::test_validate_handshake_missing_key",
+          "hidden_tests/test_hidden_behavior.py::test_validate_handshake_origin_allowlist",
+          "hidden_tests/test_hidden_behavior.py::test_validate_handshake_origin_regex_allowlist",
+          "hidden_tests/test_hidden_behavior.py::test_validate_handshake_rejects_bad_upgrade",
+          "hidden_tests/test_hidden_behavior.py::test_validate_subprotocols_rejects_invalid_token",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "f8b819dd41fab745cc800318d0ddc2d172bfca34294fb8fee4982a35f7035320",
+  "generated_task_hash": "c939eef4fbae63a5c27e8c97b0defcacb33830fce27670646a18f647fde59143"
+}

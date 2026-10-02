@@ -1,0 +1,4 @@
+aiohttp__url_params_core__hard3_001
+pygments__lexer_core__001
+python_decouple__config_repository_core__001
+zope_interface__adapter_registry_core__001

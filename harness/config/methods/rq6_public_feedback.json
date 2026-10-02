@@ -1,0 +1,67 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "rq6-public-feedback.flash12.1",
+  "display_name": "RQ6 Public-feedback",
+  "ablation_arm": "public_feedback",
+  "method_label": "public_feedback",
+  "cli_flag": "--agent-public-tests",
+  "environment_flag": "FEATURELIFTBENCH_MOUNT_PUBLIC_TESTS=1",
+  "description": "Official RQ6 information ablation. Same 128k Main envelope, 120 steps, No-Hint, LLM-summary/token condenser, no 2M cap. Only change: mount public_tests/ and allow the agent to run pytest public_tests/. Hidden stays evaluator-only after submit. Not a new method line and not a Python-200 main-table arm. Do not stack Entrypoint-Hint, Pruned-Context, Short-prompt, verification-aware, artifact-aware, recency, pre-submit audit, checker, or repair.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_llm_summary",
+    "openhands_deepseek_v4_flash_public_feedback",
+    "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+    "openhands_deepseek_v4_flash_vllm_local_public_feedback"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": "public_tests only on the public_feedback arm",
+    "public_contract_source": "metadata.public_spec plus mounted public_tests/ on the treatment arm",
+    "evaluator_feedback_to_agent": "public pytest only; Hidden never mounted"
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "token",
+    "mount_public_tests": true,
+    "expose_source_hints": false
+  },
+  "contrasts": [
+    {
+      "profile": "openhands_deepseek_v4_flash_llm_summary",
+      "mount_public_tests": false,
+      "role": "same-day Main control (API)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_public_feedback",
+      "mount_public_tests": true,
+      "role": "Public-feedback treatment (API)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+      "mount_public_tests": false,
+      "role": "same-day Main control (local vLLM)"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_public_feedback",
+      "mount_public_tests": true,
+      "role": "Public-feedback treatment (local vLLM)"
+    }
+  ],
+  "screening": {
+    "slice": "Flash-12",
+    "task_list": "harness/config/experiments/rq6_public_feedback_flash12_v1.txt",
+    "slice_manifest": "harness/config/experiments/rq6_public_feedback_flash12_v1.json",
+    "readout": "functional_gate plus public/hidden stage flips. Pass above Main does not replace the Python-200 leaderboard.",
+    "stop_if": "If Hidden also flips 0->1 on many public_failure tasks, inspect leakage (public tests too close to Hidden). If neither stage moves, seeing public tests does not help Flash.",
+    "default_endpoint": "api_if_local_vllm_down",
+    "local_api_base": "http://172.17.0.1:8000/v1"
+  }
+}

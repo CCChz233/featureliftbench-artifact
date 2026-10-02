@@ -1,0 +1,11 @@
+{
+  "source_package_name": "python_multipart",
+  "required_source_files": [
+    "python_multipart/__init__.py",
+    "python_multipart/multipart.py",
+    "python_multipart/decoders.py",
+    "python_multipart/exceptions.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle splits multipart.py into constants, headers, models, base, multipart_parse, and form modules; omits urlencoded/octet-stream parsers and ASGI integration."
+}

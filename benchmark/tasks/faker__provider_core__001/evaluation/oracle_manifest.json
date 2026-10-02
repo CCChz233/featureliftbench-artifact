@@ -1,0 +1,30 @@
+{
+  "source_package_name": "faker",
+  "required_source_files": [
+    "faker/__init__.py",
+    "faker/config.py",
+    "faker/exceptions.py",
+    "faker/factory.py",
+    "faker/generator.py",
+    "faker/proxy.py",
+    "faker/typing.py",
+    "faker/utils/__init__.py",
+    "faker/utils/checksums.py",
+    "faker/utils/datasets.py",
+    "faker/utils/decorators.py",
+    "faker/utils/distribution.py",
+    "faker/utils/loading.py",
+    "faker/utils/text.py",
+    "faker/providers/__init__.py",
+    "faker/providers/person/__init__.py",
+    "faker/providers/person/en/__init__.py",
+    "faker/providers/person/en_US/__init__.py",
+    "faker/providers/address/__init__.py",
+    "faker/providers/address/en/__init__.py",
+    "faker/providers/address/en_US/__init__.py",
+    "faker/providers/phone_number/__init__.py",
+    "faker/providers/phone_number/en_US/__init__.py",
+    "faker/providers/date_time/__init__.py"
+  ],
+  "notes": "Oracle closure limited to en_US person/address/phone_number providers plus factory core."
+}

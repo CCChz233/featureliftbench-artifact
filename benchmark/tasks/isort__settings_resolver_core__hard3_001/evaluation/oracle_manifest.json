@@ -1,0 +1,29 @@
+{
+  "source_package_name": "isort",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/isort/settings.py",
+    "repo/isort/profiles.py",
+    "repo/isort/exceptions.py",
+    "repo/isort/files.py",
+    "repo/pyproject.toml",
+    "repo/LICENSE"
+  ],
+  "target_api": [
+    "featurelifted.resolve_settings",
+    "featurelifted.resolve_from_path",
+    "featurelifted.find_config",
+    "featurelifted.should_skip",
+    "featurelifted.Settings",
+    "featurelifted.ProfileDoesNotExist",
+    "featurelifted.UnsupportedSettings"
+  ],
+  "forbidden_imports": [
+    "isort"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "isort/"
+  ],
+  "notes": "Task-scoped settings/profile resolver. Import sorting, formatter internals, CLI behavior, git integration, and entry point plugins are intentionally excluded."
+}

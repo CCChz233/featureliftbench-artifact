@@ -1,0 +1,264 @@
+{
+  "task_id": "coverage__config_merge_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "config_environment_coupling",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "coveragepy",
+    "url": "https://github.com/coveragepy/coveragepy",
+    "commit": "f0dcf65f47120d9f74f6777134d3b8e92515ce6f",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Run-section config merge",
+    "description": "Extract coverage.py configuration reading and merging for the run section from rc files, environment, and constructor arguments.",
+    "source_entrypoints": [
+      "coverage.config.read_coverage_config",
+      "coverage.config.CoverageConfig.from_file",
+      "coverage.config.CoverageConfig.from_args"
+    ],
+    "included_behaviors": [
+      "read .coveragerc and prefixed sections from setup.cfg or tox.ini",
+      "parse run include, omit, source, branch, and related list options",
+      "merge constructor kwargs and COVERAGE_* environment overrides",
+      "apply post-processing such as user path expansion"
+    ],
+    "excluded_behaviors": [
+      "glob matching and file selection",
+      "path alias remapping",
+      "coverage collection, data storage, and reporting",
+      "plugin loading and HTML/XML report sections beyond parsing",
+      "original project tests and CLI"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "framework_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Run configuration merges defaults, rc files, environment variables, and kwargs through INI and TOML parsers with shared helper utilities.",
+    "signals": [
+      "multi-source configuration precedence rules",
+      "section prefix handling across config file formats",
+      "environment variable substitution in option values"
+    ],
+    "primary": "config_environment_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import CoverageConfig, read_run_config",
+    "callable": "featurelifted.read_run_config",
+    "signature": "read_run_config(config_file: bool | str = True, warn=None, **kwargs) -> CoverageConfig"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "coverage"
+    ],
+    "forbidden_imports": [
+      "coverage"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Run-section config merge",
+    "summary": "Extract a task-scoped subset of `coverage` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.CoverageConfig",
+        "kind": "class",
+        "signature": "() -> 'None'"
+      },
+      {
+        "path": "featurelifted.read_run_config",
+        "kind": "function",
+        "signature": "(config_file: bool | str = True, warn=None, **kwargs)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: read .coveragerc and prefixed sections from setup.cfg or tox.ini. Required observable cases include read run config from coveragerc; read run config from setup cfg; read run config relative files section."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: parse run include, omit, source, branch, and related list options. Required observable cases include read run config multiline lists; read run config relative files section."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: merge constructor kwargs and COVERAGE_* environment overrides. Required observable cases include read run config kwargs override; read run config env data file."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: apply post-processing such as user path expansion. Required observable cases include read run config relative files section."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.CoverageConfig`, `featurelifted.read_run_config` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "coverage.config.read_coverage_config",
+      "coverage.config.CoverageConfig.from_file",
+      "coverage.config.CoverageConfig.from_args"
+    ],
+    "exclusions": [
+      "glob matching and file selection",
+      "path alias remapping",
+      "coverage collection, data storage, and reporting",
+      "plugin loading and HTML/XML report sections beyond parsing",
+      "original project tests and CLI"
+    ],
+    "forbidden": {
+      "imports": [
+        "coverage"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: coverage."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: read .coveragerc and prefixed sections from setup.cfg or tox.ini. Required observable cases include read run config from coveragerc; read run config from setup cfg; read run config relative files section."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse run include, omit, source, branch, and related list options. Required observable cases include read run config multiline lists; read run config relative files section."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: merge constructor kwargs and COVERAGE_* environment overrides. Required observable cases include read run config kwargs override; read run config env data file."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: apply post-processing such as user path expansion. Required observable cases include read run config relative files section."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.CoverageConfig`, `featurelifted.read_run_config` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: coverage"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_read_run_config_from_coveragerc",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_read_run_config_kwargs_override",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_read_run_config_from_setup_cfg",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_read_run_config_env_data_file",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_read_run_config_multiline_lists",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_read_run_config_relative_files_section",
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.CoverageConfig",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.read_run_config",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "4353e1b024432765841f63768dce3c62a6ac67646b4857fea3b79b1110df497b",
+  "generated_task_hash": "ffaa989a77f6dab3afb3649e6a397a0036579a3593a12a50b9ac189c71a01efa"
+}

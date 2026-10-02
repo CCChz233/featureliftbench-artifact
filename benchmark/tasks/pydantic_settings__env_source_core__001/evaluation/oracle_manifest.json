@@ -1,0 +1,9 @@
+{
+  "source_package_name": "pydantic_settings",
+  "required_source_files": [],
+  "notes": "Oracle copies BaseSettings and EnvSettingsSource closure; repo retains all providers for copy-all.",
+  "v1_1_repair": {
+    "type": "excluded_dependency_adapter",
+    "evidence": "dotenv compatibility no longer imports unapproved python-dotenv; core os.environ behavior is unchanged"
+  }
+}

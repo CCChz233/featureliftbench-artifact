@@ -1,0 +1,15 @@
+{
+  "source_package_name": "deepdiff",
+  "required_source_files": [
+    "deepdiff/diff.py",
+    "deepdiff/helper.py",
+    "deepdiff/model.py",
+    "deepdiff/base.py",
+    "deepdiff/path.py",
+    "deepdiff/lfucache.py",
+    "deepdiff/serialization.py",
+    "deepdiff/distance.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "DeepDiff core with path/exclude_paths; copy-all adds search/delta/commands."
+}

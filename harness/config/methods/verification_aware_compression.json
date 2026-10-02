@@ -1,0 +1,64 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "verification-aware-compression.core12-screen.1",
+  "display_name": "Verification-aware context compression",
+  "ablation_arm": "main",
+  "method_label": "verification_aware",
+  "cli_flag": null,
+  "environment_flag": "FEATURELIFTBENCH_OPENHANDS_CONDENSER_MODE=verification_aware",
+  "description": "Same 128k Main envelope and trajectory. Condenser replaces old self-test observation stdout with a compact deterministic verification ledger; keeps the latest self-test and the latest failed self-test full. Contrast: LLM Summary vs Verification-aware. No 2M cap. Do not stack with artifact-aware / recency / pre-submit audit. Core-12 mechanism screening only.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_llm_summary",
+    "openhands_deepseek_v4_flash_verification_aware",
+    "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+    "openhands_deepseek_v4_flash_vllm_local_verification_aware"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only",
+    "evaluator_feedback_to_agent": false
+  },
+  "method": {
+    "checker_mode": null,
+    "behavior_cases": false,
+    "openhands_total_token_limit": null,
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "context_window_tokens": 131072,
+    "reserved_output_tokens": 8192,
+    "prompt_style": "standard",
+    "openhands_condenser_mode": "verification_aware"
+  },
+  "contrasts": [
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_llm_summary",
+      "openhands_condenser_mode": "token",
+      "role": "local vLLM baseline LLM summarizer"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_vllm_local_verification_aware",
+      "openhands_condenser_mode": "verification_aware",
+      "role": "local vLLM verification-ledger condenser"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_llm_summary",
+      "openhands_condenser_mode": "token",
+      "role": "API baseline LLM summarizer"
+    },
+    {
+      "profile": "openhands_deepseek_v4_flash_verification_aware",
+      "openhands_condenser_mode": "verification_aware",
+      "role": "API verification-ledger condenser"
+    }
+  ],
+  "screening": {
+    "slice": "Distill-24",
+    "task_list": "harness/config/experiments/rescue_plus_distill24_v1.txt",
+    "core12_task_list": "harness/config/experiments/rescue_plus_core12_v1.txt",
+    "stop_if": "After overflow-scope fix Distill-24: 15/24 with treatment-induced 1->0 stop tuning; <=14/24 kill; do not Python-200",
+    "default_endpoint": "local_vllm",
+    "local_api_base": "http://172.17.0.1:8000/v1"
+  }
+}

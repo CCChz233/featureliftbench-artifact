@@ -1,0 +1,14 @@
+{
+  "source_package_name": "httpx",
+  "required_source_files": [
+    "httpx/_urlparse.py",
+    "httpx/_urls.py",
+    "httpx/_types.py",
+    "httpx/_utils.py",
+    "httpx/_exceptions.py",
+    "httpx/_content.py",
+    "httpx/_multipart.py",
+    "httpx/_models.py"
+  ],
+  "notes": "Request-model closure: URL/query/header/cookie containers, Request body helpers, and standalone build_request merge logic. Transports, clients, auth, decoders, and response machinery excluded."
+}

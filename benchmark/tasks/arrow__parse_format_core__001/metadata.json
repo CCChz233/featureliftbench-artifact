@@ -1,0 +1,343 @@
+{
+  "task_id": "arrow__parse_format_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "arrow",
+    "datetime",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "arrow",
+    "url": "https://github.com/arrow-py/arrow",
+    "commit": "1.2.3-installed-snapshot",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Arrow parse, format, and humanize subset",
+    "description": "Extract Arrow parsing, strftime-style formatting, and English humanize without importing arrow.",
+    "source_entrypoints": [
+      "arrow.get",
+      "arrow.Arrow.format",
+      "arrow.Arrow.humanize",
+      "arrow.parser.DateTimeParser"
+    ],
+    "included_behaviors": [
+      "parse ISO and format-string datetimes",
+      "format with token literals in brackets",
+      "humanize relative deltas in English",
+      "ordinal Do token parsing"
+    ],
+    "excluded_behaviors": [
+      "60+ locale packs beyond English",
+      "timezone name database beyond utc/fixed offsets",
+      "factory range/span utilities and CLI",
+      "original arrow import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Arrow couples parser token tables, formatter locale lookups, and Arrow datetime humanize hooks.",
+    "signals": [
+      "parser handles ordinal and timezone tokens",
+      "formatter escapes bracket literals",
+      "humanize uses English locale frames",
+      "factory normalizes whitespace in parse strings"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Arrow, get",
+    "callable": "featurelifted.get",
+    "signature": "get(*args, **kwargs) -> Arrow"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "python-dateutil",
+      "six"
+    ],
+    "forbidden_dependencies": [
+      "arrow"
+    ],
+    "forbidden_imports": [
+      "arrow"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Arrow parse, format, and humanize subset",
+    "summary": "Extract a task-scoped subset of `arrow` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Arrow",
+        "kind": "class",
+        "signature": "(year: int, month: int, day: int, hour: int = 0, minute: int = 0, second: int = 0, microsecond: int = 0, tzinfo: Union[datetime.tzinfo, str, NoneType] = None, **kwargs: Any) -> None",
+        "members": [
+          {
+            "path": "featurelifted.Arrow.day",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Arrow.format",
+            "kind": "method",
+            "signature": "(self, fmt: str = 'YYYY-MM-DD HH:mm:ssZZ', locale: str = 'en-us') -> str"
+          },
+          {
+            "path": "featurelifted.Arrow.humanize",
+            "kind": "method",
+            "signature": "(self, other: Union[ForwardRef('Arrow'), datetime.datetime, NoneType] = None, locale: str = 'en-us', only_distance: bool = False, granularity: Union[Literal['auto', 'second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year'], List[Literal['auto', 'second', 'minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']]] = 'auto') -> str"
+          },
+          {
+            "path": "featurelifted.Arrow.month",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Arrow.year",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.get",
+        "kind": "function",
+        "signature": "(*args: Any, **kwargs: Any) -> Arrow"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse ISO and format-string datetimes. Required observable cases include get iso datetime; get with format string; parse lowercase month."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: format with token literals in brackets. Required observable cases include format basic tokens; format literal brackets."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: humanize relative deltas in English. Required observable cases include humanize relative hours; humanize past tense."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: ordinal Do token parsing. Required observable cases include parse ordinal day token."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Arrow`, `featurelifted.Arrow.day`, `featurelifted.Arrow.format`, `featurelifted.Arrow.humanize`, `featurelifted.Arrow.month`, `featurelifted.Arrow.year`, `featurelifted.get` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "arrow.get",
+      "arrow.Arrow.format",
+      "arrow.Arrow.humanize",
+      "arrow.parser.DateTimeParser"
+    ],
+    "exclusions": [
+      "60+ locale packs beyond English",
+      "timezone name database beyond utc/fixed offsets",
+      "factory range/span utilities and CLI",
+      "original arrow import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "arrow"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: arrow."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse ISO and format-string datetimes. Required observable cases include get iso datetime; get with format string; parse lowercase month."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: format with token literals in brackets. Required observable cases include format basic tokens; format literal brackets."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: humanize relative deltas in English. Required observable cases include humanize relative hours; humanize past tense."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ordinal Do token parsing. Required observable cases include parse ordinal day token."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Arrow`, `featurelifted.Arrow.day`, `featurelifted.Arrow.format`, `featurelifted.Arrow.humanize`, `featurelifted.Arrow.month`, `featurelifted.Arrow.year`, `featurelifted.get` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: arrow"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_get_iso_datetime",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_format_basic_tokens",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_get_with_format_string",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_format_literal_brackets",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_humanize_relative_hours",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_ordinal_day_token",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_lowercase_month",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_humanize_past_tense",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_arrow_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Arrow",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Arrow.day",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_parse_lowercase_month",
+          "hidden_tests/test_hidden_behavior.py::test_parse_ordinal_day_token"
+        ]
+      },
+      {
+        "path": "featurelifted.Arrow.format",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_format_literal_brackets"
+        ]
+      },
+      {
+        "path": "featurelifted.Arrow.humanize",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_humanize_past_tense",
+          "hidden_tests/test_hidden_behavior.py::test_humanize_relative_hours"
+        ]
+      },
+      {
+        "path": "featurelifted.Arrow.month",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_parse_lowercase_month",
+          "hidden_tests/test_hidden_behavior.py::test_parse_ordinal_day_token"
+        ]
+      },
+      {
+        "path": "featurelifted.Arrow.year",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_parse_ordinal_day_token"
+        ]
+      },
+      {
+        "path": "featurelifted.get",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "9ad4e967882e76541811d90619b9400ff666be0c799d165da4fccc39c3b86165",
+  "generated_task_hash": "519cede9e2a0c45e03321da204d40c7b889875a546ecc696a3b2109fc971debb"
+}

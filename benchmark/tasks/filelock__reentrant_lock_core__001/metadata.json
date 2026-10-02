@@ -1,0 +1,299 @@
+{
+  "benchmark_split": "external_main",
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Extract an exclusive file lock with reentrant ownership, timeout polling, and context-manager cleanup.",
+    "level": "high",
+    "primary": "resource_coupling",
+    "signals": [
+      "exclusive lock-file acquisition across instances",
+      "reentrant acquire and balanced release on one instance",
+      "timeout and non-blocking acquisition"
+    ],
+    "types": [
+      "resource_coupling",
+      "config_environment_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "filelock"
+    ],
+    "forbidden_imports": [
+      "filelock"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "filelock/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "evaluation_spec": {
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "hidden_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_force_release_and_idempotence"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_two_instances_can_acquire_sequentially"
+      },
+      {
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface",
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+      }
+    ],
+    "manual_review": {
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface.",
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review"
+    },
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: exclusive lock-file acquisition across instances. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reentrant acquire and balanced release on one instance. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: timeout and non-blocking acquisition. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: context-manager release and lock-file cleanup. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.FileLock`, `featurelifted.FileLock.acquire`, `featurelifted.FileLock.is_locked`, `featurelifted.FileLock.release`, `featurelifted.Timeout` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: filelock."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_context_and_reentrant_release"
+      },
+      {
+        "behavior_ids": [
+          "B001",
+          "B002",
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "preregistered_author_mapping",
+        "nodeid": "public_tests/test_public_contract.py::test_nonblocking_contention"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.FileLock"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_force_release_and_idempotence"
+        ],
+        "path": "featurelifted.FileLock.acquire"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_force_release_and_idempotence"
+        ],
+        "path": "featurelifted.FileLock.is_locked"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_force_release_and_idempotence"
+        ],
+        "path": "featurelifted.FileLock.release"
+      },
+      {
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ],
+        "path": "featurelifted.Timeout"
+      }
+    ]
+  },
+  "feature": {
+    "description": "Extract an exclusive file lock with reentrant ownership, timeout polling, and context-manager cleanup.",
+    "excluded_behaviors": [
+      "Windows msvcrt backend",
+      "async locks",
+      "soft-lock fallback",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "included_behaviors": [
+      "exclusive lock-file acquisition across instances",
+      "reentrant acquire and balanced release on one instance",
+      "timeout and non-blocking acquisition",
+      "context-manager release and lock-file cleanup"
+    ],
+    "name": "Reentrant filesystem lock",
+    "source_entrypoints": [
+      "filelock._api.BaseFileLock",
+      "filelock._unix.UnixFileLock",
+      "filelock._error.Timeout"
+    ]
+  },
+  "generated_task_hash": "be043b4ecfd11f8eb7bf3031e1027e76e699d886d7b699e22f747d109ed1363a",
+  "language": "python",
+  "output": {
+    "callable": "FileLock",
+    "import": "from featurelifted import FileLock, Timeout",
+    "package": "featurelifted",
+    "signature": "FileLock(lock_file, timeout=-1, poll_interval=0.05)"
+  },
+  "public_spec": {
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: exclusive lock-file acquisition across instances. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: reentrant acquire and balanced release on one instance. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: timeout and non-blocking acquisition. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: context-manager release and lock-file cleanup. Required observable cases include context and reentrant release; nonblocking contention; force release and idempotence; two instances can acquire sequentially."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.FileLock`, `featurelifted.FileLock.acquire`, `featurelifted.FileLock.is_locked`, `featurelifted.FileLock.release`, `featurelifted.Timeout` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "exclusions": [
+      "Windows msvcrt backend",
+      "async locks",
+      "soft-lock fallback",
+      "original repository import at runtime",
+      "source repository path access"
+    ],
+    "forbidden": {
+      "imports": [
+        "filelock"
+      ],
+      "paths": [
+        "repo/",
+        "filelock/"
+      ]
+    },
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "The submitted package does not import forbidden upstream packages: filelock."
+    },
+    "optional_api": [],
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "required_api": [
+      {
+        "kind": "class",
+        "members": [
+          {
+            "kind": "method",
+            "path": "featurelifted.FileLock.acquire",
+            "signature": "(self, timeout=None, poll_interval=None, blocking=True)"
+          },
+          {
+            "kind": "attribute",
+            "path": "featurelifted.FileLock.is_locked"
+          },
+          {
+            "kind": "method",
+            "path": "featurelifted.FileLock.release",
+            "signature": "(self, force=False)"
+          }
+        ],
+        "path": "featurelifted.FileLock",
+        "signature": "(lock_file, timeout=-1, poll_interval=0.05)"
+      },
+      {
+        "kind": "exception",
+        "path": "featurelifted.Timeout"
+      }
+    ],
+    "source_entrypoints": [
+      "filelock._api.BaseFileLock",
+      "filelock._unix.UnixFileLock",
+      "filelock._error.Timeout"
+    ],
+    "summary": "Extract a task-scoped subset of `filelock` into a standalone `featurelifted` package.",
+    "title": "Reentrant filesystem lock"
+  },
+  "selection_id": "external150-replacement-20260727-v1",
+  "source": {
+    "commit": "141f5d8c21be2830a9d93ad4ad822acf4b0f8a12",
+    "license": "Unlicense",
+    "name": "filelock",
+    "requested_tag": "3.13.1",
+    "resolved_commit": "141f5d8c21be2830a9d93ad4ad822acf4b0f8a12",
+    "url": "https://github.com/tox-dev/filelock.git"
+  },
+  "spec_hash": "cf294a550af1c4ede2100b4db69c0059b47e08438ab5fbde1605d3c511e64f80",
+  "spec_status": "compliant",
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "external150-replacement",
+    "preregistered",
+    "resource_coupling"
+  ],
+  "task_id": "filelock__reentrant_lock_core__001",
+  "task_revision": 2,
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  }
+}

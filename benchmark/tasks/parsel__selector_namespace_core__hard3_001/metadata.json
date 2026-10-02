@@ -1,0 +1,325 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Depends on selector state, namespace registry, and extraction defaults over a lightweight element tree.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "namespace register/remove",
+      "css id/class/attribute selectors",
+      "xpath namespace prefix resolution",
+      "text extraction defaults"
+    ],
+    "types": [
+      "data_model_coupling",
+      "third_party_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "parsel"
+    ],
+    "forbidden_imports": [
+      "parsel"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "parsel/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped selector namespaces into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "lxml/cssselect dependencies",
+      "full scrapy stack"
+    ],
+    "included_behaviors": [
+      "CSS/XPath subset",
+      "namespace registry",
+      "text extraction"
+    ],
+    "name": "Selector namespaces",
+    "source_entrypoints": [
+      "parsel.selector.Selector"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "Selector",
+    "import": "from featurelifted import Selector, FakeElement, extract_text",
+    "package": "featurelifted",
+    "signature": "Selector(root)"
+  },
+  "source": {
+    "commit": "05b3d37bf292d012f3d0b71fb7f0697d03af113e",
+    "license": "BSD-3-Clause",
+    "name": "parsel",
+    "url": "https://github.com/scrapy/parsel.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "third-party dependency coupling",
+    "data_model_coupling"
+  ],
+  "task_id": "parsel__selector_namespace_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Selector namespaces",
+    "summary": "Extract a task-scoped subset of `parsel` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Selector",
+        "kind": "class",
+        "signature": "(root: 'FakeElement') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Selector.css",
+            "kind": "method",
+            "signature": "(self, query: 'str') -> \"'Selector'\""
+          },
+          {
+            "path": "featurelifted.Selector.xpath",
+            "kind": "method",
+            "signature": "(self, query: 'str') -> \"'Selector'\""
+          },
+          {
+            "path": "featurelifted.Selector.register_namespace",
+            "kind": "method",
+            "signature": "(prefix: 'str', uri: 'str') -> 'None'"
+          },
+          {
+            "path": "featurelifted.Selector.remove_namespace",
+            "kind": "method",
+            "signature": "(prefix: 'str') -> 'None'"
+          },
+          {
+            "path": "featurelifted.Selector.get",
+            "kind": "method",
+            "signature": "(self, default: 'str | None' = None) -> 'str | None'"
+          },
+          {
+            "path": "featurelifted.Selector.getall",
+            "kind": "method",
+            "signature": "(self) -> 'list[str]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.FakeElement",
+        "kind": "class",
+        "signature": "(tag: 'str', text: 'str' = '', tail: 'str' = '', attrib: 'dict[str, str]' = <factory>, children: \"list['FakeElement']\" = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.extract_text",
+        "kind": "function",
+        "signature": "(nodes: 'list[FakeElement]', default: 'str' = '') -> 'str'"
+      },
+      {
+        "path": "featurelifted.SelectorSyntaxError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`Selector.css` and `Selector.xpath` select nodes from a lightweight element tree."
+      },
+      {
+        "id": "B002",
+        "text": "`Selector.register_namespace` enables prefixed XPath tag matching."
+      },
+      {
+        "id": "B003",
+        "text": "`extract_text` joins nested text with sensible defaults."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.Selector`, `featurelifted.Selector.css`, `featurelifted.Selector.xpath`, `featurelifted.Selector.register_namespace`, `featurelifted.Selector.remove_namespace`, `featurelifted.Selector.get`, `featurelifted.Selector.getall`, `featurelifted.FakeElement`, `featurelifted.extract_text`, `featurelifted.SelectorSyntaxError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "parsel.selector.Selector"
+    ],
+    "exclusions": [
+      "network access",
+      "lxml/cssselect dependencies",
+      "full scrapy stack"
+    ],
+    "forbidden": {
+      "imports": [
+        "parsel"
+      ],
+      "paths": [
+        "repo/",
+        "parsel/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: parsel."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`Selector.css` and `Selector.xpath` select nodes from a lightweight element tree."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "`Selector.register_namespace` enables prefixed XPath tag matching."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`extract_text` joins nested text with sensible defaults."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Selector`, `featurelifted.Selector.css`, `featurelifted.Selector.xpath`, `featurelifted.Selector.register_namespace`, `featurelifted.Selector.remove_namespace`, `featurelifted.Selector.get`, `featurelifted.Selector.getall`, `featurelifted.FakeElement`, `featurelifted.extract_text`, `featurelifted.SelectorSyntaxError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: parsel"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_css_id_selector",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_xpath_with_namespace",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_extract_text_default",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_empty_css_selector_raises",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Selector",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Selector.css",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_empty_css_selector_raises"
+        ]
+      },
+      {
+        "path": "featurelifted.Selector.xpath",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_xpath_with_namespace"
+        ]
+      },
+      {
+        "path": "featurelifted.Selector.register_namespace",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_xpath_with_namespace"
+        ]
+      },
+      {
+        "path": "featurelifted.Selector.remove_namespace",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_xpath_with_namespace"
+        ]
+      },
+      {
+        "path": "featurelifted.Selector.get",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Selector.getall",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.FakeElement",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.extract_text",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SelectorSyntaxError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "dcf29607f2992b44c96e65a3b6ef0a1343228379b210085024be022c14e1a94d",
+  "generated_task_hash": "33c9269e92606655ba7c6a1c97335d57731165df135c964b082aa01ec33c1c5a"
+}

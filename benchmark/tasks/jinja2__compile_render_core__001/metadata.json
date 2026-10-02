@@ -1,0 +1,325 @@
+{
+  "task_id": "jinja2__compile_render_core__001",
+  "source": {
+    "name": "jinja2",
+    "url": "https://github.com/pallets/jinja",
+    "commit": "15206881c006c79667fe5154fe80c01c65410679",
+    "license": "BSD-3-Clause"
+  },
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "template-engine",
+    "pure-python",
+    "multi-module"
+  ],
+  "environment": {
+    "python": "3.12",
+    "network": false,
+    "timeout_seconds": 120,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "MarkupSafe"
+    ],
+    "forbidden_dependencies": [
+      "jinja2",
+      "Jinja2"
+    ],
+    "forbidden_imports": [
+      "jinja2",
+      "jinja"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "feature": {
+    "name": "Jinja2 compile and render core",
+    "description": "Extract Jinja2 template compilation and rendering as a standalone package.",
+    "source_entrypoints": [
+      "jinja2.environment.Environment.from_string",
+      "jinja2.environment.Environment.compile",
+      "jinja2.environment.Template.render",
+      "jinja2.compiler",
+      "jinja2.runtime"
+    ],
+    "included_behaviors": [
+      "compile template source to executable code",
+      "render templates with context variables",
+      "support if/for/set/macro blocks and expressions",
+      "preserve undefined variable behavior with default Undefined"
+    ],
+    "excluded_behaviors": [
+      "loaders and extends/include inheritance graph",
+      "async rendering",
+      "extensions, bytecode cache, i18n",
+      "CLI, original tests, docs, packaging metadata"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "framework_coupling",
+      "data_model_coupling"
+    ],
+    "description": "Compile/render couples parser output, compiler code generation, runtime context, and default filters/tests registration.",
+    "signals": [
+      "compiler id-tracking and optimizer passes",
+      "runtime Context and exported variable handling",
+      "environment owns lexer, parser, compiler pipeline"
+    ],
+    "primary": "framework_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Environment; from featurelifted.compiler import generate; from featurelifted.runtime import Context",
+    "callable": "featurelifted.Environment.from_string",
+    "signature": "from_string(source: str, globals: dict | None = None) -> Template"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Jinja2 compile and render core",
+    "summary": "Extract a task-scoped subset of `jinja2` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Environment",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Environment.from_string",
+            "kind": "method",
+            "signature": "(self, source: Union[str, Template], globals: Optional[MutableMapping[str, Any]] = None, template_class: Optional[Type[ForwardRef('Template')]] = None) -> 'Template'"
+          },
+          {
+            "path": "featurelifted.Environment.parse",
+            "kind": "method",
+            "signature": "(self, source: str, name: Optional[str] = None, filename: Optional[str] = None) -> Template"
+          }
+        ],
+        "signature": "(block_start_string: str = '{%', block_end_string: str = '%}', variable_start_string: str = '{{', variable_end_string: str = '}}', comment_start_string: str = '{#', comment_end_string: str = '#}', line_statement_prefix: Optional[str] = None, line_comment_prefix: Optional[str] = None, trim_blocks: bool = False, lstrip_blocks: bool = False, newline_sequence: \"te.Literal['\\\\n', '\\\\r\\\\n', '\\\\r']\" = '\\n', keep_trailing_newline: bool = False, extensions: Sequence[Union[str, Type[ForwardRef('Extension')]]] = (), optimized: bool = True, undefined: Type[Undefined] = <class 'Undefined'>, finalize: Optional[Callable[..., Any]] = None, autoescape: Union[bool, Callable[[Optional[str]], bool]] = False, loader: Optional[ForwardRef('BaseLoader')] = None, cache_size: int = 400, auto_reload: bool = True, bytecode_cache: Optional[ForwardRef('BytecodeCache')] = None, enable_async: bool = False)"
+      },
+      {
+        "path": "featurelifted.compiler",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.compiler.generate",
+            "kind": "function",
+            "signature": "(node: Template, environment: 'Environment', name: Optional[str], filename: Optional[str], stream: Optional[TextIO] = None, defer_init: bool = False, optimized: bool = True) -> Optional[str]"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.runtime",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.runtime.Context",
+            "kind": "class",
+            "signature": "(environment: 'Environment', parent: Dict[str, Any], name: Optional[str], blocks: Dict[str, Callable[[ForwardRef('Context')], Iterator[str]]], globals: Optional[MutableMapping[str, Any]] = None)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: compile template source to executable code. Required observable cases include runtime context exported vars."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: render templates with context variables. Required observable cases include render simple interpolation; render if for blocks; macro render and caller; runtime context exported vars."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: support if/for/set/macro blocks and expressions. Required observable cases include render if for blocks; macro render and caller; compiler module required for set block."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: preserve undefined variable behavior with default Undefined. Required observable cases include runtime context exported vars."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Environment`, `featurelifted.Environment.from_string`, `featurelifted.Environment.parse`, `featurelifted.compiler`, `featurelifted.compiler.generate`, `featurelifted.runtime`, `featurelifted.runtime.Context` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "jinja2.environment.Environment.from_string",
+      "jinja2.environment.Environment.compile",
+      "jinja2.environment.Template.render",
+      "jinja2.compiler",
+      "jinja2.runtime"
+    ],
+    "exclusions": [
+      "loaders and extends/include inheritance graph",
+      "async rendering",
+      "extensions, bytecode cache, i18n",
+      "CLI, original tests, docs, packaging metadata"
+    ],
+    "forbidden": {
+      "imports": [
+        "jinja2",
+        "jinja"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: jinja2, jinja."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: compile template source to executable code. Required observable cases include runtime context exported vars."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: render templates with context variables. Required observable cases include render simple interpolation; render if for blocks; macro render and caller; runtime context exported vars."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support if/for/set/macro blocks and expressions. Required observable cases include render if for blocks; macro render and caller; compiler module required for set block."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: preserve undefined variable behavior with default Undefined. Required observable cases include runtime context exported vars."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Environment`, `featurelifted.Environment.from_string`, `featurelifted.Environment.parse`, `featurelifted.compiler`, `featurelifted.compiler.generate`, `featurelifted.runtime`, `featurelifted.runtime.Context` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: jinja2, jinja"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_render_simple_interpolation",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_render_if_for_blocks",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_macro_render_and_caller",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_compiler_module_required_for_set_block",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_runtime_context_exported_vars",
+        "behavior_ids": [
+          "B002",
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Environment",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Environment.from_string",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_macro_render_and_caller",
+          "hidden_tests/test_hidden_behavior.py::test_runtime_context_exported_vars"
+        ]
+      },
+      {
+        "path": "featurelifted.Environment.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_compiler_module_required_for_set_block"
+        ]
+      },
+      {
+        "path": "featurelifted.compiler",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.compiler.generate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.runtime",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.runtime.Context",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "2a89086d9f354a6b42b6892cb66151a67933ce322a7dce952503cf18005ed20b",
+  "generated_task_hash": "fdb85dcb10ba3f04d3a86f31860fb9b6d3989272405b32e3096425837f918060"
+}

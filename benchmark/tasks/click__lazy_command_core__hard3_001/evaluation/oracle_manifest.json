@@ -1,0 +1,19 @@
+{
+  "source_package_name": "click",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/click/core.py"
+  ],
+  "target_api": [
+    "featurelifted.LazyCommandCollection",
+    "featurelifted.LazyCommandCollection.invoke"
+  ],
+  "forbidden_imports": [
+    "click"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "click/"
+  ],
+  "notes": "Lazy command collection subset without full CLI."
+}

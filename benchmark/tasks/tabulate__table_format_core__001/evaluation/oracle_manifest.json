@@ -1,0 +1,8 @@
+{
+  "source_package_name": "tabulate",
+  "required_source_files": [
+    "tabulate/__init__.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle splits tabulate/__init__.py into formats, layout, and render modules; excludes CLI and __main__."
+}

@@ -1,0 +1,21 @@
+{
+  "source_package_name": "scrapy",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/scrapy/item.py",
+    "repo/scrapy/loader/__init__.py"
+  ],
+  "target_api": [
+    "featurelifted.Item",
+    "featurelifted.Field",
+    "featurelifted.ItemLoader"
+  ],
+  "forbidden_imports": [
+    "scrapy"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "scrapy/"
+  ],
+  "notes": "ItemLoader subset without selector/response/downloader code."
+}

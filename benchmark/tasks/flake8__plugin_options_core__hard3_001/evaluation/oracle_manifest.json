@@ -1,0 +1,22 @@
+{
+  "source_package_name": "flake8",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/flake8/options/manager.py",
+    "repo/src/flake8/plugins/finder.py"
+  ],
+  "target_api": [
+    "featurelifted.OptionManager",
+    "featurelifted.PluginSpec",
+    "featurelifted.classify_plugins",
+    "featurelifted.apply_select_ignore"
+  ],
+  "forbidden_imports": [
+    "flake8"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "flake8/"
+  ],
+  "notes": "Plugin planning subset without lint execution."
+}

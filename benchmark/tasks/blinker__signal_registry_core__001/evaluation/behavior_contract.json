@@ -1,0 +1,100 @@
+{
+  "hidden_test_mappings": [
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_weak_receiver_cleanup",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "hidden_tests/test_hidden_contract.py::test_connected_to_scope_and_disconnect",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+      "public_clause_ids": [
+        "B005"
+      ],
+      "mapping_method": "generated_required_api_surface"
+    }
+  ],
+  "public_clauses": [
+    {
+      "behavior_id": "B001",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B001",
+      "text": "The extracted feature must support this observable behavior: connect, disconnect, connected_to, and receiver iteration. Required observable cases include sender filtering and responses; namespace identity; weak receiver cleanup; connected to scope and disconnect."
+    },
+    {
+      "behavior_id": "B002",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B002",
+      "text": "The extracted feature must support this observable behavior: ANY and sender-specific dispatch. Required observable cases include sender filtering and responses; namespace identity; weak receiver cleanup; connected to scope and disconnect."
+    },
+    {
+      "behavior_id": "B003",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B003",
+      "text": "The extracted feature must support this observable behavior: weak receiver cleanup after garbage collection. Required observable cases include sender filtering and responses; namespace identity; weak receiver cleanup; connected to scope and disconnect."
+    },
+    {
+      "behavior_id": "B004",
+      "clause_kind": "included_behavior",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B004",
+      "text": "The extracted feature must support this observable behavior: Namespace returns one stable Signal per name. Required observable cases include sender filtering and responses; namespace identity; weak receiver cleanup; connected to scope and disconnect."
+    },
+    {
+      "behavior_id": "B005",
+      "clause_kind": "api_surface",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B005",
+      "text": "The package exposes the required task API paths `featurelifted.ANY`, `featurelifted.Namespace`, `featurelifted.Signal`, `featurelifted.Signal.connect`, `featurelifted.Signal.send` with the kinds and callable signatures listed in this contract."
+    },
+    {
+      "behavior_id": "B006",
+      "clause_kind": "isolation_constraint",
+      "spec_anchor": "metadata.json#/public_spec/behaviors/B006",
+      "text": "The submitted package does not import forbidden upstream packages: blinker."
+    }
+  ],
+  "public_test_mappings": [
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_sender_filtering_and_responses",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    },
+    {
+      "nodeid": "public_tests/test_public_contract.py::test_namespace_identity",
+      "public_clause_ids": [
+        "B001",
+        "B002",
+        "B003",
+        "B004"
+      ],
+      "mapping_method": "preregistered_author_mapping"
+    }
+  ],
+  "review": {
+    "independent_human_review_required": false,
+    "model_results_consulted": false,
+    "reviewer_type": "maintainer_author"
+  },
+  "review_status": "maintainer_reviewed",
+  "schema_version": "featureliftbench.behavior_contract.v1",
+  "task_id": "blinker__signal_registry_core__001",
+  "spec_sha256": "a4b722279fe768e88be016736eef60828328f39897bc81b105e560669668b64f"
+}

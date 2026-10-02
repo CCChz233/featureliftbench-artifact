@@ -1,0 +1,49 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "autosaddler-flb.prompt-pack.screening.1",
+  "display_name": "AutoSaddler-FLB",
+  "ablation_arm": "main",
+  "method_label": "autosaddler",
+  "cli_flag": null,
+  "environment_flag": "FEATURELIFTBENCH_OPENHANDS_PROMPT_APPEND_FILE=<frozen-prompt-pack>",
+  "description": "Feasibility trial: does AutoSaddler help FeatureLiftBench under OpenHands? Prompt-only search over four appendix components. Same Main information boundary and evaluator. First trial is a two-task causal pilot, not a paper-suite run. Do not merge trial numbers into the OpenHands paper table.",
+  "agent_profiles": [
+    "openhands_deepseek_v4_flash_main"
+  ],
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only",
+    "evaluator_feedback_to_agent": false
+  },
+  "method": {
+    "kind": "prompt_pack_optimizer",
+    "mutable_components": [
+      "repository_inspection",
+      "implementation_strategy",
+      "self_verification",
+      "completion_and_recovery"
+    ],
+    "seed_sentinel": "__AUTOSADDLER_FLB_INACTIVE__",
+    "openhands_max_steps": 120,
+    "repair_rounds": 0,
+    "prompt_style": "standard"
+  },
+  "integration": {
+    "package": "integrations/autosaddler_featureliftbench",
+    "pin": "integrations/autosaddler_featureliftbench/AUTOSADDLER_PIN.json",
+    "optimize_entrypoint": "python -m autosaddler_featureliftbench.runner",
+    "evaluate_entrypoint": "./scripts/run_benchmark.sh --method autosaddler --tasks-root benchmark/hard50_pilot --tasks zope_interface__adapter_registry_core__001"
+  },
+  "trial": {
+    "purpose": "Does AutoSaddler help FeatureLiftBench + OpenHands?",
+    "slice": "causal_pilot",
+    "task_root": "benchmark/hard50_pilot",
+    "train": ["taskiq__broker_task_core__001"],
+    "development": ["zope_interface__adapter_registry_core__001"],
+    "max_openhands_rollouts": 4,
+    "config": "integrations/autosaddler_featureliftbench/configs/causal_pilot_deepseek.yaml",
+    "readout": "Paired Dev H0 vs H1 functional_gate. Trial only; not a paper-table arm."
+  }
+}

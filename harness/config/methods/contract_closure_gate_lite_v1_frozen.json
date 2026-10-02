@@ -1,0 +1,41 @@
+{
+  "schema_version": "featureliftbench.method_release.v1",
+  "release_id": "contract_closure_gate_lite.v1-frozen.1",
+  "ablation_arm": "contract_closure_gate_lite_v1_frozen",
+  "cli_flag": "--contract-closure-gate-lite-v1-frozen",
+  "environment_flag": "FEATURELIFTBENCH_CONTRACT_CLOSURE_GATE_LITE_V1_FROZEN=1",
+  "agent_profile": "openhands_deepseek_v4_flash_contract_closure_gate_lite_v1_frozen",
+  "information_condition": {
+    "source_context": "full_repository",
+    "source_hints": false,
+    "benchmark_tests_visible": false,
+    "public_contract_source": "metadata.public_spec only",
+    "evaluator_feedback_to_agent": false
+  },
+  "method": {
+    "checker_mode": "structure",
+    "behavior_cases": false,
+    "primary_token_limit": 2000000,
+    "primary_max_steps": 45,
+    "repair_token_limit": 500000,
+    "repair_max_steps": 10,
+    "repair_rounds": 1,
+    "repair_eligibility": "any deterministic hard public-contract finding",
+    "context_window_tokens": 65536,
+    "reserved_output_tokens": 8192,
+    "max_observation_characters": 16000
+  },
+  "runtime_hardening": {
+    "terminal_tool_alias_compatibility": true,
+    "early_empty_tool_validation_retry_limit": 1,
+    "early_retry_max_trigger_steps": 8,
+    "all_attempt_usage_is_aggregated": true,
+    "implicit_method_receiver_is_not_compared_when_omitted_by_public_signature": true
+  },
+  "provenance": {
+    "pilot_summary": "experiments/methods/contract_closure_gate_lite/pilot12_paired_20260811-summary.md",
+    "pilot_result": "4/12 versus 2/12 equal-budget control",
+    "prompt_protocol": "recovered from immutable 2026-08-10/11 pilot workspaces",
+    "source_commit": "recorded by each formal run"
+  }
+}

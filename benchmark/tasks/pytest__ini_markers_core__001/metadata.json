@@ -1,0 +1,334 @@
+{
+  "task_id": "pytest__ini_markers_core__001",
+  "source": {
+    "name": "pytest",
+    "url": "https://github.com/pytest-dev/pytest",
+    "commit": "b55ab2aabb68c0ce94c3903139b062d0c2790152",
+    "license": "MIT"
+  },
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "test-framework",
+    "pure-python",
+    "multi-module"
+  ],
+  "environment": {
+    "python": "3.12",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "pytest"
+    ],
+    "forbidden_imports": [
+      "pytest",
+      "_pytest"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "feature": {
+    "name": "pytest ini markers parsing",
+    "description": "Extract pytest ini markers linelist parsing and marker line normalization.",
+    "source_entrypoints": [
+      "_pytest.config.Config.getini",
+      "_pytest.config.Config.addinivalue_line",
+      "_pytest.mark.__init__.pytest_addoption"
+    ],
+    "included_behaviors": [
+      "parse multiline ini markers values into linelist entries",
+      "append marker lines preserving order",
+      "split marker lines into name and description (strip name; preserve description whitespace)",
+      "strip whitespace from linelist entries",
+      "MarkerRegistry preserves marker declaration order from ini lines"
+    ],
+    "excluded_behaviors": [
+      "full Config initialization and plugin loading",
+      "strict marker validation at collection",
+      "conftest and pyproject discovery",
+      "CLI --markers display"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "global_state_registry_coupling"
+    ],
+    "description": "Ini marker definitions accumulate via config linelist merging across plugins and pytest.ini.",
+    "signals": [
+      "linelist ini type coerces multiline strings",
+      "addinivalue_line appends to cached marker registry",
+      "marker names/descriptions parsed for --markers output"
+    ],
+    "primary": "config_environment_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import MarkerRegistry, parse_linelist, split_marker_line",
+    "callable": "featurelifted.MarkerRegistry.from_ini",
+    "signature": "from_ini(value: str | list[str]) -> MarkerRegistry"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "pytest ini markers parsing",
+    "summary": "Extract a task-scoped subset of `pytest` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.MarkerRegistry",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.MarkerRegistry.from_ini",
+            "kind": "method",
+            "signature": "(value: 'str | list[str]') -> \"'MarkerRegistry'\""
+          },
+          {
+            "path": "featurelifted.MarkerRegistry.names",
+            "kind": "method",
+            "signature": "(self) -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.MarkerRegistry.add_line",
+            "kind": "method",
+            "signature": "(self, line: 'str') -> 'None'"
+          },
+          {
+            "path": "featurelifted.MarkerRegistry.description",
+            "kind": "method",
+            "signature": "(self, name: 'str') -> 'str'"
+          },
+          {
+            "path": "featurelifted.MarkerRegistry.from_lines",
+            "kind": "method",
+            "signature": "(lines: 'list[str]') -> \"'MarkerRegistry'\""
+          }
+        ],
+        "signature": "(lines: 'list[str]' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.parse_linelist",
+        "kind": "function",
+        "signature": "(value: 'str | list[str]') -> 'list[str]'"
+      },
+      {
+        "path": "featurelifted.split_marker_line",
+        "kind": "function",
+        "signature": "(line: 'str') -> 'tuple[str, str]'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse multiline ini markers values into linelist entries. Required observable cases include parse multiline markers; split marker line whitespace."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: append marker lines preserving order. Required observable cases include append marker line; registry module order preserved."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: split marker lines into name and description (strip name; preserve description whitespace). Required observable cases include linelist strips blank lines; split marker line whitespace."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: strip whitespace from linelist entries. Required observable cases include linelist strips blank lines."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: MarkerRegistry preserves marker declaration order from ini lines. Required observable cases include append marker line; split marker line whitespace."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.MarkerRegistry`, `featurelifted.MarkerRegistry.from_ini`, `featurelifted.MarkerRegistry.names`, `featurelifted.MarkerRegistry.add_line`, `featurelifted.MarkerRegistry.description`, `featurelifted.MarkerRegistry.from_lines`, `featurelifted.parse_linelist`, `featurelifted.split_marker_line` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "_pytest.config.Config.getini",
+      "_pytest.config.Config.addinivalue_line",
+      "_pytest.mark.__init__.pytest_addoption"
+    ],
+    "exclusions": [
+      "full Config initialization and plugin loading",
+      "strict marker validation at collection",
+      "conftest and pyproject discovery",
+      "CLI --markers display"
+    ],
+    "forbidden": {
+      "imports": [
+        "pytest",
+        "_pytest"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: pytest, _pytest."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse multiline ini markers values into linelist entries. Required observable cases include parse multiline markers; split marker line whitespace."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: append marker lines preserving order. Required observable cases include append marker line; registry module order preserved."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: split marker lines into name and description (strip name; preserve description whitespace). Required observable cases include linelist strips blank lines; split marker line whitespace."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: strip whitespace from linelist entries. Required observable cases include linelist strips blank lines."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: MarkerRegistry preserves marker declaration order from ini lines. Required observable cases include append marker line; split marker line whitespace."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.MarkerRegistry`, `featurelifted.MarkerRegistry.from_ini`, `featurelifted.MarkerRegistry.names`, `featurelifted.MarkerRegistry.add_line`, `featurelifted.MarkerRegistry.description`, `featurelifted.MarkerRegistry.from_lines`, `featurelifted.parse_linelist`, `featurelifted.split_marker_line` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: pytest, _pytest"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_multiline_markers",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_append_marker_line",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_linelist_strips_blank_lines",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_split_marker_line_whitespace",
+        "behavior_ids": [
+          "B003",
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_registry_module_order_preserved",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.MarkerRegistry",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkerRegistry.from_ini",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_registry_module_order_preserved"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkerRegistry.names",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_registry_module_order_preserved"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkerRegistry.add_line",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkerRegistry.description",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MarkerRegistry.from_lines",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parse_linelist",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.split_marker_line",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "b39d58ffab1f931b8e8b2eb368184d324a0a6ea1442f6a874cea9ce1fc09fe0e",
+  "generated_task_hash": "8cc90e6f080f39b7f8d83acc104a58042708dae0fe5802f99bc689fd0bb89faa"
+}

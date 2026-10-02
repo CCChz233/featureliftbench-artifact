@@ -1,0 +1,527 @@
+{
+  "task_id": "cachetools__cache_eviction_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "cachetools",
+    "data-structures",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "cachetools",
+    "url": "https://github.com/tkem/cachetools",
+    "commit": "48284d73d0a8834c9c50f8d41bb99e6f93b2dfed",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Cache eviction core",
+    "description": "Extract LRUCache, TTLCache, and LFUCache eviction policies, TTL expiry with injectable timers, and cached decorator key helpers without importing cachetools.",
+    "source_entrypoints": [
+      "cachetools.LRUCache",
+      "cachetools.TTLCache",
+      "cachetools.LFUCache",
+      "cachetools.cached",
+      "cachetools.keys.hashkey",
+      "cachetools.keys.typedkey"
+    ],
+    "included_behaviors": [
+      "LRU eviction order with touch-on-get and maxsize enforcement",
+      "LFU frequency buckets and least-frequent eviction",
+      "TTL expiry with injectable timer and doubly-linked expiry list",
+      "cached decorator memoization with optional cache_info hits/misses",
+      "hashkey and typedkey cache key functions for decorator kwargs and types"
+    ],
+    "excluded_behaviors": [
+      "async caches, cachedmethod, func.lru_cache wrappers, and TLRUCache",
+      "upstream benchmarks, docs, tests, and packaging metadata",
+      "original cachetools import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling",
+      "global_state_registry_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Cache classes couple base size accounting, per-policy auxiliary structures (OrderedDict touch order, LFU frequency links, TTL expiry ring), injectable timer state, and decorator key hashing.",
+    "signals": [
+      "LRU __touch moves OrderedDict keys on every cache hit",
+      "LFU _Link nodes bucket keys by frequency with relinking on access",
+      "TTLCache expire() walks doubly-linked list against monotonic timer",
+      "cached/_cached.py branches on lock, condition, and info wrappers",
+      "keys._HashedTuple caches hash for repeated decorator lookups"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import LRUCache, TTLCache, LFUCache, cached, hashkey, typedkey",
+    "callable": "featurelifted.LRUCache",
+    "signature": "LRUCache(maxsize, getsizeof=None)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "cachetools"
+    ],
+    "forbidden_imports": [
+      "cachetools"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Cache eviction core",
+    "summary": "Extract a task-scoped subset of `cachetools` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.LRUCache",
+        "kind": "class",
+        "signature": "(maxsize, getsizeof=None)",
+        "members": [
+          {
+            "path": "featurelifted.LRUCache.maxsize",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.LRUCache.__contains__",
+            "kind": "method",
+            "signature": "(self, key)"
+          },
+          {
+            "path": "featurelifted.LRUCache.__getitem__",
+            "kind": "method",
+            "signature": "(self, key, cache_getitem=<function Cache.__getitem__ at 0x102f4f4c0>)"
+          },
+          {
+            "path": "featurelifted.LRUCache.__setitem__",
+            "kind": "method",
+            "signature": "(self, key, value, cache_setitem=<function Cache.__setitem__ at 0x102f4f560>)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.TTLCache",
+        "kind": "class",
+        "signature": "(maxsize, ttl, timer=<built-in function monotonic>, getsizeof=None)",
+        "members": [
+          {
+            "path": "featurelifted.TTLCache.__contains__",
+            "kind": "method",
+            "signature": "(self, key)"
+          },
+          {
+            "path": "featurelifted.TTLCache.__getitem__",
+            "kind": "method",
+            "signature": "(self, key, cache_getitem=<function Cache.__getitem__ at 0x102f4f4c0>)"
+          },
+          {
+            "path": "featurelifted.TTLCache.__setitem__",
+            "kind": "method",
+            "signature": "(self, key, value, cache_setitem=<function Cache.__setitem__ at 0x102f4f560>)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.LFUCache",
+        "kind": "class",
+        "signature": "(maxsize, getsizeof=None)",
+        "members": [
+          {
+            "path": "featurelifted.LFUCache.__contains__",
+            "kind": "method",
+            "signature": "(self, key)"
+          },
+          {
+            "path": "featurelifted.LFUCache.__getitem__",
+            "kind": "method",
+            "signature": "(self, key, cache_getitem=<function Cache.__getitem__ at 0x102f4f4c0>)"
+          },
+          {
+            "path": "featurelifted.LFUCache.__setitem__",
+            "kind": "method",
+            "signature": "(self, key, value, cache_setitem=<function Cache.__setitem__ at 0x102f4f560>)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.cached",
+        "kind": "function",
+        "signature": "(cache, key=<function hashkey>, lock=None, condition=None, info=False)"
+      },
+      {
+        "path": "featurelifted.hashkey",
+        "kind": "function",
+        "signature": "(*args, **kwargs)"
+      },
+      {
+        "path": "featurelifted.typedkey",
+        "kind": "function",
+        "signature": "(*args, **kwargs)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: LRU eviction order with touch-on-get and maxsize enforcement. Required observable cases include lru cache basic get set; lru eviction order; lru maxsize enforced."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: LFU frequency buckets and least-frequent eviction. Required observable cases include lfu evicts lowest frequency."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: TTL expiry with injectable timer and doubly-linked expiry list. Required observable cases include ttl expiry with mock timer."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: cached decorator memoization with optional cache_info hits/misses. Required observable cases include ttl cache stores value; cached decorator memoizes; cached info tracks hits and misses."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: hashkey and typedkey cache key functions for decorator kwargs and types. Required observable cases include ttl cache stores value; typedkey distinguishes value types."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.LRUCache`, `featurelifted.LRUCache.maxsize`, `featurelifted.LRUCache.__contains__`, `featurelifted.LRUCache.__getitem__`, `featurelifted.LRUCache.__setitem__`, `featurelifted.TTLCache`, `featurelifted.TTLCache.__contains__`, `featurelifted.TTLCache.__getitem__`, `featurelifted.TTLCache.__setitem__`, `featurelifted.LFUCache`, `featurelifted.LFUCache.__contains__`, `featurelifted.LFUCache.__getitem__`, and 4 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "cachetools.LRUCache",
+      "cachetools.TTLCache",
+      "cachetools.LFUCache",
+      "cachetools.cached",
+      "cachetools.keys.hashkey",
+      "cachetools.keys.typedkey"
+    ],
+    "exclusions": [
+      "async caches, cachedmethod, func.lru_cache wrappers, and TLRUCache",
+      "upstream benchmarks, docs, tests, and packaging metadata",
+      "original cachetools import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "cachetools"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: cachetools."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: LRU eviction order with touch-on-get and maxsize enforcement. Required observable cases include lru cache basic get set; lru eviction order; lru maxsize enforced."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: LFU frequency buckets and least-frequent eviction. Required observable cases include lfu evicts lowest frequency."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: TTL expiry with injectable timer and doubly-linked expiry list. Required observable cases include ttl expiry with mock timer."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: cached decorator memoization with optional cache_info hits/misses. Required observable cases include ttl cache stores value; cached decorator memoizes; cached info tracks hits and misses."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: hashkey and typedkey cache key functions for decorator kwargs and types. Required observable cases include ttl cache stores value; typedkey distinguishes value types."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.LRUCache`, `featurelifted.LRUCache.maxsize`, `featurelifted.LRUCache.__contains__`, `featurelifted.LRUCache.__getitem__`, `featurelifted.LRUCache.__setitem__`, `featurelifted.TTLCache`, `featurelifted.TTLCache.__contains__`, `featurelifted.TTLCache.__getitem__`, `featurelifted.TTLCache.__setitem__`, `featurelifted.LFUCache`, `featurelifted.LFUCache.__contains__`, `featurelifted.LFUCache.__getitem__`, and 4 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: cachetools"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_lru_cache_basic_get_set",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_ttl_cache_stores_value",
+        "behavior_ids": [
+          "B004",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_cached_decorator_memoizes",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.LRUCache",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LRUCache.maxsize",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced"
+        ]
+      },
+      {
+        "path": "featurelifted.TTLCache",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LFUCache",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.cached",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.hashkey",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.typedkey",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LFUCache.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LFUCache.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LFUCache.__setitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LRUCache.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LRUCache.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.LRUCache.__setitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TTLCache.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TTLCache.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.TTLCache.__setitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_cached_info_tracks_hits_and_misses",
+          "hidden_tests/test_hidden_behavior.py::test_lfu_evicts_lowest_frequency",
+          "hidden_tests/test_hidden_behavior.py::test_lru_eviction_order",
+          "hidden_tests/test_hidden_behavior.py::test_lru_maxsize_enforced",
+          "hidden_tests/test_hidden_behavior.py::test_no_cachetools_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_ttl_expiry_with_mock_timer",
+          "hidden_tests/test_hidden_behavior.py::test_typedkey_distinguishes_value_types",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "d57c490ef0b5ffa1dbffe99d9baf5fe32d8979090c867dd98c606003912f59af",
+  "generated_task_hash": "6fe6fa0069c77fc3b2836ee3bec275b09dc04e97fcaaf83c5366abf706dc5950"
+}

@@ -1,0 +1,2265 @@
+{
+  "schema": "featureliftbench.dse_public_api_review.v1",
+  "created_date": "2026-09-26",
+  "reviewer": "assistant-assisted public-contract and pinned-source review",
+  "selection_sha256": "2f2254f0d15a0bd249c6447caba5979f3792fc84a907319fc5e80e79dd6bf091",
+  "original_suite_sha256": "00fc906e60023ad927cf6038b74e97a8f77b6a548c06a09893384ed9a623d8fd",
+  "review_builder_sha256": "fdb13bc80eb501e12531bb28ee7aa68e10e63ae2f7442c5d8c638451748c175e",
+  "policy": "Only source top-level name aliases; no wrappers, builtins invented as implementations, exception translation, state construction, argument conversion, test inspection or feedback repair.",
+  "scope_limit": "11 tasks with originally unmapped names were manually reviewed. Remaining 29 have name-coverage records only. Neither category certifies behavior.",
+  "entrypoint_parser_repairs": [
+    "Explicit package __init__ locations",
+    "Single statically named base-class method resolution"
+  ],
+  "functional_results_consulted": false,
+  "benchmark_tests_or_reference_consulted": false,
+  "tasks": {
+    "deepdiff__deep_compare_core__001": {
+      "source_snapshot_id": "github__qlustered__deepdiff__94c962c3cc12",
+      "source_archive_sha256": "0bad96778dbc82ee0869495f7b890af7e0fd6929cc75b169ce5f0465bd30a28d",
+      "public_spec_sha256": "98085d32a72fef0cdf794714ce298f4274e7a9a28fcd3fa0e110e24986130805",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "DeepDiff": [
+          "deepdiff.diff",
+          [
+            "DeepDiff"
+          ]
+        ],
+        "extract": [
+          "deepdiff.path",
+          [
+            "extract"
+          ]
+        ],
+        "parse_path": [
+          "deepdiff.path",
+          [
+            "parse_path"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "mako__lexer_expression_core__001": {
+      "source_snapshot_id": "github__sqlalchemy__mako__8e2a8cd3a196",
+      "source_archive_sha256": "fff8eaf722e8888093ed4b850bc36113a42543cb586cfcce9b2f825f648186fe",
+      "public_spec_sha256": "47e6accd2f3eab4a5f37fde97f0ce7e7a79e42eb18d67c6a8d54098e705c7af8",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "CompileException": [
+          "mako.exceptions",
+          [
+            "CompileException"
+          ]
+        ],
+        "Lexer": [
+          "mako.lexer",
+          [
+            "Lexer"
+          ]
+        ],
+        "PythonCode": [
+          "mako.ast",
+          [
+            "PythonCode"
+          ]
+        ],
+        "PythonFragment": [
+          "mako.ast",
+          [
+            "PythonFragment"
+          ]
+        ],
+        "SyntaxException": [
+          "mako.exceptions",
+          [
+            "SyntaxException"
+          ]
+        ],
+        "parsetree": [
+          "mako.parsetree",
+          []
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "parso__python_parse_core__001": {
+      "source_snapshot_id": "github__davidhalter__parso__f28d112ed2c9",
+      "source_archive_sha256": "c1bccd5217289729f4a1d2cbd8898795a0321a2d99f5deba6efc242a97b2bdef",
+      "public_spec_sha256": "0f8453593e7923078e94ed917057af33e6f6f42d320565809324eea030caef01",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "Grammar": [
+          "parso.grammar",
+          [
+            "Grammar"
+          ]
+        ],
+        "load_grammar": [
+          "parso.grammar",
+          [
+            "load_grammar"
+          ]
+        ],
+        "parse": [
+          "parso",
+          [
+            "parse"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "pydantic_v1__validation_error_core__001": {
+      "source_snapshot_id": "github__pydantic__pydantic__5642e78c15f5",
+      "source_archive_sha256": "4ec4dde55d6dd7a1e7ed7b34a6b40794039fa0ec3007d069423d8a40f7996b9b",
+      "public_spec_sha256": "5b5912a74bc56d0f6cad0c25e88dcfad75bd80ac3d7dbff8df402c3ad3b152b6",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "BaseModel": [
+          "pydantic.main",
+          [
+            "BaseModel"
+          ]
+        ],
+        "Extra": [
+          "pydantic.config",
+          [
+            "Extra"
+          ]
+        ],
+        "Field": [
+          "pydantic.fields",
+          [
+            "Field"
+          ]
+        ],
+        "ValidationError": [
+          "pydantic.error_wrappers",
+          [
+            "ValidationError"
+          ]
+        ],
+        "root_validator": [
+          "pydantic.class_validators",
+          [
+            "root_validator"
+          ]
+        ],
+        "validator": [
+          "pydantic.class_validators",
+          [
+            "validator"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "pytest__ini_markers_core__001": {
+      "source_snapshot_id": "github__pytest_dev__pytest__4bec256f35f8",
+      "source_archive_sha256": "4b2fe35cc6d3400fd4596bc27bdf7385d9824ba45bc87f67114aaec160aa19ff",
+      "public_spec_sha256": "0c8e4b5b2bf8e3602744b878304b3ad5f7f9b14bcfd205fe68e143c745d9082f",
+      "lift_type": "Composite",
+      "aliases": {},
+      "api_reviews": {
+        "MarkerRegistry": {
+          "decision": "adaptation_required",
+          "source_symbol": "_pytest.config.Config",
+          "target_api": {
+            "path": "featurelifted.MarkerRegistry",
+            "kind": "class",
+            "members": [
+              {
+                "path": "featurelifted.MarkerRegistry.from_ini",
+                "kind": "method",
+                "signature": "(value: 'str | list[str]') -> \"'MarkerRegistry'\""
+              },
+              {
+                "path": "featurelifted.MarkerRegistry.names",
+                "kind": "method",
+                "signature": "(self) -> 'list[str]'"
+              },
+              {
+                "path": "featurelifted.MarkerRegistry.add_line",
+                "kind": "method",
+                "signature": "(self, line: 'str') -> 'None'"
+              },
+              {
+                "path": "featurelifted.MarkerRegistry.description",
+                "kind": "method",
+                "signature": "(self, name: 'str') -> 'str'"
+              },
+              {
+                "path": "featurelifted.MarkerRegistry.from_lines",
+                "kind": "method",
+                "signature": "(lines: 'list[str]') -> \"'MarkerRegistry'\""
+              }
+            ],
+            "signature": "(lines: 'list[str]' = <factory>) -> None"
+          },
+          "reason": "The source stores marker lines in Config ini state. No source class exposes the requested standalone from_ini/from_lines/names/description registry API.",
+          "source_evidence": [
+            {
+              "path": "src/_pytest/config/__init__.py",
+              "start_line": 1546,
+              "end_line": 1586,
+              "sha256": "0a1e588b3691ac27ccca412e65d1c5d11688cafb56be84972f8bfa1350aef856"
+            }
+          ]
+        },
+        "parse_linelist": {
+          "decision": "adaptation_required",
+          "source_symbol": "_pytest.config.Config._getini",
+          "target_api": {
+            "path": "featurelifted.parse_linelist",
+            "kind": "function",
+            "signature": "(value: 'str | list[str]') -> 'list[str]'"
+          },
+          "reason": "Linelist conversion exists inside a type-dispatch branch on Config state; extracting that branch into a new value-taking function exceeds direct re-export.",
+          "source_evidence": [
+            {
+              "path": "src/_pytest/config/__init__.py",
+              "start_line": 1594,
+              "end_line": 1636,
+              "sha256": "0a1e588b3691ac27ccca412e65d1c5d11688cafb56be84972f8bfa1350aef856"
+            }
+          ]
+        },
+        "split_marker_line": {
+          "decision": "adaptation_required",
+          "source_symbol": "_pytest.mark.pytest_cmdline_main",
+          "target_api": {
+            "path": "featurelifted.split_marker_line",
+            "kind": "function",
+            "signature": "(line: 'str') -> 'tuple[str, str]'"
+          },
+          "reason": "Marker splitting is inline in the display loop, not a standalone line-to-tuple source function; lifting the statements into an API would synthesize a function.",
+          "source_evidence": [
+            {
+              "path": "src/_pytest/mark/__init__.py",
+              "start_line": 121,
+              "end_line": 131,
+              "sha256": "6c7391c8202c1a7189abb4e99bb036b0d417df58f05354e0b9f33d0d872b4df4"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "MarkerRegistry": "no_same_name_static_binding",
+        "parse_linelist": "no_same_name_static_binding",
+        "split_marker_line": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {},
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "decorator__signature_preserving_core__001": {
+      "source_snapshot_id": "github__micheles__decorator__09e3124ed957",
+      "source_archive_sha256": "f9e75442af08013da48a8c8a58f6886970464f97566f11bb95a3fdc23fc7c7af",
+      "public_spec_sha256": "920a7e6904e80a7e60bfba6c9ffb25fd2daf311bd4cc94c7b3366532a7365aa4",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "decorate": [
+          "decorator",
+          [
+            "decorate"
+          ]
+        ],
+        "decorator": [
+          "decorator",
+          [
+            "decorator"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "hatch__project_metadata_core__hard3_001": {
+      "source_snapshot_id": "github__pypa__hatch__1c66b30e80a7",
+      "source_archive_sha256": "9113246b999dabbdeb5f2d8918baa6b4a32bffff4cd0a64c5e486466d4a1d0b6",
+      "public_spec_sha256": "7a1421ce6b34a003e8223820b94fad92c4c87e8bd4cf79d1141d73601fd60e35",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {
+        "normalize_project_metadata": {
+          "decision": "adaptation_required",
+          "source_symbol": "hatchling.metadata.core.ProjectMetadata",
+          "target_api": {
+            "path": "featurelifted.normalize_project_metadata",
+            "kind": "function",
+            "signature": "(project: 'dict') -> 'dict'"
+          },
+          "reason": "ProjectMetadata needs root/plugin_manager/config and exposes properties. The contract takes a project dict and returns a normalized dict; this requires orchestration and output construction.",
+          "source_evidence": [
+            {
+              "path": "backend/src/hatchling/metadata/core.py",
+              "start_line": 39,
+              "end_line": 63,
+              "sha256": "68470a03fcbadd27c2bdd428ea3dbad72da3a64de203eb0e8e365994f73e3ed3"
+            },
+            {
+              "path": "backend/src/hatchling/metadata/core.py",
+              "start_line": 399,
+              "end_line": 436,
+              "sha256": "68470a03fcbadd27c2bdd428ea3dbad72da3a64de203eb0e8e365994f73e3ed3"
+            }
+          ]
+        },
+        "select_environment": {
+          "decision": "adaptation_required",
+          "source_symbol": "hatch.project.config._populate_default_env_values",
+          "target_api": {
+            "path": "featurelifted.select_environment",
+            "kind": "function",
+            "signature": "(envs: 'dict', name: 'str') -> 'dict'"
+          },
+          "reason": "The relevant helper mutates data/config with seen/active traversal state. It is not the requested (envs, name) -> dict API.",
+          "source_evidence": [
+            {
+              "path": "src/hatch/project/config.py",
+              "start_line": 688,
+              "end_line": 729,
+              "sha256": "b0c93db7b9bc3e74bb719f5f8338b066f7ab9c2551d9f458d7d97a83de68e0b2"
+            }
+          ]
+        },
+        "MetadataValidationError": {
+          "decision": "adaptation_required",
+          "source_symbol": "hatchling.metadata.core.CoreMetadata.classifiers",
+          "target_api": {
+            "path": "featurelifted.MetadataValidationError",
+            "kind": "exception"
+          },
+          "reason": "No source exception with this name was found. Classifier validation raises ValueError and TypeError; the reviewed source-only alias policy does not create a new exception binding or translate errors.",
+          "source_evidence": [
+            {
+              "path": "backend/src/hatchling/metadata/core.py",
+              "start_line": 948,
+              "end_line": 995,
+              "sha256": "68470a03fcbadd27c2bdd428ea3dbad72da3a64de203eb0e8e365994f73e3ed3"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "MetadataValidationError": "no_same_name_static_binding",
+        "normalize_project_metadata": "no_same_name_static_binding",
+        "select_environment": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {},
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "astroid__nodes_core__001": {
+      "source_snapshot_id": "github__pycqa__astroid__d140cd4da9d6",
+      "source_archive_sha256": "22b45cbfd14994a381a02bc3938c120062edf7ed9d58ea606c5d61625c47a469",
+      "public_spec_sha256": "a032fdf8c02be574455a4c8c3e375e5d6be3915516c916d8c248836de53e71f0",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "AsyncFunctionDef": [
+          "astroid.nodes.scoped_nodes.scoped_nodes",
+          [
+            "AsyncFunctionDef"
+          ]
+        ],
+        "ClassDef": [
+          "astroid.nodes.scoped_nodes.scoped_nodes",
+          [
+            "ClassDef"
+          ]
+        ],
+        "FunctionDef": [
+          "astroid.nodes.scoped_nodes.scoped_nodes",
+          [
+            "FunctionDef"
+          ]
+        ],
+        "Match": [
+          "astroid.nodes.node_classes",
+          [
+            "Match"
+          ]
+        ],
+        "parse": [
+          "astroid.builder",
+          [
+            "parse"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "babel__plural_core__001": {
+      "source_snapshot_id": "github__python_babel__babel__daa7160174ce",
+      "source_archive_sha256": "360b54a02d6aa19a996e6a4e2ad7fd9b165c0effd1e347b71da7a960d2fb2002",
+      "public_spec_sha256": "2dce6e6db883e61e30834916785b3adba2c8cc19a6d98c0fe87ed5e009d0d9a9",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "Locale": [
+          "babel.core",
+          [
+            "Locale"
+          ]
+        ],
+        "PluralRule": [
+          "babel.plural",
+          [
+            "PluralRule"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "attrs__validators_core__001": {
+      "source_snapshot_id": "github__python_attrs__attrs__48bfb491ee6a",
+      "source_archive_sha256": "0126789ba07476406c82c27bdcd4fb2f323da5e11db547e58c47f1e972f04138",
+      "public_spec_sha256": "d5f369b45d9c4b0f31e1161a28ebf88bff995225eaf6e2d98893ea0cbbf82698",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "define": [
+          "attr._next_gen",
+          [
+            "define"
+          ]
+        ],
+        "field": [
+          "attr._next_gen",
+          [
+            "field"
+          ]
+        ],
+        "validate": [
+          "attr._make",
+          [
+            "validate"
+          ]
+        ],
+        "validators": [
+          "attrs.validators",
+          []
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "jinja2__loader_inheritance_core__001": {
+      "source_snapshot_id": "github__pallets__jinja__9a72443c8587",
+      "source_archive_sha256": "40ca468a34d3c1ce6d44cf953e958fd32a8f8de6d3e8b8fa6329be5390072a24",
+      "public_spec_sha256": "9e0cae8c2f7e74f129699c030eb3e09d13c164d7e4c670c21576a8a9a055fb1e",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "DictLoader": [
+          "jinja2.loaders",
+          [
+            "DictLoader"
+          ]
+        ],
+        "Environment": [
+          "jinja2.environment",
+          [
+            "Environment"
+          ]
+        ],
+        "exceptions": [
+          "jinja2.exceptions",
+          []
+        ],
+        "loaders": [
+          "jinja2.loaders",
+          []
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "pluggy__hook_wrapper_core__hard3_001": {
+      "source_snapshot_id": "github__pytest_dev__pluggy__0d767d1d9c54",
+      "source_archive_sha256": "e5c4a255fe4333966c8293aead4018bc8f63812072d74398130741eff872b27e",
+      "public_spec_sha256": "4d4e8b1d68cd80dc71dd650651b53689eb2a9ef01bc0deb6ed44d11820a1ef1a",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "HookCaller": [
+          "pluggy._hooks",
+          [
+            "HookCaller"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "requests_cache__cache_key_core__hard3_001": {
+      "source_snapshot_id": "github__requests_cache__requests_cache__c116dd5c841c",
+      "source_archive_sha256": "21a62c65f92fe8687f41404c5f4bf360e98b61de69bd9ab334cdea13ed7051a3",
+      "public_spec_sha256": "44bb6604d61b3bd238aa19141ea56562220e85aca7d4a1a930ec3d2598243986",
+      "lift_type": "Composite",
+      "aliases": {
+        "create_cache_key": "requests_cache.cache_keys.create_key"
+      },
+      "api_reviews": {
+        "CachePolicy": {
+          "decision": "adaptation_required",
+          "source_symbol": "requests_cache.policy.directives.CacheDirectives",
+          "target_api": {
+            "path": "featurelifted.CachePolicy",
+            "kind": "class",
+            "members": [
+              {
+                "path": "featurelifted.CachePolicy.from_headers",
+                "kind": "method",
+                "signature": "(headers: 'dict[str, Any] | None', default: 'int | None' = None, now: 'datetime | None' = None) -> \"'CachePolicy'\""
+              },
+              {
+                "path": "featurelifted.CachePolicy.expiration_seconds",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.CachePolicy.should_store",
+                "kind": "attribute"
+              }
+            ],
+            "signature": "(should_store: 'bool', expiration_seconds: 'int | None', reason: 'str' = '') -> None"
+          },
+          "reason": "CacheDirectives holds parsed directives, not should_store/expiration_seconds/reason. Its from_headers lacks default/now. The policy object and decision logic need adaptation.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/policy/directives.py",
+              "start_line": 12,
+              "end_line": 47,
+              "sha256": "274201afcad9bf787cf962db977a60f7847119bb10e24734f5aa8f7dc5950bd3"
+            }
+          ]
+        },
+        "create_key": {
+          "decision": "existing_binding_interface_mismatch",
+          "source_symbol": "requests_cache.cache_keys.create_key",
+          "target_api": {
+            "path": "featurelifted.create_key",
+            "kind": "function",
+            "signature": "(method: 'str', url: 'str', params=None, headers: 'dict[str, Any] | None' = None, body: 'Any' = None, ignored_parameters=None, match_headers: 'bool | list[str] | tuple[str, ...]' = False, verify: 'bool' = True, serializer: 'Any' = None, content_root_key: 'str | None' = None) -> 'str'"
+          },
+          "reason": "The target takes method and url as explicit fields. Upstream create_key instead requires a request object. Its suitability as create_cache_key does not make this same-name export compatible.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/cache_keys.py",
+              "start_line": 55,
+              "end_line": 82,
+              "sha256": "9beab14d6566a90e24cb885326836afa59e11338a031db174f94456a5fa7759e"
+            }
+          ]
+        },
+        "get_expiration": {
+          "decision": "adaptation_required",
+          "source_symbol": "requests_cache.policy.expiration.get_expiration_datetime",
+          "target_api": {
+            "path": "featurelifted.get_expiration",
+            "kind": "function",
+            "signature": "(headers: 'dict[str, Any] | None', default: 'int | None' = None, now: 'datetime | None' = None) -> 'int | None'"
+          },
+          "reason": "The source accepts an expiration value and returns an absolute datetime; even get_expiration_seconds accepts a value rather than headers/default/now. Header precedence and return adaptation are needed.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/policy/expiration.py",
+              "start_line": 22,
+              "end_line": 63,
+              "sha256": "09732595cc4829d6e5e95f7b5afa863fa3368b47375e1dd49993efae8dcd7579"
+            }
+          ]
+        },
+        "create_cache_key": {
+          "decision": "direct_alias",
+          "source_symbol": "requests_cache.cache_keys.create_key",
+          "target_api": {
+            "path": "featurelifted.create_cache_key",
+            "kind": "function",
+            "signature": "(request: 'Any', **kwargs: 'Any') -> 'str'"
+          },
+          "reason": "A name-only candidate: source create_key already accepts a request object plus cache-key keyword options and returns a digest string. Re-export unchanged as create_cache_key. This does not certify arbitrary request-like objects: normalize_request expects copy() and mutable fields, and dependencies may violate isolation.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/cache_keys.py",
+              "start_line": 55,
+              "end_line": 94,
+              "sha256": "9beab14d6566a90e24cb885326836afa59e11338a031db174f94456a5fa7759e"
+            },
+            {
+              "path": "requests_cache/cache_keys.py",
+              "start_line": 114,
+              "end_line": 142,
+              "sha256": "9beab14d6566a90e24cb885326836afa59e11338a031db174f94456a5fa7759e"
+            }
+          ]
+        },
+        "normalize_body": {
+          "decision": "existing_binding_interface_mismatch",
+          "source_symbol": "requests_cache.cache_keys.normalize_body",
+          "target_api": {
+            "path": "featurelifted.normalize_body",
+            "kind": "function",
+            "signature": "(body: 'Any', headers: 'dict[str, Any] | None' = None, ignored_parameters=None, content_root_key: 'str | None' = None) -> 'bytes'"
+          },
+          "reason": "The target takes body and headers; source takes a prepared request and required ignored_parameters, then reads request.body/headers.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/cache_keys.py",
+              "start_line": 168,
+              "end_line": 198,
+              "sha256": "9beab14d6566a90e24cb885326836afa59e11338a031db174f94456a5fa7759e"
+            }
+          ]
+        },
+        "normalize_headers": {
+          "decision": "existing_binding_input_domain_difference",
+          "source_symbol": "requests_cache.cache_keys.normalize_headers",
+          "target_api": {
+            "path": "featurelifted.normalize_headers",
+            "kind": "function",
+            "signature": "(headers: 'dict[str, Any] | None', ignored_parameters=None) -> 'dict[str, str]'"
+          },
+          "reason": "The target signature permits headers=None; source immediately calls headers.items(). Export is retained unchanged, with this public-source discrepancy disclosed.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/cache_keys.py",
+              "start_line": 145,
+              "end_line": 157,
+              "sha256": "9beab14d6566a90e24cb885326836afa59e11338a031db174f94456a5fa7759e"
+            }
+          ]
+        },
+        "normalize_params": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "requests_cache.cache_keys.normalize_params",
+          "target_api": {
+            "path": "featurelifted.normalize_params",
+            "kind": "function",
+            "signature": "(value: 'Any', ignored_parameters=None) -> 'str'"
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "requests_cache/cache_keys.py",
+              "start_line": 223,
+              "end_line": 236,
+              "sha256": "9beab14d6566a90e24cb885326836afa59e11338a031db174f94456a5fa7759e"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "CachePolicy": "no_same_name_static_binding",
+        "create_cache_key": "no_same_name_static_binding",
+        "get_expiration": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {
+        "create_key": [
+          "requests_cache.cache_keys",
+          [
+            "create_key"
+          ]
+        ],
+        "normalize_body": [
+          "requests_cache.cache_keys",
+          [
+            "normalize_body"
+          ]
+        ],
+        "normalize_headers": [
+          "requests_cache.cache_keys",
+          [
+            "normalize_headers"
+          ]
+        ],
+        "normalize_params": [
+          "requests_cache.cache_keys",
+          [
+            "normalize_params"
+          ]
+        ]
+      },
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "tomlkit__roundtrip_document__001": {
+      "source_snapshot_id": "github__python_poetry__tomlkit__b4d3e4a77252",
+      "source_archive_sha256": "2663ba0394e2a4b6ca02c4c66de56321a58cfe4f3e3ab2d74c2ab550226ac826",
+      "public_spec_sha256": "6fe1e3a2b37b8d91638abad362ab3f3f72e819f64f386abc2ba5885c23676729",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "aot": [
+          "tomlkit.api",
+          [
+            "aot"
+          ]
+        ],
+        "array": [
+          "tomlkit.api",
+          [
+            "array"
+          ]
+        ],
+        "document": [
+          "tomlkit.api",
+          [
+            "document"
+          ]
+        ],
+        "dumps": [
+          "tomlkit.api",
+          [
+            "dumps"
+          ]
+        ],
+        "exceptions": [
+          "tomlkit.exceptions",
+          []
+        ],
+        "inline_table": [
+          "tomlkit.api",
+          [
+            "inline_table"
+          ]
+        ],
+        "item": [
+          "tomlkit.items",
+          [
+            "item"
+          ]
+        ],
+        "loads": [
+          "tomlkit.api",
+          [
+            "loads"
+          ]
+        ],
+        "parse": [
+          "tomlkit.api",
+          [
+            "parse"
+          ]
+        ],
+        "string": [
+          "tomlkit.api",
+          [
+            "string"
+          ]
+        ],
+        "table": [
+          "tomlkit.api",
+          [
+            "table"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "python_decouple__config_repository_core__001": {
+      "source_snapshot_id": "github__hbnetwork__python_decouple__b7c6532fe5fa",
+      "source_archive_sha256": "42c03a5311b7cf98fa73613b2e6f20261418f954ae01f8240e06754de742a3a0",
+      "public_spec_sha256": "8192e86f03abd86d240729628bbb86a8bb8ef519c53615cc89228535ca151317",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {
+        "Choices": {
+          "decision": "existing_binding_interface_mismatch",
+          "source_symbol": "decouple.Choices",
+          "target_api": {
+            "kind": "class",
+            "path": "featurelifted.Choices",
+            "signature": "(choices, cast=<class 'str'>)"
+          },
+          "reason": "Target choices is the first argument; upstream first argument is flat and choices is a different Django-style option. Positional flat lists can work, but keyword choices has different meaning.",
+          "source_evidence": [
+            {
+              "path": "decouple.py",
+              "start_line": 289,
+              "end_line": 307,
+              "sha256": "e9c49ff164726df3abf6d9571f0005555fda1fc36d41e61e2595360394c18765"
+            }
+          ]
+        },
+        "Config": {
+          "decision": "existing_binding_interface_mismatch",
+          "source_symbol": "decouple.Config",
+          "target_api": {
+            "kind": "class",
+            "path": "featurelifted.Config",
+            "signature": "(repository, environ=None)"
+          },
+          "reason": "The target accepts environ=None; source Config only accepts repository and directly reads os.environ. A same-name export does not support injecting the declared environment.",
+          "source_evidence": [
+            {
+              "path": "decouple.py",
+              "start_line": 61,
+              "end_line": 89,
+              "sha256": "e9c49ff164726df3abf6d9571f0005555fda1fc36d41e61e2595360394c18765"
+            }
+          ]
+        },
+        "Csv": {
+          "decision": "existing_binding_default_difference",
+          "source_symbol": "decouple.Csv",
+          "target_api": {
+            "kind": "class",
+            "path": "featurelifted.Csv",
+            "signature": "(cast=<class 'str'>, delimiter=',', strip=' ')"
+          },
+          "reason": "Both bindings exist, but target strip defaults to a single space and source strip defaults to string.whitespace. No default change is performed.",
+          "source_evidence": [
+            {
+              "path": "decouple.py",
+              "start_line": 257,
+              "end_line": 285,
+              "sha256": "e9c49ff164726df3abf6d9571f0005555fda1fc36d41e61e2595360394c18765"
+            }
+          ]
+        },
+        "RepositoryDict": {
+          "decision": "adaptation_required",
+          "source_symbol": "decouple.RepositoryEmpty",
+          "target_api": {
+            "kind": "class",
+            "path": "featurelifted.RepositoryDict",
+            "signature": "(data)"
+          },
+          "reason": "RepositoryEmpty discards source and always reports no keys. It is not a dict repository. Exporting builtin dict would invent an implementation choice outside the source-binding policy.",
+          "source_evidence": [
+            {
+              "path": "decouple.py",
+              "start_line": 110,
+              "end_line": 118,
+              "sha256": "e9c49ff164726df3abf6d9571f0005555fda1fc36d41e61e2595360394c18765"
+            }
+          ]
+        },
+        "RepositoryEnv": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "decouple.RepositoryEnv",
+          "target_api": {
+            "kind": "class",
+            "path": "featurelifted.RepositoryEnv",
+            "signature": "(source)"
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "decouple.py",
+              "start_line": 143,
+              "end_line": 166,
+              "sha256": "e9c49ff164726df3abf6d9571f0005555fda1fc36d41e61e2595360394c18765"
+            }
+          ]
+        },
+        "UndefinedValueError": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "decouple.UndefinedValueError",
+          "target_api": {
+            "kind": "exception",
+            "path": "featurelifted.UndefinedValueError"
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "decouple.py",
+              "start_line": 46,
+              "end_line": 47,
+              "sha256": "e9c49ff164726df3abf6d9571f0005555fda1fc36d41e61e2595360394c18765"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "RepositoryDict": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {
+        "Choices": [
+          "decouple",
+          [
+            "Choices"
+          ]
+        ],
+        "Config": [
+          "decouple",
+          [
+            "Config"
+          ]
+        ],
+        "Csv": [
+          "decouple",
+          [
+            "Csv"
+          ]
+        ],
+        "RepositoryEnv": [
+          "decouple",
+          [
+            "RepositoryEnv"
+          ]
+        ],
+        "UndefinedValueError": [
+          "decouple",
+          [
+            "UndefinedValueError"
+          ]
+        ]
+      },
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "voluptuous__schema_validate_core__001": {
+      "source_snapshot_id": "github__alecthomas__voluptuous__bfa173f9f008",
+      "source_archive_sha256": "626656d28087a5f27123d2baf0e5df655816dfb3991b1d86dd580b6902b84c26",
+      "public_spec_sha256": "11b106fd46a51bca11f74447f4db3ad28c736f3caaf79cf4bef5bde72b11e11a",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "All": [
+          "voluptuous.validators",
+          [
+            "All"
+          ]
+        ],
+        "Any": [
+          "voluptuous.validators",
+          [
+            "Any"
+          ]
+        ],
+        "Coerce": [
+          "voluptuous.validators",
+          [
+            "Coerce"
+          ]
+        ],
+        "In": [
+          "voluptuous.validators",
+          [
+            "In"
+          ]
+        ],
+        "Invalid": [
+          "voluptuous.error",
+          [
+            "Invalid"
+          ]
+        ],
+        "MultipleInvalid": [
+          "voluptuous.error",
+          [
+            "MultipleInvalid"
+          ]
+        ],
+        "Optional": [
+          "voluptuous.schema_builder",
+          [
+            "Optional"
+          ]
+        ],
+        "Required": [
+          "voluptuous.schema_builder",
+          [
+            "Required"
+          ]
+        ],
+        "Schema": [
+          "voluptuous.schema_builder",
+          [
+            "Schema"
+          ]
+        ],
+        "SchemaError": [
+          "voluptuous.error",
+          [
+            "SchemaError"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "lark__parse_tree_core__001": {
+      "source_snapshot_id": "github__lark_parser__lark__702440140c56",
+      "source_archive_sha256": "6f03cb635cffe06cf9c4a31649d7c821633b767ee70fbf84e589a7ceeedb6849",
+      "public_spec_sha256": "ee8896062343881fdf4a50c1f40300042dbec1c4cf1ad1a8fac02ea69966ce54",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "Lark": [
+          "lark.lark",
+          [
+            "Lark"
+          ]
+        ],
+        "Token": [
+          "lark.lexer",
+          [
+            "Token"
+          ]
+        ],
+        "Tree": [
+          "lark.tree",
+          [
+            "Tree"
+          ]
+        ],
+        "UnexpectedCharacters": [
+          "lark.exceptions",
+          [
+            "UnexpectedCharacters"
+          ]
+        ],
+        "UnexpectedToken": [
+          "lark.exceptions",
+          [
+            "UnexpectedToken"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "platformdirs__app_dirs_core__hard3_001": {
+      "source_snapshot_id": "github__tox_dev__platformdirs__d6eab461f0cf",
+      "source_archive_sha256": "a520c1bb6dfbef62fda4780a4c0ea4226f8841a1d10dc830d5dd26deef9cf69f",
+      "public_spec_sha256": "6235289afe2530cea9e86fa294e759aa332e506601c85500d437b4a4c8ff059a",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "user_cache_dir": [
+          "platformdirs",
+          [
+            "user_cache_dir"
+          ]
+        ],
+        "user_config_dir": [
+          "platformdirs",
+          [
+            "user_config_dir"
+          ]
+        ],
+        "user_data_dir": [
+          "platformdirs",
+          [
+            "user_data_dir"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "setuptools_scm__version_normalize_core__hard3_001": {
+      "source_snapshot_id": "github__pypa__setuptools_scm__3d1b8ef01b27",
+      "source_archive_sha256": "a6d1046b06dfcd3cce76fe12d8f2afae7301a11ecd9bee4df10e155f182618e8",
+      "public_spec_sha256": "6fc4e9266ce8524cfc6a557f80ca5aa9ac89710aff0e4e47eb84254533007987",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {
+        "version_from_scm": {
+          "decision": "adaptation_required",
+          "source_symbol": "setuptools_scm._get_version.get_version",
+          "target_api": {
+            "path": "featurelifted.version_from_scm",
+            "kind": "function",
+            "signature": "(root, *, tag: 'str' = 'v1.0.0', distance: 'int' = 0, dirty: 'bool' = False, node: 'str' = 'g1234567') -> 'str'"
+          },
+          "reason": "get_version accepts SCM configuration and root, but no tag/distance/dirty/node keyword inputs. It invokes the SCM versioning pipeline; the requested no-subprocess function needs construction and formatting of supplied SCM state.",
+          "source_evidence": [
+            {
+              "path": "setuptools-scm/src/setuptools_scm/_get_version.py",
+              "start_line": 34,
+              "end_line": 80,
+              "sha256": "d9d9b37d8c9c27950db9436a8d72d4742e13c06221246ba3713422c3ba24aa4d"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "version_from_scm": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {},
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "yamale__schema_validate_core__hard3_001": {
+      "source_snapshot_id": "github__23andme__yamale__db8654ca554b",
+      "source_archive_sha256": "84957d8567930ba314a4b47e78cbbcb5c1c07a6fed54151861acdea5f7ae489e",
+      "public_spec_sha256": "995464fcbd60e658dcec937d574501cdfabad4163f916d78be9538789051f63e",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "ValidationResult": [
+          "yamale.schema.validationresults",
+          [
+            "ValidationResult"
+          ]
+        ],
+        "YamaleError": [
+          "yamale.yamale_error",
+          [
+            "YamaleError"
+          ]
+        ],
+        "make_schema": [
+          "yamale.yamale",
+          [
+            "make_schema"
+          ]
+        ],
+        "validate": [
+          "yamale.yamale",
+          [
+            "validate"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "humanize__naturaltime_core__001": {
+      "source_snapshot_id": "github__python_humanize__humanize__7edd04a349f2",
+      "source_archive_sha256": "3bda49378869054ebd5a3c8041e82c9ff856f89cab6645fd163c30f6725c0ece",
+      "public_spec_sha256": "e06d776f60ca5d5c50aed4b1b26d429383b0c17f56a843de2e76bb76a6491de1",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "naturaldate": [
+          "humanize.time",
+          [
+            "naturaldate"
+          ]
+        ],
+        "naturalday": [
+          "humanize.time",
+          [
+            "naturalday"
+          ]
+        ],
+        "naturaldelta": [
+          "humanize.time",
+          [
+            "naturaldelta"
+          ]
+        ],
+        "naturaltime": [
+          "humanize.time",
+          [
+            "naturaltime"
+          ]
+        ],
+        "precisedelta": [
+          "humanize.time",
+          [
+            "precisedelta"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "dateutil__zone_resolver_core__hard3_001": {
+      "source_snapshot_id": "github__dateutil__dateutil__908960127252",
+      "source_archive_sha256": "1593d73c116321d802409f2fbc0c5c8b4b75b6b44d755c337140d020d537ef31",
+      "public_spec_sha256": "7701adf2f827205a071b4f6e1fec7ae83a0c8f0308fb158574595dfae88c9003",
+      "lift_type": "Composite",
+      "aliases": {},
+      "api_reviews": {
+        "ZoneResolver": {
+          "decision": "adaptation_required",
+          "source_symbol": "dateutil.zoneinfo.ZoneInfoFile",
+          "target_api": {
+            "path": "featurelifted.ZoneResolver",
+            "kind": "class",
+            "signature": "() -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.ZoneResolver.load_zone",
+                "kind": "method",
+                "signature": "(self, name: 'str', tzdata: 'dict[str, bytes]') -> 'TZZone'"
+              },
+              {
+                "path": "featurelifted.ZoneResolver.get",
+                "kind": "method",
+                "signature": "(self, name: 'str') -> 'TZZone'"
+              },
+              {
+                "path": "featurelifted.ZoneResolver.register_alias",
+                "kind": "method",
+                "signature": "(self, alias: 'str', canonical: 'str') -> 'None'"
+              }
+            ]
+          },
+          "reason": "ZoneInfoFile loads a tar stream and exposes get(name, default). It has no load_zone(name, tzdata) or register_alias API with alias-cycle handling.",
+          "source_evidence": [
+            {
+              "path": "src/dateutil/zoneinfo/__init__.py",
+              "start_line": 30,
+              "end_line": 68,
+              "sha256": "298834a6d842323729e4c5d21220499f79cc8d978d65abfbae5270e7eb73d52e"
+            }
+          ]
+        },
+        "parse_tzfile": {
+          "decision": "adaptation_required",
+          "source_symbol": "dateutil.tz.tz.tzfile._read_tzfile",
+          "target_api": {
+            "path": "featurelifted.parse_tzfile",
+            "kind": "function",
+            "signature": "(data: 'bytes') -> 'dict[str, int]'"
+          },
+          "reason": "The upstream parser is an instance method taking a file object and constructing timezone data, not a bytes-to-metadata-dict function.",
+          "source_evidence": [
+            {
+              "path": "src/dateutil/tz/tz.py",
+              "start_line": 488,
+              "end_line": 530,
+              "sha256": "1149c474c7de4e15e263a978b21f7205a6d9eb7fcf3b3cb4d734ac87db619f5a"
+            }
+          ]
+        },
+        "UnknownZoneError": {
+          "decision": "adaptation_required",
+          "source_symbol": "dateutil.zoneinfo.ZoneInfoFile.get",
+          "target_api": {
+            "path": "featurelifted.UnknownZoneError",
+            "kind": "exception"
+          },
+          "reason": "Missing names return the supplied default; the contract needs a named error for missing names and alias cycles. An exception alias alone cannot change this control flow.",
+          "source_evidence": [
+            {
+              "path": "src/dateutil/zoneinfo/__init__.py",
+              "start_line": 54,
+              "end_line": 68,
+              "sha256": "298834a6d842323729e4c5d21220499f79cc8d978d65abfbae5270e7eb73d52e"
+            }
+          ]
+        },
+        "InvalidTZFileError": {
+          "decision": "adaptation_required",
+          "source_symbol": "dateutil.tz.tz.tzfile._read_tzfile",
+          "target_api": {
+            "path": "featurelifted.InvalidTZFileError",
+            "kind": "exception"
+          },
+          "reason": "No source binding with this name was found in the indexed runtime files. The parser raises builtin ValueError for bad magic; this protocol does not synthesize exception classes, translate exceptions, or invent builtin aliases.",
+          "source_evidence": [
+            {
+              "path": "src/dateutil/tz/tz.py",
+              "start_line": 488,
+              "end_line": 510,
+              "sha256": "1149c474c7de4e15e263a978b21f7205a6d9eb7fcf3b3cb4d734ac87db619f5a"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "InvalidTZFileError": "no_same_name_static_binding",
+        "UnknownZoneError": "no_same_name_static_binding",
+        "ZoneResolver": "no_same_name_static_binding",
+        "parse_tzfile": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {},
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "license_expression__policy_core__hard3_001": {
+      "source_snapshot_id": "github__aboutcode_org__license_expression__d9952b0e2bc0",
+      "source_archive_sha256": "a56fe1dfbb6420ecb612872da17444164f460f6f049c299c18fc7ea3e159936e",
+      "public_spec_sha256": "60a63b422d70cba1be92659d035e0f36c37fdba0305bb5f740cb8d52085bb402",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "ExpressionInfo": [
+          "license_expression",
+          [
+            "ExpressionInfo"
+          ]
+        ],
+        "ExpressionParseError": [
+          "license_expression",
+          [
+            "ExpressionParseError"
+          ]
+        ],
+        "LicenseSymbol": [
+          "license_expression",
+          [
+            "LicenseSymbol"
+          ]
+        ],
+        "Licensing": [
+          "license_expression",
+          [
+            "Licensing"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "bleach__sanitize_core__001": {
+      "source_snapshot_id": "github__mozilla__bleach__985ad60b8e4f",
+      "source_archive_sha256": "9f7a5054e5e63fe995c5d3ecec8feb525b47cb5c3fc0d975793d436908e9452f",
+      "public_spec_sha256": "a5b050e9f024c7835000d6408bc84f1dd86b574ae2e98be34e5f0a5e8b7c533d",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "ALLOWED_ATTRIBUTES": [
+          "bleach.sanitizer",
+          [
+            "ALLOWED_ATTRIBUTES"
+          ]
+        ],
+        "ALLOWED_PROTOCOLS": [
+          "bleach.sanitizer",
+          [
+            "ALLOWED_PROTOCOLS"
+          ]
+        ],
+        "ALLOWED_TAGS": [
+          "bleach.sanitizer",
+          [
+            "ALLOWED_TAGS"
+          ]
+        ],
+        "Cleaner": [
+          "bleach.sanitizer",
+          [
+            "Cleaner"
+          ]
+        ],
+        "clean": [
+          "bleach",
+          [
+            "clean"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "environs__typed_env_core__001": {
+      "source_snapshot_id": "github__sloria__environs__562bcbac41b7",
+      "source_archive_sha256": "2c46abc9c9b7d144eadaa18547ed1f109326d5098dbb664ef8fd3bed5f170544",
+      "public_spec_sha256": "b0830c1c6f304e1383a23fdf13bd3f000ec1590e12b16bcc2322b9773fc37676",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "Env": [
+          "environs",
+          [
+            "Env"
+          ]
+        ],
+        "EnvError": [
+          "environs.exceptions",
+          [
+            "EnvError"
+          ]
+        ],
+        "EnvSealedError": [
+          "environs.exceptions",
+          [
+            "EnvSealedError"
+          ]
+        ],
+        "EnvValidationError": [
+          "environs.exceptions",
+          [
+            "EnvValidationError"
+          ]
+        ],
+        "ParserConflictError": [
+          "environs.exceptions",
+          [
+            "ParserConflictError"
+          ]
+        ],
+        "ValidationError": [
+          "environs",
+          [
+            "ValidationError"
+          ]
+        ],
+        "validate": [
+          "environs",
+          [
+            "validate"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "pytest__mark_expression_core__001": {
+      "source_snapshot_id": "github__pytest_dev__pytest__4bec256f35f8",
+      "source_archive_sha256": "4b2fe35cc6d3400fd4596bc27bdf7385d9824ba45bc87f67114aaec160aa19ff",
+      "public_spec_sha256": "3b7c0844f23c83b31970c28009c4be302ec1bfd4f62f00f9f7bf0fb817f0b69b",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "Expression": [
+          "_pytest.mark.expression",
+          [
+            "Expression"
+          ]
+        ],
+        "ParseError": [
+          "_pytest.mark.expression",
+          [
+            "ParseError"
+          ]
+        ],
+        "expression": [
+          "_pytest.mark.expression",
+          []
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "bidict__bidirectional_map_core__001": {
+      "source_snapshot_id": "github__jab__bidict__dbbb0ca3e3ea",
+      "source_archive_sha256": "93ea0ea7bee3c910e55ff07d813a770f45661ecb69c46b9b97fa78e4fc940f36",
+      "public_spec_sha256": "4744837b38077c982343f0ddd32e232e322fc6c951e0b101d9e48ab24de628da",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "KeyAndValueDuplicationError": [
+          "bidict._exc",
+          [
+            "KeyAndValueDuplicationError"
+          ]
+        ],
+        "ON_DUP_RAISE": [
+          "bidict._dup",
+          [
+            "ON_DUP_RAISE"
+          ]
+        ],
+        "OrderedBidict": [
+          "bidict._orderedbidict",
+          [
+            "OrderedBidict"
+          ]
+        ],
+        "ValueDuplicationError": [
+          "bidict._exc",
+          [
+            "ValueDuplicationError"
+          ]
+        ],
+        "bidict": [
+          "bidict._bidict",
+          [
+            "bidict"
+          ]
+        ],
+        "frozenbidict": [
+          "bidict._frozen",
+          [
+            "frozenbidict"
+          ]
+        ],
+        "inverted": [
+          "bidict._iter",
+          [
+            "inverted"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "celery__signal_dispatch_core__hard3_001": {
+      "source_snapshot_id": "github__celery__celery__ca877f3bafb2",
+      "source_archive_sha256": "a60ed66c2a03105348a003a47496a83ce55ee8c3dfc5042d2dd12a778716f189",
+      "public_spec_sha256": "8d06f2e78bf3ad2a7e0e7861551d993e409818592f4c431fff34d01782f7e3fa",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "Signal": [
+          "celery.utils.dispatch.signal",
+          [
+            "Signal"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "schema__nested_validate_core__hard3_001": {
+      "source_snapshot_id": "github__keleshev__schema__981d7e089474",
+      "source_archive_sha256": "9af7a6547e297d3edd4bd555d28429ab793429289b3cfdf77ddbb4cb62196013",
+      "public_spec_sha256": "c39d7ac0069bc560a6668a6ae6113a6188481812d78a259b2250231fdddd70c4",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "And": [
+          "schema",
+          [
+            "And"
+          ]
+        ],
+        "Optional": [
+          "schema",
+          [
+            "Optional"
+          ]
+        ],
+        "Or": [
+          "schema",
+          [
+            "Or"
+          ]
+        ],
+        "Schema": [
+          "schema",
+          [
+            "Schema"
+          ]
+        ],
+        "SchemaError": [
+          "schema",
+          [
+            "SchemaError"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "ruamel_yaml__roundtrip_core__001": {
+      "source_snapshot_id": "source__sourceforge_net__a935d43b47a4__608d9dbf5085",
+      "source_archive_sha256": "f2c685bafc9d21ca9bb495ee7d716c22b4bf4f357ef52ce712027ee16df784aa",
+      "public_spec_sha256": "a4da287af87ca25f6e43b735797c2c3077c33f5dd6fa81111add5b64455cda36",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "CommentedMap": [
+          "ruamel.yaml.comments",
+          [
+            "CommentedMap"
+          ]
+        ],
+        "YAML": [
+          "ruamel.yaml.main",
+          [
+            "YAML"
+          ]
+        ],
+        "round_trip_dump": [
+          "ruamel.yaml.main",
+          [
+            "round_trip_dump"
+          ]
+        ],
+        "round_trip_load": [
+          "ruamel.yaml.main",
+          [
+            "round_trip_load"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "pluggy__hook_call_order__001": {
+      "source_snapshot_id": "github__pytest_dev__pluggy__c62999277ecb",
+      "source_archive_sha256": "4dc553ed27be780e05f5fd2fe58a5c3acc03ebcec09167aad7b8cd3a07e2c5f7",
+      "public_spec_sha256": "944f31d27207539e9e3ce52f9e671e7545798cf7b4401b50d7cba4eb2edbc98c",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "HookimplMarker": [
+          "pluggy._hooks",
+          [
+            "HookimplMarker"
+          ]
+        ],
+        "HookspecMarker": [
+          "pluggy._hooks",
+          [
+            "HookspecMarker"
+          ]
+        ],
+        "PluginManager": [
+          "pluggy._manager",
+          [
+            "PluginManager"
+          ]
+        ],
+        "PluginValidationError": [
+          "pluggy._manager",
+          [
+            "PluginValidationError"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "httpx__request_model_core__001": {
+      "source_snapshot_id": "github__encode__httpx__3fdce099a597",
+      "source_archive_sha256": "68f6b9bb577d2df09b928432943cbf41f4060993bf40801355752495b42061f0",
+      "public_spec_sha256": "de3af0dfff7f157bdaf611671976167212b488b6cd104aab795ab4ce1b9fbd30",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {
+        "URL": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "httpx._urls.URL",
+          "target_api": {
+            "path": "featurelifted.URL",
+            "kind": "constant"
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "httpx/_urls.py",
+              "start_line": 13,
+              "end_line": 415,
+              "sha256": "c8268bbdb9b12358fb81648461f7cabd81b68fbe3d3a6a88e6c14242bb01d959"
+            }
+          ]
+        },
+        "QueryParams": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "httpx._urls.QueryParams",
+          "target_api": {
+            "path": "featurelifted.QueryParams",
+            "kind": "class",
+            "signature": "(*args: 'QueryParamTypes | None', **kwargs: 'typing.Any') -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.QueryParams.multi_items",
+                "kind": "method",
+                "signature": "(self) -> 'list[tuple[str, str]]'"
+              },
+              {
+                "path": "featurelifted.QueryParams.merge",
+                "kind": "method",
+                "signature": "(self, params: 'QueryParamTypes | None' = None) -> 'QueryParams'"
+              }
+            ]
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "httpx/_urls.py",
+              "start_line": 418,
+              "end_line": 646,
+              "sha256": "c8268bbdb9b12358fb81648461f7cabd81b68fbe3d3a6a88e6c14242bb01d959"
+            }
+          ]
+        },
+        "Headers": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "httpx._models.Headers",
+          "target_api": {
+            "path": "featurelifted.Headers",
+            "kind": "class",
+            "signature": "(headers: 'HeaderTypes | None' = None, encoding: 'str | None' = None) -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.Headers.raw",
+                "kind": "attribute"
+              }
+            ]
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "httpx/_models.py",
+              "start_line": 57,
+              "end_line": 305,
+              "sha256": "e17dee0808829b57bb8309c187befb2f795657a35d8dd81f5d2835364e3b26c4"
+            }
+          ]
+        },
+        "Cookies": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "httpx._models.Cookies",
+          "target_api": {
+            "path": "featurelifted.Cookies",
+            "kind": "class",
+            "signature": "(cookies: 'CookieTypes | None' = None) -> 'None'"
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "httpx/_models.py",
+              "start_line": 1011,
+              "end_line": 1209,
+              "sha256": "e17dee0808829b57bb8309c187befb2f795657a35d8dd81f5d2835364e3b26c4"
+            }
+          ]
+        },
+        "Request": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "httpx._models.Request",
+          "target_api": {
+            "path": "featurelifted.Request",
+            "kind": "class",
+            "signature": "(method: 'str | bytes', url: 'URL | str', *, params: 'QueryParamTypes | None' = None, headers: 'HeaderTypes | None' = None, cookies: 'CookieTypes | None' = None, content: 'RequestContent | None' = None, data: 'RequestData | None' = None, files: 'RequestFiles | None' = None, json: 'typing.Any | None' = None, stream: 'SyncByteStream | AsyncByteStream | None' = None, extensions: 'RequestExtensions | None' = None) -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.Request.content",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.Request.headers",
+                "kind": "attribute"
+              },
+              {
+                "path": "featurelifted.Request.url",
+                "kind": "attribute"
+              }
+            ]
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "httpx/_models.py",
+              "start_line": 308,
+              "end_line": 444,
+              "sha256": "e17dee0808829b57bb8309c187befb2f795657a35d8dd81f5d2835364e3b26c4"
+            }
+          ]
+        },
+        "build_request": {
+          "decision": "adaptation_required",
+          "source_symbol": "httpx._client.BaseClient.build_request",
+          "target_api": {
+            "path": "featurelifted.build_request",
+            "kind": "function",
+            "signature": "(method: 'str', url: 'URLTypes', *, base_url: 'str | URL' = '', params: 'QueryParamTypes | None' = None, headers: 'HeaderTypes | None' = None, cookies: 'CookieTypes | None' = None, default_params: 'QueryParamTypes | None' = None, default_headers: 'HeaderTypes | None' = None, default_cookies: 'CookieTypes | None' = None, content: 'typing.Any' = None, data: 'typing.Any' = None, json: 'typing.Any' = None, files: 'typing.Any' = None) -> 'Request'"
+          },
+          "reason": "The inherited source method needs self and reads client defaults. The target is a free function accepting base_url/default_params/default_headers/default_cookies; fixing entrypoint discovery cannot construct that state or adapt the signature.",
+          "source_evidence": [
+            {
+              "path": "httpx/_client.py",
+              "start_line": 319,
+              "end_line": 368,
+              "sha256": "633008210912d222b699b1231e6319666ed23af9f15d7e16f0df12a45bdeb989"
+            },
+            {
+              "path": "httpx/_client.py",
+              "start_line": 564,
+              "end_line": 565,
+              "sha256": "633008210912d222b699b1231e6319666ed23af9f15d7e16f0df12a45bdeb989"
+            }
+          ]
+        },
+        "InvalidURL": {
+          "decision": "existing_binding_not_behaviorally_validated",
+          "source_symbol": "httpx._exceptions.InvalidURL",
+          "target_api": {
+            "path": "featurelifted.InvalidURL",
+            "kind": "exception"
+          },
+          "reason": "The declared top-level source binding is present. No body or signature edits are applied; this records availability only, not behavioral equivalence or isolation success.",
+          "source_evidence": [
+            {
+              "path": "httpx/_exceptions.py",
+              "start_line": 239,
+              "end_line": 245,
+              "sha256": "be707bf3f2cbf8986340a3fd9db53a966c663322376f822691973707f224dc7a"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "build_request": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {
+        "Cookies": [
+          "httpx._models",
+          [
+            "Cookies"
+          ]
+        ],
+        "Headers": [
+          "httpx._models",
+          [
+            "Headers"
+          ]
+        ],
+        "InvalidURL": [
+          "httpx._exceptions",
+          [
+            "InvalidURL"
+          ]
+        ],
+        "QueryParams": [
+          "httpx._urls",
+          [
+            "QueryParams"
+          ]
+        ],
+        "Request": [
+          "httpx._models",
+          [
+            "Request"
+          ]
+        ],
+        "URL": [
+          "httpx._urls",
+          [
+            "URL"
+          ]
+        ]
+      },
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "flake8__plugin_options_core__hard3_001": {
+      "source_snapshot_id": "github__pycqa__flake8__4f658626a87a",
+      "source_archive_sha256": "beb6320c3d74b210684eb6efeba36608d6d834f72be0851c96eb6e8573c7d8fd",
+      "public_spec_sha256": "bc6cd3ebd5e57c070d3cfaa83741b11a2f5883f27e764704dfbfb412357e9447",
+      "lift_type": "Composite",
+      "aliases": {},
+      "api_reviews": {
+        "OptionManager": {
+          "decision": "existing_binding_interface_mismatch",
+          "source_symbol": "flake8.options.manager.OptionManager",
+          "target_api": {
+            "path": "featurelifted.OptionManager",
+            "kind": "class",
+            "signature": "() -> 'None'"
+          },
+          "reason": "Same-name export exists, but the upstream constructor requires keyword-only version, plugin_versions, parents and formatter_names; the contract permits OptionManager(). Keep the unchanged export and disclose mismatch.",
+          "source_evidence": [
+            {
+              "path": "src/flake8/options/manager.py",
+              "start_line": 207,
+              "end_line": 243,
+              "sha256": "4eb959c21a25bd26ff5553ae627b35b016b5916a69c12fa4104bd93fc4dd1350"
+            }
+          ]
+        },
+        "PluginSpec": {
+          "decision": "adaptation_required",
+          "source_symbol": "flake8.plugins.finder.LoadedPlugin",
+          "target_api": {
+            "path": "featurelifted.PluginSpec",
+            "kind": "class",
+            "signature": "(name: 'str', codes: 'list[str]', checker_type: 'str', options: 'list[OptionSpec]' = <factory>) -> None"
+          },
+          "reason": "LoadedPlugin holds plugin, obj and parameters; Plugin holds package/version/entry_point. Neither has the requested name/codes/checker_type/options constructor.",
+          "source_evidence": [
+            {
+              "path": "src/flake8/plugins/finder.py",
+              "start_line": 30,
+              "end_line": 69,
+              "sha256": "2f3109df0226dcd1cb5bb5d1183672a055f043d867332cab780fe3d847756f5a"
+            }
+          ]
+        },
+        "classify_plugins": {
+          "decision": "adaptation_required",
+          "source_symbol": "flake8.plugins.finder._classify_plugins",
+          "target_api": {
+            "path": "featurelifted.classify_plugins",
+            "kind": "function",
+            "signature": "(plugins: 'list[PluginSpec]') -> 'Plugins'"
+          },
+          "reason": "The existing function requires LoadedPlugin objects and a second PluginOptions argument; the requested function takes only a list of PluginSpec.",
+          "source_evidence": [
+            {
+              "path": "src/flake8/plugins/finder.py",
+              "start_line": 310,
+              "end_line": 352,
+              "sha256": "2f3109df0226dcd1cb5bb5d1183672a055f043d867332cab780fe3d847756f5a"
+            }
+          ]
+        },
+        "apply_select_ignore": {
+          "decision": "adaptation_required",
+          "source_symbol": "flake8.plugins.finder._classify_plugins",
+          "target_api": {
+            "path": "featurelifted.apply_select_ignore",
+            "kind": "function",
+            "signature": "(plugins: 'Plugins', select: 'set[str] | None', ignore: 'set[str] | None') -> 'Plugins'"
+          },
+          "reason": "No standalone select/ignore function with the contract interface was found. Classification uses loaded objects and opts.enable_extensions; producing the declared filtering API needs new wiring.",
+          "source_evidence": [
+            {
+              "path": "src/flake8/plugins/finder.py",
+              "start_line": 310,
+              "end_line": 335,
+              "sha256": "2f3109df0226dcd1cb5bb5d1183672a055f043d867332cab780fe3d847756f5a"
+            }
+          ]
+        },
+        "OptionSpec": {
+          "decision": "adaptation_required",
+          "source_symbol": "flake8.options.manager.Option",
+          "target_api": {
+            "path": "featurelifted.OptionSpec",
+            "kind": "class",
+            "signature": "(dest: 'str', parse_from_config: 'bool' = False, default: 'Any' = None) -> None"
+          },
+          "reason": "Option is an argparse registration object; its first positional arguments are option names, while OptionSpec starts with dest, parse_from_config and default. Renaming does not preserve argument meaning.",
+          "source_evidence": [
+            {
+              "path": "src/flake8/options/manager.py",
+              "start_line": 41,
+              "end_line": 100,
+              "sha256": "4eb959c21a25bd26ff5553ae627b35b016b5916a69c12fa4104bd93fc4dd1350"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "OptionSpec": "no_same_name_static_binding",
+        "PluginSpec": "no_same_name_static_binding",
+        "apply_select_ignore": "no_same_name_static_binding",
+        "classify_plugins": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {
+        "OptionManager": [
+          "flake8.options.manager",
+          [
+            "OptionManager"
+          ]
+        ]
+      },
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "coverage__source_selection_core__001": {
+      "source_snapshot_id": "github__coveragepy__coveragepy__e426d54694bd",
+      "source_archive_sha256": "c83974be3f207f21bab65385d77b3246df7f21c36d8de4f395db8d0a25b9716b",
+      "public_spec_sha256": "412dec0fd5bcee248f23af1aad1aee4b506b65d18dc52f72874f8d8b87c93fb4",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {
+        "SourceSelector": {
+          "decision": "adaptation_required",
+          "source_symbol": "coverage.inorout.InOrOut",
+          "target_api": {
+            "path": "featurelifted.SourceSelector",
+            "kind": "class",
+            "signature": "(*, source: 'list[str] | None' = None, source_pkgs: 'list[str] | None' = None, run_include: 'list[str] | None' = None, run_omit: 'list[str] | None' = None, cover_pylib: 'bool' = False) -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.SourceSelector.skip_reason",
+                "kind": "method",
+                "signature": "(self, filename: 'str', modulename: 'str | None' = None) -> 'str | None'"
+              }
+            ]
+          },
+          "reason": "InOrOut requires CoverageConfig, warn/debug and namespace settings. Its selection method accepts a frame, while skip_reason accepts modulename. Constructor and method adaptation are required.",
+          "source_evidence": [
+            {
+              "path": "coverage/inorout.py",
+              "start_line": 180,
+              "end_line": 218,
+              "sha256": "ac36d74ba17b7a50faf883f1f75d435c1c0705b11c7232399dcea586b2e7fc2d"
+            },
+            {
+              "path": "coverage/inorout.py",
+              "start_line": 396,
+              "end_line": 455,
+              "sha256": "ac36d74ba17b7a50faf883f1f75d435c1c0705b11c7232399dcea586b2e7fc2d"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "SourceSelector": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {},
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "jsonpointer__resolve_core__001": {
+      "source_snapshot_id": "github__stefankoegl__python_json_pointer__362d9007ed9e",
+      "source_archive_sha256": "97ea64523e18e0457ca8468508ca79d90b500c969e37bbf1e62a7e6e00c6e3ca",
+      "public_spec_sha256": "7f7517ec8e144425b68e9af65a8ff524043ec7b7dc72f25c6ff09b935f58620c",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "EndOfList": [
+          "jsonpointer",
+          [
+            "EndOfList"
+          ]
+        ],
+        "JsonPointer": [
+          "jsonpointer",
+          [
+            "JsonPointer"
+          ]
+        ],
+        "JsonPointerException": [
+          "jsonpointer",
+          [
+            "JsonPointerException"
+          ]
+        ],
+        "escape": [
+          "jsonpointer",
+          [
+            "escape"
+          ]
+        ],
+        "resolve_pointer": [
+          "jsonpointer",
+          [
+            "resolve_pointer"
+          ]
+        ],
+        "set_pointer": [
+          "jsonpointer",
+          [
+            "set_pointer"
+          ]
+        ],
+        "unescape": [
+          "jsonpointer",
+          [
+            "unescape"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "readme_renderer__content_type_core__hard3_001": {
+      "source_snapshot_id": "github__pypa__readme_renderer__6d94d0128c4f",
+      "source_archive_sha256": "597bd13d78b8a9763a314f5ae0bfb95c1e0a551ebf61407cb21ed9b1c741c828",
+      "public_spec_sha256": "cc3192c0027c6224a1417fdd55c9e1a8e9a5761166156b3e9108534de71d7681",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {
+        "render_readme": {
+          "decision": "adaptation_required",
+          "source_symbol": "readme_renderer.markdown.render",
+          "target_api": {
+            "path": "featurelifted.render_readme",
+            "kind": "function",
+            "signature": "(content: 'str', content_type: 'str') -> 'tuple[str, list[str]]'"
+          },
+          "reason": "The source renders markdown with a variant and returns str or None. The target dispatches on media type and returns (html, warnings), requiring dispatch and output adaptation.",
+          "source_evidence": [
+            {
+              "path": "readme_renderer/markdown.py",
+              "start_line": 76,
+              "end_line": 102,
+              "sha256": "fb81b9bf95a9740003fff15819987e590bfaaca46fc39b1dc39ebad885796f48"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "render_readme": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {},
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "poetry_core__dependency_groups_core__hard3_001": {
+      "source_snapshot_id": "github__python_poetry__poetry_core__e0b3981cde6a",
+      "source_archive_sha256": "f4a5039270a6b34fb92365874b0f4364fabd8b60cb9d0478a40b8f68f4d2bd5e",
+      "public_spec_sha256": "3389d668b7881515eb4ba43f2017e11370fb2ad1a0f3f6ee2dc0618682663e28",
+      "lift_type": "Composite",
+      "aliases": {},
+      "api_reviews": {
+        "parse_project_dependencies": {
+          "decision": "adaptation_required",
+          "source_symbol": "poetry.core.factory.Factory._configure_package_dependency_groups",
+          "target_api": {
+            "path": "featurelifted.parse_project_dependencies",
+            "kind": "function",
+            "signature": "(project: 'dict') -> 'dict[str, DependencyGroup]'"
+          },
+          "reason": "Factory configures a ProjectPackage using separate poetry and dependency-group structures; the target returns a dict of standalone groups from one project dict.",
+          "source_evidence": [
+            {
+              "path": "src/poetry/core/factory.py",
+              "start_line": 455,
+              "end_line": 515,
+              "sha256": "012ffd2c25391d40eb9996713235910261447ba8baa38e8dd8e4bd682740ef76"
+            }
+          ]
+        },
+        "resolve_group": {
+          "decision": "adaptation_required",
+          "source_symbol": "poetry.core.packages.dependency_group.DependencyGroup._resolve_included_dependency_groups",
+          "target_api": {
+            "path": "featurelifted.resolve_group",
+            "kind": "function",
+            "signature": "(name: 'str', groups: 'dict[str, DependencyGroup]', seen: 'set[str] | None' = None) -> 'list[DependencySpec]'"
+          },
+          "reason": "The source method traverses stored group objects; the target accepts a name, group dict and seen set and requires circular-include ValueError handling.",
+          "source_evidence": [
+            {
+              "path": "src/poetry/core/packages/dependency_group.py",
+              "start_line": 107,
+              "end_line": 123,
+              "sha256": "d45d5f46d710b17eaf904ed715caa2d1dcbe8e7083079510cd27ebe68579d061"
+            },
+            {
+              "path": "src/poetry/core/packages/dependency_group.py",
+              "start_line": 156,
+              "end_line": 164,
+              "sha256": "d45d5f46d710b17eaf904ed715caa2d1dcbe8e7083079510cd27ebe68579d061"
+            }
+          ]
+        },
+        "DependencyGroup": {
+          "decision": "existing_binding_interface_mismatch",
+          "source_symbol": "poetry.core.packages.dependency_group.DependencyGroup",
+          "target_api": {
+            "path": "featurelifted.DependencyGroup",
+            "kind": "class",
+            "signature": "(name: 'str', optional: 'bool' = False, dependencies: 'list[DependencySpec]' = <factory>, includes: 'list[str]' = <factory>) -> None"
+          },
+          "reason": "The source constructor has keyword-only optional/mixed_dynamic and initializes its own dependencies. The target accepts dependencies and includes constructor fields. Same-name discovery is not interface compatibility.",
+          "source_evidence": [
+            {
+              "path": "src/poetry/core/packages/dependency_group.py",
+              "start_line": 19,
+              "end_line": 29,
+              "sha256": "d45d5f46d710b17eaf904ed715caa2d1dcbe8e7083079510cd27ebe68579d061"
+            }
+          ]
+        },
+        "DependencySpec": {
+          "decision": "adaptation_required",
+          "source_symbol": "poetry.core.packages.dependency.Dependency",
+          "target_api": {
+            "path": "featurelifted.DependencySpec",
+            "kind": "class",
+            "signature": "(name: 'str', constraint: 'str' = '*', optional: 'bool' = False, group: 'str | None' = None, marker: 'str | None' = None) -> None"
+          },
+          "reason": "Dependency requires constraint and accepts groups, not the target optional constraint plus group/marker fields. Direct renaming cannot supply the requested data model.",
+          "source_evidence": [
+            {
+              "path": "src/poetry/core/packages/dependency.py",
+              "start_line": 38,
+              "end_line": 75,
+              "sha256": "d53ac2ac192cf5799cb6dac1a0457db8e91daf7272768d33d4d884f359f03e8b"
+            }
+          ]
+        }
+      },
+      "original_unmapped_api": {
+        "DependencySpec": "no_same_name_static_binding",
+        "parse_project_dependencies": "no_same_name_static_binding",
+        "resolve_group": "no_same_name_static_binding"
+      },
+      "original_export_mappings": {
+        "DependencyGroup": [
+          "poetry.core.packages.dependency_group",
+          [
+            "DependencyGroup"
+          ]
+        ]
+      },
+      "review_scope": "all_required_top_level_apis_in_11_flagged_tasks"
+    },
+    "wsproto__frame_parse_core__001": {
+      "source_snapshot_id": "github__python_hyper__wsproto__1cf5c7095c49",
+      "source_archive_sha256": "4015b728eea7c50a25865f931ebc49ebe5aa1eebe933e6ea0ac4d8b8558cc8b5",
+      "public_spec_sha256": "fb3912964072ae6077f19179b6b655a56cddba42b0065b9e1ab89a7fb2a71f3a",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "frame_protocol": [
+          "wsproto.frame_protocol",
+          []
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "markdown_it__commonmark_render__001": {
+      "source_snapshot_id": "github__executablebooks__markdown_it_py__4c5e1b22e6a4",
+      "source_archive_sha256": "d488ac2625fce8b10448bc0e72d0a33b5780b66233ccf949c47835c323cbd9da",
+      "public_spec_sha256": "f52f911a62940c7c5b0fa9b3e5cde9a51a72de5f464d534b5d96ce16ae1d80d5",
+      "lift_type": "Direct",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "MarkdownIt": [
+          "markdown_it.main",
+          [
+            "MarkdownIt"
+          ]
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    },
+    "sqlparse__token_tree_core__001": {
+      "source_snapshot_id": "github__andialbrecht__sqlparse__7bd7593b3dbd",
+      "source_archive_sha256": "35d9b75adc0f9f7b760d0731f15c51b2a8284d190765d8a1c4df5ed06b1cb530",
+      "public_spec_sha256": "a674dbfec9c81a4628a5499a55b203cb33f05cc3630412c4b71a47e13482f811",
+      "lift_type": "Adapted",
+      "aliases": {},
+      "api_reviews": {},
+      "original_unmapped_api": {},
+      "original_export_mappings": {
+        "parse": [
+          "sqlparse",
+          [
+            "parse"
+          ]
+        ],
+        "parsestream": [
+          "sqlparse",
+          [
+            "parsestream"
+          ]
+        ],
+        "sql": [
+          "sqlparse.sql",
+          []
+        ],
+        "tokens": [
+          "sqlparse.tokens",
+          []
+        ]
+      },
+      "review_scope": "automatic_name_mapping_only_not_interface_audit"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "condition": "contract_only",
+  "agent": "OpenHands CLI 1.16.0",
+  "timeout_seconds": 3600,
+  "max_steps": 150,
+  "context_window_tokens": 131072,
+  "reserved_output_tokens": 8192,
+  "network_during_construction": false,
+  "source_repository_visible_to_agent": false,
+  "tasks": 150
+}

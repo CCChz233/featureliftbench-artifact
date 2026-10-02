@@ -1,0 +1,20 @@
+{
+  "source_package_name": "aiohttp",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/aiohttp/helpers.py"
+  ],
+  "target_api": [
+    "featurelifted.build_url",
+    "featurelifted.normalize_headers",
+    "featurelifted.CIMultiDict"
+  ],
+  "forbidden_imports": [
+    "aiohttp"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "aiohttp/"
+  ],
+  "notes": "URL/header helper subset without aiohttp client."
+}

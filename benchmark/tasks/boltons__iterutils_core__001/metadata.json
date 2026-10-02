@@ -1,0 +1,445 @@
+{
+  "task_id": "boltons__iterutils_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "boltons",
+    "iterutils",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "boltons",
+    "url": "https://github.com/mahmoud/boltons",
+    "commit": "23.0.0-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "Iterutils iterator toolkit",
+    "description": "Extract boltons iterutils chunked/windowed/remap/bucketize helpers without importing boltons.",
+    "source_entrypoints": [
+      "boltons.iterutils.chunked",
+      "boltons.iterutils.windowed",
+      "boltons.iterutils.pairwise",
+      "boltons.iterutils.unique",
+      "boltons.iterutils.bucketize",
+      "boltons.iterutils.remap",
+      "boltons.iterutils.get_path"
+    ],
+    "included_behaviors": [
+      "chunked and windowed iteration with size validation",
+      "pairwise adjacent pairs",
+      "unique with optional key function",
+      "bucketize grouping with key_filter and value_transform",
+      "remap tree walk with visit/enter/exit hooks",
+      "get_path nested dict/list access"
+    ],
+    "excluded_behaviors": [
+      "other boltons utility modules beyond curated snapshot",
+      "upstream docs and packaging",
+      "original boltons import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "iterutils couples iterator adapters, nested structure remapping with path stacks, and bucketize aggregation semantics.",
+    "signals": [
+      "remap maintains parent stack across enter/exit hooks",
+      "chunked_iter validates size and handles fill for last chunk",
+      "bucketize key_filter and value_transform alter grouping",
+      "get_path walks heterogeneous tree paths with defaults"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import chunked, windowed, pairwise, unique, bucketize, remap, get_path, partition; from featurelifted.iterutils import backoff, chunk_ranges",
+    "callable": "featurelifted.chunked",
+    "signature": "chunked(src, size, count=None, **kw) -> list"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "boltons"
+    ],
+    "forbidden_imports": [
+      "boltons"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Iterutils iterator toolkit",
+    "summary": "Extract a task-scoped subset of `boltons` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.chunked",
+        "kind": "function",
+        "signature": "(src, size, count=None, **kw)"
+      },
+      {
+        "path": "featurelifted.windowed",
+        "kind": "function",
+        "signature": "(src, size)"
+      },
+      {
+        "path": "featurelifted.pairwise",
+        "kind": "function",
+        "signature": "(src)"
+      },
+      {
+        "path": "featurelifted.unique",
+        "kind": "function",
+        "signature": "(src, key=None)"
+      },
+      {
+        "path": "featurelifted.bucketize",
+        "kind": "function",
+        "signature": "(src, key=<class 'bool'>, value_transform=None, key_filter=None)"
+      },
+      {
+        "path": "featurelifted.remap",
+        "kind": "function",
+        "signature": "(root, visit=<function default_visit>, enter=<function default_enter>, exit=<function default_exit>, **kwargs)"
+      },
+      {
+        "path": "featurelifted.get_path",
+        "kind": "function",
+        "signature": "(root, path, default=<object object>)"
+      },
+      {
+        "path": "featurelifted.partition",
+        "kind": "function",
+        "signature": "(src, key=<class 'bool'>)"
+      },
+      {
+        "path": "featurelifted.iterutils",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.iterutils.backoff",
+            "kind": "function",
+            "signature": "(start, stop, count=None, factor=2.0, jitter=False)"
+          },
+          {
+            "path": "featurelifted.iterutils.chunk_ranges",
+            "kind": "function",
+            "signature": "(input_size, chunk_size, input_offset=0, overlap_size=0, align=False)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: chunked and windowed iteration with size validation. Required observable cases include chunked basic; windowed and pairwise; chunked fill padding; chunked count limit; pairwise sliding window; windowed size three."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: pairwise adjacent pairs. Required observable cases include windowed and pairwise; pairwise sliding window."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: unique with optional key function. Required observable cases include unique and bucketize; unique key preserves first of length."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: bucketize grouping with key_filter and value_transform. Required observable cases include unique and bucketize; bucketize value transform."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: remap tree walk with visit/enter/exit hooks. Required observable cases include windowed size three."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: get_path nested dict/list access. Required observable cases include get path missing raises."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.chunked`, `featurelifted.windowed`, `featurelifted.pairwise`, `featurelifted.unique`, `featurelifted.bucketize`, `featurelifted.remap`, `featurelifted.get_path`, `featurelifted.partition`, `featurelifted.iterutils`, `featurelifted.iterutils.backoff`, `featurelifted.iterutils.chunk_ranges` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "boltons.iterutils.chunked",
+      "boltons.iterutils.windowed",
+      "boltons.iterutils.pairwise",
+      "boltons.iterutils.unique",
+      "boltons.iterutils.bucketize",
+      "boltons.iterutils.remap",
+      "boltons.iterutils.get_path"
+    ],
+    "exclusions": [
+      "other boltons utility modules beyond curated snapshot",
+      "upstream docs and packaging",
+      "original boltons import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "boltons"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: boltons."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: chunked and windowed iteration with size validation. Required observable cases include chunked basic; windowed and pairwise; chunked fill padding; chunked count limit; pairwise sliding window; windowed size three."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: pairwise adjacent pairs. Required observable cases include windowed and pairwise; pairwise sliding window."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: unique with optional key function. Required observable cases include unique and bucketize; unique key preserves first of length."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: bucketize grouping with key_filter and value_transform. Required observable cases include unique and bucketize; bucketize value transform."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: remap tree walk with visit/enter/exit hooks. Required observable cases include windowed size three."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: get_path nested dict/list access. Required observable cases include get path missing raises."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.chunked`, `featurelifted.windowed`, `featurelifted.pairwise`, `featurelifted.unique`, `featurelifted.bucketize`, `featurelifted.remap`, `featurelifted.get_path`, `featurelifted.partition`, `featurelifted.iterutils`, `featurelifted.iterutils.backoff`, `featurelifted.iterutils.chunk_ranges` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: boltons"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_chunked_basic",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_windowed_and_pairwise",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_unique_and_bucketize",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_chunked_fill_padding",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_chunked_count_limit",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unique_key_preserves_first_of_length",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_bucketize_value_transform",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_partition_truthiness",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_get_path_missing_raises",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_pairwise_sliding_window",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_windowed_size_three",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_chunk_ranges_with_overlap",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_backoff_exponential_growth",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_boltons_import_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.chunked",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.windowed",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.pairwise",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.unique",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.bucketize",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.remap",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.get_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.partition",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.iterutils",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.iterutils.backoff",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.iterutils.chunk_ranges",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "0d83425dc09628850091c4380888de09a5fe9047d310fbae2ab93812e8d79aa7",
+  "generated_task_hash": "d350b83cd4ab787cefc84f8c5175b0eb944ada177c175de50028106ec4e48b8f"
+}

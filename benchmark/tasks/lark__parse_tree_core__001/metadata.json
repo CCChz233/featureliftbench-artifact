@@ -1,0 +1,320 @@
+{
+  "task_id": "lark__parse_tree_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "parser_state_coupling",
+    "parser",
+    "pure-python",
+    "multi-module"
+  ],
+  "source": {
+    "name": "lark",
+    "url": "https://github.com/lark-parser/lark",
+    "commit": "1.2.2",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "LALR parse tree core",
+    "description": "Extract Lark grammar loading and LALR parsing into parse trees as a standalone package.",
+    "source_entrypoints": [
+      "lark.Lark",
+      "lark.Lark.parse",
+      "lark.Tree",
+      "lark.Token",
+      "lark.exceptions.UnexpectedToken",
+      "lark.exceptions.UnexpectedCharacters"
+    ],
+    "included_behaviors": [
+      "parse input with inline grammars using LALR",
+      "build Tree nodes with rule data and Token leaves",
+      "support %import, %ignore, and common terminal imports",
+      "raise structured parse errors with line/column context",
+      "expose pretty() and child navigation on trees"
+    ],
+    "excluded_behaviors": [
+      "tree Transformer and Visitor APIs as public surface",
+      "standalone code generation tools",
+      "earley-only advanced forest transforms",
+      "original project tests and documentation"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "description": "Parsing couples grammar loading, lexer tables, parser frontends, and tree construction across many cooperating modules.",
+    "signals": [
+      "LALR parser state machine",
+      "grammar import and transformation pipeline",
+      "lexer and terminal definition coupling",
+      "Tree/Token data model"
+    ],
+    "primary": "parser_state_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Lark, Tree, Token, UnexpectedToken, UnexpectedCharacters",
+    "callable": "featurelifted.Lark.parse",
+    "signature": "Lark.parse(text: str, start: str | None = None, on_error: Callable | None = None) -> Tree"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "lark"
+    ],
+    "forbidden_imports": [
+      "lark"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "LALR parse tree core",
+    "summary": "Extract a task-scoped subset of `lark` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Lark",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Lark.parse",
+            "kind": "method",
+            "signature": "(self, text: str, start: Optional[str] = None, on_error: 'Optional[Callable[[UnexpectedInput], bool]]' = None) -> 'ParseTree'"
+          }
+        ],
+        "signature": "(grammar: 'Union[Grammar, str, IO[str]]', **options) -> None"
+      },
+      {
+        "path": "featurelifted.Tree",
+        "kind": "class",
+        "signature": "(data: str, children: 'List[Branch[_Leaf_T]]', meta: Optional[Meta] = None) -> None"
+      },
+      {
+        "path": "featurelifted.Token",
+        "kind": "class",
+        "signature": "(*args, **kwargs)"
+      },
+      {
+        "path": "featurelifted.UnexpectedToken",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.UnexpectedCharacters",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse input with inline grammars using LALR. Required observable cases include parse builds tree with precedence; unexpected characters on garbage input."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: build Tree nodes with rule data and Token leaves. Required observable cases include parse builds tree with precedence; nested lists and tokens."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: support %import, %ignore, and common terminal imports. Required observable cases include named terminal and pretty output."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: raise structured parse errors with line/column context. Required observable cases include parse error reports unexpected token; unexpected characters on garbage input."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: expose pretty() and child navigation on trees. Required observable cases include named terminal and pretty output."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Lark`, `featurelifted.Lark.parse`, `featurelifted.Tree`, `featurelifted.Token`, `featurelifted.UnexpectedToken`, `featurelifted.UnexpectedCharacters` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "lark.Lark",
+      "lark.Lark.parse",
+      "lark.Tree",
+      "lark.Token",
+      "lark.exceptions.UnexpectedToken",
+      "lark.exceptions.UnexpectedCharacters"
+    ],
+    "exclusions": [
+      "tree Transformer and Visitor APIs as public surface",
+      "standalone code generation tools",
+      "earley-only advanced forest transforms",
+      "original project tests and documentation"
+    ],
+    "forbidden": {
+      "imports": [
+        "lark"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: lark."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse input with inline grammars using LALR. Required observable cases include parse builds tree with precedence; unexpected characters on garbage input."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: build Tree nodes with rule data and Token leaves. Required observable cases include parse builds tree with precedence; nested lists and tokens."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: support %import, %ignore, and common terminal imports. Required observable cases include named terminal and pretty output."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: raise structured parse errors with line/column context. Required observable cases include parse error reports unexpected token; unexpected characters on garbage input."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: expose pretty() and child navigation on trees. Required observable cases include named terminal and pretty output."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Lark`, `featurelifted.Lark.parse`, `featurelifted.Tree`, `featurelifted.Token`, `featurelifted.UnexpectedToken`, `featurelifted.UnexpectedCharacters` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: lark"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_parse_public.py::test_parse_builds_tree_with_precedence",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_parse_public.py::test_parse_error_reports_unexpected_token",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_parse_hidden.py::test_nested_lists_and_tokens",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_parse_hidden.py::test_unexpected_characters_on_garbage_input",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_parse_hidden.py::test_named_terminal_and_pretty_output",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Lark",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Lark.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_parse_hidden.py::test_named_terminal_and_pretty_output",
+          "hidden_tests/test_parse_hidden.py::test_nested_lists_and_tokens",
+          "hidden_tests/test_parse_hidden.py::test_unexpected_characters_on_garbage_input"
+        ]
+      },
+      {
+        "path": "featurelifted.Tree",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Token",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.UnexpectedToken",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.UnexpectedCharacters",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "f98c0c2488bb2bc2d1dec83c5634e063bf1ac86a268aa355d19f2c9e3f56657e",
+  "generated_task_hash": "30c4efc5a67cad77ef4b46a24527f077aa4586a140fe68f7cb2af7b339eed124"
+}

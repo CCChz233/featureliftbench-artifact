@@ -1,0 +1,10 @@
+{
+  "source_files": [
+    "coverage/env.py",
+    "coverage/exceptions.py",
+    "coverage/types.py",
+    "coverage/misc.py",
+    "coverage/files.py"
+  ],
+  "notes": "PathAliases combine remap closure with glob conversion and canonical path helpers from files.py."
+}

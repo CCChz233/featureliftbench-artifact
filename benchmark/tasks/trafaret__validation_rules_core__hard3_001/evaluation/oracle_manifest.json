@@ -1,0 +1,22 @@
+{
+  "source_package_name": "trafaret",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/trafaret/base.py",
+    "repo/trafaret/dataerror.py"
+  ],
+  "target_api": [
+    "featurelifted.Dict",
+    "featurelifted.Or",
+    "featurelifted.Forward",
+    "featurelifted.DataError"
+  ],
+  "forbidden_imports": [
+    "trafaret"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "trafaret/"
+  ],
+  "notes": "Composable validation subset."
+}

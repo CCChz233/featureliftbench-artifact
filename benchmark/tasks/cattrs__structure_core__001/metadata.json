@@ -1,0 +1,455 @@
+{
+  "task_id": "cattrs__structure_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "cattrs",
+    "serialization",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling",
+    "third_party_dependency_coupling"
+  ],
+  "source": {
+    "name": "cattrs",
+    "url": "https://github.com/python-attrs/cattrs",
+    "commit": "5dc43b3f3887f443a58c61d7c89650357c236d51",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Structure/unstructure core",
+    "description": "Extract cattrs Converter with structure/unstructure for attrs classes, dataclasses, and nested dict/list payloads with generated dict hooks and field overrides, without original cattrs import.",
+    "source_entrypoints": [
+      "cattrs.Converter",
+      "cattrs.Converter.structure",
+      "cattrs.Converter.unstructure",
+      "cattrs.structure",
+      "cattrs.unstructure",
+      "cattrs.gen.make_dict_structure_fn",
+      "cattrs.gen.make_dict_unstructure_fn",
+      "cattrs.gen.override",
+      "cattrs.dispatch.MultiStrategyDispatch",
+      "cattrs.errors.ClassValidationError"
+    ],
+    "included_behaviors": [
+      "round-trip attrs and dataclass instances through dict payloads",
+      "structure and unstructure nested mappings and sequences",
+      "register custom dict structure/unstructure hooks via gen helpers",
+      "apply per-field rename and omit_if_default overrides",
+      "reject extra dict keys when forbid_extra_keys is enabled"
+    ],
+    "excluded_behaviors": [
+      "preconf JSON/YAML/msgpack adapters and third-party codec integrations",
+      "strategies package for union/subclass hook registry explosion",
+      "GenConverter code generation and transform_error validation helpers",
+      "upstream tests, docs, benchmarks, and packaging metadata",
+      "original cattrs import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "third_party_dependency_coupling",
+      "implicit_dependency_coupling",
+      "framework_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "cattrs couples attrs/dataclass introspection, multi-strategy hook dispatch, generated dict hooks, collection factories, and validation errors across converters, dispatch, gen, and _compat modules while depending on attrs metadata.",
+    "signals": [
+      "MultiStrategyDispatch resolves structure hooks by type predicates",
+      "make_dict_structure_fn compiles per-field overrides into closures",
+      "cols/_compat bridge attrs fields, dataclasses, and typing generics",
+      "forbid_extra_keys and nested payloads share ClassValidationError paths"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Converter, structure, unstructure; from featurelifted.gen import make_dict_structure_fn, make_dict_unstructure_fn, override; from featurelifted.errors import ClassValidationError, ForbiddenExtraKeysError",
+    "callable": "featurelifted.Converter.structure",
+    "signature": "Converter.structure(obj: Any, cl: type) -> Any"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "attrs"
+    ],
+    "forbidden_dependencies": [
+      "cattrs"
+    ],
+    "forbidden_imports": [
+      "cattrs"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Structure/unstructure core",
+    "summary": "Extract a task-scoped subset of `cattrs` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Converter",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Converter.structure",
+            "kind": "method",
+            "signature": "(self, obj: Any, cl: Type[~T]) -> ~T"
+          },
+          {
+            "path": "featurelifted.Converter.register_structure_hook",
+            "kind": "method",
+            "signature": "(self, cl: Any, func: Callable[[Any, Any], Any]) -> None"
+          },
+          {
+            "path": "featurelifted.Converter.register_unstructure_hook",
+            "kind": "method",
+            "signature": "(self, cls: Any, func: Callable[[Any], Any]) -> None"
+          },
+          {
+            "path": "featurelifted.Converter.unstructure",
+            "kind": "method",
+            "signature": "(self, obj: Any, unstructure_as: Any = None) -> Any"
+          }
+        ],
+        "signature": "(dict_factory: Callable[[], Any] = <class 'dict'>, unstruct_strat: UnstructureStrategy = <UnstructureStrategy.AS_DICT: 'asdict'>, omit_if_default: bool = False, forbid_extra_keys: bool = False, type_overrides: collections.abc.Mapping[typing.Type, AttributeOverride] = {}, unstruct_collection_overrides: collections.abc.Mapping[typing.Type, typing.Callable] = {}, prefer_attrib_converters: bool = False, detailed_validation: bool = True, unstructure_fallback_factory: Callable[[Any], Callable[[Any], Any]] = <function Converter.<lambda>>, structure_fallback_factory: Callable[[Any], Callable[[Any, Any], Any]] = <function Converter.<lambda>>)"
+      },
+      {
+        "path": "featurelifted.structure",
+        "kind": "function",
+        "signature": "(obj: Any, cl: Type[~T]) -> ~T"
+      },
+      {
+        "path": "featurelifted.unstructure",
+        "kind": "function",
+        "signature": "(obj: Any, unstructure_as: Any = None) -> Any"
+      },
+      {
+        "path": "featurelifted.errors",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.errors.ClassValidationError",
+            "kind": "exception"
+          },
+          {
+            "path": "featurelifted.errors.ForbiddenExtraKeysError",
+            "kind": "exception"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.gen",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.gen.make_dict_structure_fn",
+            "kind": "function",
+            "signature": "(cl: 'type[T]', converter: 'BaseConverter', _cattrs_forbid_extra_keys: \"bool | Literal['from_converter']\" = 'from_converter', _cattrs_use_linecache: 'bool' = True, _cattrs_prefer_attrib_converters: 'bool' = False, _cattrs_detailed_validation: \"bool | Literal['from_converter']\" = 'from_converter', _cattrs_use_alias: 'bool' = False, _cattrs_include_init_false: 'bool' = False, **kwargs: 'AttributeOverride') -> 'DictStructureFn[T]'"
+          },
+          {
+            "path": "featurelifted.gen.make_dict_unstructure_fn",
+            "kind": "function",
+            "signature": "(cl: 'type[T]', converter: 'BaseConverter', _cattrs_omit_if_default: 'bool' = False, _cattrs_use_linecache: 'bool' = True, _cattrs_use_alias: 'bool' = False, _cattrs_include_init_false: 'bool' = False, **kwargs: 'AttributeOverride') -> 'Callable[[T], dict[str, Any]]'"
+          },
+          {
+            "path": "featurelifted.gen.override",
+            "kind": "function",
+            "signature": "(omit_if_default: 'bool | None' = None, rename: 'str | None' = None, omit: 'bool | None' = None, struct_hook: 'Callable[[Any, Any], Any] | None' = None, unstruct_hook: 'Callable[[Any], Any] | None' = None) -> 'AttributeOverride'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: round-trip attrs and dataclass instances through dict payloads. Required observable cases include nested attrs and dataclass."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: structure and unstructure nested mappings and sequences. Required observable cases include attrs roundtrip; dataclass roundtrip; nested attrs and dataclass; optional none field."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: register custom dict structure/unstructure hooks via gen helpers. Required observable cases include attrs roundtrip; dataclass roundtrip; module level helpers; structure hook rename override; optional none field."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: apply per-field rename and omit_if_default overrides. Required observable cases include structure hook rename override; unstructure omit if default."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: reject extra dict keys when forbid_extra_keys is enabled. Required observable cases include forbid extra keys."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Converter`, `featurelifted.Converter.structure`, `featurelifted.Converter.register_structure_hook`, `featurelifted.Converter.register_unstructure_hook`, `featurelifted.Converter.unstructure`, `featurelifted.structure`, `featurelifted.unstructure`, `featurelifted.errors`, `featurelifted.errors.ClassValidationError`, `featurelifted.errors.ForbiddenExtraKeysError`, `featurelifted.gen`, `featurelifted.gen.make_dict_structure_fn`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "cattrs.Converter",
+      "cattrs.Converter.structure",
+      "cattrs.Converter.unstructure",
+      "cattrs.structure",
+      "cattrs.unstructure",
+      "cattrs.gen.make_dict_structure_fn",
+      "cattrs.gen.make_dict_unstructure_fn",
+      "cattrs.gen.override",
+      "cattrs.dispatch.MultiStrategyDispatch",
+      "cattrs.errors.ClassValidationError"
+    ],
+    "exclusions": [
+      "preconf JSON/YAML/msgpack adapters and third-party codec integrations",
+      "strategies package for union/subclass hook registry explosion",
+      "GenConverter code generation and transform_error validation helpers",
+      "upstream tests, docs, benchmarks, and packaging metadata",
+      "original cattrs import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "cattrs"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: cattrs."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: round-trip attrs and dataclass instances through dict payloads. Required observable cases include nested attrs and dataclass."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: structure and unstructure nested mappings and sequences. Required observable cases include attrs roundtrip; dataclass roundtrip; nested attrs and dataclass; optional none field."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: register custom dict structure/unstructure hooks via gen helpers. Required observable cases include attrs roundtrip; dataclass roundtrip; module level helpers; structure hook rename override; optional none field."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: apply per-field rename and omit_if_default overrides. Required observable cases include structure hook rename override; unstructure omit if default."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: reject extra dict keys when forbid_extra_keys is enabled. Required observable cases include forbid extra keys."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Converter`, `featurelifted.Converter.structure`, `featurelifted.Converter.register_structure_hook`, `featurelifted.Converter.register_unstructure_hook`, `featurelifted.Converter.unstructure`, `featurelifted.structure`, `featurelifted.unstructure`, `featurelifted.errors`, `featurelifted.errors.ClassValidationError`, `featurelifted.errors.ForbiddenExtraKeysError`, `featurelifted.gen`, `featurelifted.gen.make_dict_structure_fn`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: cattrs"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_attrs_roundtrip",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dataclass_roundtrip",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_module_level_helpers",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_nested_attrs_and_dataclass",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_structure_hook_rename_override",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unstructure_omit_if_default",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_forbid_extra_keys",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_optional_none_field",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_cattrs_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Converter",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Converter.structure",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_forbid_extra_keys",
+          "hidden_tests/test_hidden_behavior.py::test_nested_attrs_and_dataclass",
+          "hidden_tests/test_hidden_behavior.py::test_optional_none_field",
+          "hidden_tests/test_hidden_behavior.py::test_structure_hook_rename_override"
+        ]
+      },
+      {
+        "path": "featurelifted.Converter.register_structure_hook",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_structure_hook_rename_override"
+        ]
+      },
+      {
+        "path": "featurelifted.Converter.register_unstructure_hook",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_unstructure_omit_if_default"
+        ]
+      },
+      {
+        "path": "featurelifted.Converter.unstructure",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_nested_attrs_and_dataclass",
+          "hidden_tests/test_hidden_behavior.py::test_optional_none_field",
+          "hidden_tests/test_hidden_behavior.py::test_unstructure_omit_if_default"
+        ]
+      },
+      {
+        "path": "featurelifted.structure",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.unstructure",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.errors",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.errors.ClassValidationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.errors.ForbiddenExtraKeysError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.gen",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.gen.make_dict_structure_fn",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.gen.make_dict_unstructure_fn",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.gen.override",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "a3e0972cf65da9616b4bdf72b85e52449e52b69725985f4ff98e996264aee27c",
+  "generated_task_hash": "2db4a1010cd687951a4416f381c125b9d3327b8ff2abfaf740f1384669103b45"
+}

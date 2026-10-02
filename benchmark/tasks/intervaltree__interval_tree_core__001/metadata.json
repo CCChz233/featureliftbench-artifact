@@ -1,0 +1,437 @@
+{
+  "task_id": "intervaltree__interval_tree_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "intervaltree",
+    "data-structures",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "intervaltree",
+    "url": "https://github.com/chaimleib/intervaltree",
+    "commit": "1bc406e1f441577c4e421fc51aba2ab67fbd97fb",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "IntervalTree core",
+    "description": "Extract IntervalTree add/remove/overlap/chop operations with Interval value semantics without importing intervaltree.",
+    "source_entrypoints": [
+      "intervaltree.Interval",
+      "intervaltree.IntervalTree",
+      "intervaltree.IntervalTree.add",
+      "intervaltree.IntervalTree.remove",
+      "intervaltree.IntervalTree.discard",
+      "intervaltree.IntervalTree.remove_overlap",
+      "intervaltree.IntervalTree.remove_envelop",
+      "intervaltree.IntervalTree.chop",
+      "intervaltree.IntervalTree.overlap",
+      "intervaltree.IntervalTree.overlaps",
+      "intervaltree.IntervalTree.at",
+      "intervaltree.IntervalTree.envelop",
+      "intervaltree.node.Node"
+    ],
+    "included_behaviors": [
+      "add/remove/discard intervals with set semantics and distinct data fields",
+      "point and range overlap queries via at/overlap/overlaps",
+      "remove_overlap and remove_envelop bulk deletion",
+      "chop trims overhanging intervals and optional datafunc relabeling",
+      "self-balancing tree queries through Node search helpers"
+    ],
+    "excluded_behaviors": [
+      "upstream test harness, benchmarks, and packaging metadata",
+      "original intervaltree import at runtime",
+      "CLI and documentation tooling"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "third_party_dependency_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "IntervalTree couples Interval half-open semantics, SortedDict boundary indexing, and Node rebalancing with overlap/envelop/chop mutation paths.",
+    "signals": [
+      "boundary_table SortedDict keys drive overlap/envelop scans",
+      "Node split/merge maintains center and search_point/search_overlap invariants",
+      "chop/remove_envelop combine set updates with partial interval trimming",
+      "Interval data field distinguishes otherwise identical ranges in the set"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Interval, IntervalTree",
+    "callable": "featurelifted.IntervalTree",
+    "signature": "IntervalTree(intervals=None)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "sortedcontainers"
+    ],
+    "forbidden_dependencies": [
+      "intervaltree"
+    ],
+    "forbidden_imports": [
+      "intervaltree"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "IntervalTree core",
+    "summary": "Extract a task-scoped subset of `intervaltree` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Interval",
+        "kind": "class",
+        "signature": "(begin, end, data=None)"
+      },
+      {
+        "path": "featurelifted.IntervalTree",
+        "kind": "class",
+        "signature": "(intervals=None)",
+        "members": [
+          {
+            "path": "featurelifted.IntervalTree.at",
+            "kind": "method",
+            "signature": "(self, p)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.chop",
+            "kind": "method",
+            "signature": "(self, begin, end, datafunc=None)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.envelop",
+            "kind": "method",
+            "signature": "(self, begin, end=None)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.overlap",
+            "kind": "method",
+            "signature": "(self, begin, end=None)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.remove_envelop",
+            "kind": "method",
+            "signature": "(self, begin, end)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.remove_overlap",
+            "kind": "method",
+            "signature": "(self, begin, end=None)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.__contains__",
+            "kind": "method",
+            "signature": "(self, item)"
+          },
+          {
+            "path": "featurelifted.IntervalTree.__getitem__",
+            "kind": "method",
+            "signature": "(self, index)"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: add/remove/discard intervals with set semantics and distinct data fields. Required observable cases include add and point query; remove interval; remove overlap multiple; distinct data same range; remove envelop."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: point and range overlap queries via at/overlap/overlaps. Required observable cases include add and point query; overlap range; complex point query."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: remove_overlap and remove_envelop bulk deletion. Required observable cases include remove interval; remove overlap multiple; envelop vs overlap; remove envelop."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: chop trims overhanging intervals and optional datafunc relabeling. Required observable cases include chop splits intervals; chop datafunc."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: self-balancing tree queries through Node search helpers. Required observable cases include remove overlap multiple."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Interval`, `featurelifted.IntervalTree`, `featurelifted.IntervalTree.at`, `featurelifted.IntervalTree.chop`, `featurelifted.IntervalTree.envelop`, `featurelifted.IntervalTree.overlap`, `featurelifted.IntervalTree.remove_envelop`, `featurelifted.IntervalTree.remove_overlap`, `featurelifted.IntervalTree.__contains__`, `featurelifted.IntervalTree.__getitem__` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "intervaltree.Interval",
+      "intervaltree.IntervalTree",
+      "intervaltree.IntervalTree.add",
+      "intervaltree.IntervalTree.remove",
+      "intervaltree.IntervalTree.discard",
+      "intervaltree.IntervalTree.remove_overlap",
+      "intervaltree.IntervalTree.remove_envelop",
+      "intervaltree.IntervalTree.chop",
+      "intervaltree.IntervalTree.overlap",
+      "intervaltree.IntervalTree.overlaps",
+      "intervaltree.IntervalTree.at",
+      "intervaltree.IntervalTree.envelop",
+      "intervaltree.node.Node"
+    ],
+    "exclusions": [
+      "upstream test harness, benchmarks, and packaging metadata",
+      "original intervaltree import at runtime",
+      "CLI and documentation tooling"
+    ],
+    "forbidden": {
+      "imports": [
+        "intervaltree"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: intervaltree."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: add/remove/discard intervals with set semantics and distinct data fields. Required observable cases include add and point query; remove interval; remove overlap multiple; distinct data same range; remove envelop."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: point and range overlap queries via at/overlap/overlaps. Required observable cases include add and point query; overlap range; complex point query."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: remove_overlap and remove_envelop bulk deletion. Required observable cases include remove interval; remove overlap multiple; envelop vs overlap; remove envelop."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: chop trims overhanging intervals and optional datafunc relabeling. Required observable cases include chop splits intervals; chop datafunc."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: self-balancing tree queries through Node search helpers. Required observable cases include remove overlap multiple."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Interval`, `featurelifted.IntervalTree`, `featurelifted.IntervalTree.at`, `featurelifted.IntervalTree.chop`, `featurelifted.IntervalTree.envelop`, `featurelifted.IntervalTree.overlap`, `featurelifted.IntervalTree.remove_envelop`, `featurelifted.IntervalTree.remove_overlap`, `featurelifted.IntervalTree.__contains__`, `featurelifted.IntervalTree.__getitem__` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: intervaltree"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_add_and_point_query",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_remove_interval",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_overlap_range",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_chop_splits_intervals",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_chop_datafunc",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_remove_overlap_multiple",
+        "behavior_ids": [
+          "B001",
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_envelop_vs_overlap",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_distinct_data_same_range",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_remove_envelop",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_complex_point_query",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_intervaltree_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Interval",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.at",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_complex_point_query"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.chop",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_chop_datafunc",
+          "hidden_tests/test_hidden_behavior.py::test_chop_splits_intervals"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.envelop",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_envelop_vs_overlap"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.overlap",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_envelop_vs_overlap"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.remove_envelop",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_remove_envelop"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.remove_overlap",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_remove_overlap_multiple"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.__contains__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_chop_datafunc",
+          "hidden_tests/test_hidden_behavior.py::test_chop_splits_intervals",
+          "hidden_tests/test_hidden_behavior.py::test_complex_point_query",
+          "hidden_tests/test_hidden_behavior.py::test_distinct_data_same_range",
+          "hidden_tests/test_hidden_behavior.py::test_envelop_vs_overlap",
+          "hidden_tests/test_hidden_behavior.py::test_no_intervaltree_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_remove_envelop",
+          "hidden_tests/test_hidden_behavior.py::test_remove_overlap_multiple",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.IntervalTree.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_chop_datafunc",
+          "hidden_tests/test_hidden_behavior.py::test_chop_splits_intervals",
+          "hidden_tests/test_hidden_behavior.py::test_complex_point_query",
+          "hidden_tests/test_hidden_behavior.py::test_distinct_data_same_range",
+          "hidden_tests/test_hidden_behavior.py::test_envelop_vs_overlap",
+          "hidden_tests/test_hidden_behavior.py::test_no_intervaltree_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_remove_envelop",
+          "hidden_tests/test_hidden_behavior.py::test_remove_overlap_multiple",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "fa107d3be526954681558101e5007b79a3b3d8aa505dde07737d577074b17ae4",
+  "generated_task_hash": "859448e53c4ec4751a94b458fb70ac9e5541c45350a45201abfe8caed105b526"
+}

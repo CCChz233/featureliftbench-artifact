@@ -1,0 +1,33 @@
+{
+  "source_package_name": "keyring",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/keyring/backend.py",
+    "repo/keyring/core.py",
+    "repo/keyring/backends/chainer.py",
+    "repo/keyring/backends/fail.py",
+    "repo/keyring/backends/null.py",
+    "repo/keyring/errors.py",
+    "repo/pyproject.toml"
+  ],
+  "target_api": [
+    "featurelifted.Backend",
+    "featurelifted.MemoryBackend",
+    "featurelifted.ErrorBackend",
+    "featurelifted.FailBackend",
+    "featurelifted.ChainerBackend",
+    "featurelifted.select_backend",
+    "featurelifted.Credential",
+    "featurelifted.BackendNotFound",
+    "featurelifted.PasswordSetError",
+    "featurelifted.PasswordDeleteError"
+  ],
+  "forbidden_imports": [
+    "keyring"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "keyring/"
+  ],
+  "notes": "Task-scoped backend discovery and failover selection. OS keychains, CLI, config writes, SecretService, KWallet, and Windows/macOS integrations are intentionally excluded. Upstream declares MIT in pyproject.toml; no standalone LICENSE file exists at the pinned commit."
+}

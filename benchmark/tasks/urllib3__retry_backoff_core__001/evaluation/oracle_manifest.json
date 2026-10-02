@@ -1,0 +1,10 @@
+{
+  "source_package_name": "urllib3",
+  "required_source_files": [
+    "src/urllib3/exceptions.py",
+    "src/urllib3/util/retry.py",
+    "src/urllib3/util/util.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle copies Retry policy modules and required exception types; repo snapshot is trimmed to util/ + exceptions.py for extraction-ratio calibration."
+}

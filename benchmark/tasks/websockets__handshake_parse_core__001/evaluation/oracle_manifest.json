@@ -1,0 +1,14 @@
+{
+  "source_package_name": "websockets",
+  "required_source_files": [
+    "websockets/datastructures.py",
+    "websockets/headers.py",
+    "websockets/http11.py",
+    "websockets/streams.py",
+    "websockets/typing.py",
+    "websockets/version.py",
+    "websockets/utils.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Handshake closure: header grammars, HTTP/1.1 Request/Response parsing, StreamReader buffer, and extracted validate_handshake_request. Trimmed exceptions module; frame/async/sync stacks excluded."
+}

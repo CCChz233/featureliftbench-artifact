@@ -1,0 +1,259 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Requires dependency groups, includes, and normalization across transitive group closure.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "optional dependencies create optional groups",
+      "group includes resolve transitively",
+      "circular include-group detection",
+      "main project dependencies populate main group"
+    ],
+    "types": [
+      "data_model_coupling",
+      "config_environment_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "poetry",
+      "poetry_core"
+    ],
+    "forbidden_imports": [
+      "poetry",
+      "poetry_core"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "poetry/",
+      "poetry_core/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped pep 621 metadata and dependency group resolver into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "package build",
+      "wheel/sdist generation"
+    ],
+    "included_behaviors": [
+      "PEP 621 dependency parsing",
+      "dependency groups",
+      "include-group resolution"
+    ],
+    "name": "PEP 621 metadata and dependency group resolver",
+    "source_entrypoints": [
+      "poetry.core.packages.dependency_group.DependencyGroup"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "parse_project_dependencies",
+    "import": "from featurelifted import parse_project_dependencies, resolve_group, DependencyGroup, DependencySpec",
+    "package": "featurelifted",
+    "signature": "parse_project_dependencies(project: dict)"
+  },
+  "source": {
+    "commit": "5de24118d23a05a23af5d9eb1d8bd98850d09205",
+    "license": "MIT",
+    "name": "poetry_core",
+    "url": "https://github.com/python-poetry/poetry-core.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "metadata extraction / package discovery",
+    "data_model_coupling"
+  ],
+  "task_id": "poetry_core__dependency_groups_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "PEP 621 metadata and dependency group resolver",
+    "summary": "Extract a task-scoped subset of `poetry` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse_project_dependencies",
+        "kind": "function",
+        "signature": "(project: 'dict') -> 'dict[str, DependencyGroup]'"
+      },
+      {
+        "path": "featurelifted.resolve_group",
+        "kind": "function",
+        "signature": "(name: 'str', groups: 'dict[str, DependencyGroup]', seen: 'set[str] | None' = None) -> 'list[DependencySpec]'"
+      },
+      {
+        "path": "featurelifted.DependencyGroup",
+        "kind": "class",
+        "signature": "(name: 'str', optional: 'bool' = False, dependencies: 'list[DependencySpec]' = <factory>, includes: 'list[str]' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.DependencySpec",
+        "kind": "class",
+        "signature": "(name: 'str', constraint: 'str' = '*', optional: 'bool' = False, group: 'str | None' = None, marker: 'str | None' = None) -> None"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`parse_project_dependencies` builds `DependencyGroup` objects from PEP 621 project metadata."
+      },
+      {
+        "id": "B002",
+        "text": "resolve_group resolves a group's dependencies including transitive include-group references. parse_project_dependencies reads dependency-groups as mappings whose dependencies field is a list of requirement strings and whose include-group field is a list of group names."
+      },
+      {
+        "id": "B003",
+        "text": "Circular includes raise `ValueError`."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.parse_project_dependencies`, `featurelifted.resolve_group`, `featurelifted.DependencyGroup`, `featurelifted.DependencySpec` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "poetry.core.packages.dependency_group.DependencyGroup"
+    ],
+    "exclusions": [
+      "network access",
+      "package build",
+      "wheel/sdist generation"
+    ],
+    "forbidden": {
+      "imports": [
+        "poetry",
+        "poetry_core"
+      ],
+      "paths": [
+        "repo/",
+        "poetry/",
+        "poetry_core/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: poetry, poetry_core."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`parse_project_dependencies` builds `DependencyGroup` objects from PEP 621 project metadata."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "resolve_group resolves a group's dependencies including transitive include-group references. parse_project_dependencies reads dependency-groups as mappings whose dependencies field is a list of requirement strings and whose include-group field is a list of group names."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "Circular includes raise `ValueError`."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse_project_dependencies`, `featurelifted.resolve_group`, `featurelifted.DependencyGroup`, `featurelifted.DependencySpec` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: poetry, poetry_core"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_parse_main_and_optional_groups",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_dependency_group_includes",
+        "behavior_ids": [
+          "B002",
+          "B003",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_circular_include_group_raises",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse_project_dependencies",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.resolve_group",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.DependencyGroup",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.DependencySpec",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "3c92b2a3bddf2eb8757fd3fb5c278717e1003ab2db24d2a3790a0d981aa7afc5",
+  "generated_task_hash": "5f02d6ba6d79376b001acfc4769d92eec7a087fa29a9669c056390c18b0f900a"
+}

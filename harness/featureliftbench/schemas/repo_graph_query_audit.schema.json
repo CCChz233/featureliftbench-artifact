@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://featureliftbench.local/schemas/repo_graph_query_audit.schema.json",
+  "title": "FeatureLiftBench RSG Query Response",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "command",
+    "snapshot_id",
+    "truncated_by_budget",
+    "result",
+    "status",
+    "parameter_digest",
+    "revision",
+    "response_chars",
+    "result_digest"
+  ],
+  "properties": {
+    "schema_version": {"const": "featureliftbench.repo_graph.query.v1"},
+    "command": {"type": "string"},
+    "snapshot_id": {"type": ["string", "null"]},
+    "truncated_by_budget": {"type": "boolean"},
+    "result": {"type": "object"},
+    "status": {"enum": ["success", "failed"]},
+    "parameters": {"type": "object"},
+    "parameter_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "revision": {"type": "integer", "minimum": 0},
+    "response_chars": {"type": "integer", "minimum": 0},
+    "max_chars": {"type": "integer", "minimum": 1},
+    "result_digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "error_type": {"type": "string"},
+    "error_message": {"type": "string", "maxLength": 256},
+    "timestamp_unix": {"type": "number"}
+  }
+}

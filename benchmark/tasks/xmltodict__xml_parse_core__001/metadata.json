@@ -1,0 +1,346 @@
+{
+  "task_id": "xmltodict__xml_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "xml",
+    "parser",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "xmltodict",
+    "url": "https://github.com/martinblech/xmltodict",
+    "commit": "966b903e4441f27816cd39ecf3305727b294a9c5",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "XML parse and unparse core",
+    "description": "Extract xmltodict SAX-to-ordered-dict parsing and dict-to-XML unparsing with namespace, attribute prefix, and mixed-content handling without importing xmltodict.",
+    "source_entrypoints": [
+      "xmltodict.parse",
+      "xmltodict.unparse",
+      "xmltodict.ParsingInterrupted",
+      "xmltodict._DictSAXHandler",
+      "xmltodict._emit",
+      "xmltodict._process_namespace"
+    ],
+    "included_behaviors": [
+      "parse XML strings into ordered dicts with @ attribute prefix",
+      "unparse dicts back to XML with matching attr_prefix and cdata_key",
+      "duplicate sibling elements become lists",
+      "process_namespaces with optional namespace URI collapse map",
+      "mixed content via #text alongside child elements",
+      "custom attr_prefix and cdata_key options"
+    ],
+    "excluded_behaviors": [
+      "streaming item_depth callbacks and ParsingInterrupted control flow",
+      "postprocessor hooks and force_list / force_cdata selectors",
+      "process_comments and comment_key emission",
+      "CLI marshal streaming entrypoint",
+      "original xmltodict import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "xmltodict couples expat SAX handler stack state, namespace declaration tracking, attribute prefix conventions, and symmetric unparse emission with validation.",
+    "signals": [
+      "_DictSAXHandler path/stack tracks nested items and mixed content",
+      "namespace_declarations merged into @xmlns on element open",
+      "_process_namespace rewrites keys for unparse with URI maps",
+      "push_data promotes duplicate keys to lists and applies force_list"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import parse, unparse, ParsingInterrupted",
+    "callable": "featurelifted.parse",
+    "signature": "parse(xml_input, encoding=None, process_namespaces=False, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "xmltodict"
+    ],
+    "forbidden_imports": [
+      "xmltodict"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "scoring_reference": {
+    "oracle_loc": 566,
+    "oracle_bytes": 23502,
+    "oracle_dependency_count": 0,
+    "copy_all_loc": 1593,
+    "copy_all_bytes": 65244
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "XML parse and unparse core",
+    "summary": "Extract a task-scoped subset of `xmltodict` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.parse",
+        "kind": "module"
+      },
+      {
+        "path": "featurelifted.unparse",
+        "kind": "module"
+      },
+      {
+        "path": "featurelifted.ParsingInterrupted",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse XML strings into ordered dicts with @ attribute prefix. Required observable cases include simple parse text node; parse attributes default prefix; parse repeated siblings become list; roundtrip simple document; custom attr prefix parse."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: unparse dicts back to XML with matching attr_prefix and cdata_key. Required observable cases include unparse simple element; roundtrip simple document; unparse custom attr prefix roundtrip."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: duplicate sibling elements become lists. Required observable cases include parse repeated siblings become list; unparse custom attr prefix roundtrip."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: process_namespaces with optional namespace URI collapse map. Required observable cases include namespace collapse map."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: mixed content via #text alongside child elements. Required observable cases include simple parse text node; unparse simple element; semi structured mixed content; force cdata wraps text nodes."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: custom attr_prefix and cdata_key options. Required observable cases include custom attr prefix parse; unparse custom attr prefix roundtrip; force cdata wraps text nodes."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.unparse`, `featurelifted.ParsingInterrupted` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "xmltodict.parse",
+      "xmltodict.unparse",
+      "xmltodict.ParsingInterrupted",
+      "xmltodict._DictSAXHandler",
+      "xmltodict._emit",
+      "xmltodict._process_namespace"
+    ],
+    "exclusions": [
+      "streaming item_depth callbacks and ParsingInterrupted control flow",
+      "postprocessor hooks and force_list / force_cdata selectors",
+      "process_comments and comment_key emission",
+      "CLI marshal streaming entrypoint",
+      "original xmltodict import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "xmltodict"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: xmltodict."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse XML strings into ordered dicts with @ attribute prefix. Required observable cases include simple parse text node; parse attributes default prefix; parse repeated siblings become list; roundtrip simple document; custom attr prefix parse."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: unparse dicts back to XML with matching attr_prefix and cdata_key. Required observable cases include unparse simple element; roundtrip simple document; unparse custom attr prefix roundtrip."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: duplicate sibling elements become lists. Required observable cases include parse repeated siblings become list; unparse custom attr prefix roundtrip."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: process_namespaces with optional namespace URI collapse map. Required observable cases include namespace collapse map."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: mixed content via #text alongside child elements. Required observable cases include simple parse text node; unparse simple element; semi structured mixed content; force cdata wraps text nodes."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: custom attr_prefix and cdata_key options. Required observable cases include custom attr prefix parse; unparse custom attr prefix roundtrip; force cdata wraps text nodes."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.parse`, `featurelifted.unparse`, `featurelifted.ParsingInterrupted` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: xmltodict"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_simple_parse_text_node",
+        "behavior_ids": [
+          "B001",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_attributes_default_prefix",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_repeated_siblings_become_list",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_unparse_simple_element",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_roundtrip_simple_document",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_namespace_collapse_map",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_custom_attr_prefix_parse",
+        "behavior_ids": [
+          "B001",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_semi_structured_mixed_content",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unparse_custom_attr_prefix_roundtrip",
+        "behavior_ids": [
+          "B002",
+          "B006",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_force_cdata_wraps_text_nodes",
+        "behavior_ids": [
+          "B005",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_xmltodict_import_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.unparse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ParsingInterrupted",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "c4823953221fce2f3c91add6ba85159a89b8407f385b992aee20e58fb62ffdf0",
+  "generated_task_hash": "0a9685f54e199adf7b9e9e3fed34c025e9938b0cc84d772aed3cf27bf0b0c493"
+}

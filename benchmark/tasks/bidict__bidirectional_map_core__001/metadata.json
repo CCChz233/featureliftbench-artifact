@@ -1,0 +1,369 @@
+{
+  "task_id": "bidict__bidirectional_map_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "bidict",
+    "data-structures",
+    "hard-first",
+    "functional-discriminator",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "bidict",
+    "url": "https://github.com/jab/bidict",
+    "commit": "393bcfdc8edb861514d23aae55839272b5bd52f8",
+    "license": "MPL-2.0"
+  },
+  "feature": {
+    "name": "Bidirectional mapping core",
+    "description": "Extract bidict mutable/frozen/ordered bidirectional mappings with inverse views, duplicate policies, and ordered move_to_end without importing bidict.",
+    "source_entrypoints": [
+      "bidict.bidict",
+      "bidict.frozenbidict",
+      "bidict.OrderedBidict",
+      "bidict.ON_DUP_RAISE",
+      "bidict.ValueDuplicationError",
+      "bidict.inverted"
+    ],
+    "included_behaviors": [
+      "forward and inverse lookups on bidict and frozenbidict",
+      "inverse view reflects live updates on mutable bidicts",
+      "ON_DUP_RAISE duplicate value/key policies with typed errors",
+      "OrderedBidict preserves insertion order and move_to_end",
+      "inverted() iterator helper for value-key pairs"
+    ],
+    "excluded_behaviors": [
+      "upstream benchmarks, docs, and test suite",
+      "original bidict import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "data_model_coupling",
+    "description": "Bidict couples forward/inverse backing dicts, duplicate-action policies, weakref-linked inverse views, and ordered linked-list nodes for OrderedBidict.",
+    "signals": [
+      "_fwdm/_invm weakref pairs keep inverse in sync on mutation",
+      "OnDup policies branch raises vs drop-old across key/value collisions",
+      "OrderedBidictBase maintains sentinel doubly-linked list for order",
+      "GeneratedBidictInverse proxies mutations back to parent bidict"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import bidict, frozenbidict, OrderedBidict, ON_DUP_RAISE, ValueDuplicationError, KeyAndValueDuplicationError, inverted",
+    "callable": "featurelifted.bidict",
+    "signature": "bidict(arg=(), /, **kw)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "bidict"
+    ],
+    "forbidden_imports": [
+      "bidict"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Bidirectional mapping core",
+    "summary": "Extract a task-scoped subset of `bidict` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.bidict",
+        "kind": "function",
+        "signature": "(arg: 'MapOrItems[KT, VT]' = (), /, **kw: 'VT') -> 'None'"
+      },
+      {
+        "path": "featurelifted.frozenbidict",
+        "kind": "function",
+        "signature": "(arg: 'MapOrItems[KT, VT]' = (), /, **kw: 'VT') -> 'None'"
+      },
+      {
+        "path": "featurelifted.OrderedBidict",
+        "kind": "class",
+        "signature": "(arg: 'MapOrItems[KT, VT]' = (), /, **kw: 'VT') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.OrderedBidict.keys",
+            "kind": "method",
+            "signature": "(self) -> 'KeysView[KT]'"
+          },
+          {
+            "path": "featurelifted.OrderedBidict.move_to_end",
+            "kind": "method",
+            "signature": "(self, key: 'KT', last: 'bool' = True) -> 'None'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.ON_DUP_RAISE",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.ValueDuplicationError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.KeyAndValueDuplicationError",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.inverted",
+        "kind": "function",
+        "signature": "(arg: 'MapOrItems[KT, VT]') -> 'ItemsIter[VT, KT]'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: forward and inverse lookups on bidict and frozenbidict. Required observable cases include bidict forward and inverse lookup; frozenbidict is immutable; frozenbidict hash stable."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: inverse view reflects live updates on mutable bidicts. Required observable cases include bidict inverse reflects updates; ordered move to end."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: ON_DUP_RAISE duplicate value/key policies with typed errors. Required observable cases include on dup raise value collision; key and value duplication error."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: OrderedBidict preserves insertion order and move_to_end. Required observable cases include ordered move to end."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: inverted() iterator helper for value-key pairs. Required observable cases include inverted iterator."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.bidict`, `featurelifted.frozenbidict`, `featurelifted.OrderedBidict`, `featurelifted.OrderedBidict.keys`, `featurelifted.OrderedBidict.move_to_end`, `featurelifted.ON_DUP_RAISE`, `featurelifted.ValueDuplicationError`, `featurelifted.KeyAndValueDuplicationError`, `featurelifted.inverted` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "bidict.bidict",
+      "bidict.frozenbidict",
+      "bidict.OrderedBidict",
+      "bidict.ON_DUP_RAISE",
+      "bidict.ValueDuplicationError",
+      "bidict.inverted"
+    ],
+    "exclusions": [
+      "upstream benchmarks, docs, and test suite",
+      "original bidict import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "bidict"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: bidict."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: forward and inverse lookups on bidict and frozenbidict. Required observable cases include bidict forward and inverse lookup; frozenbidict is immutable; frozenbidict hash stable."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: inverse view reflects live updates on mutable bidicts. Required observable cases include bidict inverse reflects updates; ordered move to end."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ON_DUP_RAISE duplicate value/key policies with typed errors. Required observable cases include on dup raise value collision; key and value duplication error."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: OrderedBidict preserves insertion order and move_to_end. Required observable cases include ordered move to end."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: inverted() iterator helper for value-key pairs. Required observable cases include inverted iterator."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.bidict`, `featurelifted.frozenbidict`, `featurelifted.OrderedBidict`, `featurelifted.OrderedBidict.keys`, `featurelifted.OrderedBidict.move_to_end`, `featurelifted.ON_DUP_RAISE`, `featurelifted.ValueDuplicationError`, `featurelifted.KeyAndValueDuplicationError`, `featurelifted.inverted` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: bidict"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_bidict_forward_and_inverse_lookup",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_bidict_inverse_reflects_updates",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_frozenbidict_is_immutable",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_on_dup_raise_value_collision",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_key_and_value_duplication_error",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_ordered_move_to_end",
+        "behavior_ids": [
+          "B004",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_frozenbidict_hash_stable",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_inverted_iterator",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_bidict_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.bidict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.frozenbidict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.OrderedBidict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.OrderedBidict.keys",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_ordered_move_to_end"
+        ]
+      },
+      {
+        "path": "featurelifted.OrderedBidict.move_to_end",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_ordered_move_to_end"
+        ]
+      },
+      {
+        "path": "featurelifted.ON_DUP_RAISE",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ValueDuplicationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.KeyAndValueDuplicationError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.inverted",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "b32e44546f54e0b7a7f09a53cf60ce195d80ffa43a1d02cc4b5c7c9c66138f90",
+  "generated_task_hash": "67fca9806d3d6ba33859f527cd2ebab273e512aac25c14e04e617814a222e211"
+}

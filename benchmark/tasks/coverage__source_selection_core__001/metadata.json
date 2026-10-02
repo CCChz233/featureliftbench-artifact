@@ -1,0 +1,271 @@
+{
+  "task_id": "coverage__source_selection_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "extreme",
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "config_environment_coupling",
+    "resource_coupling",
+    "implicit_dependency_coupling",
+    "multi-module"
+  ],
+  "source": {
+    "name": "coveragepy",
+    "url": "https://github.com/coveragepy/coveragepy",
+    "commit": "f0dcf65f47120d9f74f6777134d3b8e92515ce6f",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Source/include/omit selection",
+    "description": "Extract coverage.py InOrOut logic that decides whether a file should be measured based on source, include, and omit settings.",
+    "source_entrypoints": [
+      "coverage.inorout.InOrOut.check_include_omit_etc",
+      "coverage.inorout.InOrOut.__init__"
+    ],
+    "included_behaviors": [
+      "honor --source directory and package specifications",
+      "apply run include and omit glob patterns after source scoping",
+      "exclude stdlib, third-party, and coverage.py paths when no source is set",
+      "return human-readable skip reasons for rejected files"
+    ],
+    "excluded_behaviors": [
+      "plugin file tracers and dynamic source filenames",
+      "coverage data collection and reporting",
+      "path alias remapping for combine",
+      "configuration file discovery beyond constructing a config object",
+      "original project tests and CLI"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling",
+      "global_state_registry_coupling"
+    ],
+    "description": "File selection combines config values, glob/tree/module matchers, interpreter install paths, and import state across many modules.",
+    "signals": [
+      "InOrOut matcher graph built from config and runtime paths",
+      "source versus include precedence rules",
+      "third-party and stdlib heuristics tied to sys.path"
+    ],
+    "primary": "config_environment_coupling"
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import SourceSelector",
+    "callable": "featurelifted.SourceSelector.skip_reason",
+    "signature": "SourceSelector(...).skip_reason(filename: str, modulename: str | None = None) -> str | None"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "coverage"
+    ],
+    "forbidden_imports": [
+      "coverage"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Source/include/omit selection",
+    "summary": "Extract a task-scoped subset of `coverage` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.SourceSelector",
+        "kind": "class",
+        "signature": "(*, source: 'list[str] | None' = None, source_pkgs: 'list[str] | None' = None, run_include: 'list[str] | None' = None, run_omit: 'list[str] | None' = None, cover_pylib: 'bool' = False) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.SourceSelector.skip_reason",
+            "kind": "method",
+            "signature": "(self, filename: 'str', modulename: 'str | None' = None) -> 'str | None'"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: honor --source directory and package specifications. Required observable cases include source selector honors source tree; source selector honors omit; source selector rejects non utf8 filename."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: apply run include and omit glob patterns after source scoping. Required observable cases include source selector honors omit; source selector package name; source selector include without source; source selector omit wins over include."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: exclude stdlib, third-party, and coverage.py paths when no source is set. Required observable cases include source selector package name; source selector rejects non utf8 filename."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: return human-readable skip reasons for rejected files. Required observable cases include source selector rejects non utf8 filename."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.SourceSelector`, `featurelifted.SourceSelector.skip_reason` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "coverage.inorout.InOrOut.check_include_omit_etc",
+      "coverage.inorout.InOrOut.__init__"
+    ],
+    "exclusions": [
+      "plugin file tracers and dynamic source filenames",
+      "coverage data collection and reporting",
+      "path alias remapping for combine",
+      "configuration file discovery beyond constructing a config object",
+      "original project tests and CLI"
+    ],
+    "forbidden": {
+      "imports": [
+        "coverage"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: coverage."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: honor --source directory and package specifications. Required observable cases include source selector honors source tree; source selector honors omit; source selector rejects non utf8 filename."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: apply run include and omit glob patterns after source scoping. Required observable cases include source selector honors omit; source selector package name; source selector include without source; source selector omit wins over include."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: exclude stdlib, third-party, and coverage.py paths when no source is set. Required observable cases include source selector package name; source selector rejects non utf8 filename."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: return human-readable skip reasons for rejected files. Required observable cases include source selector rejects non utf8 filename."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.SourceSelector`, `featurelifted.SourceSelector.skip_reason` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: coverage"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_source_selector_honors_source_tree",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_source_selector_honors_omit",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_source_selector_package_name",
+        "behavior_ids": [
+          "B002",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_source_selector_include_without_source",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_source_selector_rejects_non_utf8_filename",
+        "behavior_ids": [
+          "B003",
+          "B004",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_source_selector_omit_wins_over_include",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.SourceSelector",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SourceSelector.skip_reason",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_source_selector_include_without_source",
+          "hidden_tests/test_hidden_behavior.py::test_source_selector_omit_wins_over_include",
+          "hidden_tests/test_hidden_behavior.py::test_source_selector_package_name",
+          "hidden_tests/test_hidden_behavior.py::test_source_selector_rejects_non_utf8_filename"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "c52f8784d9d1bcc1b03095c6476173a73d81ebb7c2d863e15601378a3b5582e6",
+  "generated_task_hash": "8a2449cc850b02fbf99952b7cb6077d32eb76a7066b0231fbb9f2eaf0d42513a"
+}

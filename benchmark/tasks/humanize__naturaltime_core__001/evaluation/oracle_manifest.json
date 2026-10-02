@@ -1,0 +1,11 @@
+{
+  "source_package_name": "humanize",
+  "required_source_files": [
+    "humanize/time.py",
+    "humanize/i18n.py",
+    "humanize/number.py",
+    "humanize/_version.py"
+  ],
+  "runtime_dependencies": [],
+  "notes": "Oracle is time+i18n+number core; repo includes filesize/lists/locale for copy-all penalty."
+}

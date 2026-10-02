@@ -1,0 +1,11 @@
+{
+  "source_files": [
+    "coverage/env.py",
+    "coverage/exceptions.py",
+    "coverage/types.py",
+    "coverage/misc.py",
+    "coverage/config.py",
+    "coverage/tomlconfig.py"
+  ],
+  "notes": "Run-section configuration reading and merge closure including INI/TOML parsers and CoverageConfig."
+}

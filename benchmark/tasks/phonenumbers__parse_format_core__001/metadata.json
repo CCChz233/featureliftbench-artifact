@@ -1,0 +1,330 @@
+{
+  "task_id": "phonenumbers__parse_format_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "phonenumbers",
+    "hard-first",
+    "functional-discriminator",
+    "resource_coupling"
+  ],
+  "source": {
+    "name": "phonenumbers",
+    "url": "https://github.com/daviddrysdale/python-phonenumbers",
+    "commit": "9.0.33-installed-snapshot",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "Phone number parse and format",
+    "description": "Extract libphonenumber parse/format for US and GB regions without importing phonenumbers.",
+    "source_entrypoints": [
+      "phonenumbers.parse",
+      "phonenumbers.format_number",
+      "phonenumbers.PhoneNumberFormat",
+      "phonenumbers.is_valid_number",
+      "phonenumbers.phonenumberutil"
+    ],
+    "included_behaviors": [
+      "parse E.164 and national numbers for US and GB",
+      "format NATIONAL, INTERNATIONAL, and E164",
+      "validate numbers against region metadata"
+    ],
+    "excluded_behaviors": [
+      "full global geodata/carrier/timezone datasets",
+      "PhoneNumberMatcher and short-number data",
+      "original phonenumbers import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "resource_coupling",
+      "data_model_coupling",
+      "third_party_dependency_coupling"
+    ],
+    "primary": "resource_coupling",
+    "description": "Parse/format couples PhoneNumber model, metadata tables, and region-specific formatting rules.",
+    "signals": [
+      "region metadata lazy loading for US/GB",
+      "national vs international formatting patterns",
+      "country code inference from E.164 input"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import PhoneNumberFormat, NumberParseException, format_number, is_valid_number, parse; from featurelifted.phonenumberutil import NumberParseException",
+    "callable": "featurelifted.parse",
+    "signature": "parse(number: str, region: str | None = None) -> PhoneNumber"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "phonenumbers"
+    ],
+    "forbidden_imports": [
+      "phonenumbers"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Phone number parse and format",
+    "summary": "Extract a task-scoped subset of `phonenumbers` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.PhoneNumberFormat",
+        "kind": "class",
+        "signature": "()",
+        "members": [
+          {
+            "path": "featurelifted.PhoneNumberFormat.E164",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.PhoneNumberFormat.INTERNATIONAL",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.PhoneNumberFormat.NATIONAL",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.NumberParseException",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.format_number",
+        "kind": "function",
+        "signature": "(numobj, num_format)"
+      },
+      {
+        "path": "featurelifted.is_valid_number",
+        "kind": "function",
+        "signature": "(numobj)"
+      },
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(number, region=None, keep_raw_input=False, numobj=None, _check_region=True)"
+      },
+      {
+        "path": "featurelifted.phonenumberutil",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.phonenumberutil.NumberParseException",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse E.164 and national numbers for US and GB. Required observable cases include parse e164 and format; parse national us; gb national equals e164 parse; is valid and e164 us."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: format NATIONAL, INTERNATIONAL, and E164. Required observable cases include parse e164 and format; is valid and e164 us."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: validate numbers against region metadata. Required observable cases include invalid region raises."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.PhoneNumberFormat`, `featurelifted.PhoneNumberFormat.E164`, `featurelifted.PhoneNumberFormat.INTERNATIONAL`, `featurelifted.PhoneNumberFormat.NATIONAL`, `featurelifted.NumberParseException`, `featurelifted.format_number`, `featurelifted.is_valid_number`, `featurelifted.parse`, `featurelifted.phonenumberutil`, `featurelifted.phonenumberutil.NumberParseException` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "phonenumbers.parse",
+      "phonenumbers.format_number",
+      "phonenumbers.PhoneNumberFormat",
+      "phonenumbers.is_valid_number",
+      "phonenumbers.phonenumberutil"
+    ],
+    "exclusions": [
+      "full global geodata/carrier/timezone datasets",
+      "PhoneNumberMatcher and short-number data",
+      "original phonenumbers import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "phonenumbers"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: phonenumbers."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse E.164 and national numbers for US and GB. Required observable cases include parse e164 and format; parse national us; gb national equals e164 parse; is valid and e164 us."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: format NATIONAL, INTERNATIONAL, and E164. Required observable cases include parse e164 and format; is valid and e164 us."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: validate numbers against region metadata. Required observable cases include invalid region raises."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.PhoneNumberFormat`, `featurelifted.PhoneNumberFormat.E164`, `featurelifted.PhoneNumberFormat.INTERNATIONAL`, `featurelifted.PhoneNumberFormat.NATIONAL`, `featurelifted.NumberParseException`, `featurelifted.format_number`, `featurelifted.is_valid_number`, `featurelifted.parse`, `featurelifted.phonenumberutil`, `featurelifted.phonenumberutil.NumberParseException` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: phonenumbers"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_e164_and_format",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_national_us",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_gb_national_equals_e164_parse",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_invalid_region_raises",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_is_valid_and_e164_us",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.PhoneNumberFormat",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PhoneNumberFormat.E164",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_is_valid_and_e164_us"
+        ]
+      },
+      {
+        "path": "featurelifted.PhoneNumberFormat.INTERNATIONAL",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PhoneNumberFormat.NATIONAL",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.NumberParseException",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.format_number",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.is_valid_number",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.phonenumberutil",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.phonenumberutil.NumberParseException",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "6eab819941c78d29316cb1f52f9f70469ab9d498a3fc4aa64c6790f63bf82fa6",
+  "generated_task_hash": "96592f41e52e84474a799cd9c8e19d2b261b4b4bb4a879edec40680f4e95d6a5"
+}

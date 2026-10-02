@@ -1,0 +1,22 @@
+{
+  "source_package_name": "pytest",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/src/_pytest/mark/structures.py",
+    "repo/src/_pytest/config/__init__.py"
+  ],
+  "target_api": [
+    "featurelifted.MarkerRegistry",
+    "featurelifted.MarkerRegistry.from_ini"
+  ],
+  "forbidden_imports": [
+    "pytest",
+    "_pytest"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "pytest/",
+    "_pytest/"
+  ],
+  "notes": "Marker registry subset without test collection."
+}

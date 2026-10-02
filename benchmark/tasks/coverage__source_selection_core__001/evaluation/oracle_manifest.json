@@ -1,0 +1,14 @@
+{
+  "source_files": [
+    "coverage/env.py",
+    "coverage/exceptions.py",
+    "coverage/types.py",
+    "coverage/misc.py",
+    "coverage/files.py",
+    "coverage/config.py",
+    "coverage/tomlconfig.py",
+    "coverage/disposition.py",
+    "coverage/inorout.py"
+  ],
+  "notes": "InOrOut source/include/omit selection closure with matchers, config defaults, and disposition helpers."
+}

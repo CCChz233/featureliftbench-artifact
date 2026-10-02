@@ -1,0 +1,9 @@
+# Spec-adversarial Hidden-4 screen. Not a Python-200 main-table slice.
+# RQ6 hidden_failure tasks whose Hidden stayed 0 after Public-feedback
+# (Flash-12 pair flash12-deepseek-v4-flash-20260819-220335).
+# Same-day Main control must be re-run; kill if Hidden 0→1 is 0/4.
+
+parse__format_parser_core__001
+pygments__lexer_core__001
+python_decouple__config_repository_core__001
+schema__nested_validate_core__hard3_001

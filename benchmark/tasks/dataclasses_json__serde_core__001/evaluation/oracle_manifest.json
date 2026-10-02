@@ -1,0 +1,14 @@
+{
+  "source_package_name": "dataclasses_json",
+  "required_source_files": [
+    "dataclasses_json/__init__.py",
+    "dataclasses_json/__version__.py",
+    "dataclasses_json/api.py",
+    "dataclasses_json/core.py",
+    "dataclasses_json/cfg.py",
+    "dataclasses_json/utils.py",
+    "dataclasses_json/stringcase.py",
+    "dataclasses_json/undefined.py"
+  ],
+  "notes": "Oracle copies serde core without mm.py marshmallow schema generation. Copy-all baseline includes the full dataclasses_json package and upstream tests tree."
+}

@@ -1,0 +1,17 @@
+{
+  "source_files": [
+    "sqlparse/__init__.py",
+    "sqlparse/exceptions.py",
+    "sqlparse/keywords.py",
+    "sqlparse/lexer.py",
+    "sqlparse/sql.py",
+    "sqlparse/tokens.py",
+    "sqlparse/utils.py",
+    "sqlparse/engine/__init__.py",
+    "sqlparse/engine/grouping.py",
+    "sqlparse/engine/statement_splitter.py",
+    "sqlparse/engine/filter_stack.py",
+    "sqlparse/filters/others.py"
+  ],
+  "notes": "Parse and split closure only. Formatter filters, CLI, tests, docs, and packaging metadata are excluded."
+}

@@ -1,0 +1,373 @@
+{
+  "task_id": "rfc3986__uri_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "rfc3986",
+    "uri",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "rfc3986",
+    "url": "https://github.com/python-hyper/rfc3986",
+    "commit": "2.0.0-installed-snapshot",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "RFC3986 URI parse, build, and validate subset",
+    "description": "Extract rfc3986 URIReference parsing, normalization, and URIBuilder without importing rfc3986.",
+    "source_entrypoints": [
+      "rfc3986.uri_reference",
+      "rfc3986.normalize_uri",
+      "rfc3986.is_valid_uri",
+      "rfc3986.builder.URIBuilder"
+    ],
+    "included_behaviors": [
+      "parse URI components and authority subcomponents",
+      "normalize scheme/host/path",
+      "URIBuilder compose and finalize",
+      "is_valid_uri convenience check"
+    ],
+    "excluded_behaviors": [
+      "IRI full unicode normalization",
+      "validators beyond basic is_valid_uri",
+      "original rfc3986 import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "URI parsing couples ABNF regex groups, namedtuple URIReference, normalizers, and builder mutation.",
+    "signals": [
+      "authority splits userinfo/host/port",
+      "normalize_uri lowercases scheme/host",
+      "URIBuilder finalize rebuilds components",
+      "ParseResult urlparse compatibility"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import URIBuilder, URIReference, is_valid_uri, normalize_uri, uri_reference",
+    "callable": "featurelifted.uri_reference",
+    "signature": "uri_reference(uri, encoding='utf-8') -> URIReference"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "rfc3986"
+    ],
+    "forbidden_imports": [
+      "rfc3986"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "RFC3986 URI parse, build, and validate subset",
+    "summary": "Extract a task-scoped subset of `rfc3986` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.URIBuilder",
+        "kind": "class",
+        "signature": "(scheme=None, userinfo=None, host=None, port=None, path=None, query=None, fragment=None)",
+        "members": [
+          {
+            "path": "featurelifted.URIBuilder.from_uri",
+            "kind": "method",
+            "signature": "(reference)"
+          },
+          {
+            "path": "featurelifted.URIBuilder.add_scheme",
+            "kind": "method",
+            "signature": "(self, scheme)"
+          },
+          {
+            "path": "featurelifted.URIBuilder.add_host",
+            "kind": "method",
+            "signature": "(self, host)"
+          },
+          {
+            "path": "featurelifted.URIBuilder.add_path",
+            "kind": "method",
+            "signature": "(self, path)"
+          },
+          {
+            "path": "featurelifted.URIBuilder.finalize",
+            "kind": "method",
+            "signature": "(self)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.URIReference",
+        "kind": "class",
+        "signature": "(scheme, authority, path, query, fragment, encoding='utf-8')"
+      },
+      {
+        "path": "featurelifted.is_valid_uri",
+        "kind": "function",
+        "signature": "(uri, encoding='utf-8', **kwargs)"
+      },
+      {
+        "path": "featurelifted.normalize_uri",
+        "kind": "function",
+        "signature": "(uri, encoding='utf-8')"
+      },
+      {
+        "path": "featurelifted.uri_reference",
+        "kind": "function",
+        "signature": "(uri, encoding='utf-8')"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse URI components and authority subcomponents. Required observable cases include uri reference components; authority userinfo host port; builder from uri roundtrip."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: normalize scheme/host/path. Required observable cases include authority userinfo host port; normalize uri path dots; uri reference ipv6 host; normalize preserves fragment."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: URIBuilder compose and finalize. Required observable cases include uri builder finalize; uri reference ipv6 host."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: is_valid_uri convenience check. Required observable cases include is valid uri https; builder from uri roundtrip; uri reference ipv6 host."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.URIBuilder`, `featurelifted.URIBuilder.from_uri`, `featurelifted.URIBuilder.add_scheme`, `featurelifted.URIBuilder.add_host`, `featurelifted.URIBuilder.add_path`, `featurelifted.URIBuilder.finalize`, `featurelifted.URIReference`, `featurelifted.is_valid_uri`, `featurelifted.normalize_uri`, `featurelifted.uri_reference` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "rfc3986.uri_reference",
+      "rfc3986.normalize_uri",
+      "rfc3986.is_valid_uri",
+      "rfc3986.builder.URIBuilder"
+    ],
+    "exclusions": [
+      "IRI full unicode normalization",
+      "validators beyond basic is_valid_uri",
+      "original rfc3986 import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "rfc3986"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: rfc3986."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse URI components and authority subcomponents. Required observable cases include uri reference components; authority userinfo host port; builder from uri roundtrip."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: normalize scheme/host/path. Required observable cases include authority userinfo host port; normalize uri path dots; uri reference ipv6 host; normalize preserves fragment."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: URIBuilder compose and finalize. Required observable cases include uri builder finalize; uri reference ipv6 host."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: is_valid_uri convenience check. Required observable cases include is valid uri https; builder from uri roundtrip; uri reference ipv6 host."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.URIBuilder`, `featurelifted.URIBuilder.from_uri`, `featurelifted.URIBuilder.add_scheme`, `featurelifted.URIBuilder.add_host`, `featurelifted.URIBuilder.add_path`, `featurelifted.URIBuilder.finalize`, `featurelifted.URIReference`, `featurelifted.is_valid_uri`, `featurelifted.normalize_uri`, `featurelifted.uri_reference` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: rfc3986"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_uri_reference_components",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_is_valid_uri_https",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_uri_builder_finalize",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_authority_userinfo_host_port",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_normalize_uri_path_dots",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_builder_from_uri_roundtrip",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_uri_reference_ipv6_host",
+        "behavior_ids": [
+          "B002",
+          "B004",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_normalize_preserves_fragment",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_rfc3986_import_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.URIBuilder",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.URIBuilder.from_uri",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_builder_from_uri_roundtrip"
+        ]
+      },
+      {
+        "path": "featurelifted.URIBuilder.add_scheme",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.URIBuilder.add_host",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.URIBuilder.add_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.URIBuilder.finalize",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.URIReference",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.is_valid_uri",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.normalize_uri",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.uri_reference",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "51766962ff221f1595eacd23c8130d7258618ae11bb0b53a3ef622d3e1463acc",
+  "generated_task_hash": "f758d9e9e718de29e6451e6c14d1e085fe98156f8834dde0048dc4df0731b8d1"
+}

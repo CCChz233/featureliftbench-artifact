@@ -1,0 +1,11 @@
+{
+  "source_package_name": "voluptuous",
+  "required_source_files": [
+    "voluptuous/__init__.py",
+    "voluptuous/error.py",
+    "voluptuous/schema_builder.py",
+    "voluptuous/util.py",
+    "voluptuous/validators.py"
+  ],
+  "notes": "Oracle omits humanize.py and trims validators to Coerce/All/Any/In; excludes Email/Url/File validators."
+}

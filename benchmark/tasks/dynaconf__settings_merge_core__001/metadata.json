@@ -1,0 +1,329 @@
+{
+  "task_id": "dynaconf__settings_merge_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "dynaconf",
+    "hard-first",
+    "functional-discriminator",
+    "config_environment_coupling"
+  ],
+  "source": {
+    "name": "dynaconf",
+    "url": "https://github.com/dynaconf/dynaconf",
+    "commit": "3.3.1-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "Layered settings merge",
+    "description": "Extract Dynaconf object_merge and LazySettings layered TOML/env merge without importing dynaconf.",
+    "source_entrypoints": [
+      "dynaconf.utils.object_merge",
+      "dynaconf.Dynaconf",
+      "dynaconf.base.LazySettings",
+      "dynaconf.loaders.settings_loader",
+      "dynaconf.loaders.env_loader"
+    ],
+    "included_behaviors": [
+      "recursive object_merge with list_merge shallow/deep/merge modes",
+      "Dynaconf loads layered TOML settings files with environment sections",
+      "envvar_prefix overrides nested keys with precedence over file values",
+      "merge_enabled combines multiple settings files"
+    ],
+    "excluded_behaviors": [
+      "Flask/Django extensions and CLI",
+      "vault/redis external loaders",
+      "typed settings subsystem and validators beyond merge",
+      "original dynaconf import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "config_environment_coupling",
+      "data_model_coupling",
+      "framework_coupling"
+    ],
+    "primary": "config_environment_coupling",
+    "description": "Settings merge couples nested dict trees, list_merge policies, TOML loaders, and env override precedence.",
+    "signals": [
+      "object_merge list_merge shallow/deep/full_path semantics",
+      "Dynaconf layered environments and envvar_prefix",
+      "settings_loader merges multiple TOML files"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import Dynaconf, object_merge; from featurelifted.utils import object_merge as merge_util",
+    "callable": "featurelifted.utils.object_merge",
+    "signature": "object_merge(old, new, unique=False, full_path=None, list_merge='merge')"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "dynaconf"
+    ],
+    "forbidden_imports": [
+      "dynaconf"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "Layered settings merge",
+    "summary": "Extract a task-scoped subset of `dynaconf` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Dynaconf",
+        "kind": "class",
+        "signature": "(wrapped=None, **kwargs)",
+        "members": [
+          {
+            "path": "featurelifted.Dynaconf.BAR",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Dynaconf.FOO",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Dynaconf.HOST",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Dynaconf.LIST",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Dynaconf.PORT",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Dynaconf.setenv",
+            "kind": "method",
+            "signature": "(env=None, clean=True, silent=True, filename=None)",
+            "runtime_bound": true
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.object_merge",
+        "kind": "function",
+        "signature": "(old: 'Any', new: 'Any', unique: 'bool' = False, full_path: 'Optional[list[str]]' = None, list_merge: 'ListMergeOptions' = 'merge') -> 'Any'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: recursive object_merge with list_merge shallow/deep/merge modes. Required observable cases include object merge nested dict; object merge list shallow; object merge list deep path."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: Dynaconf loads layered TOML settings files with environment sections. Required observable cases include dynaconf toml and env override; layered toml environments; merge multiple settings files."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: envvar_prefix overrides nested keys with precedence over file values. Required observable cases include object merge list shallow."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: merge_enabled combines multiple settings files. Required observable cases include merge multiple settings files."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.Dynaconf`, `featurelifted.Dynaconf.BAR`, `featurelifted.Dynaconf.FOO`, `featurelifted.Dynaconf.HOST`, `featurelifted.Dynaconf.LIST`, `featurelifted.Dynaconf.PORT`, `featurelifted.Dynaconf.setenv`, `featurelifted.object_merge` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "dynaconf.utils.object_merge",
+      "dynaconf.Dynaconf",
+      "dynaconf.base.LazySettings",
+      "dynaconf.loaders.settings_loader",
+      "dynaconf.loaders.env_loader"
+    ],
+    "exclusions": [
+      "Flask/Django extensions and CLI",
+      "vault/redis external loaders",
+      "typed settings subsystem and validators beyond merge",
+      "original dynaconf import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "dynaconf"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: dynaconf."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: recursive object_merge with list_merge shallow/deep/merge modes. Required observable cases include object merge nested dict; object merge list shallow; object merge list deep path."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Dynaconf loads layered TOML settings files with environment sections. Required observable cases include dynaconf toml and env override; layered toml environments; merge multiple settings files."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: envvar_prefix overrides nested keys with precedence over file values. Required observable cases include object merge list shallow."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: merge_enabled combines multiple settings files. Required observable cases include merge multiple settings files."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Dynaconf`, `featurelifted.Dynaconf.BAR`, `featurelifted.Dynaconf.FOO`, `featurelifted.Dynaconf.HOST`, `featurelifted.Dynaconf.LIST`, `featurelifted.Dynaconf.PORT`, `featurelifted.Dynaconf.setenv`, `featurelifted.object_merge` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: dynaconf"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_object_merge_nested_dict",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dynaconf_toml_and_env_override",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_object_merge_list_shallow",
+        "behavior_ids": [
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_object_merge_list_deep_path",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_layered_toml_environments",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_merge_multiple_settings_files",
+        "behavior_ids": [
+          "B002",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Dynaconf",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Dynaconf.BAR",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_merge_multiple_settings_files"
+        ]
+      },
+      {
+        "path": "featurelifted.Dynaconf.FOO",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_merge_multiple_settings_files"
+        ]
+      },
+      {
+        "path": "featurelifted.Dynaconf.HOST",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_layered_toml_environments"
+        ]
+      },
+      {
+        "path": "featurelifted.Dynaconf.LIST",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_merge_multiple_settings_files"
+        ]
+      },
+      {
+        "path": "featurelifted.Dynaconf.PORT",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_layered_toml_environments"
+        ]
+      },
+      {
+        "path": "featurelifted.Dynaconf.setenv",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_layered_toml_environments",
+          "hidden_tests/test_hidden_behavior.py::test_merge_multiple_settings_files"
+        ]
+      },
+      {
+        "path": "featurelifted.object_merge",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 2,
+  "spec_hash": "38abd81cb37c43aacb3b7101b279da6b55db37f5fe6a7df068df97e9064c9efa",
+  "generated_task_hash": "9c16dcd989540fa5436640806ca94107a355bcdd052ed267559daafca5bdb349"
+}

@@ -1,0 +1,31 @@
+{
+  "suite_id": "python200-full-repository-no-hint-20260801-v1",
+  "task_count": 200,
+  "shard_size": 50,
+  "shards": [
+    {
+      "index": 0,
+      "port": 8030,
+      "profile": "openhands_qwen3_6_35b_a3b_fp8_v1_p8030",
+      "task_list": "harness/config/experiments/python200_v1_shards/shard0_p8030.txt"
+    },
+    {
+      "index": 1,
+      "port": 8031,
+      "profile": "openhands_qwen3_6_35b_a3b_fp8_v1_p8031",
+      "task_list": "harness/config/experiments/python200_v1_shards/shard1_p8031.txt"
+    },
+    {
+      "index": 2,
+      "port": 8032,
+      "profile": "openhands_qwen3_6_35b_a3b_fp8_v1_p8032",
+      "task_list": "harness/config/experiments/python200_v1_shards/shard2_p8032.txt"
+    },
+    {
+      "index": 3,
+      "port": 8033,
+      "profile": "openhands_qwen3_6_35b_a3b_fp8_v1_p8033",
+      "task_list": "harness/config/experiments/python200_v1_shards/shard3_p8033.txt"
+    }
+  ]
+}

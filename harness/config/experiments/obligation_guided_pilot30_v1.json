@@ -1,0 +1,268 @@
+{
+  "cause_counts": {
+    "behavior_drift": 24,
+    "contract_api_completion": 5,
+    "packaging_modularization": 1
+  },
+  "n_hidden": 15,
+  "n_public": 15,
+  "pool_eligible": 62,
+  "pool_hidden": 15,
+  "pool_model": "flash",
+  "pool_public": 19,
+  "pool_scoped": 34,
+  "pool_unique_tasks": 34,
+  "rows": [
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "contract_api_completion",
+      "task_id": "aiohttp__url_params_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "packaging_modularization",
+      "task_id": "bleach__sanitize_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "contract_api_completion",
+      "task_id": "dateutil__zone_resolver_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "glom__spec_eval_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "contract_api_completion",
+      "task_id": "installer__wheel_record_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "jupyter_server__extension_config_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "license_expression__policy_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "pydantic__field_validator_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "pygments__lexer_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "pytest__marker_registry_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "python_decouple__config_repository_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "requests_cache__cache_key_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "responses__request_matcher_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "starlette__route_matching_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "hidden",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "tenacity__retry_state_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "alembic__revision_map_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "build__pyproject_backend_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "celery__signal_dispatch_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "decorator__signature_preserving_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "filelock__reentrant_lock_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "flask__route_dispatch_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "jupyter_core__paths_resolver_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "keyring__backend_select_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "multidict__multidict_mutation_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "parsel__selector_namespace_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "contract_api_completion",
+      "task_id": "pendulum__parse_format_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "platformdirs__app_dirs_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "poetry_core__dependency_groups_core__hard3_001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "contract_api_completion",
+      "task_id": "python_dateutil__relativedelta_core__001"
+    },
+    {
+      "evidence_eligibility": "valid_agent_evidence",
+      "first_failure_stage": "public",
+      "model": "deepseek-v4-flash",
+      "root_cause_primary": "behavior_drift",
+      "task_id": "tox__factor_expression_core__hard3_001"
+    }
+  ],
+  "schema_version": "featureliftbench.obligation_guided_pilot30.v1",
+  "seed": "obligation-guided-pilot30-v1",
+  "sources": [
+    "reports/paper_analysis/python150_prime_v2_analysis_20260905/failure_root_cause_annotations.csv"
+  ],
+  "stop_rule": {
+    "expand_if_functional_rescue_ge_8_and_drift_rescues": true,
+    "kill_if_functional_rescue_le_3": true
+  },
+  "task_ids": [
+    "aiohttp__url_params_core__hard3_001",
+    "bleach__sanitize_core__001",
+    "dateutil__zone_resolver_core__hard3_001",
+    "glom__spec_eval_core__hard3_001",
+    "installer__wheel_record_core__hard3_001",
+    "jupyter_server__extension_config_core__hard3_001",
+    "license_expression__policy_core__hard3_001",
+    "pydantic__field_validator_core__hard3_001",
+    "pygments__lexer_core__001",
+    "pytest__marker_registry_core__hard3_001",
+    "python_decouple__config_repository_core__001",
+    "requests_cache__cache_key_core__hard3_001",
+    "responses__request_matcher_core__hard3_001",
+    "starlette__route_matching_core__hard3_001",
+    "tenacity__retry_state_core__hard3_001",
+    "alembic__revision_map_core__hard3_001",
+    "build__pyproject_backend_core__hard3_001",
+    "celery__signal_dispatch_core__hard3_001",
+    "decorator__signature_preserving_core__001",
+    "filelock__reentrant_lock_core__001",
+    "flask__route_dispatch_core__001",
+    "jupyter_core__paths_resolver_core__hard3_001",
+    "keyring__backend_select_core__hard3_001",
+    "multidict__multidict_mutation_core__hard3_001",
+    "parsel__selector_namespace_core__hard3_001",
+    "pendulum__parse_format_core__001",
+    "platformdirs__app_dirs_core__hard3_001",
+    "poetry_core__dependency_groups_core__hard3_001",
+    "python_dateutil__relativedelta_core__001",
+    "tox__factor_expression_core__hard3_001"
+  ]
+}

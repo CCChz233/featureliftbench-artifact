@@ -1,0 +1,29 @@
+{
+  "source_package_name": "stevedore",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/stevedore/__init__.py",
+    "repo/stevedore/extension.py",
+    "repo/stevedore/named.py",
+    "repo/stevedore/exception.py",
+    "repo/stevedore/_cache.py"
+  ],
+  "target_api": [
+    "featurelifted.EntryPointSpec",
+    "featurelifted.Extension",
+    "featurelifted.ExtensionManager",
+    "featurelifted.NamedExtensionManager",
+    "featurelifted.ignore_conflicts",
+    "featurelifted.error_on_conflict",
+    "featurelifted.NoMatches",
+    "featurelifted.MultipleMatches"
+  ],
+  "forbidden_imports": [
+    "stevedore"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "stevedore/"
+  ],
+  "notes": "Task-scoped extension manager extraction. Driver, dispatch, hook, Sphinx, and examples are intentionally excluded."
+}

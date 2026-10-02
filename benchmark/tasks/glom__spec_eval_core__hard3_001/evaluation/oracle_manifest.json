@@ -1,0 +1,22 @@
+{
+  "source_package_name": "glom",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/glom/core.py",
+    "repo/glom/__init__.py"
+  ],
+  "target_api": [
+    "featurelifted.glom",
+    "featurelifted.T",
+    "featurelifted.Coalesce",
+    "featurelifted.PathAccessError"
+  ],
+  "forbidden_imports": [
+    "glom"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "glom/"
+  ],
+  "notes": "Bounded glom interpreter subset."
+}

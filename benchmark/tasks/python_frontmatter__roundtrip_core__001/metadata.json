@@ -1,0 +1,450 @@
+{
+  "task_id": "python_frontmatter__roundtrip_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "python-frontmatter",
+    "markdown",
+    "yaml",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "python-frontmatter",
+    "url": "https://github.com/eyeseast/python-frontmatter",
+    "commit": "dc7c0af5466b104e0ba01ae3c5b2cd77edc27292",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "YAML front matter round-trip",
+    "description": "Extract parse/load/dump of markdown with YAML front matter, preserving body text and metadata across round-trip without importing frontmatter.",
+    "source_entrypoints": [
+      "frontmatter.parse",
+      "frontmatter.load",
+      "frontmatter.loads",
+      "frontmatter.dump",
+      "frontmatter.dumps",
+      "frontmatter.checks",
+      "frontmatter.Post",
+      "frontmatter.default_handlers.YAMLHandler"
+    ],
+    "included_behaviors": [
+      "parse and loads YAML front matter delimited by --- lines",
+      "dump and dumps serialize Post metadata and markdown body",
+      "detect delimiter lines with optional trailing whitespace",
+      "normalize CRLF input and merge parse defaults",
+      "Post dict-like metadata access and to_dict export"
+    ],
+    "excluded_behaviors": [
+      "TOML and JSON handler round-trips",
+      "CLI, Sphinx docs, examples, and upstream test suite",
+      "original frontmatter import at runtime",
+      "pyaml pretty-dump integration"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "config_environment_coupling",
+      "third_party_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Front matter parsing couples handler boundary regexes, YAML load/export, unicode normalization, and Post metadata/content coupling.",
+    "signals": [
+      "YAMLHandler detect/split/load/export pipeline",
+      "util.u CRLF and bytes decoding",
+      "parse merges defaults before handler metadata",
+      "dumps respects handler and custom delimiters"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import Post, parse, load, loads, dump, dumps, checks",
+    "callable": "featurelifted.loads",
+    "signature": "loads(text, encoding='utf-8', handler=None, **defaults) -> Post"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "PyYAML"
+    ],
+    "forbidden_dependencies": [
+      "python-frontmatter",
+      "frontmatter"
+    ],
+    "forbidden_imports": [
+      "frontmatter"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "YAML front matter round-trip",
+    "summary": "Extract a task-scoped subset of `frontmatter` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Post",
+        "kind": "class",
+        "signature": "(content: 'str', handler: 'BaseHandler | None' = None, **metadata: 'object') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.Post.content",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Post.metadata",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Post.to_dict",
+            "kind": "method",
+            "signature": "(self) -> 'dict[str, object]'"
+          },
+          {
+            "path": "featurelifted.Post.__getitem__",
+            "kind": "method",
+            "signature": "(self, name: 'str') -> 'object'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.parse",
+        "kind": "function",
+        "signature": "(text: 'str', encoding: 'str' = 'utf-8', handler: 'BaseHandler | None' = None, **defaults: 'object') -> 'tuple[dict[str, object], str]'"
+      },
+      {
+        "path": "featurelifted.load",
+        "kind": "function",
+        "signature": "(fd: 'str | io.IOBase | pathlib.Path', encoding: 'str' = 'utf-8', handler: 'BaseHandler | None' = None, **defaults: 'object') -> 'Post'"
+      },
+      {
+        "path": "featurelifted.loads",
+        "kind": "function",
+        "signature": "(text: 'str', encoding: 'str' = 'utf-8', handler: 'BaseHandler | None' = None, **defaults: 'object') -> 'Post'"
+      },
+      {
+        "path": "featurelifted.dump",
+        "kind": "function",
+        "signature": "(post: 'Post', fd: 'str | PathLike[str] | TextIO', encoding: 'str' = 'utf-8', handler: 'BaseHandler | None' = None, **kwargs: 'object') -> 'None'"
+      },
+      {
+        "path": "featurelifted.dumps",
+        "kind": "function",
+        "signature": "(post: 'Post', handler: 'BaseHandler | None' = None, **kwargs: 'object') -> 'str'"
+      },
+      {
+        "path": "featurelifted.checks",
+        "kind": "function",
+        "signature": "(text: 'str', encoding: 'str' = 'utf-8') -> 'bool'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse and loads YAML front matter delimited by --- lines. Required observable cases include loads yaml frontmatter; parse returns metadata and content; empty frontmatter block."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: dump and dumps serialize Post metadata and markdown body. Required observable cases include dumps roundtrip metadata and body; no frontmatter returns empty metadata; unicode metadata roundtrip; custom dump delimiters."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: detect delimiter lines with optional trailing whitespace. Required observable cases include extra space after opening delimiter; checks detects frontmatter."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: normalize CRLF input and merge parse defaults. Required observable cases include parse returns metadata and content; crlf bytes normalize; parse defaults merge."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: Post dict-like metadata access and to_dict export. Required observable cases include no frontmatter returns empty metadata; unicode metadata roundtrip; post to dict."
+      },
+      {
+        "id": "B006",
+        "text": "The package exposes the required task API paths `featurelifted.Post`, `featurelifted.Post.content`, `featurelifted.Post.metadata`, `featurelifted.Post.to_dict`, `featurelifted.Post.__getitem__`, `featurelifted.parse`, `featurelifted.load`, `featurelifted.loads`, `featurelifted.dump`, `featurelifted.dumps`, `featurelifted.checks` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "frontmatter.parse",
+      "frontmatter.load",
+      "frontmatter.loads",
+      "frontmatter.dump",
+      "frontmatter.dumps",
+      "frontmatter.checks",
+      "frontmatter.Post",
+      "frontmatter.default_handlers.YAMLHandler"
+    ],
+    "exclusions": [
+      "TOML and JSON handler round-trips",
+      "CLI, Sphinx docs, examples, and upstream test suite",
+      "original frontmatter import at runtime",
+      "pyaml pretty-dump integration"
+    ],
+    "forbidden": {
+      "imports": [
+        "frontmatter"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B007",
+      "text": "the submitted package does not import forbidden upstream packages: frontmatter."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse and loads YAML front matter delimited by --- lines. Required observable cases include loads yaml frontmatter; parse returns metadata and content; empty frontmatter block."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: dump and dumps serialize Post metadata and markdown body. Required observable cases include dumps roundtrip metadata and body; no frontmatter returns empty metadata; unicode metadata roundtrip; custom dump delimiters."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: detect delimiter lines with optional trailing whitespace. Required observable cases include extra space after opening delimiter; checks detects frontmatter."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: normalize CRLF input and merge parse defaults. Required observable cases include parse returns metadata and content; crlf bytes normalize; parse defaults merge."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: Post dict-like metadata access and to_dict export. Required observable cases include no frontmatter returns empty metadata; unicode metadata roundtrip; post to dict."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Post`, `featurelifted.Post.content`, `featurelifted.Post.metadata`, `featurelifted.Post.to_dict`, `featurelifted.Post.__getitem__`, `featurelifted.parse`, `featurelifted.load`, `featurelifted.loads`, `featurelifted.dump`, `featurelifted.dumps`, `featurelifted.checks` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: frontmatter"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_loads_yaml_frontmatter",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_dumps_roundtrip_metadata_and_body",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_parse_returns_metadata_and_content",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_extra_space_after_opening_delimiter",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_crlf_bytes_normalize",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_frontmatter_returns_empty_metadata",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_empty_frontmatter_block",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_unicode_metadata_roundtrip",
+        "behavior_ids": [
+          "B002",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_parse_defaults_merge",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_post_to_dict",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_checks_detects_frontmatter",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_custom_dump_delimiters",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_no_frontmatter_import_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Post",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Post.content",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_crlf_bytes_normalize",
+          "hidden_tests/test_hidden_behavior.py::test_empty_frontmatter_block",
+          "hidden_tests/test_hidden_behavior.py::test_extra_space_after_opening_delimiter",
+          "hidden_tests/test_hidden_behavior.py::test_no_frontmatter_returns_empty_metadata",
+          "hidden_tests/test_hidden_behavior.py::test_unicode_metadata_roundtrip"
+        ]
+      },
+      {
+        "path": "featurelifted.Post.metadata",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_empty_frontmatter_block",
+          "hidden_tests/test_hidden_behavior.py::test_no_frontmatter_returns_empty_metadata"
+        ]
+      },
+      {
+        "path": "featurelifted.Post.to_dict",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_post_to_dict"
+        ]
+      },
+      {
+        "path": "featurelifted.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.load",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.loads",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.dump",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.dumps",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.checks",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Post.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_checks_detects_frontmatter",
+          "hidden_tests/test_hidden_behavior.py::test_crlf_bytes_normalize",
+          "hidden_tests/test_hidden_behavior.py::test_custom_dump_delimiters",
+          "hidden_tests/test_hidden_behavior.py::test_empty_frontmatter_block",
+          "hidden_tests/test_hidden_behavior.py::test_extra_space_after_opening_delimiter",
+          "hidden_tests/test_hidden_behavior.py::test_no_frontmatter_import_surface",
+          "hidden_tests/test_hidden_behavior.py::test_no_frontmatter_returns_empty_metadata",
+          "hidden_tests/test_hidden_behavior.py::test_parse_defaults_merge",
+          "hidden_tests/test_hidden_behavior.py::test_post_to_dict",
+          "hidden_tests/test_hidden_behavior.py::test_unicode_metadata_roundtrip",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "fcae5ca1631d2c144d24acb44b5578bb4590d5296317dd20430289799f7f89b4",
+  "generated_task_hash": "84c1bc9abfc339fb6ce69db96f8aa2ab8f96b7424dfe2b6d154a892ab3ca5f1f"
+}

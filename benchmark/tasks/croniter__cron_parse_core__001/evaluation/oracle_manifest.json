@@ -1,0 +1,11 @@
+{
+  "source_package_name": "croniter",
+  "required_source_files": [
+    "croniter/__init__.py",
+    "croniter/croniter.py"
+  ],
+  "runtime_dependencies": [
+    "python-dateutil"
+  ],
+  "notes": "Oracle splits croniter.py into constants/errors/utils/iterator modules; omits croniter_range, HashExpander, and match_range."
+}

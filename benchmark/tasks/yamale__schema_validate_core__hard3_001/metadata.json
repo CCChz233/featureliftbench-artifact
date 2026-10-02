@@ -1,0 +1,274 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Schema parser, validators, include rules, and error reporting require transitive closure.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "include recursion via additional schema documents",
+      "list and map validators",
+      "strict mode rejects unexpected keys",
+      "bool coercion in non-strict mode"
+    ],
+    "types": [
+      "data_model_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [
+      "PyYAML"
+    ],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "yamale"
+    ],
+    "forbidden_imports": [
+      "yamale"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "yamale/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped yaml schema rule validation core into featurelifted.",
+    "excluded_behaviors": [
+      "network access",
+      "CLI",
+      "filesystem loading"
+    ],
+    "included_behaviors": [
+      "in-memory YAML schema parsing",
+      "map/list validators",
+      "include documents",
+      "strict validation"
+    ],
+    "name": "YAML schema rule validation core",
+    "source_entrypoints": [
+      "yamale.make_schema",
+      "yamale.validate"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "validate",
+    "import": "from featurelifted import make_schema, validate, ValidationResult, YamaleError",
+    "package": "featurelifted",
+    "signature": "validate(schema, data, strict=True, _raise_error=True)"
+  },
+  "source": {
+    "commit": "c203d14bface6f35693874a8e4ee39079bcb9094",
+    "license": "Apache-2.0",
+    "name": "yamale",
+    "url": "https://github.com/23andMe/Yamale.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "rule / policy engine",
+    "data_model_coupling"
+  ],
+  "task_id": "yamale__schema_validate_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "YAML schema rule validation core",
+    "summary": "Extract a task-scoped subset of `yamale` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.make_schema",
+        "kind": "function",
+        "signature": "(content: 'str', name: 'str' = 'schema') -> 'Schema'"
+      },
+      {
+        "path": "featurelifted.validate",
+        "kind": "function",
+        "signature": "(schema: 'Schema', data: 'list[tuple[dict, str]]', strict: 'bool' = True, _raise_error: 'bool' = True)"
+      },
+      {
+        "path": "featurelifted.ValidationResult",
+        "kind": "class",
+        "signature": "(data_name: 'str', schema_name: 'str', errors: 'list[str]' = <factory>) -> None"
+      },
+      {
+        "path": "featurelifted.YamaleError",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "`make_schema` parses one or more YAML documents; later documents provide `include` targets."
+      },
+      {
+        "id": "B002",
+        "text": "Validate maps, lists, primitive types, optional fields, and included schemas."
+      },
+      {
+        "id": "B003",
+        "text": "`strict=True` rejects unexpected keys; non-strict bool validation may accept common string/int aliases."
+      },
+      {
+        "id": "B004",
+        "text": "`validate` returns `ValidationResult` objects and raises `YamaleError` when invalid and `_raise_error=True`."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.make_schema`, `featurelifted.validate`, `featurelifted.ValidationResult`, `featurelifted.YamaleError` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "yamale.make_schema",
+      "yamale.validate"
+    ],
+    "exclusions": [
+      "network access",
+      "CLI",
+      "filesystem loading"
+    ],
+    "forbidden": {
+      "imports": [
+        "yamale"
+      ],
+      "paths": [
+        "repo/",
+        "yamale/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: yamale."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "`make_schema` parses one or more YAML documents; later documents provide `include` targets."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Validate maps, lists, primitive types, optional fields, and included schemas."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "`strict=True` rejects unexpected keys; non-strict bool validation may accept common string/int aliases."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "`validate` returns `ValidationResult` objects and raises `YamaleError` when invalid and `_raise_error=True`."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.make_schema`, `featurelifted.validate`, `featurelifted.ValidationResult`, `featurelifted.YamaleError` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: yamale"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_basic_schema_validation",
+        "behavior_ids": [
+          "B001",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_strict_mode_rejects_extra_keys",
+        "behavior_ids": [
+          "B004",
+          "B001",
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_include_and_list_validator",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_bool_non_strict_coercion",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.make_schema",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.validate",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ValidationResult",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.YamaleError",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "fd728eb934a36f17faa2e2f554dd79ddbaddfc01ead4f6fd5c3842e02436acba",
+  "generated_task_hash": "38fa19d7313f36d4bf5b9472c6f2c57f6cc87a10dbac9fd4c4bc2cd2e45a0691"
+}

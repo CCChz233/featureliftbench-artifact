@@ -1,0 +1,421 @@
+{
+  "task_id": "yarl__url_model_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "yarl",
+    "url-model",
+    "functional-discriminator",
+    "no-network",
+    "parser_state_coupling",
+    "data_model_coupling"
+  ],
+  "source": {
+    "name": "yarl",
+    "url": "https://github.com/aio-libs/yarl",
+    "commit": "b0d27e478c543c28045296311a821f924729150f",
+    "license": "Apache-2.0"
+  },
+  "feature": {
+    "name": "URL parse, join, query, and path model",
+    "description": "Extract yarl.URL immutable URL data model with RFC 3986 parsing, relative join, query MultiDict semantics, path normalization, and IDNA host handling without aiohttp or network I/O.",
+    "source_entrypoints": [
+      "yarl.URL",
+      "yarl._parse.split_url",
+      "yarl._path.normalize_path",
+      "yarl._query.get_str_query",
+      "yarl._quoters.QUOTER",
+      "yarl._url.URL.join",
+      "yarl._url.URL.with_query",
+      "yarl._url.URL.update_query",
+      "yarl._url.URL.joinpath"
+    ],
+    "included_behaviors": [
+      "parse and construct URL objects with scheme, host, port, path, query, fragment",
+      "join absolute and relative URLs preserving query and fragment rules",
+      "MultiDict query with duplicate keys, ordering, and semicolon-in-value handling",
+      "path normalization for dot and dot-dot segments",
+      "IDNA host encoding and decoding; default port omission in string form",
+      "with_query, update_query, and joinpath helpers"
+    ],
+    "excluded_behaviors": [
+      "aiohttp, network I/O, HTTP client/server integration",
+      "Cython _quoting_c extension build (pure-Python quoting fallback only)",
+      "upstream test suite, docs, CI, and packaging metadata at runtime",
+      "original yarl package import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "data_model_coupling",
+      "third_party_dependency_coupling",
+      "implicit_dependency_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "URL behavior couples split/join parsing, percent-encoding quoters, MultiDict query serialization, path normalization, and cached IDNA host transforms across multiple internal modules.",
+    "signals": [
+      "split_url and join must agree on authority, path, and query composition",
+      "query encoding interacts with quoters and multidict duplicate-key semantics",
+      "path normalization affects join and joinpath results",
+      "IDNA encode/decode caching and host validation cross-cut URL construction",
+      "immutable URL updates flow through internal from_parts state"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "import featurelifted; from featurelifted import URL, Query, QueryVariable, SimpleQuery, cache_clear, cache_configure, cache_info",
+    "callable": "featurelifted.URL",
+    "signature": "URL(val='', *, encoded=False, **kwargs)"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [
+      "idna",
+      "multidict",
+      "propcache"
+    ],
+    "forbidden_dependencies": [
+      "yarl",
+      "aiohttp"
+    ],
+    "forbidden_imports": [
+      "yarl",
+      "aiohttp"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "URL parse, join, query, and path model",
+    "summary": "Extract a task-scoped subset of `yarl` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.URL",
+        "kind": "constant"
+      },
+      {
+        "path": "featurelifted.Query",
+        "kind": "object"
+      },
+      {
+        "path": "featurelifted.QueryVariable",
+        "kind": "object"
+      },
+      {
+        "path": "featurelifted.SimpleQuery",
+        "kind": "object"
+      },
+      {
+        "path": "featurelifted.cache_clear",
+        "kind": "function",
+        "signature": "() -> None"
+      },
+      {
+        "path": "featurelifted.cache_configure",
+        "kind": "function",
+        "signature": "(*, idna_encode_size: int | None = 256, idna_decode_size: int | None = 256, ip_address_size: int | None | UndefinedType = <UndefinedType._singleton: 0>, host_validate_size: int | None | UndefinedType = <UndefinedType._singleton: 0>, encode_host_size: int | None | UndefinedType = <UndefinedType._singleton: 0>) -> None"
+      },
+      {
+        "path": "featurelifted.cache_info",
+        "kind": "function",
+        "signature": "() -> CacheInfo"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse and construct URL objects with scheme, host, port, path, query, fragment. Required observable cases include basic parse components; with query kwargs; query no double unquote."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: join absolute and relative URLs preserving query and fragment rules. Required observable cases include join absolute path; with query kwargs; join relative parent path; query no double unquote; join preserves base query when relative has query only; join rejects non url type."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: MultiDict query with duplicate keys, ordering, and semicolon-in-value handling. Required observable cases include duplicate query keys multidict; semicolon in query value not separator; update query with multidict."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: path normalization for dot and dot-dot segments. Required observable cases include joinpath appends segments; joinpath normalizes dot segments."
+      },
+      {
+        "id": "B005",
+        "text": "The extracted feature must support this observable behavior: IDNA host encoding and decoding; default port omission in string form. Required observable cases include idna unicode host decoded; default http port omitted from str."
+      },
+      {
+        "id": "B006",
+        "text": "The extracted feature must support this observable behavior: with_query, update_query, and joinpath helpers. Required observable cases include joinpath appends segments; joinpath normalizes dot segments; update query with multidict."
+      },
+      {
+        "id": "B007",
+        "text": "The package exposes the required task API paths `featurelifted.URL`, `featurelifted.Query`, `featurelifted.QueryVariable`, `featurelifted.SimpleQuery`, `featurelifted.cache_clear`, `featurelifted.cache_configure`, `featurelifted.cache_info` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "yarl.URL",
+      "yarl._parse.split_url",
+      "yarl._path.normalize_path",
+      "yarl._query.get_str_query",
+      "yarl._quoters.QUOTER",
+      "yarl._url.URL.join",
+      "yarl._url.URL.with_query",
+      "yarl._url.URL.update_query",
+      "yarl._url.URL.joinpath"
+    ],
+    "exclusions": [
+      "aiohttp, network I/O, HTTP client/server integration",
+      "Cython _quoting_c extension build (pure-Python quoting fallback only)",
+      "upstream test suite, docs, CI, and packaging metadata at runtime",
+      "original yarl package import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "yarl",
+        "aiohttp"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B008",
+      "text": "the submitted package does not import forbidden upstream packages: yarl, aiohttp."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse and construct URL objects with scheme, host, port, path, query, fragment. Required observable cases include basic parse components; with query kwargs; query no double unquote."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: join absolute and relative URLs preserving query and fragment rules. Required observable cases include join absolute path; with query kwargs; join relative parent path; query no double unquote; join preserves base query when relative has query only; join rejects non url type."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: MultiDict query with duplicate keys, ordering, and semicolon-in-value handling. Required observable cases include duplicate query keys multidict; semicolon in query value not separator; update query with multidict."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: path normalization for dot and dot-dot segments. Required observable cases include joinpath appends segments; joinpath normalizes dot segments."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: IDNA host encoding and decoding; default port omission in string form. Required observable cases include idna unicode host decoded; default http port omitted from str."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: with_query, update_query, and joinpath helpers. Required observable cases include joinpath appends segments; joinpath normalizes dot segments; update query with multidict."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.URL`, `featurelifted.Query`, `featurelifted.QueryVariable`, `featurelifted.SimpleQuery`, `featurelifted.cache_clear`, `featurelifted.cache_configure`, `featurelifted.cache_info` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: yarl, aiohttp"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_url_public.py::test_basic_parse_components",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_url_public.py::test_join_absolute_path",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_url_public.py::test_with_query_kwargs",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_url_public.py::test_joinpath_appends_segments",
+        "behavior_ids": [
+          "B004",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_duplicate_query_keys_multidict",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_semicolon_in_query_value_not_separator",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_idna_unicode_host_decoded",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_join_relative_parent_path",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_joinpath_normalizes_dot_segments",
+        "behavior_ids": [
+          "B004",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_default_http_port_omitted_from_str",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_query_no_double_unquote",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_update_query_with_multidict",
+        "behavior_ids": [
+          "B003",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_join_preserves_base_query_when_relative_has_query_only",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_no_yarl_import_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_url_hidden.py::test_join_rejects_non_url_type",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.URL",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Query",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.QueryVariable",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.SimpleQuery",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.cache_clear",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.cache_configure",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.cache_info",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "513ab5098702616e145ec94dcb39aada2ec2817890fa74cc78457bab31210e7f",
+  "generated_task_hash": "c25a05c0cf80d98fc22afc6f061f6693bcd34548fc64cba901d8d374b3f93d94"
+}

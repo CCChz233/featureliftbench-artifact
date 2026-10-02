@@ -1,0 +1,509 @@
+{
+  "annotation_scope": {
+    "behavioral": "linked_to_public_behavior_ids",
+    "file": "complete_ai_assisted_reference_closure",
+    "runtime": "unresolved",
+    "symbol": "unresolved"
+  },
+  "audit": {
+    "limitation": "File completeness is provisional reference-closure completeness. Symbol, runtime-state, replaceability, and semantic minimality remain unresolved until independent human review and executable necessity probes.",
+    "manifest_file_count": 0,
+    "selection_source": "static_entrypoint_import_closure",
+    "static_candidate_count": 17,
+    "static_candidates_not_in_reference_closure": []
+  },
+  "closure_variants": [
+    {
+      "requirements": [
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_001",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/__init__.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_002",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/composer.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_003",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/constructor.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_004",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/cyaml.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_005",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/dumper.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_006",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/emitter.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_007",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/error.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_008",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/events.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_009",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/loader.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_010",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/nodes.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_011",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/parser.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_012",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/reader.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_013",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/representer.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_014",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/resolver.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_015",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/scanner.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_016",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/serializer.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        },
+        {
+          "behavior_ids": [
+            "B001",
+            "B002",
+            "B003",
+            "B004",
+            "B005"
+          ],
+          "evidence_paths": [
+            "metadata.json#/feature/source_entrypoints"
+          ],
+          "kind": "file",
+          "necessity": "must",
+          "rationale": "Reference closure requirement recovered from the public entrypoints and transitive internal imports.",
+          "requirement_id": "file_requirement_017",
+          "satisfied_by": [
+            {
+              "artifacts": [
+                {
+                  "kind": "file",
+                  "source_path": "repo/yaml/tokens.py"
+                }
+              ],
+              "solution_id": "original_source_file"
+            }
+          ]
+        }
+      ],
+      "variant_id": "reference_source_closure"
+    }
+  ],
+  "entrypoints": [
+    "yaml.safe_load",
+    "yaml.safe_load_all",
+    "yaml.safe_dump",
+    "yaml.safe_dump_all",
+    "yaml.YAMLError",
+    "yaml.constructor.ConstructorError"
+  ],
+  "gold_completeness": {
+    "adapter": "unresolved",
+    "file": "complete",
+    "resource": "unresolved",
+    "runtime_state": "unresolved",
+    "symbol": "unresolved",
+    "third_party": "unresolved"
+  },
+  "review": {
+    "adjudicator": "",
+    "disagreements": [],
+    "formal_human_double_review_pending": true,
+    "reviewer_1": "codex_manifest_normalization_pass",
+    "reviewer_1_type": "ai_assisted_author",
+    "reviewer_2": "codex_static_entrypoint_closure_pass",
+    "reviewer_2_type": "ai_assisted_second_pass_not_independent_human",
+    "status": "ai_assisted_reviewed"
+  },
+  "schema_version": "featureliftbench.closure_gold.v1",
+  "task_id": "pyyaml__safe_load_dump__001"
+}

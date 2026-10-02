@@ -1,0 +1,16 @@
+{
+  "source_package_name": "jsonpath_ng",
+  "required_source_files": [
+    "jsonpath_ng/jsonpath.py",
+    "jsonpath_ng/parser.py",
+    "jsonpath_ng/lexer.py",
+    "jsonpath_ng/exceptions.py",
+    "jsonpath_ng/ext/parser.py",
+    "jsonpath_ng/ext/filter.py",
+    "jsonpath_ng/ext/arithmetic.py",
+    "jsonpath_ng/ext/iterable.py",
+    "jsonpath_ng/ext/string.py"
+  ],
+  "runtime_dependencies": ["ply"],
+  "notes": "Oracle omits vendored _ply and bin/; patches lexer/parser to use system ply."
+}

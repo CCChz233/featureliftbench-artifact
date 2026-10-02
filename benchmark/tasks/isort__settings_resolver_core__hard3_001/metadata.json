@@ -1,0 +1,446 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Settings resolution depends on profile defaults, TOML/INI/editorconfig sections, runtime overrides, project root paths, and skip glob matching.",
+    "level": "high",
+    "primary": "config_environment_coupling",
+    "signals": [
+      "Profile settings are lower priority than config files and runtime overrides.",
+      "pyproject.toml, setup.cfg, .isort.cfg, tox.ini, and .editorconfig use different sections.",
+      "src_paths are resolved relative to the config directory.",
+      "skip and extend_skip_glob are merged at runtime for path filtering."
+    ],
+    "types": [
+      "config_environment_coupling",
+      "resource_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "isort"
+    ],
+    "forbidden_imports": [
+      "isort"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "isort/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract task-scoped isort settings/profile resolution and skip matching.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "import sorting",
+      "formatter internals",
+      "CLI",
+      "git ls-files integration",
+      "entry point plugins"
+    ],
+    "included_behaviors": [
+      "resolve_settings",
+      "resolve_from_path",
+      "find_config",
+      "should_skip",
+      "Settings.is_skipped",
+      "black/django/google profiles",
+      "pyproject/setup.cfg/tox.ini/.isort.cfg/.editorconfig parsing",
+      "runtime overrides",
+      "src_paths expansion",
+      "skip and skip_glob merging"
+    ],
+    "name": "Settings/profile resolution and skip matching",
+    "source_entrypoints": [
+      "isort.settings.Config",
+      "isort.settings._get_config_data",
+      "isort.settings._find_config",
+      "isort.settings.Config.is_skipped",
+      "isort.profiles.profiles"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "resolve_settings",
+    "import": "from featurelifted import resolve_settings, resolve_from_path, should_skip",
+    "package": "featurelifted",
+    "signature": "resolve_settings(config_files=(), profile=None, overrides=None) -> Settings"
+  },
+  "source": {
+    "commit": "fd8bd075176d074af69aa6acae7ed89a6a89bb05",
+    "license": "MIT",
+    "name": "isort",
+    "url": "https://github.com/PyCQA/isort.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "copy-heavy trap tasks",
+    "config_environment_coupling"
+  ],
+  "task_id": "isort__settings_resolver_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "public_spec": {
+    "title": "Settings/profile resolution and skip matching",
+    "summary": "Extract a task-scoped subset of `isort` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.ProfileDoesNotExist",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.UnsupportedSettings",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.Settings",
+        "kind": "class",
+        "signature": "(line_length: 'int' = 79, multi_line_output: 'int' = 0, include_trailing_comma: 'bool' = False, split_on_trailing_comma: 'bool' = False, force_grid_wrap: 'int' = 0, use_parentheses: 'bool' = False, ensure_newline_before_comments: 'bool' = False, combine_as_imports: 'bool' = False, force_single_line: 'bool' = False, force_sort_within_sections: 'bool' = False, lexicographical: 'bool' = False, order_by_type: 'bool' = True, group_by_package: 'bool' = False, skip: 'frozenset[str]' = frozenset({'.pants.d', '_build', '.mypy_cache', '.svn', '.eggs', '.git', '.direnv', '.hg', 'node_modules', 'dist', '.tox', '.bzr', '.venv', 'buck-out', '.nox', 'build'}), extend_skip: 'frozenset[str]' = frozenset(), skip_glob: 'frozenset[str]' = frozenset(), extend_skip_glob: 'frozenset[str]' = frozenset(), src_paths: 'tuple[Path, ...]' = (), directory: 'Path' = <factory>, profile: 'str' = '', source: 'str' = 'defaults', sources: 'tuple[str, ...]' = ('defaults',)) -> None",
+        "members": [
+          {
+            "path": "featurelifted.Settings.line_length",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.Settings.src_paths",
+            "kind": "attribute"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.resolve_settings",
+        "kind": "function",
+        "signature": "(config_files=(), profile: 'str | None' = None, overrides: 'dict[str, Any] | None' = None) -> 'Settings'"
+      },
+      {
+        "path": "featurelifted.resolve_from_path",
+        "kind": "function",
+        "signature": "(start_path: 'str | Path', profile: 'str | None' = None, overrides: 'dict[str, Any] | None' = None) -> 'Settings'"
+      },
+      {
+        "path": "featurelifted.find_config",
+        "kind": "function",
+        "signature": "(start_path: 'str | Path') -> 'Path | None'"
+      },
+      {
+        "path": "featurelifted.should_skip",
+        "kind": "function",
+        "signature": "(path: 'str | Path', settings: 'Settings') -> 'bool'"
+      },
+      {
+        "path": "featurelifted.Settings.is_skipped",
+        "kind": "method",
+        "signature": "(self, path: 'str | Path') -> 'bool'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When config files, profile, and runtime overrides are supplied, resolve_settings returns a Settings object whose fields reflect defaults, then profile, then config files, then overrides."
+      },
+      {
+        "id": "B002",
+        "text": "When resolve_from_path is called from a file path, it discovers the nearest applicable config and returns Settings resolved from that discovery chain."
+      },
+      {
+        "id": "B003",
+        "text": "When find_config is called from a start path, it returns the nearest config file path used by isort or None when no config exists."
+      },
+      {
+        "id": "B004",
+        "text": "When should_skip is called with a path and Settings, it returns True only for paths matching explicit skip names or glob patterns."
+      },
+      {
+        "id": "B005",
+        "text": "When Settings.is_skipped is called, it applies the same skip-name and glob rules as should_skip for that Settings instance."
+      },
+      {
+        "id": "B006",
+        "text": "When black, django, or google profiles are selected, the resulting Settings expose the profile-specific defaults expected by isort."
+      },
+      {
+        "id": "B007",
+        "text": "When pyproject.toml, setup.cfg, tox.ini, .isort.cfg, or .editorconfig sections are present, their isort-relevant options are parsed into Settings."
+      },
+      {
+        "id": "B008",
+        "text": "When runtime overrides are provided, they override profile and config-file values in the resolved Settings object."
+      },
+      {
+        "id": "B009",
+        "text": "When src_paths are configured, they are expanded relative to the config file directory in the resolved Settings object."
+      },
+      {
+        "id": "B010",
+        "text": "When skip, extend_skip, skip_glob, or extend_skip_glob are configured, the effective skip rules merge extend lists and still allow existing non-matching files to remain unskipped."
+      },
+      {
+        "id": "B011",
+        "text": "The package exposes the required task API paths `featurelifted.ProfileDoesNotExist`, `featurelifted.UnsupportedSettings`, `featurelifted.Settings`, `featurelifted.Settings.line_length`, `featurelifted.Settings.src_paths`, `featurelifted.resolve_settings`, `featurelifted.resolve_from_path`, `featurelifted.find_config`, `featurelifted.should_skip`, `featurelifted.Settings.is_skipped` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "isort.settings.Config",
+      "isort.settings._get_config_data",
+      "isort.settings._find_config",
+      "isort.settings.Config.is_skipped",
+      "isort.profiles.profiles"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "import sorting",
+      "formatter internals",
+      "CLI",
+      "git ls-files integration",
+      "entry point plugins"
+    ],
+    "forbidden": {
+      "imports": [
+        "isort"
+      ],
+      "paths": [
+        "repo/",
+        "isort/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B012",
+      "text": "The submitted package does not import forbidden upstream packages: isort."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When config files, profile, and runtime overrides are supplied, resolve_settings returns a Settings object whose fields reflect defaults, then profile, then config files, then overrides."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When resolve_from_path is called from a file path, it discovers the nearest applicable config and returns Settings resolved from that discovery chain."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "When find_config is called from a start path, it returns the nearest config file path used by isort or None when no config exists."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When should_skip is called with a path and Settings, it returns True only for paths matching explicit skip names or glob patterns."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "When Settings.is_skipped is called, it applies the same skip-name and glob rules as should_skip for that Settings instance."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When black, django, or google profiles are selected, the resulting Settings expose the profile-specific defaults expected by isort."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "When pyproject.toml, setup.cfg, tox.ini, .isort.cfg, or .editorconfig sections are present, their isort-relevant options are parsed into Settings."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "included_behavior",
+        "text": "When runtime overrides are provided, they override profile and config-file values in the resolved Settings object."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "included_behavior",
+        "text": "When src_paths are configured, they are expanded relative to the config file directory in the resolved Settings object."
+      },
+      {
+        "behavior_id": "B010",
+        "clause_kind": "included_behavior",
+        "text": "When skip, extend_skip, skip_glob, or extend_skip_glob are configured, the effective skip rules merge extend lists and still allow existing non-matching files to remain unskipped."
+      },
+      {
+        "behavior_id": "B011",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.ProfileDoesNotExist`, `featurelifted.UnsupportedSettings`, `featurelifted.Settings`, `featurelifted.Settings.line_length`, `featurelifted.Settings.src_paths`, `featurelifted.resolve_settings`, `featurelifted.resolve_from_path`, `featurelifted.find_config`, `featurelifted.should_skip`, `featurelifted.Settings.is_skipped` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B012",
+        "clause_kind": "isolation_constraint",
+        "text": "The submitted package does not import forbidden upstream packages: isort."
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_profile_and_pyproject_merge",
+        "behavior_ids": [
+          "B006",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_runtime_overrides_win_over_profile_and_config",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_resolve_from_path_finds_nearest_pyproject",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_extend_skip_glob_and_existing_file_not_skipped",
+        "behavior_ids": [
+          "B004",
+          "B005",
+          "B010"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_src_paths_are_resolved_relative_to_config_dir",
+        "behavior_ids": [
+          "B002",
+          "B009"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_setup_cfg_and_pyproject_precedence_follows_input_order",
+        "behavior_ids": [
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_invalid_profile_and_unsupported_setting_errors",
+        "behavior_ids": [
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_editorconfig_indent_and_line_length",
+        "behavior_ids": [
+          "B003",
+          "B007",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B011"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.ProfileDoesNotExist",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.UnsupportedSettings",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Settings",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Settings.line_length",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_editorconfig_indent_and_line_length"
+        ]
+      },
+      {
+        "path": "featurelifted.Settings.src_paths",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_src_paths_are_resolved_relative_to_config_dir"
+        ]
+      },
+      {
+        "path": "featurelifted.resolve_settings",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.resolve_from_path",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.find_config",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.should_skip",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Settings.is_skipped",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "constitution_pilot_migration",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Historical failure on missing ProfileDoesNotExist is resolved by declaring it in required_api.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "spec_status": "compliant",
+  "task_revision": 6,
+  "spec_hash": "089c0ba4a2534e9352c46142d8c2e88c87e28ebe6f9ed66094aceffe1944a21a",
+  "generated_task_hash": "796925918790b75b54e08290450e627f806043e2f958452c8abfdde01cd3e6a0"
+}

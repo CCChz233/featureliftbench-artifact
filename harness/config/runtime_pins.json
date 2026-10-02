@@ -1,0 +1,35 @@
+{
+  "schema": "featureliftbench.runtime_pins.v1",
+  "purpose": "Pin third-party coding runtimes at the same bootstrap level as OpenHands. Do not merge scores into the Official Main OpenHands Python-200 table.",
+  "runtimes": {
+    "deepseek-harness": {
+      "adapter": "deepseek-harness",
+      "repository": "https://github.com/deepseek-ai/deepseek-harness.git",
+      "tag": "dsh-v0.1.0-rc.8",
+      "commit": "141eb6fef83422698aef7a981029e843e8161534",
+      "prerelease": true,
+      "published": "2026-08-19",
+      "npm_package": "@deepseek-ai/dsh",
+      "npm_version": "0.1.0-rc.8",
+      "binary_env": "FEATURELIFTBENCH_DSH_BIN",
+      "default_binary": "dsh",
+      "headless": "dsh --profile headless",
+      "install": "npm"
+    },
+    "codex": {
+      "adapter": "codex",
+      "repository": "https://github.com/openai/codex.git",
+      "tag": "rust-v0.149.0",
+      "commit": "758ef40f50c1a458425c7cfbf1eb12cbc07af0b0",
+      "prerelease": false,
+      "published": "2026-08-20",
+      "npm_package": "@openai/codex",
+      "npm_version": "0.149.0",
+      "github_release_tag": "rust-v0.149.0",
+      "binary_env": "FEATURELIFTBENCH_CODEX_BIN",
+      "default_binary": "codex",
+      "headless": "codex exec --approve-for-me --skip-git-repo-check --json",
+      "install": "github-release"
+    }
+  }
+}

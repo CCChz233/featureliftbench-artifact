@@ -1,0 +1,21 @@
+{
+  "source_package_name": "schema",
+  "runtime_dependencies": [],
+  "required_source_files": [
+    "repo/schema/__init__.py"
+  ],
+  "target_api": [
+    "featurelifted.Schema",
+    "featurelifted.Optional",
+    "featurelifted.Or",
+    "featurelifted.And"
+  ],
+  "forbidden_imports": [
+    "schema"
+  ],
+  "forbidden_paths": [
+    "repo/",
+    "schema/"
+  ],
+  "notes": "Nested schema validation subset."
+}

@@ -1,0 +1,349 @@
+{
+  "task_id": "wsproto__frame_parse_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "batch-1",
+    "wsproto",
+    "hard-first",
+    "functional-discriminator",
+    "parser_state_coupling"
+  ],
+  "source": {
+    "name": "wsproto",
+    "url": "https://github.com/python-hyper/wsproto",
+    "commit": "1.3.2-installed-snapshot",
+    "license": "MIT"
+  },
+  "feature": {
+    "name": "WebSocket frame protocol",
+    "description": "Extract wsproto RFC6455 frame parsing, masking, fragmentation, and control frames without HTTP handshake or connection lifecycle.",
+    "source_entrypoints": [
+      "wsproto.frame_protocol.FrameProtocol",
+      "wsproto.frame_protocol.Opcode",
+      "wsproto.frame_protocol.ParseFailed"
+    ],
+    "included_behaviors": [
+      "parse and serialize text/binary WebSocket frames",
+      "client/server masking rules and XOR payload decoding",
+      "fragmented message reassembly across continuation frames",
+      "ping/pong/close control frames with close codes"
+    ],
+    "excluded_behaviors": [
+      "HTTP/1.1 upgrade handshake (h11 integration)",
+      "WSConnection state machine and extensions negotiation I/O",
+      "original wsproto import at runtime"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "parser_state_coupling",
+      "resource_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "parser_state_coupling",
+    "description": "Frame protocol couples header length parsing, masking key rotation, message assembly state, and role-specific validation rules.",
+    "signals": [
+      "FrameDecoder buffers partial headers until length known",
+      "server rejects unmasked client frames and vice versa",
+      "MessageDecoder tracks continuation opcode sequences",
+      "repo includes h11 sibling package for copy-all penalty"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted.frame_protocol import FrameProtocol, Opcode, ParseFailed, CloseReason, Frame",
+    "callable": "featurelifted.frame_protocol.FrameProtocol",
+    "signature": "FrameProtocol(client: bool, extensions: list) -> FrameProtocol"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "wsproto"
+    ],
+    "forbidden_imports": [
+      "wsproto"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "WebSocket frame protocol",
+    "summary": "Extract a task-scoped subset of `wsproto` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.frame_protocol",
+        "kind": "module",
+        "members": [
+          {
+            "path": "featurelifted.frame_protocol.CloseReason",
+            "kind": "class",
+            "signature": "(*values)"
+          },
+          {
+            "path": "featurelifted.frame_protocol.FrameProtocol",
+            "kind": "class",
+            "signature": "(client: 'bool', extensions: 'list[Extension]') -> 'None'",
+            "members": [
+              {
+                "path": "featurelifted.frame_protocol.FrameProtocol.close",
+                "kind": "method",
+                "signature": "(self, code: 'int | None' = None, reason: 'str | None' = None) -> 'bytearray'"
+              },
+              {
+                "path": "featurelifted.frame_protocol.FrameProtocol.receive_bytes",
+                "kind": "method",
+                "signature": "(self, data: 'bytes') -> 'None'"
+              },
+              {
+                "path": "featurelifted.frame_protocol.FrameProtocol.received_frames",
+                "kind": "method",
+                "signature": "(self) -> 'Generator[Frame, None, None]'"
+              }
+            ]
+          },
+          {
+            "path": "featurelifted.frame_protocol.ParseFailed",
+            "kind": "exception"
+          }
+        ]
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: parse and serialize text/binary WebSocket frames. Required observable cases include client receives unmasked text; binary frame extended payload length."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: client/server masking rules and XOR payload decoding. Required observable cases include client receives unmasked text; client send data; server decodes masked client frame; role masking validation."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: fragmented message reassembly across continuation frames. Required observable cases include fragmented message reassembly; reserved bit set on data frame."
+      },
+      {
+        "id": "B004",
+        "text": "The extracted feature must support this observable behavior: ping/pong/close control frames with close codes. Required observable cases include close frame code and reason; close frame rejects one byte payload; reserved bit set on data frame."
+      },
+      {
+        "id": "B005",
+        "text": "The package exposes the required task API paths `featurelifted.frame_protocol`, `featurelifted.frame_protocol.CloseReason`, `featurelifted.frame_protocol.FrameProtocol`, `featurelifted.frame_protocol.FrameProtocol.close`, `featurelifted.frame_protocol.FrameProtocol.receive_bytes`, `featurelifted.frame_protocol.FrameProtocol.received_frames`, `featurelifted.frame_protocol.ParseFailed` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "wsproto.frame_protocol.FrameProtocol",
+      "wsproto.frame_protocol.Opcode",
+      "wsproto.frame_protocol.ParseFailed"
+    ],
+    "exclusions": [
+      "HTTP/1.1 upgrade handshake (h11 integration)",
+      "WSConnection state machine and extensions negotiation I/O",
+      "original wsproto import at runtime"
+    ],
+    "forbidden": {
+      "imports": [
+        "wsproto"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B006",
+      "text": "the submitted package does not import forbidden upstream packages: wsproto."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: parse and serialize text/binary WebSocket frames. Required observable cases include client receives unmasked text; binary frame extended payload length."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: client/server masking rules and XOR payload decoding. Required observable cases include client receives unmasked text; client send data; server decodes masked client frame; role masking validation."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: fragmented message reassembly across continuation frames. Required observable cases include fragmented message reassembly; reserved bit set on data frame."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: ping/pong/close control frames with close codes. Required observable cases include close frame code and reason; close frame rejects one byte payload; reserved bit set on data frame."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.frame_protocol`, `featurelifted.frame_protocol.CloseReason`, `featurelifted.frame_protocol.FrameProtocol`, `featurelifted.frame_protocol.FrameProtocol.close`, `featurelifted.frame_protocol.FrameProtocol.receive_bytes`, `featurelifted.frame_protocol.FrameProtocol.received_frames`, `featurelifted.frame_protocol.ParseFailed` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: wsproto"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_client_receives_unmasked_text",
+        "behavior_ids": [
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_api.py::test_client_send_data",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_server_decodes_masked_client_frame",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_fragmented_message_reassembly",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_close_frame_code_and_reason",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_binary_frame_extended_payload_length",
+        "behavior_ids": [
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_close_frame_rejects_one_byte_payload",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_reserved_bit_set_on_data_frame",
+        "behavior_ids": [
+          "B003",
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_role_masking_validation",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.frame_protocol",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.frame_protocol.CloseReason",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.frame_protocol.FrameProtocol",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.frame_protocol.FrameProtocol.close",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_close_frame_code_and_reason"
+        ]
+      },
+      {
+        "path": "featurelifted.frame_protocol.FrameProtocol.receive_bytes",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_binary_frame_extended_payload_length",
+          "hidden_tests/test_hidden_behavior.py::test_close_frame_code_and_reason",
+          "hidden_tests/test_hidden_behavior.py::test_close_frame_rejects_one_byte_payload",
+          "hidden_tests/test_hidden_behavior.py::test_fragmented_message_reassembly",
+          "hidden_tests/test_hidden_behavior.py::test_reserved_bit_set_on_data_frame",
+          "hidden_tests/test_hidden_behavior.py::test_role_masking_validation",
+          "hidden_tests/test_hidden_behavior.py::test_server_decodes_masked_client_frame"
+        ]
+      },
+      {
+        "path": "featurelifted.frame_protocol.FrameProtocol.received_frames",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_binary_frame_extended_payload_length",
+          "hidden_tests/test_hidden_behavior.py::test_close_frame_code_and_reason",
+          "hidden_tests/test_hidden_behavior.py::test_close_frame_rejects_one_byte_payload",
+          "hidden_tests/test_hidden_behavior.py::test_fragmented_message_reassembly",
+          "hidden_tests/test_hidden_behavior.py::test_reserved_bit_set_on_data_frame",
+          "hidden_tests/test_hidden_behavior.py::test_role_masking_validation",
+          "hidden_tests/test_hidden_behavior.py::test_server_decodes_masked_client_frame"
+        ]
+      },
+      {
+        "path": "featurelifted.frame_protocol.ParseFailed",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "d4c93fa2d22e8467c37b79eb5d417e992dcc78b1d6a63301bc7c1f7c1c86d334",
+  "generated_task_hash": "98e8e892c95ae9f232b9dfc1e8ed0324f31841f78bf5282951fad2e2011e11de"
+}

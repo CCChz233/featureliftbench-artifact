@@ -1,0 +1,270 @@
+{
+  "task_id": "babel__plural_core__001",
+  "language": "python",
+  "difficulty": "hard",
+  "tags": [
+    "multi-task-repo",
+    "functional-discriminator",
+    "decoupling-discriminator",
+    "third_party_dependency_coupling",
+    "pure-python"
+  ],
+  "source": {
+    "name": "babel",
+    "url": "https://github.com/python-babel/babel",
+    "commit": "2.11.0-installed-snapshot",
+    "license": "BSD-3-Clause"
+  },
+  "feature": {
+    "name": "CLDR plural rules subset",
+    "description": "Extract Babel plural rule parsing and locale plural_form selection backed by CLDR locale-data files.",
+    "source_entrypoints": [
+      "babel.plural.PluralRule",
+      "babel.core.Locale",
+      "babel.core.Locale.plural_form",
+      "babel.localedata"
+    ],
+    "included_behaviors": [
+      "evaluate PluralRule expressions for numeric operands",
+      "resolve Locale plural categories for en, ru, fr, ja, and pl",
+      "load plural rules from packaged locale-data .dat resources"
+    ],
+    "excluded_behaviors": [
+      "gettext message catalogs and extraction",
+      "number/date/currency formatting modules",
+      "full CLDR locale-data tree"
+    ]
+  },
+  "entanglement": {
+    "level": "high",
+    "types": [
+      "third_party_dependency_coupling",
+      "resource_coupling",
+      "data_model_coupling"
+    ],
+    "primary": "third_party_dependency_coupling",
+    "description": "Plural selection depends on CLDR locale-data pickles, plural expression parsing, and Locale metadata wiring.",
+    "signals": [
+      "locale-data .dat resource loading",
+      "PluralRule expression AST evaluation",
+      "Locale inheritance through parent locales"
+    ]
+  },
+  "output": {
+    "package": "featurelifted",
+    "import": "from featurelifted import PluralRule, Locale",
+    "callable": "featurelifted.Locale.parse",
+    "signature": "Locale.parse(identifier: str) -> Locale"
+  },
+  "environment": {
+    "python": "3.11",
+    "network": false,
+    "timeout_seconds": 60,
+    "dependency_lock": "requirements.lock",
+    "allowed_dependencies": [],
+    "forbidden_dependencies": [
+      "babel"
+    ],
+    "forbidden_imports": [
+      "babel"
+    ]
+  },
+  "tests": {
+    "public": "public_tests/",
+    "hidden": "hidden_tests/",
+    "command": "pytest"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "CLDR plural rules subset",
+    "summary": "Extract a task-scoped subset of `babel` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.PluralRule",
+        "kind": "class",
+        "signature": "(rules)",
+        "members": [
+          {
+            "path": "featurelifted.PluralRule.parse",
+            "kind": "method",
+            "signature": "(rules)"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.Locale",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Locale.parse",
+            "kind": "method",
+            "signature": "(identifier, sep='_', resolve_likely_subtags=True)"
+          },
+          {
+            "path": "featurelifted.Locale.plural_form",
+            "kind": "attribute"
+          }
+        ],
+        "signature": "(language, territory=None, script=None, variant=None)"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "The extracted feature must support this observable behavior: evaluate PluralRule expressions for numeric operands. Required observable cases include plural rule string and float operands."
+      },
+      {
+        "id": "B002",
+        "text": "The extracted feature must support this observable behavior: resolve Locale plural categories for en, ru, fr, ja, and pl. Required observable cases include locale plural categories multilingual."
+      },
+      {
+        "id": "B003",
+        "text": "The extracted feature must support this observable behavior: load plural rules from packaged locale-data .dat resources. Required observable cases include plural rule and english locale; plural rule expression edges; plural rule string and float operands."
+      },
+      {
+        "id": "B004",
+        "text": "The package exposes the required task API paths `featurelifted.PluralRule`, `featurelifted.PluralRule.parse`, `featurelifted.Locale`, `featurelifted.Locale.parse`, `featurelifted.Locale.plural_form` with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "babel.plural.PluralRule",
+      "babel.core.Locale",
+      "babel.core.Locale.plural_form",
+      "babel.localedata"
+    ],
+    "exclusions": [
+      "gettext message catalogs and extraction",
+      "number/date/currency formatting modules",
+      "full CLDR locale-data tree"
+    ],
+    "forbidden": {
+      "imports": [
+        "babel"
+      ],
+      "paths": []
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B005",
+      "text": "the submitted package does not import forbidden upstream packages: babel."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: evaluate PluralRule expressions for numeric operands. Required observable cases include plural rule string and float operands."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: resolve Locale plural categories for en, ru, fr, ja, and pl. Required observable cases include locale plural categories multilingual."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "The extracted feature must support this observable behavior: load plural rules from packaged locale-data .dat resources. Required observable cases include plural rule and english locale; plural rule expression edges; plural rule string and float operands."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.PluralRule`, `featurelifted.PluralRule.parse`, `featurelifted.Locale`, `featurelifted.Locale.parse`, `featurelifted.Locale.plural_form` with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: babel"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_api.py::test_plural_rule_and_english_locale",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_plural_rule_expression_edges",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_locale_plural_categories_multilingual",
+        "behavior_ids": [
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_behavior.py::test_plural_rule_string_and_float_operands",
+        "behavior_ids": [
+          "B003",
+          "B001"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.PluralRule",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.PluralRule.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_plural_rule_string_and_float_operands"
+        ]
+      },
+      {
+        "path": "featurelifted.Locale",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Locale.parse",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_behavior.py::test_locale_plural_categories_multilingual"
+        ]
+      },
+      {
+        "path": "featurelifted.Locale.plural_form",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle"
+    }
+  },
+  "task_revision": 3,
+  "spec_hash": "a3940acb58823521b5c447fe6c7a082537ca3af100bf5c0d6c0e319530a8e6a7",
+  "generated_task_hash": "ed43dd339400567e14b3b77118f9c1418b1e232d4b75fe6500e99db7c61eeb56"
+}

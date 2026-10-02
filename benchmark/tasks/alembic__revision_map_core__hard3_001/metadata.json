@@ -1,0 +1,465 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Revision behavior depends on a graph of down revisions, dependency revisions, branch labels, symbolic identifiers, and error semantics.",
+    "level": "high",
+    "primary": "data_model_coupling",
+    "signals": [
+      "Revision heads are computed from versioned edges, not dependency-only edges.",
+      "Branch labels resolve to revisions and propagate along descendant chains.",
+      "Dependency revisions participate in ancestry without becoming down_revision edges.",
+      "Multiple heads, missing revisions, and cycles raise task-specific exceptions."
+    ],
+    "types": [
+      "data_model_coupling",
+      "parser_state_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "alembic",
+      "sqlalchemy"
+    ],
+    "forbidden_imports": [
+      "alembic",
+      "sqlalchemy"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "alembic/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract task-scoped Alembic Revision and RevisionMap graph behavior.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "SQLAlchemy engine integration",
+      "migration environment loading",
+      "filesystem script directory scanning"
+    ],
+    "included_behaviors": [
+      "Revision object normalization",
+      "RevisionMap graph construction",
+      "versioned head and base calculation",
+      "branch label resolution and propagation",
+      "dependency-aware ancestry",
+      "symbolic head/base lookup",
+      "missing revision, multiple head, and cycle errors"
+    ],
+    "name": "RevisionMap graph, branch labels, and head resolution",
+    "source_entrypoints": [
+      "alembic.script.revision.Revision",
+      "alembic.script.revision.RevisionMap",
+      "alembic.script.revision.MultipleHeads",
+      "alembic.script.revision.CycleDetected",
+      "alembic.script.revision.ResolutionError"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "RevisionMap",
+    "import": "from featurelifted import Revision, RevisionMap",
+    "package": "featurelifted",
+    "signature": "RevisionMap(revisions)"
+  },
+  "source": {
+    "commit": "c88fa5afaf2b9783a58a918f3fc73abc44daa0a9",
+    "license": "MIT",
+    "name": "alembic",
+    "url": "https://github.com/sqlalchemy/alembic.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "stateful runtime behavior",
+    "data_model_coupling"
+  ],
+  "task_id": "alembic__revision_map_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "RevisionMap graph, branch labels, and head resolution",
+    "summary": "Extract a task-scoped subset of `alembic` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.Revision",
+        "kind": "class",
+        "signature": "(revision: 'str', down_revision: 'str | tuple[str, ...] | None' = None, dependencies: 'str | tuple[str, ...] | None' = None, branch_labels: 'set[str] | tuple[str, ...] | list[str] | None' = None) -> None"
+      },
+      {
+        "path": "featurelifted.RevisionMap",
+        "kind": "class",
+        "signature": "(revisions: 'Iterable[Revision]') -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.RevisionMap.heads",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.RevisionMap.bases",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.RevisionMap.branch_labels",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.RevisionMap.get_revision",
+            "kind": "method",
+            "signature": "(self, identifier: 'str | None') -> 'Revision | None'"
+          },
+          {
+            "path": "featurelifted.RevisionMap.get_revisions",
+            "kind": "method",
+            "signature": "(self, identifiers) -> 'tuple[Revision | None, ...]'"
+          },
+          {
+            "path": "featurelifted.RevisionMap.get_heads",
+            "kind": "method",
+            "signature": "(self) -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.RevisionMap.get_current_head",
+            "kind": "method",
+            "signature": "(self, branch_label: 'str | None' = None) -> 'str'"
+          },
+          {
+            "path": "featurelifted.RevisionMap.ancestors",
+            "kind": "method",
+            "signature": "(self, revision_id: 'str', include_dependencies: 'bool' = True) -> 'set[str]'"
+          },
+          {
+            "path": "featurelifted.RevisionMap.iterate_revisions",
+            "kind": "method",
+            "signature": "(self, upper: 'str', lower: 'str | None' = None) -> 'list[Revision]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.CycleDetected",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.MissingRevision",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.MultipleHeads",
+        "kind": "exception"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "When Revision objects are created, scalar and iterable down revisions, branch labels, and dependencies are normalized without losing their distinct graph roles."
+      },
+      {
+        "id": "B002",
+        "text": "When RevisionMap is built from explicit revisions, it links versioned parents, dependency edges, and branch labels into a queryable graph."
+      },
+      {
+        "id": "B003",
+        "text": "For linear, branched, and merged revision graphs, RevisionMap reports the versioned bases and heads that have no versioned parent or child."
+      },
+      {
+        "id": "B004",
+        "text": "When a branch label is assigned, branch-label lookup resolves that revision and propagates the label to eligible descendants."
+      },
+      {
+        "id": "B005",
+        "text": "When ancestors are requested, dependency revisions are included only when dependency-aware traversal is enabled."
+      },
+      {
+        "id": "B006",
+        "text": "When symbolic identifiers such as head or base are requested, RevisionMap resolves them and rejects ambiguous heads."
+      },
+      {
+        "id": "B007",
+        "text": "Missing revisions, multiple-head requests, and revision cycles raise the declared explicit graph errors."
+      },
+      {
+        "id": "B008",
+        "text": "The package exposes the required task API paths `featurelifted.Revision`, `featurelifted.RevisionMap`, `featurelifted.RevisionMap.heads`, `featurelifted.RevisionMap.bases`, `featurelifted.RevisionMap.branch_labels`, `featurelifted.RevisionMap.get_revision`, `featurelifted.RevisionMap.get_revisions`, `featurelifted.RevisionMap.get_heads`, `featurelifted.RevisionMap.get_current_head`, `featurelifted.RevisionMap.ancestors`, `featurelifted.RevisionMap.iterate_revisions`, `featurelifted.CycleDetected`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "alembic.script.revision.Revision",
+      "alembic.script.revision.RevisionMap",
+      "alembic.script.revision.MultipleHeads",
+      "alembic.script.revision.CycleDetected",
+      "alembic.script.revision.ResolutionError"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "SQLAlchemy engine integration",
+      "migration environment loading",
+      "filesystem script directory scanning"
+    ],
+    "forbidden": {
+      "imports": [
+        "alembic",
+        "sqlalchemy"
+      ],
+      "paths": [
+        "repo/",
+        "alembic/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B009",
+      "text": "the submitted package does not import forbidden upstream packages: alembic, sqlalchemy."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "When Revision objects are created, scalar and iterable down revisions, branch labels, and dependencies are normalized without losing their distinct graph roles."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "When RevisionMap is built from explicit revisions, it links versioned parents, dependency edges, and branch labels into a queryable graph."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "For linear, branched, and merged revision graphs, RevisionMap reports the versioned bases and heads that have no versioned parent or child."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "When a branch label is assigned, branch-label lookup resolves that revision and propagates the label to eligible descendants."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "When ancestors are requested, dependency revisions are included only when dependency-aware traversal is enabled."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "When symbolic identifiers such as head or base are requested, RevisionMap resolves them and rejects ambiguous heads."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "Missing revisions, multiple-head requests, and revision cycles raise the declared explicit graph errors."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.Revision`, `featurelifted.RevisionMap`, `featurelifted.RevisionMap.heads`, `featurelifted.RevisionMap.bases`, `featurelifted.RevisionMap.branch_labels`, `featurelifted.RevisionMap.get_revision`, `featurelifted.RevisionMap.get_revisions`, `featurelifted.RevisionMap.get_heads`, `featurelifted.RevisionMap.get_current_head`, `featurelifted.RevisionMap.ancestors`, `featurelifted.RevisionMap.iterate_revisions`, `featurelifted.CycleDetected`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: alembic, sqlalchemy"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_heads_for_linear_revision_map",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_merge_revision_removes_branch_heads",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_iterate_revisions_walks_down_revision_chain",
+        "behavior_ids": [
+          "B001",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_branch_labels_resolve_and_multiple_heads_raise",
+        "behavior_ids": [
+          "B004",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_branch_label_propagates_to_branch_head",
+        "behavior_ids": [
+          "B004"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_dependencies_affect_ancestors_without_removing_versioned_head",
+        "behavior_ids": [
+          "B003",
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_missing_down_revision_raises",
+        "behavior_ids": [
+          "B007",
+          "B001",
+          "B002"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_cycle_detection_raises",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_head_symbol_and_base_symbol_resolution",
+        "behavior_ids": [
+          "B003",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.Revision",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.heads",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.bases",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.branch_labels",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_branch_label_propagates_to_branch_head"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.get_revision",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_branch_labels_resolve_and_multiple_heads_raise",
+          "hidden_tests/test_hidden_contract.py::test_head_symbol_and_base_symbol_resolution"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.get_revisions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.get_heads",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_dependencies_affect_ancestors_without_removing_versioned_head"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.get_current_head",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_branch_label_propagates_to_branch_head",
+          "hidden_tests/test_hidden_contract.py::test_branch_labels_resolve_and_multiple_heads_raise"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.ancestors",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_dependencies_affect_ancestors_without_removing_versioned_head"
+        ]
+      },
+      {
+        "path": "featurelifted.RevisionMap.iterate_revisions",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.CycleDetected",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MissingRevision",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MultipleHeads",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 4,
+  "spec_hash": "de0b13bf175742dd845d96723818bbda117876b081bee4fa30e485e5b3614d28",
+  "generated_task_hash": "94c4376622e6a88110ddcd4dfc731a058ea996fc1850e98a4639d81599c3b937"
+}

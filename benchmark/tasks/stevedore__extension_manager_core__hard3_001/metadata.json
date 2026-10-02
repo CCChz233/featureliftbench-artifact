@@ -1,0 +1,487 @@
+{
+  "difficulty": "hard",
+  "entanglement": {
+    "description": "Extension loading depends on importlib metadata entry points, plugin load failures, duplicate names, lazy name lookup, and callback semantics.",
+    "level": "high",
+    "primary": "framework_coupling",
+    "signals": [
+      "Entry points are filtered by namespace before loading.",
+      "Load failures are swallowed only after invoking the failure callback.",
+      "Duplicate names are resolved lazily by a conflict resolver.",
+      "map can either ignore or propagate extension callback exceptions."
+    ],
+    "types": [
+      "framework_coupling",
+      "third_party_dependency_coupling",
+      "implicit_dependency_coupling"
+    ]
+  },
+  "environment": {
+    "allowed_dependencies": [],
+    "dependency_lock": "requirements.lock",
+    "forbidden_dependencies": [
+      "stevedore"
+    ],
+    "forbidden_imports": [
+      "stevedore"
+    ],
+    "forbidden_paths": [
+      "repo/",
+      "stevedore/"
+    ],
+    "network": false,
+    "python": "3.11",
+    "timeout_seconds": 90
+  },
+  "feature": {
+    "description": "Extract a task-scoped Stevedore-style ExtensionManager for dynamic entry point discovery and loading.",
+    "excluded_behaviors": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "driver manager",
+      "dispatch manager",
+      "hook manager",
+      "Sphinx extension"
+    ],
+    "included_behaviors": [
+      "EntryPointSpec test entry points",
+      "Extension bookkeeping",
+      "ExtensionManager namespace filtering and loading",
+      "invoke_on_load and invoke_args/invoke_kwds",
+      "on_load_failure_callback",
+      "names, items, iteration, containment, getitem",
+      "map and map_method",
+      "duplicate-name conflict resolvers",
+      "NamedExtensionManager filtering, missing callback, and requested order"
+    ],
+    "name": "ExtensionManager entry point discovery and loading",
+    "source_entrypoints": [
+      "stevedore.extension.ExtensionManager",
+      "stevedore.extension.Extension",
+      "stevedore.extension.ignore_conflicts",
+      "stevedore.extension.error_on_conflict",
+      "stevedore.named.NamedExtensionManager"
+    ]
+  },
+  "language": "python",
+  "output": {
+    "callable": "ExtensionManager",
+    "import": "from featurelifted import EntryPointSpec, ExtensionManager, NamedExtensionManager, NoMatches, MultipleMatches, error_on_conflict, ignore_conflicts",
+    "package": "featurelifted",
+    "signature": "ExtensionManager(namespace, entry_points=None, invoke_on_load=False, invoke_args=None, invoke_kwds=None, propagate_map_exceptions=False, on_load_failure_callback=None)"
+  },
+  "source": {
+    "commit": "8550c66a2e774f97e2f8459265ed3ea8017603f1",
+    "license": "Apache-2.0",
+    "name": "stevedore",
+    "url": "https://github.com/openstack/stevedore.git"
+  },
+  "split_role": "mechanism_challenging",
+  "status": "main",
+  "tags": [
+    "batch-3",
+    "hard",
+    "dynamic dependency recovery",
+    "framework_coupling"
+  ],
+  "task_id": "stevedore__extension_manager_core__hard3_001",
+  "tests": {
+    "command": "pytest",
+    "hidden": "hidden_tests/",
+    "public": "public_tests/"
+  },
+  "spec_status": "compliant",
+  "public_spec": {
+    "title": "ExtensionManager entry point discovery and loading",
+    "summary": "Extract a task-scoped subset of `stevedore` into a standalone `featurelifted` package.",
+    "required_api": [
+      {
+        "path": "featurelifted.EntryPointSpec",
+        "kind": "class",
+        "signature": "(name: 'str', value: 'str', group: 'str', loader: 'Callable[[], Any] | None' = None) -> None"
+      },
+      {
+        "path": "featurelifted.ExtensionManager",
+        "kind": "class",
+        "signature": "(namespace: 'str', entry_points: 'Iterable[Any] | None' = None, invoke_on_load: 'bool' = False, invoke_args: 'tuple[Any, ...] | None' = None, invoke_kwds: 'dict[str, Any] | None' = None, propagate_map_exceptions: 'bool' = False, on_load_failure_callback: \"Callable[['ExtensionManager', Any, BaseException], None] | None\" = None, *, conflict_resolver: 'Callable[[str, str, list[Extension]], Extension]' = <function ignore_conflicts>) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.ExtensionManager.map",
+            "kind": "method",
+            "signature": "(self, func: 'Callable[..., Any]', *args: 'Any', **kwds: 'Any') -> 'list[Any]'"
+          },
+          {
+            "path": "featurelifted.ExtensionManager.names",
+            "kind": "method",
+            "signature": "(self) -> 'list[str]'"
+          },
+          {
+            "path": "featurelifted.ExtensionManager.namespace",
+            "kind": "attribute"
+          },
+          {
+            "path": "featurelifted.ExtensionManager.__getitem__",
+            "kind": "method",
+            "signature": "(self, name: 'str') -> 'Extension'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.NamedExtensionManager",
+        "kind": "class",
+        "signature": "(namespace: 'str', names: 'Iterable[str]', entry_points: 'Iterable[Any] | None' = None, invoke_on_load: 'bool' = False, invoke_args: 'tuple[Any, ...] | None' = None, invoke_kwds: 'dict[str, Any] | None' = None, name_order: 'bool' = False, propagate_map_exceptions: 'bool' = False, on_load_failure_callback: 'Callable[[ExtensionManager, Any, BaseException], None] | None' = None, on_missing_entrypoints_callback: 'Callable[[Iterable[str]], None] | None' = None, *, conflict_resolver: 'Callable[[str, str, list[Extension]], Extension]' = <function ignore_conflicts>) -> 'None'",
+        "members": [
+          {
+            "path": "featurelifted.NamedExtensionManager.names",
+            "kind": "method",
+            "signature": "(self) -> 'list[str]'"
+          }
+        ]
+      },
+      {
+        "path": "featurelifted.NoMatches",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.MultipleMatches",
+        "kind": "exception"
+      },
+      {
+        "path": "featurelifted.error_on_conflict",
+        "kind": "function",
+        "signature": "(namespace: 'str', name: 'str', entrypoints)"
+      },
+      {
+        "path": "featurelifted.ignore_conflicts",
+        "kind": "function",
+        "signature": "(namespace: 'str', name: 'str', entrypoints)"
+      },
+      {
+        "path": "featurelifted.Extension",
+        "kind": "class",
+        "members": [
+          {
+            "path": "featurelifted.Extension.obj",
+            "kind": "attribute"
+          }
+        ],
+        "signature": "(name: 'str', entry_point: 'Any', plugin: 'Any', obj: 'Any') -> 'None'"
+      }
+    ],
+    "optional_api": [],
+    "behaviors": [
+      {
+        "id": "B001",
+        "text": "EntryPointSpec supplies deterministic entry-point name, namespace, and loader behavior for extension discovery."
+      },
+      {
+        "id": "B002",
+        "text": "Loaded extensions retain their name, entry point, plugin, and optional invoked object for lookup and iteration."
+      },
+      {
+        "id": "B003",
+        "text": "ExtensionManager filters entry points by namespace, loads matching plugins, and omits unrelated entry points."
+      },
+      {
+        "id": "B004",
+        "text": "With invoke_on_load enabled, ExtensionManager invokes the plugin with invoke_args and invoke_kwds and stores the resulting object."
+      },
+      {
+        "id": "B005",
+        "text": "When plugin loading fails, on_load_failure_callback receives the manager, entry point, and exception and the failed extension is skipped."
+      },
+      {
+        "id": "B006",
+        "text": "names, items, iteration, containment, and keyed lookup expose the manager's successfully loaded extensions."
+      },
+      {
+        "id": "B007",
+        "text": "map and map_method invoke callbacks across loaded extensions and preserve or propagate results and configured exceptions."
+      },
+      {
+        "id": "B008",
+        "text": "Duplicate names follow ignore_conflicts or raise MultipleMatches under error_on_conflict."
+      },
+      {
+        "id": "B009",
+        "text": "NamedExtensionManager filters requested names, reports missing names through its callback, and can preserve requested order."
+      },
+      {
+        "id": "B010",
+        "text": "The package exposes the required task API paths `featurelifted.EntryPointSpec`, `featurelifted.ExtensionManager`, `featurelifted.ExtensionManager.map`, `featurelifted.ExtensionManager.names`, `featurelifted.ExtensionManager.namespace`, `featurelifted.ExtensionManager.__getitem__`, `featurelifted.NamedExtensionManager`, `featurelifted.NamedExtensionManager.names`, `featurelifted.NoMatches`, `featurelifted.MultipleMatches`, `featurelifted.error_on_conflict`, `featurelifted.ignore_conflicts`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      }
+    ],
+    "source_entrypoints": [
+      "stevedore.extension.ExtensionManager",
+      "stevedore.extension.Extension",
+      "stevedore.extension.ignore_conflicts",
+      "stevedore.extension.error_on_conflict",
+      "stevedore.named.NamedExtensionManager"
+    ],
+    "exclusions": [
+      "network access",
+      "original repository import at runtime",
+      "source repo path access",
+      "driver manager",
+      "dispatch manager",
+      "hook manager",
+      "Sphinx extension"
+    ],
+    "forbidden": {
+      "imports": [
+        "stevedore"
+      ],
+      "paths": [
+        "repo/",
+        "stevedore/"
+      ]
+    },
+    "public_vs_hidden_note": "Benchmark evaluator tests remain private. Each evaluator test maps to the public behaviors above and only deepens examples, boundaries, or combinations within those declared behaviors.",
+    "isolation_behavior": {
+      "id": "B011",
+      "text": "the submitted package does not import forbidden upstream packages: stevedore."
+    }
+  },
+  "evaluation_spec": {
+    "public_clauses": [
+      {
+        "behavior_id": "B001",
+        "clause_kind": "included_behavior",
+        "text": "EntryPointSpec supplies deterministic entry-point name, namespace, and loader behavior for extension discovery."
+      },
+      {
+        "behavior_id": "B002",
+        "clause_kind": "included_behavior",
+        "text": "Loaded extensions retain their name, entry point, plugin, and optional invoked object for lookup and iteration."
+      },
+      {
+        "behavior_id": "B003",
+        "clause_kind": "included_behavior",
+        "text": "ExtensionManager filters entry points by namespace, loads matching plugins, and omits unrelated entry points."
+      },
+      {
+        "behavior_id": "B004",
+        "clause_kind": "included_behavior",
+        "text": "With invoke_on_load enabled, ExtensionManager invokes the plugin with invoke_args and invoke_kwds and stores the resulting object."
+      },
+      {
+        "behavior_id": "B005",
+        "clause_kind": "included_behavior",
+        "text": "When plugin loading fails, on_load_failure_callback receives the manager, entry point, and exception and the failed extension is skipped."
+      },
+      {
+        "behavior_id": "B006",
+        "clause_kind": "included_behavior",
+        "text": "names, items, iteration, containment, and keyed lookup expose the manager's successfully loaded extensions."
+      },
+      {
+        "behavior_id": "B007",
+        "clause_kind": "included_behavior",
+        "text": "map and map_method invoke callbacks across loaded extensions and preserve or propagate results and configured exceptions."
+      },
+      {
+        "behavior_id": "B008",
+        "clause_kind": "included_behavior",
+        "text": "Duplicate names follow ignore_conflicts or raise MultipleMatches under error_on_conflict."
+      },
+      {
+        "behavior_id": "B009",
+        "clause_kind": "included_behavior",
+        "text": "NamedExtensionManager filters requested names, reports missing names through its callback, and can preserve requested order."
+      },
+      {
+        "behavior_id": "B010",
+        "clause_kind": "api_surface",
+        "text": "The package exposes the required task API paths `featurelifted.EntryPointSpec`, `featurelifted.ExtensionManager`, `featurelifted.ExtensionManager.map`, `featurelifted.ExtensionManager.names`, `featurelifted.ExtensionManager.namespace`, `featurelifted.ExtensionManager.__getitem__`, `featurelifted.NamedExtensionManager`, `featurelifted.NamedExtensionManager.names`, `featurelifted.NoMatches`, `featurelifted.MultipleMatches`, `featurelifted.error_on_conflict`, `featurelifted.ignore_conflicts`, and 2 listed members with the kinds and callable signatures listed in this contract."
+      },
+      {
+        "behavior_id": "B011",
+        "clause_kind": "isolation_constraint",
+        "text": "the submitted package does not import forbidden upstream packages: stevedore"
+      }
+    ],
+    "public_test_mappings": [
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_extension_manager_loads_matching_namespace",
+        "behavior_ids": [
+          "B003"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_invoke_on_load_and_map_method",
+        "behavior_ids": [
+          "B004",
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "public_tests/test_public_contract.py::test_map_raises_no_matches_when_empty",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      }
+    ],
+    "hidden_test_mappings": [
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_load_failure_callback_gets_manager_entrypoint_and_exception",
+        "behavior_ids": [
+          "B005"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_duplicate_names_default_to_last_extension",
+        "behavior_ids": [
+          "B002",
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_duplicate_names_can_raise_multiple_matches",
+        "behavior_ids": [
+          "B008"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_map_exception_policy_can_ignore_or_propagate",
+        "behavior_ids": [
+          "B007"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_hidden_contract.py::test_named_extension_manager_filters_reports_missing_and_orders_names",
+        "behavior_ids": [
+          "B009",
+          "B001",
+          "B003",
+          "B004",
+          "B006"
+        ],
+        "mapping_method": "ai_assisted"
+      },
+      {
+        "nodeid": "hidden_tests/test_required_api_surface.py::test_required_api_surface",
+        "behavior_ids": [
+          "B010"
+        ],
+        "mapping_method": "generated_required_api_surface"
+      }
+    ],
+    "required_api_coverage": [
+      {
+        "path": "featurelifted.EntryPointSpec",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionManager",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionManager.map",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_map_exception_policy_can_ignore_or_propagate"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionManager.names",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_duplicate_names_default_to_last_extension",
+          "hidden_tests/test_hidden_contract.py::test_load_failure_callback_gets_manager_entrypoint_and_exception"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionManager.namespace",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_load_failure_callback_gets_manager_entrypoint_and_exception"
+        ]
+      },
+      {
+        "path": "featurelifted.NamedExtensionManager",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.NamedExtensionManager.names",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_named_extension_manager_filters_reports_missing_and_orders_names"
+        ]
+      },
+      {
+        "path": "featurelifted.NoMatches",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.MultipleMatches",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.error_on_conflict",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ignore_conflicts",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Extension",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.Extension.obj",
+        "covered_by_tests": [
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      },
+      {
+        "path": "featurelifted.ExtensionManager.__getitem__",
+        "covered_by_tests": [
+          "hidden_tests/test_hidden_contract.py::test_duplicate_names_can_raise_multiple_matches",
+          "hidden_tests/test_hidden_contract.py::test_duplicate_names_default_to_last_extension",
+          "hidden_tests/test_hidden_contract.py::test_load_failure_callback_gets_manager_entrypoint_and_exception",
+          "hidden_tests/test_hidden_contract.py::test_map_exception_policy_can_ignore_or_propagate",
+          "hidden_tests/test_hidden_contract.py::test_named_extension_manager_filters_reports_missing_and_orders_names",
+          "hidden_tests/test_required_api_surface.py::test_required_api_surface"
+        ]
+      }
+    ],
+    "manual_review": {
+      "reviewed_at": "2026-07-24",
+      "reviewer": "codex_hard50_constitution_review",
+      "reviewer_type": "ai_assisted_task_level_review",
+      "independent_human_review": false,
+      "checklist_passed": true,
+      "notes": "Task-level constitution migration reviewed against the legacy TASK, public tests, hidden tests, behavior mappings, and required API surface. Independent human paper-gold review remains pending."
+    },
+    "hidden_failure_rejudgement": "Legacy hidden API and behavior obligations used by the evaluator are now declared in public_spec; no hidden-only contract is intentionally retained.",
+    "experiment_contract_hardening": {
+      "method": "existing_contract_and_test_mapping_review",
+      "oracle_signature_source": "benchmark/submissions/<task_id>/oracle",
+      "independent_human_review": false
+    }
+  },
+  "task_revision": 5,
+  "spec_hash": "ece4269853d51c8ea7e52ea1ff2ba4747aca25530fa7964d10d0d9a2377d4d3f",
+  "generated_task_hash": "ef38abe73883d7083d2a862e74c2a94e4e168e7ab47560cc09c231bfbf3aca8a"
+}
